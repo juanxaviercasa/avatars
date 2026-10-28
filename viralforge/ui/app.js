@@ -1,3 +1,27 @@
+const DEFAULT_ORACLE_TUNNEL = "https://hydrogen-jesse-paxil-raleigh.trycloudflare.com";
+let API_BASE = (localStorage.getItem("vf_api_base") || "").replace(/\/+$/, "");
+
+if (!API_BASE && window.location.hostname.endsWith(".pages.dev")) {
+  API_BASE = DEFAULT_ORACLE_TUNNEL;
+}
+
+function resolveUrl(path) {
+  if (!path || path.startsWith("http://") || path.startsWith("https://")) return path;
+  return `${API_BASE}${path}`;
+}
+
+function updateBackendLabel() {
+  const el = document.getElementById("lblBackendMode");
+  if (!el) return;
+  if (!API_BASE) {
+    el.textContent = "Local / Mismo Host";
+  } else if (API_BASE.includes("trycloudflare.com")) {
+    el.textContent = "Oracle VPS Tunnel";
+  } else {
+    el.textContent = API_BASE.replace(/^https?:\/\//, "").slice(0, 22);
+  }
+}
+
 const state = {
   personas: [],
   products: [],
@@ -8,7 +32,7 @@ const state = {
 };
 
 async function api(path, opts = {}) {
-  const res = await fetch(path, {
+  const res = await fetch(resolveUrl(path), {
     headers: { "Content-Type": "application/json", ...(opts.headers || {}) },
     ...opts,
   });
@@ -227,7 +251,7 @@ function renderJobs() {
         ${isDone && j.variant_id ? `
           <div class="btn-row" style="margin-top:10px">
             <button class="btn btn-sm btn-primary" onclick="goToReel('${j.variant_id}')">▶️ Ver Reel en Galería</button>
-            <a class="btn btn-sm" href="/media/variants/${j.variant_id}/video" download="${j.variant_id}.mp4">⬇️ Descargar MP4</a>
+            <a class="btn btn-sm" href="${resolveUrl(`/media/variants/${j.variant_id}/video`)}" download="${j.variant_id}.mp4">⬇️ Descargar MP4</a>
           </div>
         ` : ""}
       </div>
@@ -256,7 +280,7 @@ function renderVariants() {
     return `
       <div class="reel-card" id="card-${v.id}">
         ${v.status === "done"
-          ? `<video controls preload="metadata" poster="/media/variants/${v.id}/thumb" src="/media/variants/${v.id}/video"></video>`
+          ? `<video controls preload="metadata" poster="${resolveUrl(`/media/variants/${v.id}/thumb`)}" src="${resolveUrl(`/media/variants/${v.id}/video`)}"></video>`
           : `<div style="aspect-ratio:9/16;display:flex;align-items:center;justify-content:center;background:#0d101a;padding:18px;text-align:center" class="muted">Estado: <strong>${v.status.toUpperCase()}</strong></div>`
         }
         <div class="reel-body">
@@ -269,7 +293,7 @@ function renderVariants() {
           <div style="font-size:12px;color:#cbd5e1">"${v.script.beats[0]?.text || ""}"</div>
           ${m.views ? `<div class="badge">👁 ${m.views.toLocaleString()} • Hold 3s: ${m.hold_3s}% • Ventas: ${m.sales}</div>` : ""}
           <div class="btn-row">
-            ${v.status === "done" ? `<a class="btn btn-sm btn-primary" href="/media/variants/${v.id}/video" download="${v.id}.mp4">Descargar MP4</a>` : ""}
+            ${v.status === "done" ? `<a class="btn btn-sm btn-primary" href="${resolveUrl(`/media/variants/${v.id}/video`)}" download="${v.id}.mp4">Descargar MP4</a>` : ""}
             <button class="btn btn-sm" onclick="rerenderVariant('${v.id}')">Re-renderizar</button>
           </div>
         </div>
@@ -312,7 +336,7 @@ function renderPersonas() {
   const box = document.getElementById("personasList");
   box.innerHTML = state.personas.map((p) => `
     <div class="item-card media-row">
-      <img class="avatar-thumb" src="/media/personas/${p.id}?t=${Math.floor(p.created_at)}" alt="${p.name}" />
+      <img class="avatar-thumb" src="${resolveUrl(`/media/personas/${p.id}?t=${Math.floor(p.created_at)}`)}" alt="${p.name}" />
       <div style="flex:1">
         <div class="row-between">
           <strong>${p.name} <span class="badge">${p.niche}</span></strong>
@@ -329,7 +353,7 @@ function renderPersonas() {
 }
 
 window.previewVoice = async function (id) {
-  const res = await fetch(`/api/personas/${id}/voice-preview`, {
+  const res = await fetch(resolveUrl(`/api/personas/${id}/voice-preview`), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text: "Para de hacer scroll si quieres ver el producto más viral de nuestra tienda." }),
@@ -348,7 +372,7 @@ function renderProducts() {
   const box = document.getElementById("productsList");
   box.innerHTML = state.products.map((p) => `
     <div class="item-card media-row">
-      <img class="prod-thumb" src="/media/products/${p.id}/0" alt="${p.title}" />
+      <img class="prod-thumb" src="${resolveUrl(`/media/products/${p.id}/0`)}" alt="${p.title}" />
       <div style="flex:1">
         <div class="row-between">
           <strong>${p.title}</strong>
@@ -430,7 +454,24 @@ async function checkOracleStatus() {
 // Eventos
 document.addEventListener("DOMContentLoaded", () => {
   setupTabs();
+  updateBackendLabel();
   loadAll();
+
+  const btnCfg = document.getElementById("btnConfigBackend");
+  if (btnCfg) {
+    btnCfg.addEventListener("click", async () => {
+      const next = prompt(
+        "URL del Backend API de ViralForge (deja vacío para usar el mismo servidor o pega tu túnel Cloudflare del VPS de Oracle):",
+        API_BASE || DEFAULT_ORACLE_TUNNEL
+      );
+      if (next === null) return;
+      API_BASE = next.trim().replace(/\/+$/, "");
+      if (API_BASE) localStorage.setItem("vf_api_base", API_BASE);
+      else localStorage.removeItem("vf_api_base");
+      updateBackendLabel();
+      await loadAll();
+    });
+  }
 
   document.getElementById("btnGenScripts").addEventListener("click", generateScripts);
   document.getElementById("btnRefreshJobs").addEventListener("click", refreshJobsAndVariants);
@@ -451,7 +492,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (fileInput.files && fileInput.files[0]) {
         fd.append("video", fileInput.files[0]);
       }
-      const res = await fetch("/api/openjutsu/reshoot", { method: "POST", body: fd });
+      const res = await fetch(resolveUrl("/api/openjutsu/reshoot"), { method: "POST", body: fd });
       if (!res.ok) throw new Error(await res.text());
       await refreshJobsAndVariants();
     } catch (e) {

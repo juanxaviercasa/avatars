@@ -1,0 +1,9 @@
+{
+  "name": "viralforge-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ViralForge Studio — AI Influencer & OpenJutsu Viral Reel Factory for Shopify",
+  "scripts": {
+    "build": "node build-pages.mjs"
+  }
+}
