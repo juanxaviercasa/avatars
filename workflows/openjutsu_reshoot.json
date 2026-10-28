@@ -1,0 +1,58 @@
+{
+  "1": {
+    "class_type": "VHS_LoadVideo",
+    "inputs": {
+      "video": "__SOURCE_VIDEO__",
+      "force_rate": 24,
+      "force_size": "Custom",
+      "custom_width": 720,
+      "custom_height": 1280
+    }
+  },
+  "2": {
+    "class_type": "LoadImage",
+    "inputs": { "image": "__FACE_IMAGE__" }
+  },
+  "3": {
+    "class_type": "LoadImage",
+    "inputs": { "image": "__GARMENT_IMAGE__" }
+  },
+  "4": {
+    "class_type": "SAM2Segmentation",
+    "inputs": {
+      "images": ["1", 0],
+      "model_name": "sam2_hiera_small.pt",
+      "segment_target": "person"
+    }
+  },
+  "5": {
+    "class_type": "QwenVLShotDescriber",
+    "inputs": {
+      "images": ["1", 0],
+      "character_image": ["2", 0],
+      "prompt_override": "__PROMPT__"
+    }
+  },
+  "6": {
+    "class_type": "Wan22VideoReshoot",
+    "inputs": {
+      "source_frames": ["1", 0],
+      "subject_mask": ["4", 0],
+      "identity_image": ["2", 0],
+      "garment_image": ["3", 0],
+      "conditioning_text": ["5", 0],
+      "denoise_strength": 0.68,
+      "steps": 20
+    }
+  },
+  "7": {
+    "class_type": "VHS_VideoCombine",
+    "inputs": {
+      "images": ["6", 0],
+      "audio": ["1", 2],
+      "frame_rate": 24,
+      "format": "video/h264-mp4",
+      "filename_prefix": "openjutsu_reshoot"
+    }
+  }
+}

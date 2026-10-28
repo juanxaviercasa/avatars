@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ViralForge Studio — AI Influencer & Viral Reel Factory</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo-mark">VF</div>
+      <div>
+        <h1>ViralForge Studio</h1>
+        <p class="subtitle">Orquestador de AI Influencers, Ganchos Virales y Reels Masivos para Shopify</p>
+      </div>
+    </div>
+    <div class="stats-strip" id="statsStrip">
+      <span class="pill">Influencers: <strong id="statPersonas">-</strong></span>
+      <span class="pill">Productos: <strong id="statProducts">-</strong></span>
+      <span class="pill">Reels: <strong id="statVariants">-</strong></span>
+      <span class="pill pill-accent">Jobs activos: <strong id="statJobs">0</strong></span>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="studio">1. Laboratorio & Render</button>
+    <button class="tab" data-tab="campaigns">2. Fábrica Masiva (Matriz A/B)</button>
+    <button class="tab" data-tab="reels">3. Galería de Reels & Analítica Bandit</button>
+    <button class="tab" data-tab="personas">4. AI Influencers</button>
+    <button class="tab" data-tab="products">5. Catálogo & Shopify</button>
+    <button class="tab" data-tab="engines">6. Clúster Kaggle, OpenJutsu & Oracle VPS</button>
+  </nav>
+
+  <main class="container">
+    <!-- TAB 1: STUDIO -->
+    <section class="tab-panel active" id="tab-studio">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Generador de Guiones con Estructura Ganadora</h2>
+          <p class="muted">Combina el ADN de tu AI Influencer + tu producto + 22 fórmulas de gancho psicológico (0-3s) y 8 estructuras de conversión.</p>
+          <div class="form-row">
+            <label>AI Influencer
+              <select id="stPersona"></select>
+            </label>
+            <label>Producto
+              <select id="stProduct"></select>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>Fórmula de Gancho (0-3s)
+              <select id="stHook"><option value="">Automático (Bandit Thompson Sampling)</option></select>
+            </label>
+            <label>Estructura de Venta
+              <select id="stFramework"><option value="">Automático (Bandit Thompson Sampling)</option></select>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>Ángulo Psicológico
+              <select id="stAngle"><option value="">Automático</option></select>
+            </label>
+            <label>Duración objetivo (s)
+              <input type="number" id="stSeconds" value="24" min="10" max="75" />
+            </label>
+            <label>Nº Variantes
+              <input type="number" id="stCount" value="3" min="1" max="8" />
+            </label>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="btnGenScripts">Generar Guiones Ganadores</button>
+          </div>
+
+          <hr class="sep" />
+          <h3>Probador de Gancho en Tiempo Real (Hook Scorer 0-100)</h3>
+          <div class="form-row">
+            <input type="text" id="hookTestInput" placeholder="Escribe un gancho de 3 segundos... ej: Para de hacer scroll si sufres con la piel apagada." />
+            <button class="btn" id="btnScoreHook">Evaluar Gancho</button>
+          </div>
+          <div id="hookScoreResult" class="score-box hidden"></div>
+        </div>
+
+        <div class="card">
+          <h2>Variantes de Guion Generadas</h2>
+          <div id="scriptsList" class="stack">
+            <p class="muted">Haz clic en "Generar Guiones Ganadores" para crear variantes listas para renderizar en vídeo 9:16.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt">
+        <h2>⚡ OpenJutsu: Clonador de Vídeos Virales ("Swap Yourself / AI Influencer into Any Video")</h2>
+        <p class="muted">Inspirado en <code>d3voz/openjutsu</code>. Sube cualquier vídeo viral de referencia (o deja el campo vacío para usar el vídeo viral de demostración integrado) e inyecta a tu AI Influencer + tu producto de Shopify con seguimiento de movimiento, locución neural y subtítulos dinámicos.</p>
+        <div class="form-row">
+          <label>Vídeo de Referencia (MP4 opcional — si lo dejas vacío usa el vídeo viral de prueba)
+            <input type="file" id="ojVideoFile" accept="video/*" />
+          </label>
+          <label>Modo de Reemplazo OpenJutsu
+            <select id="ojMode">
+              <option value="hybrid_reshoot">Hybrid Reshoot (Alterna Avatar + Split + PIP Reactor)</option>
+              <option value="full_replace">Full Character Replace (Reemplazo total con transferencia de movimiento)</option>
+              <option value="pip_twin">PIP Twin Reactor (Vídeo original + AI Influencer sincronizada)</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-row">
+          <label>Guion de Voz para el Vídeo (déjalo vacío para autogenerar un guion ganador del producto seleccionado arriba)
+            <input type="text" id="ojScriptText" placeholder="Ej: Nadie te dice esto, pero este producto cambió mi rutina desde el primer día. Enlace en mi perfil." />
+          </label>
+          <label class="check-inline" style="max-width:280px">
+            <input type="checkbox" id="ojKeepAudio" /> Conservar audio original del vídeo
+          </label>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="btnRunOpenjutsu">⚡ Ejecutar OpenJutsu Video Swap (MP4)</button>
+        </div>
+      </div>
+
+      <div class="card mt">
+        <div class="row-between">
+          <h2>Cola de Renderizado en Vivo</h2>
+          <button class="btn btn-sm" id="btnRefreshJobs">Actualizar</button>
+        </div>
+        <div id="jobsLiveList" class="stack"></div>
+      </div>
+    </section>
+
+    <!-- TAB 2: CAMPAIGNS -->
+    <section class="tab-panel" id="tab-campaigns">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Fábrica Masiva de Reels (Matriz A/B)</h2>
+          <p class="muted">Cruza múltiples productos × múltiples AI Influencers × N ángulos. El motor Bayesiano elige los ganchos con mayor probabilidad de conversión y renderiza todos los reels en segundo plano.</p>
+          <label>Nombre de la Campaña
+            <input type="text" id="cmpName" value="Campaña Viral Q4" />
+          </label>
+          <div class="form-row">
+            <div>
+              <label>Selecciona Productos</label>
+              <div id="cmpProducts" class="check-list"></div>
+            </div>
+            <div>
+              <label>Selecciona AI Influencers</label>
+              <div id="cmpPersonas" class="check-list"></div>
+            </div>
+          </div>
+          <div class="form-row">
+            <label>Variantes por combinación
+              <input type="number" id="cmpVariants" value="2" min="1" max="10" />
+            </label>
+            <label>Duración objetivo (s)
+              <input type="number" id="cmpSeconds" value="24" min="10" max="75" />
+            </label>
+            <label>Ratio Exploración vs Explotación (0 = explota ganadores, 1 = explora nuevos)
+              <input type="number" id="cmpExplore" value="0.35" step="0.05" min="0" max="1" />
+            </label>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="btnLaunchCampaign">Lanzar Producción Masiva de Reels</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Biblioteca de 22 Fórmulas de Gancho & 8 Estructuras</h2>
+          <div id="libraryBrowser" class="stack-scroll"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: REELS & BANDIT -->
+    <section class="tab-panel" id="tab-reels">
+      <div class="card mb">
+        <div class="row-between">
+          <div>
+            <h2>Cerebro Bayesiano (Thompson Sampling Bandit)</h2>
+            <p class="muted">Aprende automáticamente qué ganchos, estructuras e influencers generan más retención a 3s, clics y ventas.</p>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-accent" id="btnSimulateBandit">Simular Métricas de TikTok/Reels</button>
+            <button class="btn btn-sm" id="btnRefreshBandit">Actualizar Ranking</button>
+          </div>
+        </div>
+        <div id="banditBoards" class="grid-3 mt"></div>
+      </div>
+
+      <div class="card">
+        <div class="row-between">
+          <h2>Galería de Reels Generados (9:16 MP4)</h2>
+          <button class="btn btn-sm" id="btnRefreshVariants">Actualizar Galería</button>
+        </div>
+        <div id="variantsGrid" class="reels-grid mt"></div>
+      </div>
+    </section>
+
+    <!-- TAB 4: PERSONAS -->
+    <section class="tab-panel" id="tab-personas">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Crear / Editar AI Influencer</h2>
+          <div class="form-row">
+            <label>Nombre
+              <input type="text" id="perName" placeholder="Ej: Camila Soler" />
+            </label>
+            <label>Nicho
+              <input type="text" id="perNiche" placeholder="Ej: moda urbana y accesorios" />
+            </label>
+          </div>
+          <div class="form-row">
+            <label>Voz Neural (edge-tts)
+              <select id="perVoice">
+                <option value="es-MX-DaliaNeural">es-MX-DaliaNeural (Femenina MX)</option>
+                <option value="es-ES-ElviraNeural">es-ES-ElviraNeural (Femenina ES)</option>
+                <option value="es-CO-SalomeNeural">es-CO-SalomeNeural (Femenina CO)</option>
+                <option value="es-MX-JorgeNeural">es-MX-JorgeNeural (Masculina MX)</option>
+                <option value="en-US-AvaNeural">en-US-AvaNeural (Female US)</option>
+                <option value="en-US-AndrewNeural">en-US-AndrewNeural (Male US)</option>
+              </select>
+            </label>
+            <label>Género
+              <select id="perGender">
+                <option value="female">Femenino</option>
+                <option value="male">Masculino</option>
+              </select>
+            </label>
+          </div>
+          <label>Tono y personalidad
+            <input type="text" id="perTone" value="cercana, enérgica y honesta" />
+          </label>
+          <label>Muletillas (separadas por coma)
+            <input type="text" id="perCatch" value="En serio, Hazme caso, Mira esto" />
+          </label>
+          <label>Prompt de apariencia (para ComfyUI PuLID / InstantID / Flux)
+            <input type="text" id="perPrompt" placeholder="25yo woman, natural skin texture, studio lighting, vertical UGC" />
+          </label>
+          <div class="form-row">
+            <label>Color de marca
+              <input type="color" id="perBrand" value="#FF3D6E" />
+            </label>
+            <label>Color de acento (subtítulos activos)
+              <input type="color" id="perAccent" value="#FFE45E" />
+            </label>
+          </div>
+          <button class="btn btn-primary" id="btnCreatePersona">Guardar AI Influencer</button>
+        </div>
+
+        <div class="card">
+          <h2>Plantilla de AI Influencers</h2>
+          <div id="personasList" class="stack"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: PRODUCTS & SHOPIFY -->
+    <section class="tab-panel" id="tab-products">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Importador Directo de Tiendas Shopify</h2>
+          <p class="muted">Introduce el dominio de cualquier tienda Shopify o la URL de un producto. Descarga fotos, precios, descuentos y beneficios automáticamente sin requerir API token en tiendas públicas.</p>
+          <div class="form-row">
+            <input type="text" id="shopDomain" placeholder="Ej: gymshark.com o https://tienda.com/products/mi-producto" />
+            <input type="number" id="shopLimit" value="5" min="1" max="30" style="max-width:110px" />
+          </div>
+          <button class="btn btn-primary" id="btnImportShopify">Importar de Shopify</button>
+          <div id="shopifyMsg" class="mt muted"></div>
+
+          <hr class="sep" />
+          <h3>Añadir Producto Físico o Digital Manualmente</h3>
+          <div class="form-row">
+            <label>Título del Producto
+              <input type="text" id="prdTitle" placeholder="Ej: Corrector de Postura Inteligente" />
+            </label>
+            <label>Categoría (plural)
+              <input type="text" id="prdType" placeholder="Ej: correctores de postura" />
+            </label>
+          </div>
+          <div class="form-row">
+            <label>Precio Oferta
+              <input type="number" id="prdPrice" value="29.90" step="0.1" />
+            </label>
+            <label>Precio Anterior (tachado)
+              <input type="number" id="prdOldPrice" value="59.90" step="0.1" />
+            </label>
+            <label>Moneda
+              <input type="text" id="prdCurrency" value="USD" />
+            </label>
+          </div>
+          <label>3 Beneficios clave (uno por línea)
+            <textarea id="prdBenefits" rows="3" placeholder="alivia la tensión de espalda en minutos&#10;vibra suavemente cuando te encorvas&#10;es invisible debajo de la ropa"></textarea>
+          </label>
+          <label>Dolores que resuelve (uno por línea)
+            <textarea id="prdPains" rows="2" placeholder="el dolor de espalda tras horas frente al ordenador"></textarea>
+          </label>
+          <div class="form-row">
+            <label>Público objetivo
+              <input type="text" id="prdAudience" placeholder="alguien que trabaja sentado todo el día" />
+            </label>
+            <label class="check-inline">
+              <input type="checkbox" id="prdWearable" /> Prenda vestible (Activa Virtual Try-On IDM-VTON)
+            </label>
+          </div>
+          <button class="btn btn-primary" id="btnCreateProduct">Guardar Producto</button>
+        </div>
+
+        <div class="card">
+          <h2>Catálogo de Productos Listos para Vender</h2>
+          <div id="productsList" class="stack"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: ENGINES, KAGGLE CLUSTER & ORACLE VPS -->
+    <section class="tab-panel" id="tab-engines">
+      <div class="grid-2 mb">
+        <div class="card">
+          <h2>🚀 Clúster Multi-GPU Kaggle & Conector de Túnel en Caliente</h2>
+          <p class="muted">Despliega con 1 clic el cuaderno GPU <code>viralforge-openjutsu-gpu</code> (monta automáticamente <code>SAM 2.1</code>, <code>Qwen2-VL</code>, <code>FLUX.1 Schnell</code>, <code>AI Influencer LoRAs</code>, <code>Qwen-Image-Edit 2511</code>, <code>Wan 2.2 Video</code> y <code>MuseTalk</code> desde <code>juanxaviercasa/*</code>) y conecta la URL de Cloudflare Tunnel sin reiniciar.</p>
+          <div class="form-row">
+            <label>Cuenta de Kaggle (detectadas en <code>ABDM/kaggle_accounts</code>)
+              <select id="kgAccountSelect"></select>
+            </label>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="btnPushKaggle">🚀 Subir Cuaderno GPU OpenJutsu a Kaggle</button>
+          </div>
+          <div id="kgPushMsg" class="mt muted"></div>
+
+          <hr class="sep" />
+          <h3>Conectar URL de Túnel GPU en Caliente (Cloudflare / Kaggle / VPS)</h3>
+          <div class="form-row">
+            <input type="text" id="kgTunnelUrl" placeholder="https://xxxx-xxxx.trycloudflare.com" />
+            <button class="btn btn-accent" id="btnConnectTunnel">Conectar Nodo GPU</button>
+          </div>
+          <div id="kgConnectMsg" class="mt muted"></div>
+        </div>
+
+        <div class="card">
+          <div class="row-between">
+            <h2>☁️ Estado de Instancias Oracle Cloud VPS (SSH)</h2>
+            <button class="btn btn-sm" id="btnCheckOracle">Verificar VPS por SSH</button>
+          </div>
+          <p class="muted">Conectado con <code>C:\Users\cabel\Music\claves_ssh\ssh-key-2026-08-30.key</code> hacia tus instancias ARM64 Always Free.</p>
+          <div id="oracleStatusBox" class="stack mt"></div>
+        </div>
+      </div>
+
+      <div class="card mb">
+        <h2>📦 Bóveda de Datasets de IA en Kaggle (<code>juanxaviercasa/*</code>)</h2>
+        <p class="muted">Modelos ya subidos en tu primera cuenta y listos para ser montados en los cuadernos GPU de ViralForge y OpenJutsu.</p>
+        <div id="kaggleDatasetsGrid" class="grid-3 mt"></div>
+      </div>
+
+      <div class="card">
+        <h2>Arquitectura Híbrida de Motores (GPU Local / Kaggle / Nube / CPU Fallback)</h2>
+        <div id="enginesStatusGrid" class="grid-3 mt"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

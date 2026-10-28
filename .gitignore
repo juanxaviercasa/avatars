@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+*.key
+*.pem
+*kaggle.json
+*access_token*
+data/
+!data/.gitkeep
+.pytest_cache/

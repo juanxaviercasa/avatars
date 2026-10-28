@@ -1,0 +1,34 @@
+{
+  "id": "juanxaviercasa/viralforge-openjutsu-gpu",
+  "title": "viralforge-openjutsu-gpu",
+  "code_file": "viralforge-openjutsu-gpu.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "keywords": [
+    "openjutsu",
+    "comfyui",
+    "musetalk",
+    "flux",
+    "sam2"
+  ],
+  "dataset_sources": [
+    "juanxaviercasa/sam2-hiera-small-segmentation",
+    "juanxaviercasa/qwen2-vl-7b-instruct-gguf",
+    "juanxaviercasa/flux1-schnell-pack",
+    "juanxaviercasa/ai-influencer-loras-vault",
+    "juanxaviercasa/ugc-realistic-actors-studio",
+    "juanxaviercasa/musetalk-realtime-avatar",
+    "juanxaviercasa/cosyvoice-tts-models",
+    "juanxaviercasa/qwen3-8b-research",
+    "juanxaviercasa/qwen3-forced-aligner-06b",
+    "juanxaviercasa/wan22-ti2v-5b-video",
+    "juanxaviercasa/qwen-image-edit-2511"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

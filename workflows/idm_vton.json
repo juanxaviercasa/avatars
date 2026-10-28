@@ -1,0 +1,25 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": { "image": "__HUMAN_IMAGE__" }
+  },
+  "2": {
+    "class_type": "LoadImage",
+    "inputs": { "image": "__GARMENT_IMAGE__" }
+  },
+  "3": {
+    "class_type": "IDM_VTON_Pipeline",
+    "inputs": {
+      "human_image": ["1", 0],
+      "garment_image": ["2", 0],
+      "garment_description": "__GARMENT_DESC__",
+      "steps": 30,
+      "cfg": 2.0,
+      "seed": 42
+    }
+  },
+  "4": {
+    "class_type": "SaveImage",
+    "inputs": { "filename_prefix": "viralforge_tryon", "images": ["3", 0] }
+  }
+}
