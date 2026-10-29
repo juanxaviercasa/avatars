@@ -769,12 +769,31 @@ function filterAndRenderPoses() {
         <div class="muted" style="margin:0;font-size:11.5px">${p.system_es} • ${p.angle_es}</div>
         <div class="btn-row" style="margin-top:6px">
           <button class="btn btn-sm btn-primary" onclick="openPoseInspector('${p.group_id}')">🎥 5 Ángulos & Lookbook</button>
-          <a class="btn btn-sm" href="${p.image_url}" target="_blank" rel="noopener">🔍 PNG</a>
+          <button class="btn btn-sm btn-glass" onclick="openPoseLightbox('${p.id}')">🔍 900×1200</button>
         </div>
       </div>
     </div>
   `).join("");
 }
+
+window.openPoseLightbox = function (poseId) {
+  const p = (state.posesAll || []).find((x) => x.id === poseId);
+  if (!p) return;
+  const lb = document.getElementById("poseLightbox");
+  if (!lb) return;
+  document.getElementById("lbTitle").textContent = `${p.pose_num} • ${p.name_es}`;
+  document.getElementById("lbSub").textContent = `${p.system_es} — Ángulo: ${p.angle_es} (ControlNet 900×1200 PNG)`;
+  const img = document.getElementById("lbImage");
+  img.src = p.image_url;
+  img.onerror = () => { img.onerror = null; img.src = p.fallback_image_url; };
+  document.getElementById("lbDownload").href = p.image_url;
+  lb.classList.remove("hidden");
+};
+
+window.closePoseLightbox = function () {
+  const lb = document.getElementById("poseLightbox");
+  if (lb) lb.classList.add("hidden");
+};
 
 window.openPoseInspector = function (groupId) {
   state.activePoseGroup = groupId;
@@ -791,12 +810,10 @@ window.openPoseInspector = function (groupId) {
   const box = document.getElementById("poseInspectorAngles");
   box.innerHTML = group.map((g) => `
     <div class="pose-card">
-      <a href="${g.image_url}" target="_blank" rel="noopener">
-        <img class="pose-img" src="${g.image_url}" onerror="this.onerror=null;this.src='${g.fallback_image_url}'" alt="${g.angle_es}" />
-      </a>
+      <img class="pose-img" src="${g.image_url}" onerror="this.onerror=null;this.src='${g.fallback_image_url}'" onclick="openPoseLightbox('${g.id}')" alt="${g.angle_es}" />
       <div class="pose-body">
         <span class="badge badge-score">${g.angle_es}</span>
-        <div class="muted" style="margin:0;font-size:11px">ControlNet 900×1200 PNG</div>
+        <div class="muted" style="margin:0;font-size:11px">Clic para ampliar 900×1200</div>
       </div>
     </div>
   `).join("");

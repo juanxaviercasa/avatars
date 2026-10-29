@@ -3,44 +3,109 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ViralForge Studio — AI Influencer & Viral Reel Factory</title>
+  <title>ViralForge Studio — AI Influencer, OpenJutsu & ControlNet Reel Factory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
+  <!-- Ambient Studio Lighting & Architectural Grid -->
+  <div class="bg-ambient" aria-hidden="true">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+    <div class="bg-grid"></div>
+  </div>
+
   <header class="topbar">
     <div class="brand">
-      <div class="logo-mark">VF</div>
+      <div class="logo-mark">
+        <span>VF</span>
+        <i class="logo-ring"></i>
+      </div>
       <div>
-        <h1>ViralForge Studio</h1>
-        <p class="subtitle">Orquestador de AI Influencers, Ganchos Virales y Reels Masivos para Shopify</p>
+        <div class="brand-row">
+          <h1>ViralForge Studio</h1>
+          <span class="live-chip"><span class="pulse-dot"></span> SISTEMA ZENIT • PRO</span>
+        </div>
+        <p class="subtitle">Orquestador de AI Influencers, OpenJutsu Video Swap, 1,439 Poses ControlNet &amp; Reels Shopify</p>
       </div>
     </div>
+
     <div class="stats-strip" id="statsStrip">
-      <span class="pill">Influencers: <strong id="statPersonas">-</strong></span>
-      <span class="pill">Productos: <strong id="statProducts">-</strong></span>
-      <span class="pill">Reels: <strong id="statVariants">-</strong></span>
-      <span class="pill pill-accent">Jobs activos: <strong id="statJobs">0</strong></span>
-      <button class="btn btn-sm" id="btnConfigBackend" title="Configurar URL del Backend (Oracle VPS / Local)">🔗 Backend: <span id="lblBackendMode">Auto</span></button>
+      <div class="kpi-pill">
+        <span class="kpi-label">AI Influencers</span>
+        <strong id="statPersonas">-</strong>
+      </div>
+      <div class="kpi-pill">
+        <span class="kpi-label">Productos</span>
+        <strong id="statProducts">-</strong>
+      </div>
+      <div class="kpi-pill">
+        <span class="kpi-label">Reels 9:16</span>
+        <strong id="statVariants">-</strong>
+      </div>
+      <div class="kpi-pill kpi-accent">
+        <span class="kpi-label">Cola Render</span>
+        <strong id="statJobs">0</strong>
+      </div>
+      <button class="btn btn-sm btn-glass" id="btnConfigBackend" title="Configurar URL del Backend (Oracle VPS / Local)">
+        🔗 <span id="lblBackendMode">Auto</span>
+      </button>
     </div>
   </header>
 
-  <nav class="tabs">
-    <button class="tab active" data-tab="studio">1. Laboratorio & Render</button>
-    <button class="tab" data-tab="campaigns">2. Fábrica Masiva (Matriz A/B)</button>
-    <button class="tab" data-tab="reels">3. Galería de Reels & Analítica Bandit</button>
-    <button class="tab" data-tab="personas">4. AI Influencers</button>
-    <button class="tab" data-tab="products">5. Catálogo & Shopify</button>
-    <button class="tab" data-tab="poses">6. Director de Poses (1,439 ControlNet)</button>
-    <button class="tab" data-tab="engines">7. Clúster Kaggle, OpenJutsu & Oracle VPS</button>
+  <!-- Hero Studio Strip -->
+  <section class="hero-strip">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow">ARQUITECTURA MULTIMODAL DE CONVERSIÓN E-COMMERCE</span>
+        <h2>Produce Reels Virales 9:16 con Identidad Fija, ControlNet Multi-Ángulo y Clonación de Vídeo</h2>
+      </div>
+      <div class="hero-features">
+        <button class="feature-chip" onclick="document.querySelector('[data-tab=studio]').click()">
+          <span class="f-icon">⚡</span>
+          <div><strong>OpenJutsu V2V</strong><small>Swap en cualquier vídeo</small></div>
+        </button>
+        <button class="feature-chip" onclick="document.querySelector('[data-tab=poses]').click()">
+          <span class="f-icon">🎯</span>
+          <div><strong>1,439 Poses × 5 Ángulos</strong><small>ControlNet &amp; Lookbooks</small></div>
+        </button>
+        <button class="feature-chip" onclick="document.querySelector('[data-tab=reels]').click()">
+          <span class="f-icon">🧠</span>
+          <div><strong>Bandit Bayesiano</strong><small>22 Ganchos × 8 Marcos</small></div>
+        </button>
+        <button class="feature-chip" onclick="document.querySelector('[data-tab=engines]').click()">
+          <span class="f-icon">🚀</span>
+          <div><strong>Clúster Dual-T4 &amp; VPS</strong><small>34 Datasets Kaggle + Oracle</small></div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <nav class="tabs-wrap">
+    <div class="tabs">
+      <button class="tab active" data-tab="studio"><span class="tab-num">01</span> Laboratorio &amp; OpenJutsu</button>
+      <button class="tab" data-tab="campaigns"><span class="tab-num">02</span> Fábrica Masiva A/B</button>
+      <button class="tab" data-tab="reels"><span class="tab-num">03</span> Galería Reels &amp; Bandit</button>
+      <button class="tab" data-tab="personas"><span class="tab-num">04</span> AI Influencers</button>
+      <button class="tab" data-tab="products"><span class="tab-num">05</span> Catálogo &amp; Shopify</button>
+      <button class="tab" data-tab="poses"><span class="tab-num">06</span> Director de Poses (1,439)</button>
+      <button class="tab" data-tab="engines"><span class="tab-num">07</span> Clúster Kaggle &amp; VPS</button>
+    </div>
   </nav>
 
   <main class="container">
     <!-- TAB 1: STUDIO -->
     <section class="tab-panel active" id="tab-studio">
       <div class="grid-2">
-        <div class="card">
-          <h2>Generador de Guiones con Estructura Ganadora</h2>
-          <p class="muted">Combina el ADN de tu AI Influencer + tu producto + 22 fórmulas de gancho psicológico (0-3s) y 8 estructuras de conversión.</p>
+        <div class="card card-glow">
+          <div class="card-head">
+            <span class="section-tag">MOTOR PSICOLÓGICO DE RETENCIÓN</span>
+            <h2>Generador de Guiones con Estructura Ganadora</h2>
+            <p class="muted">Combina el ADN de tu AI Influencer + tu producto + 22 fórmulas de gancho psicológico (0-3s) y 8 estructuras de conversión.</p>
+          </div>
           <div class="form-row">
             <label>AI Influencer
               <select id="stPersona"></select>
@@ -69,29 +134,35 @@
             </label>
           </div>
           <div class="btn-row">
-            <button class="btn btn-primary" id="btnGenScripts">Generar Guiones Ganadores</button>
+            <button class="btn btn-primary" id="btnGenScripts">✨ Generar Guiones Ganadores</button>
           </div>
 
           <hr class="sep" />
           <h3>Probador de Gancho en Tiempo Real (Hook Scorer 0-100)</h3>
           <div class="form-row">
             <input type="text" id="hookTestInput" placeholder="Escribe un gancho de 3 segundos... ej: Para de hacer scroll si sufres con la piel apagada." />
-            <button class="btn" id="btnScoreHook">Evaluar Gancho</button>
+            <button class="btn btn-glass" id="btnScoreHook" style="max-width:170px">Evaluar Gancho</button>
           </div>
           <div id="hookScoreResult" class="score-box hidden"></div>
         </div>
 
         <div class="card">
-          <h2>Variantes de Guion Generadas</h2>
+          <div class="card-head">
+            <span class="section-tag">STORYBOARD MULTICÁMARA</span>
+            <h2>Variantes de Guion Generadas</h2>
+          </div>
           <div id="scriptsList" class="stack">
             <p class="muted">Haz clic en "Generar Guiones Ganadores" para crear variantes listas para renderizar en vídeo 9:16.</p>
           </div>
         </div>
       </div>
 
-      <div class="card mt">
-        <h2>⚡ OpenJutsu: Clonador de Vídeos Virales ("Swap Yourself / AI Influencer into Any Video")</h2>
-        <p class="muted">Inspirado en <code>d3voz/openjutsu</code>. Sube cualquier vídeo viral de referencia (o deja el campo vacío para usar el vídeo viral de demostración integrado) e inyecta a tu AI Influencer + tu producto de Shopify con seguimiento de movimiento, locución neural y subtítulos dinámicos.</p>
+      <div class="card card-accent mt">
+        <div class="card-head">
+          <span class="section-tag">VIDEO-TO-VIDEO CHARACTER &amp; GARMENT SWAP</span>
+          <h2>⚡ OpenJutsu: Clonador de Vídeos Virales ("Swap Yourself / AI Influencer into Any Video")</h2>
+          <p class="muted">Basado en <code>d3voz/openjutsu</code> (<code>SAM 2.1</code> + <code>Qwen2-VL</code> + <code>Wan 2.2</code>). Sube cualquier vídeo viral de referencia (o deja el campo vacío para usar el vídeo viral de demostración integrado) e inyecta a tu AI Influencer + tu producto de Shopify con seguimiento de movimiento, locución neural y subtítulos dinámicos.</p>
+        </div>
         <div class="form-row">
           <label>Vídeo de Referencia (MP4 opcional — si lo dejas vacío usa el vídeo viral de prueba)
             <input type="file" id="ojVideoFile" accept="video/*" />
@@ -108,7 +179,7 @@
           <label>Guion de Voz para el Vídeo (déjalo vacío para autogenerar un guion ganador del producto seleccionado arriba)
             <input type="text" id="ojScriptText" placeholder="Ej: Nadie te dice esto, pero este producto cambió mi rutina desde el primer día. Enlace en mi perfil." />
           </label>
-          <label class="check-inline" style="max-width:280px">
+          <label class="check-inline" style="max-width:290px">
             <input type="checkbox" id="ojKeepAudio" /> Conservar audio original del vídeo
           </label>
         </div>
@@ -119,19 +190,25 @@
 
       <div class="card mt">
         <div class="row-between">
-          <h2>Cola de Renderizado en Vivo</h2>
-          <button class="btn btn-sm" id="btnRefreshJobs">Actualizar</button>
+          <div>
+            <span class="section-tag">PIPELINE DE CODIFICACIÓN 1080×1920@30FPS</span>
+            <h2>Cola de Renderizado en Vivo</h2>
+          </div>
+          <button class="btn btn-sm btn-glass" id="btnRefreshJobs">↻ Actualizar Cola</button>
         </div>
-        <div id="jobsLiveList" class="stack"></div>
+        <div id="jobsLiveList" class="stack mt"></div>
       </div>
     </section>
 
     <!-- TAB 2: CAMPAIGNS -->
     <section class="tab-panel" id="tab-campaigns">
       <div class="grid-2">
-        <div class="card">
-          <h2>Fábrica Masiva de Reels (Matriz A/B)</h2>
-          <p class="muted">Cruza múltiples productos × múltiples AI Influencers × N ángulos. El motor Bayesiano elige los ganchos con mayor probabilidad de conversión y renderiza todos los reels en segundo plano.</p>
+        <div class="card card-glow">
+          <div class="card-head">
+            <span class="section-tag">PRODUCCIÓN AUTOMATIZADA EN LOTE</span>
+            <h2>Fábrica Masiva de Reels (Matriz A/B)</h2>
+            <p class="muted">Cruza múltiples productos × múltiples AI Influencers × N ángulos. El motor Bayesiano elige los ganchos con mayor probabilidad de conversión y renderiza todos los reels en segundo plano.</p>
+          </div>
           <label>Nombre de la Campaña
             <input type="text" id="cmpName" value="Campaña Viral Q4" />
           </label>
@@ -152,17 +229,20 @@
             <label>Duración objetivo (s)
               <input type="number" id="cmpSeconds" value="24" min="10" max="75" />
             </label>
-            <label>Ratio Exploración vs Explotación (0 = explota ganadores, 1 = explora nuevos)
+            <label>Ratio Exploración vs Explotación (0 = explota, 1 = explora)
               <input type="number" id="cmpExplore" value="0.35" step="0.05" min="0" max="1" />
             </label>
           </div>
           <div class="btn-row">
-            <button class="btn btn-primary" id="btnLaunchCampaign">Lanzar Producción Masiva de Reels</button>
+            <button class="btn btn-primary" id="btnLaunchCampaign">🚀 Lanzar Producción Masiva de Reels</button>
           </div>
         </div>
 
         <div class="card">
-          <h2>Biblioteca de 22 Fórmulas de Gancho & 8 Estructuras</h2>
+          <div class="card-head">
+            <span class="section-tag">INGENIERÍA DE ATENCIÓN (0-3 SEGUNDOS)</span>
+            <h2>Biblioteca de 22 Fórmulas de Gancho &amp; 8 Estructuras</h2>
+          </div>
           <div id="libraryBrowser" class="stack-scroll"></div>
         </div>
       </div>
@@ -170,15 +250,16 @@
 
     <!-- TAB 3: REELS & BANDIT -->
     <section class="tab-panel" id="tab-reels">
-      <div class="card mb">
+      <div class="card card-glow mb">
         <div class="row-between">
           <div>
+            <span class="section-tag">OPTIMIZACIÓN DE CONVERSIÓN EN TIEMPO REAL</span>
             <h2>Cerebro Bayesiano (Thompson Sampling Bandit)</h2>
             <p class="muted">Aprende automáticamente qué ganchos, estructuras e influencers generan más retención a 3s, clics y ventas.</p>
           </div>
           <div class="btn-row">
-            <button class="btn btn-accent" id="btnSimulateBandit">Simular Métricas de TikTok/Reels</button>
-            <button class="btn btn-sm" id="btnRefreshBandit">Actualizar Ranking</button>
+            <button class="btn btn-accent" id="btnSimulateBandit">📈 Simular Métricas de TikTok/Reels</button>
+            <button class="btn btn-sm btn-glass" id="btnRefreshBandit">↻ Actualizar Ranking</button>
           </div>
         </div>
         <div id="banditBoards" class="grid-3 mt"></div>
@@ -186,8 +267,11 @@
 
       <div class="card">
         <div class="row-between">
-          <h2>Galería de Reels Generados (9:16 MP4)</h2>
-          <button class="btn btn-sm" id="btnRefreshVariants">Actualizar Galería</button>
+          <div>
+            <span class="section-tag">MONITOR DE SALIDA 9:16 H.264/AAC</span>
+            <h2>Galería de Reels Generados (9:16 MP4)</h2>
+          </div>
+          <button class="btn btn-sm btn-glass" id="btnRefreshVariants">↻ Actualizar Galería</button>
         </div>
         <div id="variantsGrid" class="reels-grid mt"></div>
       </div>
@@ -196,8 +280,11 @@
     <!-- TAB 4: PERSONAS -->
     <section class="tab-panel" id="tab-personas">
       <div class="grid-2">
-        <div class="card">
-          <h2>Crear / Editar AI Influencer</h2>
+        <div class="card card-glow">
+          <div class="card-head">
+            <span class="section-tag">ADN DE IDENTIDAD Y VOZ NEURAL</span>
+            <h2>Crear / Editar AI Influencer</h2>
+          </div>
           <div class="form-row">
             <label>Nombre
               <input type="text" id="perName" placeholder="Ej: Camila Soler" />
@@ -241,11 +328,14 @@
               <input type="color" id="perAccent" value="#FFE45E" />
             </label>
           </div>
-          <button class="btn btn-primary" id="btnCreatePersona">Guardar AI Influencer</button>
+          <button class="btn btn-primary" id="btnCreatePersona">✨ Guardar AI Influencer</button>
         </div>
 
         <div class="card">
-          <h2>Plantilla de AI Influencers</h2>
+          <div class="card-head">
+            <span class="section-tag">TALENTO VIRTUAL ACTIVO</span>
+            <h2>Plantilla de AI Influencers</h2>
+          </div>
           <div id="personasList" class="stack"></div>
         </div>
       </div>
@@ -254,14 +344,17 @@
     <!-- TAB 5: PRODUCTS & SHOPIFY -->
     <section class="tab-panel" id="tab-products">
       <div class="grid-2">
-        <div class="card">
-          <h2>Importador Directo de Tiendas Shopify</h2>
-          <p class="muted">Introduce el dominio de cualquier tienda Shopify o la URL de un producto. Descarga fotos, precios, descuentos y beneficios automáticamente sin requerir API token en tiendas públicas.</p>
+        <div class="card card-glow">
+          <div class="card-head">
+            <span class="section-tag">SINCRONIZACIÓN E-COMMERCE</span>
+            <h2>Importador Directo de Tiendas Shopify</h2>
+            <p class="muted">Introduce el dominio de cualquier tienda Shopify o la URL de un producto. Descarga fotos, precios, descuentos y beneficios automáticamente sin requerir API token en tiendas públicas.</p>
+          </div>
           <div class="form-row">
             <input type="text" id="shopDomain" placeholder="Ej: gymshark.com o https://tienda.com/products/mi-producto" />
             <input type="number" id="shopLimit" value="5" min="1" max="30" style="max-width:110px" />
           </div>
-          <button class="btn btn-primary" id="btnImportShopify">Importar de Shopify</button>
+          <button class="btn btn-primary" id="btnImportShopify">🛍️ Importar de Shopify</button>
           <div id="shopifyMsg" class="mt muted"></div>
 
           <hr class="sep" />
@@ -303,66 +396,23 @@
         </div>
 
         <div class="card">
-          <h2>Catálogo de Productos Listos para Vender</h2>
+          <div class="card-head">
+            <span class="section-tag">INVENTARIO DE CAMPAÑA</span>
+            <h2>Catálogo de Productos Listos para Vender</h2>
+          </div>
           <div id="productsList" class="stack"></div>
         </div>
       </div>
     </section>
 
-    <!-- TAB 6: ENGINES, KAGGLE CLUSTER & ORACLE VPS -->
-    <section class="tab-panel" id="tab-engines">
-      <div class="grid-2 mb">
-        <div class="card">
-          <h2>🚀 Clúster Multi-GPU Kaggle & Conector de Túnel en Caliente</h2>
-          <p class="muted">Despliega con 1 clic el cuaderno GPU <code>viralforge-openjutsu-gpu</code> (monta automáticamente <code>SAM 2.1</code>, <code>Qwen2-VL</code>, <code>FLUX.1 Schnell</code>, <code>AI Influencer LoRAs</code>, <code>Qwen-Image-Edit 2511</code>, <code>Wan 2.2 Video</code> y <code>MuseTalk</code> desde <code>juanxaviercasa/*</code>) y conecta la URL de Cloudflare Tunnel sin reiniciar.</p>
-          <div class="form-row">
-            <label>Cuenta de Kaggle (detectadas en <code>ABDM/kaggle_accounts</code>)
-              <select id="kgAccountSelect"></select>
-            </label>
-          </div>
-          <div class="btn-row">
-            <button class="btn btn-primary" id="btnPushKaggle">🚀 Subir Cuaderno GPU OpenJutsu a Kaggle</button>
-          </div>
-          <div id="kgPushMsg" class="mt muted"></div>
-
-          <hr class="sep" />
-          <h3>Conectar URL de Túnel GPU en Caliente (Cloudflare / Kaggle / VPS)</h3>
-          <div class="form-row">
-            <input type="text" id="kgTunnelUrl" placeholder="https://xxxx-xxxx.trycloudflare.com" />
-            <button class="btn btn-accent" id="btnConnectTunnel">Conectar Nodo GPU</button>
-          </div>
-          <div id="kgConnectMsg" class="mt muted"></div>
-        </div>
-
-        <div class="card">
-          <div class="row-between">
-            <h2>☁️ Estado de Instancias Oracle Cloud VPS (SSH)</h2>
-            <button class="btn btn-sm" id="btnCheckOracle">Verificar VPS por SSH</button>
-          </div>
-          <p class="muted">Conectado con <code>C:\Users\cabel\Music\claves_ssh\ssh-key-2026-08-30.key</code> hacia tus instancias ARM64 Always Free.</p>
-          <div id="oracleStatusBox" class="stack mt"></div>
-        </div>
-      </div>
-
-      <div class="card mb">
-        <h2>📦 Bóveda de Datasets de IA en Kaggle (<code>juanxaviercasa/*</code>)</h2>
-        <p class="muted">Modelos ya subidos en tu primera cuenta y listos para ser montados en los cuadernos GPU de ViralForge y OpenJutsu.</p>
-        <div id="kaggleDatasetsGrid" class="grid-3 mt"></div>
-      </div>
-
-      <div class="card">
-        <h2>Arquitectura Híbrida de Motores (GPU Local / Kaggle / Nube / CPU Fallback)</h2>
-        <div id="enginesStatusGrid" class="grid-3 mt"></div>
-      </div>
-    </section>
-
     <!-- TAB POSES: 1,439 POSE CONTROLNET DIRECTOR -->
     <section class="tab-panel" id="tab-poses">
-      <div class="card mb">
+      <div class="card card-glow mb">
         <div class="row-between">
           <div>
-            <h2>🎯 Director de Poses ControlNet & Lookbook Multi-Ángulo (1,439 Poses × 5 Cámaras)</h2>
-            <p class="muted" style="margin-bottom:0">Base de datos esquemática de <b>288 grupos de poses</b> vistos desde <b>5 ángulos de cámara</b> (Frente, Diagonal 3/4, Perfil, Picado Selfie y Contrapicado Hero) en <code>900×1200 PNG</code>, conectada con <code>DWPose</code> y <code>FLUX.1-ControlNet-Union-Pro-2.0</code>.</p>
+            <span class="section-tag">CONTROLNET OPENPOSE / DWPOSE • FLUX.1 UNION PRO 2.0</span>
+            <h2>🎯 Director de Poses ControlNet &amp; Lookbook Multi-Ángulo (1,439 Poses × 5 Cámaras)</h2>
+            <p class="muted" style="margin-bottom:0">Base de datos esquemática de <b>288 grupos de poses</b> vistos desde <b>5 ángulos de cámara</b> (Frente, Diagonal 3/4, Perfil, Picado Selfie y Contrapicado Hero) en <code>900×1200 PNG</code>.</p>
           </div>
           <span class="badge badge-score" id="poseCountBadge">1,439 poses</span>
         </div>
@@ -372,8 +422,8 @@
             <select id="poseSystem">
               <option value="">Todos los sistemas (1,439 poses)</option>
               <option value="upper">Medio Cuerpo · Primer Plano UGC (400)</option>
-              <option value="full_std">Cuerpo Completo · Moda & Lookbook (365)</option>
-              <option value="full_sexy">Cuerpo Completo · Editorial & Glamour (399)</option>
+              <option value="full_std">Cuerpo Completo · Moda &amp; Lookbook (365)</option>
+              <option value="full_sexy">Cuerpo Completo · Editorial &amp; Glamour (399)</option>
               <option value="couple">Dúo · Interacción Doble (275)</option>
             </select>
           </label>
@@ -405,13 +455,14 @@
       </div>
 
       <!-- INSPECTOR DE 5 ÁNGULOS Y RENDERIZADOR LOOKBOOK -->
-      <div class="card mb hidden" id="poseInspectorCard" style="border-color:var(--accent)">
+      <div class="card card-accent mb hidden" id="poseInspectorCard">
         <div class="row-between">
           <div>
+            <span class="section-tag">SECUENCIA SINCRONIZADA DE 5 CÁMARAS</span>
             <h3 id="poseInspTitle">Inspector Multi-Ángulo (5 Cámaras)</h3>
             <p class="muted" id="poseInspSub" style="margin:2px 0 0">Selecciona tu Influencer y Producto de Shopify para renderizar un Reel 9:16 recorriendo los 5 ángulos de esta pose.</p>
           </div>
-          <button class="btn btn-sm" id="btnClosePoseInspector">✕ Cerrar Inspector</button>
+          <button class="btn btn-sm btn-glass" id="btnClosePoseInspector">✕ Cerrar Inspector</button>
         </div>
         <div id="poseInspectorAngles" class="grid-5 mt"></div>
         <div class="form-row mt">
@@ -433,17 +484,96 @@
 
       <div class="card">
         <div class="row-between mb">
-          <h3>Galería de Referencia ControlNet / OpenPose</h3>
+          <div>
+            <span class="section-tag">CATÁLOGO INTERACTIVO 900×1200 PNG</span>
+            <h3>Galería de Referencia ControlNet / OpenPose</h3>
+          </div>
           <div class="btn-row">
-            <button class="btn btn-sm" id="btnPosePrev">← Anteriores</button>
+            <button class="btn btn-sm btn-glass" id="btnPosePrev">← Anteriores</button>
             <span class="pill" id="posePageInfo">Página 1</span>
-            <button class="btn btn-sm" id="btnPoseNext">Siguientes →</button>
+            <button class="btn btn-sm btn-glass" id="btnPoseNext">Siguientes →</button>
           </div>
         </div>
         <div id="posesGrid" class="grid-4"></div>
       </div>
     </section>
+
+    <!-- TAB 7: ENGINES, KAGGLE CLUSTER & ORACLE VPS -->
+    <section class="tab-panel" id="tab-engines">
+      <div class="grid-2 mb">
+        <div class="card card-glow">
+          <div class="card-head">
+            <span class="section-tag">ORQUESTACIÓN DE 11 CUENTAS × 2 GPUS TESLA T4</span>
+            <h2>🚀 Clúster Multi-GPU Kaggle &amp; Conector de Túnel en Caliente</h2>
+            <p class="muted">Despliega con 1 clic el cuaderno GPU <code>viralforge-openjutsu-gpu</code> (monta automáticamente <code>SAM 2.1</code>, <code>Qwen2-VL</code>, <code>FLUX.1 Schnell</code>, <code>ControlNet Union Pro 2</code>, <code>DWPose</code>, <code>AI Influencer LoRAs</code>, <code>Qwen-Image-Edit 2511</code>, <code>Wan 2.2 Video</code> y <code>MuseTalk</code> desde <code>juanxaviercasa/*</code>) y conecta la URL de Cloudflare Tunnel sin reiniciar.</p>
+          </div>
+          <div class="form-row">
+            <label>Cuenta de Kaggle (detectadas en <code>ABDM/kaggle_accounts</code>)
+              <select id="kgAccountSelect"></select>
+            </label>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="btnPushKaggle">🚀 Subir Cuaderno GPU OpenJutsu a Kaggle</button>
+          </div>
+          <div id="kgPushMsg" class="mt muted"></div>
+
+          <hr class="sep" />
+          <h3>Conectar URL de Túnel GPU en Caliente (Cloudflare / Kaggle / VPS)</h3>
+          <div class="form-row">
+            <input type="text" id="kgTunnelUrl" placeholder="https://xxxx-xxxx.trycloudflare.com" />
+            <button class="btn btn-accent" id="btnConnectTunnel" style="max-width:210px">Conectar Nodo GPU</button>
+          </div>
+          <div id="kgConnectMsg" class="mt muted"></div>
+        </div>
+
+        <div class="card">
+          <div class="row-between">
+            <div>
+              <span class="section-tag">INFRAESTRUCTURA CLOUD 24/7</span>
+              <h2>☁️ Estado de Instancias Oracle Cloud VPS (SSH)</h2>
+            </div>
+            <button class="btn btn-sm btn-glass" id="btnCheckOracle">↻ Verificar VPS</button>
+          </div>
+          <p class="muted">Nodo principal <code>forjavia-pilot</code> (<code>147.15.95.128</code>) ejecutando <code>viralforge.service</code> y <code>viralforge-tunnel.service</code> en arquitectura ARM64.</p>
+          <div id="oracleStatusBox" class="stack mt"></div>
+        </div>
+      </div>
+
+      <div class="card mb">
+        <div class="card-head">
+          <span class="section-tag">34 DATASETS DE IA PRECARGADOS</span>
+          <h2>📦 Bóveda de Datasets de IA en Kaggle (<code>juanxaviercasa/*</code>)</h2>
+          <p class="muted">Modelos ya subidos en tu primera cuenta y listos para ser montados en los cuadernos GPU de ViralForge, ControlNet y OpenJutsu.</p>
+        </div>
+        <div id="kaggleDatasetsGrid" class="grid-3 mt"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="section-tag">DIAGNÓSTICO DE MOTORES</span>
+          <h2>Arquitectura Híbrida de Motores (GPU Local / Kaggle / Nube / CPU Fallback)</h2>
+        </div>
+        <div id="enginesStatusGrid" class="grid-3 mt"></div>
+      </div>
+    </section>
   </main>
+
+  <!-- Modal Lightbox de Alta Resolución (900x1200) -->
+  <div id="poseLightbox" class="lightbox hidden" onclick="closePoseLightbox(event)">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+      <div class="row-between mb">
+        <div>
+          <strong id="lbTitle">Lámina ControlNet 900×1200</strong>
+          <div class="muted" id="lbSub" style="margin:0"></div>
+        </div>
+        <div class="btn-row" style="margin:0">
+          <a id="lbDownload" class="btn btn-sm btn-primary" href="#" target="_blank" rel="noopener">⬇️ Abrir PNG Original</a>
+          <button class="btn btn-sm btn-glass" onclick="closePoseLightbox()">✕ Cerrar</button>
+        </div>
+      </div>
+      <img id="lbImage" src="" alt="Pose 900x1200" />
+    </div>
+  </div>
 
   <script src="/static/app.js"></script>
 </body>
