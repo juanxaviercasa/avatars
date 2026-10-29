@@ -30,7 +30,8 @@
     <button class="tab" data-tab="reels">3. Galería de Reels & Analítica Bandit</button>
     <button class="tab" data-tab="personas">4. AI Influencers</button>
     <button class="tab" data-tab="products">5. Catálogo & Shopify</button>
-    <button class="tab" data-tab="engines">6. Clúster Kaggle, OpenJutsu & Oracle VPS</button>
+    <button class="tab" data-tab="poses">6. Director de Poses (1,439 ControlNet)</button>
+    <button class="tab" data-tab="engines">7. Clúster Kaggle, OpenJutsu & Oracle VPS</button>
   </nav>
 
   <main class="container">
@@ -352,6 +353,94 @@
       <div class="card">
         <h2>Arquitectura Híbrida de Motores (GPU Local / Kaggle / Nube / CPU Fallback)</h2>
         <div id="enginesStatusGrid" class="grid-3 mt"></div>
+      </div>
+    </section>
+
+    <!-- TAB POSES: 1,439 POSE CONTROLNET DIRECTOR -->
+    <section class="tab-panel" id="tab-poses">
+      <div class="card mb">
+        <div class="row-between">
+          <div>
+            <h2>🎯 Director de Poses ControlNet & Lookbook Multi-Ángulo (1,439 Poses × 5 Cámaras)</h2>
+            <p class="muted" style="margin-bottom:0">Base de datos esquemática de <b>288 grupos de poses</b> vistos desde <b>5 ángulos de cámara</b> (Frente, Diagonal 3/4, Perfil, Picado Selfie y Contrapicado Hero) en <code>900×1200 PNG</code>, conectada con <code>DWPose</code> y <code>FLUX.1-ControlNet-Union-Pro-2.0</code>.</p>
+          </div>
+          <span class="badge badge-score" id="poseCountBadge">1,439 poses</span>
+        </div>
+
+        <div class="form-row mt">
+          <label>Sistema Corporal
+            <select id="poseSystem">
+              <option value="">Todos los sistemas (1,439 poses)</option>
+              <option value="upper">Medio Cuerpo · Primer Plano UGC (400)</option>
+              <option value="full_std">Cuerpo Completo · Moda & Lookbook (365)</option>
+              <option value="full_sexy">Cuerpo Completo · Editorial & Glamour (399)</option>
+              <option value="couple">Dúo · Interacción Doble (275)</option>
+            </select>
+          </label>
+          <label>Ángulo de Cámara
+            <select id="poseAngle">
+              <option value="front">Frente — Contacto Directo (Vista por Grupo)</option>
+              <option value="">Todos los 5 ángulos desglosados</option>
+              <option value="diag">Diagonal 3/4 — Lookbook Moda</option>
+              <option value="side">Perfil Lateral — Silueta</option>
+              <option value="high">Picado — Selfie Superior</option>
+              <option value="low">Contrapicado — Hero Shot</option>
+            </select>
+          </label>
+          <label>Etapa Recomendada del Reel
+            <select id="poseBeat">
+              <option value="">Todas las etapas</option>
+              <option value="hook">Gancho 0-3s (Hook / Pattern Interrupt)</option>
+              <option value="problem">Problema / Reacción</option>
+              <option value="solution">Solución / Presentación</option>
+              <option value="demo">Demostración / Lookbook Try-On</option>
+              <option value="cta">Llamado a la Acción (CTA)</option>
+              <option value="hero">Plano Heroico</option>
+            </select>
+          </label>
+          <label>Buscar Pose (ej. corazón, sentada, P001, mirada...)
+            <input type="text" id="poseQuery" placeholder="Ej: corazón, señalando, cintura, P010..." />
+          </label>
+        </div>
+      </div>
+
+      <!-- INSPECTOR DE 5 ÁNGULOS Y RENDERIZADOR LOOKBOOK -->
+      <div class="card mb hidden" id="poseInspectorCard" style="border-color:var(--accent)">
+        <div class="row-between">
+          <div>
+            <h3 id="poseInspTitle">Inspector Multi-Ángulo (5 Cámaras)</h3>
+            <p class="muted" id="poseInspSub" style="margin:2px 0 0">Selecciona tu Influencer y Producto de Shopify para renderizar un Reel 9:16 recorriendo los 5 ángulos de esta pose.</p>
+          </div>
+          <button class="btn btn-sm" id="btnClosePoseInspector">✕ Cerrar Inspector</button>
+        </div>
+        <div id="poseInspectorAngles" class="grid-5 mt"></div>
+        <div class="form-row mt">
+          <label>AI Influencer para el Lookbook
+            <select id="posePersonaSel"></select>
+          </label>
+          <label>Producto de Shopify
+            <select id="poseProductSel"></select>
+          </label>
+          <label>Locución personalizada (opcional)
+            <input type="text" id="poseCustomScript" placeholder="Dejar vacío para locución comercial automática de 5 ángulos..." />
+          </label>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="btnRenderPoseLookbook">🎬 Renderizar Reel Lookbook 5 Ángulos (1080×1920 MP4)</button>
+          <span class="muted" id="poseRenderMsg" style="margin:0"></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row-between mb">
+          <h3>Galería de Referencia ControlNet / OpenPose</h3>
+          <div class="btn-row">
+            <button class="btn btn-sm" id="btnPosePrev">← Anteriores</button>
+            <span class="pill" id="posePageInfo">Página 1</span>
+            <button class="btn btn-sm" id="btnPoseNext">Siguientes →</button>
+          </div>
+        </div>
+        <div id="posesGrid" class="grid-4"></div>
       </div>
     </section>
   </main>

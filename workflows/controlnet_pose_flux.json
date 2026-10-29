@@ -1,0 +1,73 @@
+{
+  "_meta": {
+    "title": "ViralForge Pose Director — DWPose + FLUX.1 ControlNet Union Pro 2.0 + PuLID Identity",
+    "source_gallery": "anhao/ai-pose-gallery-zh (1,439 Poses x 5 Angles)",
+    "kaggle_datasets": [
+      "juanxaviercasa/dwpose-controlnet-annotators",
+      "juanxaviercasa/flux1-controlnet-union-pro2",
+      "juanxaviercasa/flux1-schnell-pack",
+      "juanxaviercasa/ai-influencer-loras-vault"
+    ]
+  },
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "pose_reference_900x1200.png"
+    }
+  },
+  "2": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "influencer_face_ref.png"
+    }
+  },
+  "3": {
+    "class_type": "DWPreprocessor",
+    "inputs": {
+      "image": ["1", 0],
+      "detect_hand": "enable",
+      "detect_body": "enable",
+      "detect_face": "enable",
+      "resolution": 1024,
+      "bbox_detector": "yolox_l.onnx",
+      "pose_estimator": "dw-ll_ucoco_384.onnx"
+    }
+  },
+  "4": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "FLUX.1-dev-ControlNet-Union-Pro-2.0.safetensors"
+    }
+  },
+  "5": {
+    "class_type": "ApplyFluxControlNetUnion",
+    "inputs": {
+      "control_net": ["4", 0],
+      "image": ["3", 0],
+      "control_mode": "pose",
+      "strength": 0.88,
+      "start_percent": 0.0,
+      "end_percent": 0.85
+    }
+  },
+  "6": {
+    "class_type": "FluxPulidSampler",
+    "inputs": {
+      "unet_name": "flux1-schnell-fp8.safetensors",
+      "face_image": ["2", 0],
+      "controlnet_cond": ["5", 0],
+      "prompt": "Photorealistic studio commercial lookbook shot, AI influencer wearing product, 8k UHD, natural skin texture",
+      "width": 1080,
+      "height": 1920,
+      "steps": 6,
+      "cfg": 1.5
+    }
+  },
+  "7": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": ["6", 0],
+      "filename_prefix": "viralforge_pose_render"
+    }
+  }
+}

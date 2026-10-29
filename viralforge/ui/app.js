@@ -83,6 +83,7 @@ async function loadAll() {
   renderEngines(status.engines);
   renderKaggleCatalog(kg);
   checkOracleStatus();
+  loadPosesCatalog();
 }
 
 function renderStats(status) {
@@ -96,8 +97,14 @@ function renderStats(status) {
 function renderSelectors() {
   const perSel = document.getElementById("stPersona");
   const prdSel = document.getElementById("stProduct");
-  perSel.innerHTML = state.personas.map((p) => `<option value="${p.id}">${p.name} (${p.niche})</option>`).join("");
-  prdSel.innerHTML = state.products.map((p) => `<option value="${p.id}">${p.title} ($${p.price ?? "-"})</option>`).join("");
+  const perOpts = state.personas.map((p) => `<option value="${p.id}">${p.name} (${p.niche})</option>`).join("");
+  const prdOpts = state.products.map((p) => `<option value="${p.id}">${p.title} ($${p.price ?? "-"})</option>`).join("");
+  perSel.innerHTML = perOpts;
+  prdSel.innerHTML = prdOpts;
+  const posePer = document.getElementById("posePersonaSel");
+  const posePrd = document.getElementById("poseProductSel");
+  if (posePer) posePer.innerHTML = perOpts;
+  if (posePrd) posePrd.innerHTML = prdOpts;
 
   const hookSel = document.getElementById("stHook");
   hookSel.innerHTML = `<option value="">Automático (Bandit Thompson Sampling)</option>` +
@@ -637,4 +644,161 @@ document.addEventListener("DOMContentLoaded", () => {
     const running = state.jobs.some((j) => j.status === "queued" || j.status === "running");
     if (running) await refreshJobsAndVariants();
   }, 2500);
+
+  // Director de Poses (1,439 ControlNet)
+  ["poseSystem", "poseAngle", "poseBeat"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("change", () => { state.posePage = 0; filterAndRenderPoses(); });
+  });
+  const pq = document.getElementById("poseQuery");
+  if (pq) pq.addEventListener("input", () => { state.posePage = 0; filterAndRenderPoses(); });
+
+  const bpPrev = document.getElementById("btnPosePrev");
+  const bpNext = document.getElementById("btnPoseNext");
+  if (bpPrev) bpPrev.addEventListener("click", () => {
+    if ((state.posePage || 0) > 0) { state.posePage--; filterAndRenderPoses(); }
+  });
+  if (bpNext) bpNext.addEventListener("click", () => {
+    state.posePage = (state.posePage || 0) + 1;
+    filterAndRenderPoses();
+  });
+
+  const btnCloseInsp = document.getElementById("btnClosePoseInspector");
+  if (btnCloseInsp) btnCloseInsp.addEventListener("click", () => {
+    document.getElementById("poseInspectorCard").classList.add("hidden");
+  });
+
+  const btnRenderPose = document.getElementById("btnRenderPoseLookbook");
+  if (btnRenderPose) btnRenderPose.addEventListener("click", async () => {
+    const group_id = state.activePoseGroup;
+    if (!group_id) return;
+    const persona_id = document.getElementById("posePersonaSel").value;
+    const product_id = document.getElementById("poseProductSel").value;
+    const script_text = document.getElementById("poseCustomScript").value.trim();
+    const msg = document.getElementById("poseRenderMsg");
+    btnRenderPose.disabled = true;
+    msg.textContent = `Encolando Reel Lookbook 5 Ángulos (${group_id})...`;
+    try {
+      await api("/api/poses/lookbook-reel", {
+        method: "POST",
+        body: JSON.stringify({ group_id, persona_id, product_id, script_text }),
+      });
+      msg.textContent = "✅ Lookbook 5 Ángulos encolado. Redirigiendo a la cola en vivo...";
+      await refreshJobsAndVariants();
+      setTimeout(() => {
+        document.querySelector('[data-tab="studio"]').click();
+      }, 650);
+    } catch (e) {
+      msg.textContent = `Error: ${e.message}`;
+    } finally {
+      btnRenderPose.disabled = false;
+    }
+  });
 });
+
+// ---------------------------------------------------------------------- Funciones del Director de Poses (1,439 Poses)
+async function loadPosesCatalog() {
+  if (state.posesAll && state.posesAll.length) return;
+  try {
+    const res = await fetch("/static/poses_1439.json");
+    if (res.ok) {
+      state.posesAll = await res.json();
+    } else {
+      const apiRes = await api("/api/poses?limit=1500");
+      state.posesAll = apiRes.items || [];
+    }
+  } catch (_) {
+    try {
+      const apiRes = await api("/api/poses?limit=1500");
+      state.posesAll = apiRes.items || [];
+    } catch (__) {
+      state.posesAll = [];
+    }
+  }
+  state.posePage = 0;
+  filterAndRenderPoses();
+}
+
+function filterAndRenderPoses() {
+  const all = state.posesAll || [];
+  const grid = document.getElementById("posesGrid");
+  if (!grid) return;
+
+  const sys = document.getElementById("poseSystem")?.value || "";
+  const ang = document.getElementById("poseAngle")?.value || "";
+  const beat = document.getElementById("poseBeat")?.value || "";
+  const q = (document.getElementById("poseQuery")?.value || "").trim().toLowerCase();
+
+  const filtered = all.filter((p) => {
+    if (sys && p.system !== sys) return false;
+    if (ang && p.angle !== ang) return false;
+    if (beat && p.recommended_beat !== beat) return false;
+    if (q) {
+      const hay = `${p.id} ${p.pose_num} ${p.name_es} ${p.name_orig} ${p.category} ${p.system_es} ${p.angle_es}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  const pageSize = 36;
+  const maxPage = Math.max(0, Math.ceil(filtered.length / pageSize) - 1);
+  if ((state.posePage || 0) > maxPage) state.posePage = maxPage;
+  const page = state.posePage || 0;
+  const slice = filtered.slice(page * pageSize, (page + 1) * pageSize);
+
+  const badge = document.getElementById("poseCountBadge");
+  if (badge) badge.textContent = `${filtered.length} poses filtradas (de ${all.length})`;
+  const pageInfo = document.getElementById("posePageInfo");
+  if (pageInfo) pageInfo.textContent = `Página ${page + 1} de ${maxPage + 1}`;
+
+  if (!slice.length) {
+    grid.innerHTML = `<p class="muted">No se encontraron poses con esos filtros.</p>`;
+    return;
+  }
+
+  grid.innerHTML = slice.map((p) => `
+    <div class="pose-card">
+      <img class="pose-img" loading="lazy" src="${p.thumb_url}" onerror="this.onerror=null;this.src='${p.fallback_thumb_url}'" onclick="openPoseInspector('${p.group_id}')" alt="${p.name_es}" />
+      <div class="pose-body">
+        <div class="row-between">
+          <span class="badge badge-hook">${p.pose_num} • ${p.angle.toUpperCase()}</span>
+          <span class="badge badge-score">Beat: ${p.recommended_beat.toUpperCase()}</span>
+        </div>
+        <strong style="font-size:13px">${p.name_es}</strong>
+        <div class="muted" style="margin:0;font-size:11.5px">${p.system_es} • ${p.angle_es}</div>
+        <div class="btn-row" style="margin-top:6px">
+          <button class="btn btn-sm btn-primary" onclick="openPoseInspector('${p.group_id}')">🎥 5 Ángulos & Lookbook</button>
+          <a class="btn btn-sm" href="${p.image_url}" target="_blank" rel="noopener">🔍 PNG</a>
+        </div>
+      </div>
+    </div>
+  `).join("");
+}
+
+window.openPoseInspector = function (groupId) {
+  state.activePoseGroup = groupId;
+  const all = state.posesAll || [];
+  const order = { front: 0, diag: 1, side: 2, high: 3, low: 4 };
+  const group = all.filter((p) => p.group_id === groupId).sort((a, b) => (order[a.angle] ?? 9) - (order[b.angle] ?? 9));
+  if (!group.length) return;
+
+  const card = document.getElementById("poseInspectorCard");
+  card.classList.remove("hidden");
+  document.getElementById("poseInspTitle").textContent = `🎥 Inspector Multi-Ángulo: ${group[0].pose_num} — ${group[0].name_es} (${group[0].system_es})`;
+  document.getElementById("poseRenderMsg").textContent = "";
+
+  const box = document.getElementById("poseInspectorAngles");
+  box.innerHTML = group.map((g) => `
+    <div class="pose-card">
+      <a href="${g.image_url}" target="_blank" rel="noopener">
+        <img class="pose-img" src="${g.image_url}" onerror="this.onerror=null;this.src='${g.fallback_image_url}'" alt="${g.angle_es}" />
+      </a>
+      <div class="pose-body">
+        <span class="badge badge-score">${g.angle_es}</span>
+        <div class="muted" style="margin:0;font-size:11px">ControlNet 900×1200 PNG</div>
+      </div>
+    </div>
+  `).join("");
+
+  card.scrollIntoView({ behavior: "smooth", block: "start" });
+};

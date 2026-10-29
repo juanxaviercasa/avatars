@@ -492,6 +492,54 @@ def api_oracle_status() -> dict[str, Any]:
     return kaggle_cluster.check_oracle_vps()
 
 
+# ---------------------------------------------------------------------- Director de Poses (1,439 Poses ControlNet)
+@app.get("/api/poses")
+def api_poses_list(
+    system: str = "",
+    angle: str = "",
+    category: str = "",
+    beat: str = "",
+    q: str = "",
+    limit: int = 60,
+    offset: int = 0,
+) -> dict[str, Any]:
+    from . import poses as poses_mod
+    return poses_mod.search_poses(
+        system=system,
+        angle=angle,
+        category=category,
+        beat=beat,
+        q=q,
+        limit=min(300, max(1, limit)),
+        offset=max(0, offset),
+    )
+
+
+@app.get("/api/poses/group/{group_id}")
+def api_poses_group(group_id: str) -> dict[str, Any]:
+    from . import poses as poses_mod
+    items = poses_mod.get_pose_group(group_id)
+    return {"group_id": group_id, "angles": items}
+
+
+class PoseLookbookReq(BaseModel):
+    group_id: str
+    persona_id: str
+    product_id: str
+    script_text: str = ""
+
+
+@app.post("/api/poses/lookbook-reel")
+def api_poses_lookbook_reel(req: PoseLookbookReq) -> dict[str, Any]:
+    variant, job = pipeline.enqueue_pose_lookbook(
+        group_id=req.group_id,
+        persona_id=req.persona_id,
+        product_id=req.product_id,
+        script_text=req.script_text,
+    )
+    return {"variant": variant, "job": job}
+
+
 # ---------------------------------------------------------------------- UI Estática
 if UI_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(UI_DIR)), name="static")

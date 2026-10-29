@@ -19,6 +19,7 @@ from viralforge.config import settings
 INCLUDE_PATHS = [
     "viralforge",
     "workflows",
+    "assets",
     "run.py",
     ".env.example",
 ]

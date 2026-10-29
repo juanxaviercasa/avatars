@@ -246,6 +246,8 @@ def build_openjutsu_notebook(dest_dir: Path | None = None, username: str = "juan
         "juanxaviercasa/qwen3-forced-aligner-06b",
         "juanxaviercasa/wan22-ti2v-5b-video",
         "juanxaviercasa/qwen-image-edit-2511",
+        "juanxaviercasa/dwpose-controlnet-annotators",
+        "juanxaviercasa/flux1-controlnet-union-pro2",
     ]
 
     metadata = {

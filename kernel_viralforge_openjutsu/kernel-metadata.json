@@ -26,7 +26,9 @@
     "juanxaviercasa/qwen3-8b-research",
     "juanxaviercasa/qwen3-forced-aligner-06b",
     "juanxaviercasa/wan22-ti2v-5b-video",
-    "juanxaviercasa/qwen-image-edit-2511"
+    "juanxaviercasa/qwen-image-edit-2511",
+    "juanxaviercasa/dwpose-controlnet-annotators",
+    "juanxaviercasa/flux1-controlnet-union-pro2"
   ],
   "competition_sources": [],
   "kernel_sources": [],

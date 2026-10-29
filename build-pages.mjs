@@ -18,6 +18,12 @@ for (const file of ["index.html", "styles.css", "app.js"]) {
   }
 }
 
+const posesSrc = path.join(root, "assets", "poses_1439.json");
+if (fs.existsSync(posesSrc)) {
+  fs.copyFileSync(posesSrc, path.join(distDir, "poses_1439.json"));
+  fs.copyFileSync(posesSrc, path.join(staticDir, "poses_1439.json"));
+}
+
 fs.writeFileSync(
   path.join(distDir, "_headers"),
   "/*\n  Access-Control-Allow-Origin: *\n"

@@ -330,6 +330,80 @@ def _safe_run_openjutsu(variant_id: str, job_id: str, source_video: str,
         _update_job(j, status="error", stage="error", error=str(exc), msg=f"Error OpenJutsu: {exc}")
 
 
+def enqueue_pose_lookbook(
+    *,
+    group_id: str,
+    persona_id: str,
+    product_id: str,
+    script_text: str = "",
+) -> tuple[Variant, Job]:
+    """Crea una variante Lookbook Multi-Ángulo (5 ángulos ControlNet de una pose) y la encola."""
+    st = store()
+    sc_val, sc_br = score_hook(script_text.split(".")[0] if script_text.strip() else f"Lookbook 5 Ángulos {group_id}", "es")
+    script = Script(
+        hook_formula=f"pose_{group_id}",
+        framework="lookbook_5angles",
+        angle="visual",
+        beats=[Beat(role="hook", text=script_text or f"Secuencia ControlNet 5 ángulos ({group_id})", visual="avatar_talk")],
+        hook_score=sc_val,
+        score_breakdown=sc_br,
+        generator="pose_director",
+    )
+    variant = Variant(product_id=product_id, persona_id=persona_id, script=script, status="queued")
+    job = Job(
+        kind="pose_lookbook",
+        variant_id=variant.id,
+        stage="queued",
+        params={"group_id": group_id, "persona_id": persona_id, "product_id": product_id},
+    )
+    variant.job_id = job.id
+    st.put("variants", variant)
+    st.put("jobs", job)
+    _executor.submit(_safe_run_pose_lookbook, variant.id, job.id, group_id, script_text)
+    return variant, job
+
+
+def _safe_run_pose_lookbook(variant_id: str, job_id: str, group_id: str, script_text: str) -> None:
+    from . import poses as poses_mod
+    st = store()
+    v = st.get("variants", variant_id, Variant)
+    j = st.get("jobs", job_id, Job)
+    if not v or not j:
+        return
+    persona = st.get("personas", v.persona_id, Persona)
+    product = st.get("products", v.product_id, Product)
+    if not persona or not product:
+        _update_job(j, status="error", stage="error", error="Persona o Producto no encontrado")
+        return
+    v.status = "rendering"
+    st.put("variants", v)
+    _update_job(j, status="running", progress=0.05, stage="pose_director", msg=f"Iniciando Lookbook 5 Ángulos ({group_id})...")
+    try:
+        out_dir = settings.outputs_dir / v.id
+        res = poses_mod.render_multi_angle_pose_reel(
+            group_id=group_id,
+            persona=persona,
+            product=product,
+            out_dir=out_dir,
+            custom_script=script_text,
+            progress_cb=lambda stg, p, m: _update_job(j, progress=p, stage=stg, msg=m),
+        )
+        v.status = "done"
+        v.video_path = res["video_path"]
+        v.thumb_path = res["thumb_path"]
+        v.duration = res["duration"]
+        v.engines_used = {"pose_director": "controlnet-5angles-compositor", "group_id": group_id}
+        st.put("variants", v)
+        _update_job(j, status="done", progress=1.0, stage="done",
+                    msg=f"Lookbook 5 Ángulos completado ({v.duration}s) -> reel.mp4")
+    except Exception as exc:
+        log.exception("Error en Pose Lookbook %s", v.id)
+        v.status = "error"
+        v.error = str(exc)
+        st.put("variants", v)
+        _update_job(j, status="error", stage="error", error=str(exc), msg=f"Error Pose Lookbook: {exc}")
+
+
 def engine_status() -> dict:
     return {
         "llm": {
@@ -353,6 +427,13 @@ def engine_status() -> dict:
             "comfyui_workflow": "workflows/openjutsu_reshoot.json",
             "kaggle_datasets": ["sam2-hiera-small", "qwen2-vl-7b", "wan22-ti2v-5b", "qwen-image-edit-2511"],
             "fallback": "cpu-openjutsu-hybrid (Motion Tracking + Split/PIP + Try-On)",
+        },
+        "pose_director_1439": {
+            "poses_count": 1439,
+            "pose_groups": 288,
+            "angles_per_pose": 5,
+            "comfyui_workflow": "workflows/controlnet_pose_flux.json",
+            "kaggle_datasets": ["dwpose-controlnet-annotators", "flux1-controlnet-union-pro2", "controlnet-openpose-sdxl"],
         },
         "lipsync": {
             "lipsync_url": settings.lipsync_url or None,
