@@ -80,11 +80,11 @@
             <small>ControlNet &amp; Lookbooks</small>
           </div>
         </button>
-        <button type="button" class="feature-chip" onclick="document.querySelector('[data-tab=reels]').click()">
-          <span class="f-icon">🧠</span>
+        <button type="button" class="feature-chip" onclick="document.querySelector('[data-tab=studio]').click(); document.getElementById('earshotCard')?.scrollIntoView({behavior:'smooth'})">
+          <span class="f-icon">🎵</span>
           <div class="f-meta">
-            <strong>Bandit Bayesiano</strong>
-            <small>22 Ganchos × 8 Marcos</small>
+            <strong>Earshot + Cinetic</strong>
+            <small>16 SFX Código + 273 Técnicas</small>
           </div>
         </button>
         <button type="button" class="feature-chip" onclick="document.querySelector('[data-tab=engines]').click()">
@@ -202,6 +202,79 @@
         <div class="btn-row">
           <button type="button" class="btn btn-primary" id="btnRunOpenjutsu">⚡ Ejecutar OpenJutsu Video Swap (MP4)</button>
         </div>
+      </div>
+
+      <div class="card card-glow mt" id="earshotCard">
+        <div class="card-head">
+          <span class="section-tag">LEONXLNX/EARSHOT + CINETIC • SOUND AS CODE &amp; MOTION DESIGN DIRECTOR</span>
+          <h2>🎵 Earshot (Síntesis Acústica en Código) + Cinetic (273 Técnicas de Dirección 60fps/30fps)</h2>
+          <p class="muted">Genera efectos de sonido físicos en tiempo real mediante ecuaciones diferenciales en NumPy/WebAudio (sin archivos MP3 externos) y sincronízalos al fotograma exacto (con micro-offsets perceptuales de <code>-18ms</code> a <code>+25ms</code>) junto con las <strong>273 técnicas de dirección comercial de Cinetic</strong> distribuidas en 14 categorías.</p>
+        </div>
+
+        <div class="form-row form-cols-4">
+          <label>Kit Acústico Maestro (Earshot)
+            <select id="ecKitSelect">
+              <option value="crisp">Crisp SaaS &amp; E-Commerce (Wood Knock + Plastic Tap + Celesta)</option>
+              <option value="launch">High-Energy Launch (Sub-Bass 52Hz + Cut Hit + Cash Ding)</option>
+              <option value="hype">Viral TikTok Hype (Glitch Burst + Camera Shutter + Reverse Cymbal)</option>
+              <option value="calm">Calm Luxury &amp; Skincare (Water Drop + Marimba + Celesta Chime)</option>
+            </select>
+          </label>
+          <label>Energía de Dirección (Cinetic)
+            <select id="ecEnergySelect">
+              <option value="high">Alta Energía (High Retention / Kinetic Cuts)</option>
+              <option value="calm">Calma / Editorial Premium (Smooth &amp; Luxury)</option>
+              <option value="any">Balanceada (Todas las 273 técnicas)</option>
+            </select>
+          </label>
+          <label>Duración del Spot (s)
+            <input type="number" id="ecDuration" value="15" min="6" max="60" />
+          </label>
+          <label>Explorar Categoría Cinetic (14)
+            <select id="ecCategoryFilter">
+              <option value="">Todas las categorías (273 técnicas)</option>
+              <option value="opening_hook">Opening Hook (19)</option>
+              <option value="camera">Camera &amp; Lens (20)</option>
+              <option value="transition">Transitions (20)</option>
+              <option value="product_demo">Product Demo (20)</option>
+              <option value="typography_motion">Typography Motion (21)</option>
+              <option value="data_and_numbers">Data &amp; Numbers (19)</option>
+              <option value="color_and_light">Color &amp; Light (20)</option>
+              <option value="depth_and_3d">Depth &amp; 3D (19)</option>
+              <option value="layout_and_composition">Layout &amp; Composition (20)</option>
+              <option value="micro_interaction">Micro-Interaction (18)</option>
+              <option value="pacing_structure">Pacing Structure (19)</option>
+              <option value="texture_and_finish">Texture &amp; Finish (19)</option>
+              <option value="ui_choreography">UI Choreography (20)</option>
+              <option value="logo_and_end_card">Logo &amp; End Card (19)</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="btn btn-primary" id="btnGenCineticPlan">🎬 Generar Partitura Cinetic + Earshot (Frame-Accurate @60fps/30fps)</button>
+          <button type="button" class="btn btn-glass" id="btnPlayFullKit">🔊 Reproducir Secuencia del Kit Acústico</button>
+        </div>
+
+        <hr class="sep" />
+        <div class="grid-2">
+          <div>
+            <h3>🎹 Sintetizador Físico Earshot (16 Recetas Procedurales — Haz clic para escuchar)</h3>
+            <p class="muted" style="margin-bottom:10px">Cada botón sintetiza la onda física en tiempo real (44.1 kHz, cruces por cero exactos, sin muestras pregrabadas).</p>
+            <div id="earshotSfxGrid" class="sfx-grid"></div>
+          </div>
+          <div>
+            <h3>📐 Partitura Sincronizada por Fotograma (Cue Sheet @60fps &amp; @30fps)</h3>
+            <div id="cineticCueSheet" class="stack"></div>
+          </div>
+        </div>
+
+        <hr class="sep" />
+        <div class="row-between">
+          <h3>📚 Biblioteca Interactiva Cinetic (273 Técnicas de Motion Design)</h3>
+          <span class="pill" id="cineticCountPill">273 técnicas</span>
+        </div>
+        <div id="cineticTechniquesGrid" class="cinetic-grid mt"></div>
       </div>
 
       <div class="card mt">

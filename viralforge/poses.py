@@ -510,7 +510,7 @@ def render_multi_angle_pose_reel(
     beat_starts = [i * seg_dur for i in range(len(angle_frames))]
     pop_times = [b + 0.25 for b in beat_starts]
     master_wav = out_dir / "master_audio.wav"
-    audio_mod.build_mix(voice_wav, master_wav, beat_starts=beat_starts, pop_times=pop_times, sfx=True)
+    audio_mod.build_mix(voice_wav, master_wav, beat_starts=beat_starts, pop_times=pop_times, sfx=True, kit_name="hype")
 
     # 3. Codificación FFmpeg a 30fps con zoom suave + subtítulos Hormozi
     out_mp4 = out_dir / "reel.mp4"

@@ -695,6 +695,8 @@ document.addEventListener("DOMContentLoaded", () => {
       btnRenderPose.disabled = false;
     }
   });
+
+  initEarshotAndCinetic();
 });
 
 // ---------------------------------------------------------------------- Funciones del Director de Poses (1,439 Poses)
@@ -820,3 +822,262 @@ window.openPoseInspector = function (groupId) {
 
   card.scrollIntoView({ behavior: "smooth", block: "start" });
 };
+
+// ---------------------------------------------------------------------- Earshot (Sound-as-Code) & Cinetic (273 Técnicas Motion)
+const EARSHOT_RECIPES_CLIENT = [
+  { id: "impact", name: "Sub-Bass Impact Hit", category: "impact", duration_ms: 360, desc: "Barrido exponencial 150→38 Hz + sub-armónico 52 Hz" },
+  { id: "cut_hit", name: "Kinetic Cut Thud", category: "impact", duration_ms: 140, desc: "Golpe seco de corte cinematográfico (190→46 Hz)" },
+  { id: "whoosh", name: "Filtered Air Whoosh", category: "transition", duration_ms: 220, desc: "Barrido de aire con envolvente Hanning" },
+  { id: "bright_swish", name: "Bright Silk Swish", category: "transition", duration_ms: 160, desc: "Transición rápida de alta frecuencia para paneles UI" },
+  { id: "pop", name: "Caption Bubble Pop", category: "ui", duration_ms: 90, desc: "Chirp ascendente 420→980 Hz para badges" },
+  { id: "wood_knock", name: "Warm Wood Knock", category: "tactile", duration_ms: 75, desc: "Resonador modal de madera (290/580/1120 Hz)" },
+  { id: "plastic_tap", name: "Crisp Keycap Tap", category: "tactile", duration_ms: 42, desc: "Micro-transiente táctil de policarbonato" },
+  { id: "camera_shutter", name: "Mirrorless Shutter Click", category: "tactile", duration_ms: 110, desc: "Doble cortinilla mecánica (0 ms + 32 ms)" },
+  { id: "cash_ding", name: "Harmonic Offer Chime", category: "tonal", duration_ms: 520, desc: "Campana metálica inarmónica (1318/2637/3951 Hz)" },
+  { id: "marimba_note", name: "Wooden Marimba Strike", category: "tonal", duration_ms: 320, desc: "Barra de marimba con sobretono de 4ª (1:4:10)" },
+  { id: "celesta_chime", name: "Crystal Celesta Resolve", category: "tonal", duration_ms: 680, desc: "Acorde cristalino C6–E6–G6–B6 para cierre de marca" },
+  { id: "water_drop", name: "Resonant Water Droplet", category: "organic", duration_ms: 180, desc: "Oscilación de burbuja de Minnaert (540→1380 Hz)" },
+  { id: "riser", name: "Tension Sweep Riser", category: "tension", duration_ms: 950, desc: "Barrido exponencial 120→1480 Hz pre-CTA" },
+  { id: "reverse_cymbal", name: "Reverse Shimmer Swell", category: "tension", duration_ms: 700, desc: "Crescendo metálico invertido" },
+  { id: "glitch_burst", name: "Digital Stutter Glitch", category: "digital", duration_ms: 130, desc: "Ráfaga digital cuantizada para hooks pattern-interrupt" },
+  { id: "bass_pulse", name: "Warm Heartbeat Sub Pulse", category: "impact", duration_ms: 280, desc: "Pulso sub-grave de retención (68→44 Hz)" },
+];
+
+const EARSHOT_KITS_CLIENT = {
+  crisp: { hook: "wood_knock", cut: "bright_swish", caption: "plastic_tap", reveal: "marimba_note", riser: "reverse_cymbal", offer: "celesta_chime" },
+  launch: { hook: "impact", cut: "cut_hit", caption: "pop", reveal: "whoosh", riser: "riser", offer: "cash_ding" },
+  hype: { hook: "glitch_burst", cut: "camera_shutter", caption: "pop", reveal: "whoosh", riser: "riser", offer: "cash_ding" },
+  calm: { hook: "water_drop", cut: "whoosh", caption: "wood_knock", reveal: "marimba_note", riser: "reverse_cymbal", offer: "celesta_chime" },
+};
+
+let _audioCtx = null;
+function getAudioCtx() {
+  if (!_audioCtx) {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    _audioCtx = new AC({ sampleRate: 44100 });
+  }
+  if (_audioCtx.state === "suspended") _audioCtx.resume();
+  return _audioCtx;
+}
+
+window.playEarshotSfx = function (sfxId, btnEl) {
+  try {
+    const ctx = getAudioCtx();
+    const sr = ctx.sampleRate;
+    const rec = EARSHOT_RECIPES_CLIENT.find((r) => r.id === sfxId) || EARSHOT_RECIPES_CLIENT[0];
+    const dur = rec.duration_ms / 1000;
+    const n = Math.floor(sr * dur);
+    const buf = ctx.createBuffer(1, n, sr);
+    const d = buf.getChannelData(0);
+
+    for (let i = 0; i < n; i++) {
+      const t = i / sr;
+      let v = 0;
+      if (sfxId === "impact") {
+        const phase = 2 * Math.PI * (38 * t + (112 / 14) * (1 - Math.exp(-14 * t)));
+        v = Math.sin(phase) * Math.exp(-7.5 * t) * 0.8 + Math.sin(2 * Math.PI * 52 * t) * Math.exp(-5.2 * t) * 0.4;
+      } else if (sfxId === "cut_hit") {
+        const phase = 2 * Math.PI * (46 * t + (144 / 28) * (1 - Math.exp(-28 * t)));
+        v = Math.sin(phase) * Math.exp(-19 * t) * 0.85;
+      } else if (sfxId === "whoosh" || sfxId === "bright_swish") {
+        const env = Math.sin(Math.PI * (i / n)) ** 1.8;
+        const f0 = sfxId === "bright_swish" ? 880 : 320;
+        v = ((Math.random() * 2 - 1) * 0.45 + Math.sin(2 * Math.PI * (f0 + 900 * (i / n)) * t) * 0.35) * env;
+      } else if (sfxId === "pop") {
+        const f = 420 + (560 * (i / n)) / 2;
+        v = Math.sin(2 * Math.PI * f * t) * Math.exp(-32 * t) * 0.7;
+      } else if (sfxId === "wood_knock") {
+        v = (Math.sin(2 * Math.PI * 290 * t) * Math.exp(-48 * t) * 0.65 +
+             Math.sin(2 * Math.PI * 585 * t) * Math.exp(-72 * t) * 0.35 +
+             Math.sin(2 * Math.PI * 1120 * t) * Math.exp(-110 * t) * 0.2);
+      } else if (sfxId === "plastic_tap") {
+        v = ((Math.random() * 2 - 1) * Math.exp(-135 * t) * 0.5 +
+             Math.sin(2 * Math.PI * 1850 * t) * Math.exp(-95 * t) * 0.45);
+      } else if (sfxId === "camera_shutter") {
+        const dt2 = Math.max(0, t - 0.032);
+        const b1 = ((Math.random() * 2 - 1) * 0.5 + Math.sin(2 * Math.PI * 2400 * t) * 0.4) * Math.exp(-120 * t);
+        const b2 = t >= 0.032 ? ((Math.random() * 2 - 1) * 0.45 + Math.sin(2 * Math.PI * 1950 * dt2) * 0.4) * Math.exp(-110 * dt2) : 0;
+        v = (b1 + b2) * 0.75;
+      } else if (sfxId === "cash_ding") {
+        v = (Math.sin(2 * Math.PI * 1318.5 * t) * Math.exp(-6.2 * t) * 0.5 +
+             Math.sin(2 * Math.PI * 2637 * t) * Math.exp(-9.5 * t) * 0.3 +
+             Math.sin(2 * Math.PI * 3951 * t) * Math.exp(-14 * t) * 0.2);
+      } else if (sfxId === "marimba_note") {
+        v = (Math.sin(2 * Math.PI * 523.25 * t) * Math.exp(-11 * t) * 0.65 +
+             Math.sin(2 * Math.PI * 2093 * t) * Math.exp(-38 * t) * 0.28);
+      } else if (sfxId === "celesta_chime") {
+        const notes = [1046.5, 1318.5, 1567.98, 1975.5];
+        for (let k = 0; k < notes.length; k++) {
+          const dt = Math.max(0, t - k * 0.028);
+          if (t >= k * 0.028) v += Math.sin(2 * Math.PI * notes[k] * dt) * Math.exp(-5.4 * dt) * 0.22;
+        }
+      } else if (sfxId === "water_drop") {
+        const f = 540 + 840 * Math.pow(i / n, 1.7);
+        v = Math.sin(2 * Math.PI * f * t) * Math.exp(-18 * t) * 0.72;
+      } else if (sfxId === "riser" || sfxId === "reverse_cymbal") {
+        const p = i / n;
+        const env = Math.pow(p, 2.4);
+        const f = 140 + 1100 * p * p;
+        v = (Math.sin(2 * Math.PI * f * t) * 0.45 + (Math.random() * 2 - 1) * 0.25) * env;
+      } else if (sfxId === "glitch_burst") {
+        const gate = Math.sin(2 * Math.PI * 42 * t) > 0 ? 1 : -0.2;
+        v = Math.sin(2 * Math.PI * 1240 * t) * gate * Math.exp(-12 * t) * 0.55;
+      } else {
+        v = Math.sin(2 * Math.PI * 56 * t) * Math.exp(-8.5 * t) * 0.8;
+      }
+      const fade = Math.min(1, i / 64, (n - i) / 96);
+      d[i] = Math.tanh(v * 1.15) * fade * 0.85;
+    }
+
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.connect(ctx.destination);
+    src.start();
+
+    if (btnEl) {
+      btnEl.classList.add("playing");
+      setTimeout(() => btnEl.classList.remove("playing"), Math.max(180, rec.duration_ms));
+    }
+  } catch (e) {
+    console.warn("Audio preview error:", e);
+  }
+};
+
+async function initEarshotAndCinetic() {
+  const sfxGrid = document.getElementById("earshotSfxGrid");
+  if (sfxGrid) {
+    sfxGrid.innerHTML = EARSHOT_RECIPES_CLIENT.map((r) => `
+      <button type="button" class="sfx-btn" onclick="playEarshotSfx('${r.id}', this)">
+        <div class="sfx-meta">
+          <strong>🔊 ${r.name}</strong>
+          <small><code>${r.id}</code> • ${r.duration_ms}ms • ${r.desc}</small>
+        </div>
+        <span class="badge badge-hook">${r.category}</span>
+      </button>
+    `).join("");
+  }
+
+  // Cargar las 273 técnicas de Cinetic
+  try {
+    const res = await fetch("/static/cinetic_techniques.json");
+    if (res.ok) {
+      state.cineticAll = await res.json();
+    }
+  } catch (_) {}
+  if (!state.cineticAll || !state.cineticAll.length) {
+    try {
+      const cat = await api("/api/earshot/catalog");
+      state.cineticAll = cat.cinetic_samples || [];
+    } catch (__) {
+      state.cineticAll = [];
+    }
+  }
+
+  renderCineticTechniquesGrid();
+  await generateAndRenderCineticPlan();
+
+  const catSel = document.getElementById("ecCategoryFilter");
+  if (catSel) catSel.addEventListener("change", renderCineticTechniquesGrid);
+
+  const btnPlan = document.getElementById("btnGenCineticPlan");
+  if (btnPlan) btnPlan.addEventListener("click", generateAndRenderCineticPlan);
+
+  const btnPlayKit = document.getElementById("btnPlayFullKit");
+  if (btnPlayKit) btnPlayKit.addEventListener("click", () => {
+    const kitName = document.getElementById("ecKitSelect")?.value || "crisp";
+    const kit = EARSHOT_KITS_CLIENT[kitName] || EARSHOT_KITS_CLIENT.crisp;
+    const seq = [kit.hook, kit.cut, kit.caption, kit.reveal, kit.riser, kit.offer];
+    seq.forEach((sfxId, idx) => {
+      setTimeout(() => window.playEarshotSfx(sfxId), idx * 360);
+    });
+  });
+}
+
+function renderCineticTechniquesGrid() {
+  const box = document.getElementById("cineticTechniquesGrid");
+  if (!box) return;
+  const cat = document.getElementById("ecCategoryFilter")?.value || "";
+  const all = state.cineticAll || [];
+  const filtered = cat ? all.filter((t) => t.category === cat) : all;
+  const pill = document.getElementById("cineticCountPill");
+  if (pill) pill.textContent = `${filtered.length} técnicas (${cat || "14 categorías"})`;
+
+  box.innerHTML = filtered.slice(0, 60).map((t) => `
+    <div class="cinetic-card">
+      <div class="row-between">
+        <span class="badge badge-hook">${t.category_es || t.category}</span>
+        <span class="badge badge-score">${t.energy} • ${t.role || "workhorse"}</span>
+      </div>
+      <strong style="font-size:13px;color:#fff">${t.name}</strong>
+      <div class="muted" style="margin:0;font-size:11.5px">${t.summary || t.directive || ""}</div>
+      ${t.recipe ? `<code style="font-size:10.5px;color:#38bdf8;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.recipe}</code>` : ""}
+    </div>
+  `).join("");
+}
+
+async function generateAndRenderCineticPlan() {
+  const cueBox = document.getElementById("cineticCueSheet");
+  if (!cueBox) return;
+  const kit_name = document.getElementById("ecKitSelect")?.value || "crisp";
+  const energy = document.getElementById("ecEnergySelect")?.value || "high";
+  const duration_s = Number(document.getElementById("ecDuration")?.value || 15);
+
+  let timeline = [];
+  try {
+    const plan = await api("/api/cinetic/plan", {
+      method: "POST",
+      body: JSON.stringify({ kit_name, energy, duration_s }),
+    });
+    timeline = plan.timeline || [];
+  } catch (_) {
+    // Fallback client-side usando las 273 técnicas cargadas
+    const kit = EARSHOT_KITS_CLIENT[kit_name] || EARSHOT_KITS_CLIENT.crisp;
+    const all = state.cineticAll || [];
+    const beats = [
+      { cat: "opening_hook", sfx: kit.hook, off: -18 },
+      { cat: "typography_motion", sfx: kit.cut, off: 20 },
+      { cat: "camera", sfx: kit.caption, off: -15 },
+      { cat: "product_demo", sfx: kit.reveal, off: 0 },
+      { cat: "data_and_numbers", sfx: kit.riser, off: -18 },
+      { cat: "logo_and_end_card", sfx: kit.offer, off: 0 },
+    ];
+    const step = duration_s / beats.length;
+    timeline = beats.map((b, idx) => {
+      const pool = all.filter((x) => x.category === b.cat);
+      const tech = pool[Math.floor(Math.random() * Math.max(1, pool.length))] || {
+        id: `${b.cat}_default`, name: b.cat, category: b.cat, summary: "Transición cinemática sincronizada al frame.",
+      };
+      const t = +(idx * step).toFixed(2);
+      const cue_time = Math.max(0, +(t + b.off / 1000).toFixed(3));
+      return {
+        step: idx + 1,
+        time_s: t,
+        cue_time_s: cue_time,
+        frame_30fps: Math.round(cue_time * 30),
+        frame_60fps: Math.round(cue_time * 60),
+        offset_ms: b.off,
+        technique: tech,
+        sfx_id: b.sfx,
+      };
+    });
+  }
+
+  cueBox.innerHTML = timeline.map((c) => `
+    <div class="item-card" style="padding:11px 13px">
+      <div class="row-between">
+        <div>
+          <span class="badge badge-hook">PASO ${c.step}</span>
+          <span class="pill">Frame ${c.frame_60fps} (@60fps) • ${c.frame_30fps} (@30fps) • ${c.cue_time_s}s</span>
+          <span class="pill">Offset: ${c.offset_ms >= 0 ? "+" : ""}${c.offset_ms}ms</span>
+        </div>
+        <button type="button" class="btn btn-sm btn-glass" onclick="playEarshotSfx('${c.sfx_id}', this)">🔊 SFX: ${c.sfx_id}</button>
+      </div>
+      <div style="margin-top:6px">
+        <strong style="font-size:13px;color:#38bdf8">🎬 Cinetic: ${c.technique.name}</strong>
+        <span class="muted" style="font-size:11.5px"> (${c.technique.category_es || c.technique.category})</span>
+      </div>
+      <p class="muted" style="margin:3px 0 0;font-size:12px">${c.technique.summary || c.technique.directive || ""}</p>
+    </div>
+  `).join("");
+}
+

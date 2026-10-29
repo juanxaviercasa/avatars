@@ -540,6 +540,44 @@ def api_poses_lookbook_reel(req: PoseLookbookReq) -> dict[str, Any]:
     return {"variant": variant, "job": job}
 
 
+# ---------------------------------------------------------------------- Earshot (Sound-as-Code) & Cinetic (273 Técnicas Motion)
+@app.get("/api/earshot/catalog")
+def api_earshot_catalog() -> dict[str, Any]:
+    from . import cinetic as cinetic_mod
+    return cinetic_mod.get_earshot_cinetic_catalog()
+
+
+@app.get("/api/earshot/preview/{sfx_id}")
+def api_earshot_preview(sfx_id: str) -> FileResponse:
+    from .render import audio as audio_mod
+    if sfx_id not in audio_mod.EARSHOT_RECIPES:
+        raise HTTPException(404, f"Receta Earshot '{sfx_id}' no encontrada")
+    sfx_dir = settings.cache_dir / "earshot_previews"
+    sfx_dir.mkdir(parents=True, exist_ok=True)
+    wav_path = sfx_dir / f"earshot_{sfx_id}.wav"
+    if not wav_path.exists():
+        audio_mod.render_sfx_wav(sfx_id, wav_path)
+    return FileResponse(wav_path, media_type="audio/wav", filename=f"earshot_{sfx_id}.wav")
+
+
+class CineticPlanReq(BaseModel):
+    kit_name: str = "crisp"
+    energy: str = "high"
+    duration_s: float = 15.0
+    seed: int | None = None
+
+
+@app.post("/api/cinetic/plan")
+def api_cinetic_plan(req: CineticPlanReq) -> dict[str, Any]:
+    from . import cinetic as cinetic_mod
+    return cinetic_mod.draw_cinetic_plan(
+        energy=req.energy,
+        kit_name=req.kit_name,
+        seconds=int(round(req.duration_s)),
+        seed=req.seed,
+    )
+
+
 # ---------------------------------------------------------------------- UI Estática
 if UI_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(UI_DIR)), name="static")

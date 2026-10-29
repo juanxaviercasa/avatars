@@ -1192,4 +1192,100 @@ input[type="color"] {
     flex-direction: column;
     align-items: flex-start;
   }
+  .sfx-grid {
+    grid-template-columns: 1fr;
+  }
+  .cinetic-grid {
+    grid-template-columns: 1fr;
+  }
 }
+
+/* ============================================================================
+   11. EARSHOT SOUND-AS-CODE & CINETIC MOTION LIBRARY
+   ============================================================================ */
+.sfx-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.sfx-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 13px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.16s ease;
+  font-family: inherit;
+}
+
+.sfx-btn:hover {
+  border-color: var(--accent);
+  background: rgba(56, 189, 248, 0.09);
+  transform: translateY(-1px);
+}
+
+.sfx-btn.playing {
+  border-color: var(--primary);
+  background: rgba(255, 51, 102, 0.14);
+  box-shadow: 0 0 18px rgba(255, 51, 102, 0.35);
+}
+
+.sfx-meta {
+  min-width: 0;
+  flex: 1;
+}
+
+.sfx-meta strong {
+  display: block;
+  font-size: 13px;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sfx-meta small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cinetic-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  max-height: 440px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+@media (max-width: 960px) {
+  .cinetic-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cinetic-card {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 13px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cinetic-card:hover {
+  border-color: rgba(168, 85, 247, 0.45);
+}
+
