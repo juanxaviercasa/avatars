@@ -1,7 +1,8 @@
 const DEFAULT_ORACLE_TUNNEL = "https://hydrogen-jesse-paxil-raleigh.trycloudflare.com";
 let API_BASE = (localStorage.getItem("vf_api_base") || "").replace(/\/+$/, "");
 
-if (!API_BASE && window.location.hostname.endsWith(".pages.dev")) {
+const _host = window.location.hostname;
+if (!API_BASE && _host !== "localhost" && _host !== "127.0.0.1" && !_host.endsWith(".trycloudflare.com")) {
   API_BASE = DEFAULT_ORACLE_TUNNEL;
 }
 
