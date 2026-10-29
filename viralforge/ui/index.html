@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ViralForge Studio — AI Influencer, OpenJutsu & ControlNet Reel Factory</title>
+  <title>ViralForge Studio — AI Influencer, OpenJutsu &amp; ControlNet Reel Factory</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="stylesheet" href="/static/styles.css?v=2.1" />
 </head>
 <body>
   <!-- Ambient Studio Lighting & Architectural Grid -->
@@ -18,45 +18,47 @@
     <div class="bg-grid"></div>
   </div>
 
+  <!-- Top Command Header -->
   <header class="topbar">
-    <div class="brand">
-      <div class="logo-mark">
-        <span>VF</span>
-        <i class="logo-ring"></i>
-      </div>
-      <div>
-        <div class="brand-row">
-          <h1>ViralForge Studio</h1>
-          <span class="live-chip"><span class="pulse-dot"></span> SISTEMA ZENIT • PRO</span>
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo-mark">
+          <span>VF</span>
         </div>
-        <p class="subtitle">Orquestador de AI Influencers, OpenJutsu Video Swap, 1,439 Poses ControlNet &amp; Reels Shopify</p>
+        <div class="brand-text">
+          <div class="brand-row">
+            <h1>ViralForge Studio</h1>
+            <span class="live-chip"><span class="pulse-dot"></span> SISTEMA ZENIT • PRO</span>
+          </div>
+          <p class="subtitle">Orquestador de AI Influencers, OpenJutsu Video Swap, 1,439 Poses ControlNet &amp; Reels Shopify</p>
+        </div>
       </div>
-    </div>
 
-    <div class="stats-strip" id="statsStrip">
-      <div class="kpi-pill">
-        <span class="kpi-label">AI Influencers</span>
-        <strong id="statPersonas">-</strong>
+      <div class="stats-strip" id="statsStrip">
+        <div class="kpi-pill">
+          <span class="kpi-label">Influencers</span>
+          <strong id="statPersonas">-</strong>
+        </div>
+        <div class="kpi-pill">
+          <span class="kpi-label">Productos</span>
+          <strong id="statProducts">-</strong>
+        </div>
+        <div class="kpi-pill">
+          <span class="kpi-label">Reels 9:16</span>
+          <strong id="statVariants">-</strong>
+        </div>
+        <div class="kpi-pill kpi-accent">
+          <span class="kpi-label">Cola Render</span>
+          <strong id="statJobs">0</strong>
+        </div>
+        <button class="btn btn-sm btn-glass btn-backend" id="btnConfigBackend" title="Configurar URL del Backend (Oracle VPS / Local)">
+          🔗 <span id="lblBackendMode">Auto</span>
+        </button>
       </div>
-      <div class="kpi-pill">
-        <span class="kpi-label">Productos</span>
-        <strong id="statProducts">-</strong>
-      </div>
-      <div class="kpi-pill">
-        <span class="kpi-label">Reels 9:16</span>
-        <strong id="statVariants">-</strong>
-      </div>
-      <div class="kpi-pill kpi-accent">
-        <span class="kpi-label">Cola Render</span>
-        <strong id="statJobs">0</strong>
-      </div>
-      <button class="btn btn-sm btn-glass" id="btnConfigBackend" title="Configurar URL del Backend (Oracle VPS / Local)">
-        🔗 <span id="lblBackendMode">Auto</span>
-      </button>
     </div>
   </header>
 
-  <!-- Hero Studio Strip -->
+  <!-- Hero Studio Banner -->
   <section class="hero-strip">
     <div class="hero-inner">
       <div class="hero-copy">
@@ -64,35 +66,48 @@
         <h2>Produce Reels Virales 9:16 con Identidad Fija, ControlNet Multi-Ángulo y Clonación de Vídeo</h2>
       </div>
       <div class="hero-features">
-        <button class="feature-chip" onclick="document.querySelector('[data-tab=studio]').click()">
+        <button type="button" class="feature-chip" onclick="document.querySelector('[data-tab=studio]').click()">
           <span class="f-icon">⚡</span>
-          <div><strong>OpenJutsu V2V</strong><small>Swap en cualquier vídeo</small></div>
+          <div class="f-meta">
+            <strong>OpenJutsu V2V</strong>
+            <small>Swap en cualquier vídeo</small>
+          </div>
         </button>
-        <button class="feature-chip" onclick="document.querySelector('[data-tab=poses]').click()">
+        <button type="button" class="feature-chip" onclick="document.querySelector('[data-tab=poses]').click()">
           <span class="f-icon">🎯</span>
-          <div><strong>1,439 Poses × 5 Ángulos</strong><small>ControlNet &amp; Lookbooks</small></div>
+          <div class="f-meta">
+            <strong>1,439 Poses × 5 Ángulos</strong>
+            <small>ControlNet &amp; Lookbooks</small>
+          </div>
         </button>
-        <button class="feature-chip" onclick="document.querySelector('[data-tab=reels]').click()">
+        <button type="button" class="feature-chip" onclick="document.querySelector('[data-tab=reels]').click()">
           <span class="f-icon">🧠</span>
-          <div><strong>Bandit Bayesiano</strong><small>22 Ganchos × 8 Marcos</small></div>
+          <div class="f-meta">
+            <strong>Bandit Bayesiano</strong>
+            <small>22 Ganchos × 8 Marcos</small>
+          </div>
         </button>
-        <button class="feature-chip" onclick="document.querySelector('[data-tab=engines]').click()">
+        <button type="button" class="feature-chip" onclick="document.querySelector('[data-tab=engines]').click()">
           <span class="f-icon">🚀</span>
-          <div><strong>Clúster Dual-T4 &amp; VPS</strong><small>34 Datasets Kaggle + Oracle</small></div>
+          <div class="f-meta">
+            <strong>Clúster Dual-T4 &amp; VPS</strong>
+            <small>34 Datasets Kaggle + Oracle</small>
+          </div>
         </button>
       </div>
     </div>
   </section>
 
-  <nav class="tabs-wrap">
+  <!-- Navigation Tabs -->
+  <nav class="tabs-wrap" aria-label="Secciones del estudio">
     <div class="tabs">
-      <button class="tab active" data-tab="studio"><span class="tab-num">01</span> Laboratorio &amp; OpenJutsu</button>
-      <button class="tab" data-tab="campaigns"><span class="tab-num">02</span> Fábrica Masiva A/B</button>
-      <button class="tab" data-tab="reels"><span class="tab-num">03</span> Galería Reels &amp; Bandit</button>
-      <button class="tab" data-tab="personas"><span class="tab-num">04</span> AI Influencers</button>
-      <button class="tab" data-tab="products"><span class="tab-num">05</span> Catálogo &amp; Shopify</button>
-      <button class="tab" data-tab="poses"><span class="tab-num">06</span> Director de Poses (1,439)</button>
-      <button class="tab" data-tab="engines"><span class="tab-num">07</span> Clúster Kaggle &amp; VPS</button>
+      <button type="button" class="tab active" data-tab="studio"><span class="tab-num">01</span><span>Laboratorio &amp; OpenJutsu</span></button>
+      <button type="button" class="tab" data-tab="campaigns"><span class="tab-num">02</span><span>Fábrica Masiva A/B</span></button>
+      <button type="button" class="tab" data-tab="reels"><span class="tab-num">03</span><span>Galería Reels &amp; Bandit</span></button>
+      <button type="button" class="tab" data-tab="personas"><span class="tab-num">04</span><span>AI Influencers</span></button>
+      <button type="button" class="tab" data-tab="products"><span class="tab-num">05</span><span>Catálogo &amp; Shopify</span></button>
+      <button type="button" class="tab" data-tab="poses"><span class="tab-num">06</span><span>Director de Poses (1,439)</span></button>
+      <button type="button" class="tab" data-tab="engines"><span class="tab-num">07</span><span>Clúster Kaggle &amp; VPS</span></button>
     </div>
   </nav>
 
@@ -106,7 +121,7 @@
             <h2>Generador de Guiones con Estructura Ganadora</h2>
             <p class="muted">Combina el ADN de tu AI Influencer + tu producto + 22 fórmulas de gancho psicológico (0-3s) y 8 estructuras de conversión.</p>
           </div>
-          <div class="form-row">
+          <div class="form-row form-cols-2">
             <label>AI Influencer
               <select id="stPersona"></select>
             </label>
@@ -114,7 +129,7 @@
               <select id="stProduct"></select>
             </label>
           </div>
-          <div class="form-row">
+          <div class="form-row form-cols-2">
             <label>Fórmula de Gancho (0-3s)
               <select id="stHook"><option value="">Automático (Bandit Thompson Sampling)</option></select>
             </label>
@@ -122,7 +137,7 @@
               <select id="stFramework"><option value="">Automático (Bandit Thompson Sampling)</option></select>
             </label>
           </div>
-          <div class="form-row">
+          <div class="form-row form-cols-3">
             <label>Ángulo Psicológico
               <select id="stAngle"><option value="">Automático</option></select>
             </label>
@@ -134,14 +149,14 @@
             </label>
           </div>
           <div class="btn-row">
-            <button class="btn btn-primary" id="btnGenScripts">✨ Generar Guiones Ganadores</button>
+            <button type="button" class="btn btn-primary" id="btnGenScripts">✨ Generar Guiones Ganadores</button>
           </div>
 
           <hr class="sep" />
           <h3>Probador de Gancho en Tiempo Real (Hook Scorer 0-100)</h3>
-          <div class="form-row">
+          <div class="input-action-row">
             <input type="text" id="hookTestInput" placeholder="Escribe un gancho de 3 segundos... ej: Para de hacer scroll si sufres con la piel apagada." />
-            <button class="btn btn-glass" id="btnScoreHook" style="max-width:170px">Evaluar Gancho</button>
+            <button type="button" class="btn btn-glass" id="btnScoreHook">Evaluar Gancho</button>
           </div>
           <div id="hookScoreResult" class="score-box hidden"></div>
         </div>
@@ -163,8 +178,8 @@
           <h2>⚡ OpenJutsu: Clonador de Vídeos Virales ("Swap Yourself / AI Influencer into Any Video")</h2>
           <p class="muted">Basado en <code>d3voz/openjutsu</code> (<code>SAM 2.1</code> + <code>Qwen2-VL</code> + <code>Wan 2.2</code>). Sube cualquier vídeo viral de referencia (o deja el campo vacío para usar el vídeo viral de demostración integrado) e inyecta a tu AI Influencer + tu producto de Shopify con seguimiento de movimiento, locución neural y subtítulos dinámicos.</p>
         </div>
-        <div class="form-row">
-          <label>Vídeo de Referencia (MP4 opcional — si lo dejas vacío usa el vídeo viral de prueba)
+        <div class="form-row form-cols-2">
+          <label>Vídeo de Referencia (MP4 opcional — vacío usa el vídeo viral de prueba)
             <input type="file" id="ojVideoFile" accept="video/*" />
           </label>
           <label>Modo de Reemplazo OpenJutsu
@@ -175,16 +190,17 @@
             </select>
           </label>
         </div>
-        <div class="form-row">
-          <label>Guion de Voz para el Vídeo (déjalo vacío para autogenerar un guion ganador del producto seleccionado arriba)
+        <div class="form-row form-cols-script-check">
+          <label>Guion de Voz para el Vídeo (vacío autogenera un guion ganador del producto seleccionado)
             <input type="text" id="ojScriptText" placeholder="Ej: Nadie te dice esto, pero este producto cambió mi rutina desde el primer día. Enlace en mi perfil." />
           </label>
-          <label class="check-inline" style="max-width:290px">
-            <input type="checkbox" id="ojKeepAudio" /> Conservar audio original del vídeo
+          <label class="check-inline">
+            <input type="checkbox" id="ojKeepAudio" />
+            <span>Conservar audio original del vídeo</span>
           </label>
         </div>
         <div class="btn-row">
-          <button class="btn btn-primary" id="btnRunOpenjutsu">⚡ Ejecutar OpenJutsu Video Swap (MP4)</button>
+          <button type="button" class="btn btn-primary" id="btnRunOpenjutsu">⚡ Ejecutar OpenJutsu Video Swap (MP4)</button>
         </div>
       </div>
 
@@ -194,7 +210,7 @@
             <span class="section-tag">PIPELINE DE CODIFICACIÓN 1080×1920@30FPS</span>
             <h2>Cola de Renderizado en Vivo</h2>
           </div>
-          <button class="btn btn-sm btn-glass" id="btnRefreshJobs">↻ Actualizar Cola</button>
+          <button type="button" class="btn btn-sm btn-glass" id="btnRefreshJobs">↻ Actualizar Cola</button>
         </div>
         <div id="jobsLiveList" class="stack mt"></div>
       </div>
@@ -212,7 +228,7 @@
           <label>Nombre de la Campaña
             <input type="text" id="cmpName" value="Campaña Viral Q4" />
           </label>
-          <div class="form-row">
+          <div class="form-row form-cols-2">
             <div>
               <label>Selecciona Productos</label>
               <div id="cmpProducts" class="check-list"></div>
@@ -222,19 +238,19 @@
               <div id="cmpPersonas" class="check-list"></div>
             </div>
           </div>
-          <div class="form-row">
+          <div class="form-row form-cols-3">
             <label>Variantes por combinación
               <input type="number" id="cmpVariants" value="2" min="1" max="10" />
             </label>
             <label>Duración objetivo (s)
               <input type="number" id="cmpSeconds" value="24" min="10" max="75" />
             </label>
-            <label>Ratio Exploración vs Explotación (0 = explota, 1 = explora)
+            <label>Exploración vs Explotación (0–1)
               <input type="number" id="cmpExplore" value="0.35" step="0.05" min="0" max="1" />
             </label>
           </div>
           <div class="btn-row">
-            <button class="btn btn-primary" id="btnLaunchCampaign">🚀 Lanzar Producción Masiva de Reels</button>
+            <button type="button" class="btn btn-primary" id="btnLaunchCampaign">🚀 Lanzar Producción Masiva de Reels</button>
           </div>
         </div>
 
@@ -255,11 +271,11 @@
           <div>
             <span class="section-tag">OPTIMIZACIÓN DE CONVERSIÓN EN TIEMPO REAL</span>
             <h2>Cerebro Bayesiano (Thompson Sampling Bandit)</h2>
-            <p class="muted">Aprende automáticamente qué ganchos, estructuras e influencers generan más retención a 3s, clics y ventas.</p>
+            <p class="muted" style="margin-bottom:0">Aprende automáticamente qué ganchos, estructuras e influencers generan más retención a 3s, clics y ventas.</p>
           </div>
-          <div class="btn-row">
-            <button class="btn btn-accent" id="btnSimulateBandit">📈 Simular Métricas de TikTok/Reels</button>
-            <button class="btn btn-sm btn-glass" id="btnRefreshBandit">↻ Actualizar Ranking</button>
+          <div class="btn-row" style="margin-top:0">
+            <button type="button" class="btn btn-accent" id="btnSimulateBandit">📈 Simular Métricas de TikTok/Reels</button>
+            <button type="button" class="btn btn-sm btn-glass" id="btnRefreshBandit">↻ Actualizar Ranking</button>
           </div>
         </div>
         <div id="banditBoards" class="grid-3 mt"></div>
@@ -271,7 +287,7 @@
             <span class="section-tag">MONITOR DE SALIDA 9:16 H.264/AAC</span>
             <h2>Galería de Reels Generados (9:16 MP4)</h2>
           </div>
-          <button class="btn btn-sm btn-glass" id="btnRefreshVariants">↻ Actualizar Galería</button>
+          <button type="button" class="btn btn-sm btn-glass" id="btnRefreshVariants">↻ Actualizar Galería</button>
         </div>
         <div id="variantsGrid" class="reels-grid mt"></div>
       </div>
@@ -285,7 +301,7 @@
             <span class="section-tag">ADN DE IDENTIDAD Y VOZ NEURAL</span>
             <h2>Crear / Editar AI Influencer</h2>
           </div>
-          <div class="form-row">
+          <div class="form-row form-cols-2">
             <label>Nombre
               <input type="text" id="perName" placeholder="Ej: Camila Soler" />
             </label>
@@ -293,7 +309,7 @@
               <input type="text" id="perNiche" placeholder="Ej: moda urbana y accesorios" />
             </label>
           </div>
-          <div class="form-row">
+          <div class="form-row form-cols-2">
             <label>Voz Neural (edge-tts)
               <select id="perVoice">
                 <option value="es-MX-DaliaNeural">es-MX-DaliaNeural (Femenina MX)</option>
@@ -320,7 +336,7 @@
           <label>Prompt de apariencia (para ComfyUI PuLID / InstantID / Flux)
             <input type="text" id="perPrompt" placeholder="25yo woman, natural skin texture, studio lighting, vertical UGC" />
           </label>
-          <div class="form-row">
+          <div class="form-row form-cols-2">
             <label>Color de marca
               <input type="color" id="perBrand" value="#FF3D6E" />
             </label>
@@ -328,7 +344,9 @@
               <input type="color" id="perAccent" value="#FFE45E" />
             </label>
           </div>
-          <button class="btn btn-primary" id="btnCreatePersona">✨ Guardar AI Influencer</button>
+          <div class="btn-row">
+            <button type="button" class="btn btn-primary" id="btnCreatePersona">✨ Guardar AI Influencer</button>
+          </div>
         </div>
 
         <div class="card">
@@ -350,16 +368,16 @@
             <h2>Importador Directo de Tiendas Shopify</h2>
             <p class="muted">Introduce el dominio de cualquier tienda Shopify o la URL de un producto. Descarga fotos, precios, descuentos y beneficios automáticamente sin requerir API token en tiendas públicas.</p>
           </div>
-          <div class="form-row">
+          <div class="input-action-row">
             <input type="text" id="shopDomain" placeholder="Ej: gymshark.com o https://tienda.com/products/mi-producto" />
-            <input type="number" id="shopLimit" value="5" min="1" max="30" style="max-width:110px" />
+            <input type="number" id="shopLimit" value="5" min="1" max="30" class="input-narrow" title="Cantidad máxima de productos" />
+            <button type="button" class="btn btn-primary" id="btnImportShopify">🛍️ Importar</button>
           </div>
-          <button class="btn btn-primary" id="btnImportShopify">🛍️ Importar de Shopify</button>
           <div id="shopifyMsg" class="mt muted"></div>
 
           <hr class="sep" />
           <h3>Añadir Producto Físico o Digital Manualmente</h3>
-          <div class="form-row">
+          <div class="form-row form-cols-2">
             <label>Título del Producto
               <input type="text" id="prdTitle" placeholder="Ej: Corrector de Postura Inteligente" />
             </label>
@@ -367,7 +385,7 @@
               <input type="text" id="prdType" placeholder="Ej: correctores de postura" />
             </label>
           </div>
-          <div class="form-row">
+          <div class="form-row form-cols-3">
             <label>Precio Oferta
               <input type="number" id="prdPrice" value="29.90" step="0.1" />
             </label>
@@ -384,15 +402,18 @@
           <label>Dolores que resuelve (uno por línea)
             <textarea id="prdPains" rows="2" placeholder="el dolor de espalda tras horas frente al ordenador"></textarea>
           </label>
-          <div class="form-row">
+          <div class="form-row form-cols-script-check">
             <label>Público objetivo
               <input type="text" id="prdAudience" placeholder="alguien que trabaja sentado todo el día" />
             </label>
             <label class="check-inline">
-              <input type="checkbox" id="prdWearable" /> Prenda vestible (Activa Virtual Try-On IDM-VTON)
+              <input type="checkbox" id="prdWearable" />
+              <span>Prenda vestible (Virtual Try-On IDM-VTON)</span>
             </label>
           </div>
-          <button class="btn btn-primary" id="btnCreateProduct">Guardar Producto</button>
+          <div class="btn-row">
+            <button type="button" class="btn btn-primary" id="btnCreateProduct">Guardar Producto</button>
+          </div>
         </div>
 
         <div class="card">
@@ -417,7 +438,7 @@
           <span class="badge badge-score" id="poseCountBadge">1,439 poses</span>
         </div>
 
-        <div class="form-row mt">
+        <div class="form-row form-cols-4 mt">
           <label>Sistema Corporal
             <select id="poseSystem">
               <option value="">Todos los sistemas (1,439 poses)</option>
@@ -429,7 +450,7 @@
           </label>
           <label>Ángulo de Cámara
             <select id="poseAngle">
-              <option value="front">Frente — Contacto Directo (Vista por Grupo)</option>
+              <option value="front">Frente — Contacto Directo (Por Grupo)</option>
               <option value="">Todos los 5 ángulos desglosados</option>
               <option value="diag">Diagonal 3/4 — Lookbook Moda</option>
               <option value="side">Perfil Lateral — Silueta</option>
@@ -448,7 +469,7 @@
               <option value="hero">Plano Heroico</option>
             </select>
           </label>
-          <label>Buscar Pose (ej. corazón, sentada, P001, mirada...)
+          <label>Buscar Pose (ej. corazón, sentada, P001...)
             <input type="text" id="poseQuery" placeholder="Ej: corazón, señalando, cintura, P010..." />
           </label>
         </div>
@@ -462,10 +483,10 @@
             <h3 id="poseInspTitle">Inspector Multi-Ángulo (5 Cámaras)</h3>
             <p class="muted" id="poseInspSub" style="margin:2px 0 0">Selecciona tu Influencer y Producto de Shopify para renderizar un Reel 9:16 recorriendo los 5 ángulos de esta pose.</p>
           </div>
-          <button class="btn btn-sm btn-glass" id="btnClosePoseInspector">✕ Cerrar Inspector</button>
+          <button type="button" class="btn btn-sm btn-glass" id="btnClosePoseInspector">✕ Cerrar Inspector</button>
         </div>
         <div id="poseInspectorAngles" class="grid-5 mt"></div>
-        <div class="form-row mt">
+        <div class="form-row form-cols-3 mt">
           <label>AI Influencer para el Lookbook
             <select id="posePersonaSel"></select>
           </label>
@@ -477,7 +498,7 @@
           </label>
         </div>
         <div class="btn-row">
-          <button class="btn btn-primary" id="btnRenderPoseLookbook">🎬 Renderizar Reel Lookbook 5 Ángulos (1080×1920 MP4)</button>
+          <button type="button" class="btn btn-primary" id="btnRenderPoseLookbook">🎬 Renderizar Reel Lookbook 5 Ángulos (1080×1920 MP4)</button>
           <span class="muted" id="poseRenderMsg" style="margin:0"></span>
         </div>
       </div>
@@ -488,10 +509,10 @@
             <span class="section-tag">CATÁLOGO INTERACTIVO 900×1200 PNG</span>
             <h3>Galería de Referencia ControlNet / OpenPose</h3>
           </div>
-          <div class="btn-row">
-            <button class="btn btn-sm btn-glass" id="btnPosePrev">← Anteriores</button>
+          <div class="btn-row" style="margin-top:0">
+            <button type="button" class="btn btn-sm btn-glass" id="btnPosePrev">← Anteriores</button>
             <span class="pill" id="posePageInfo">Página 1</span>
-            <button class="btn btn-sm btn-glass" id="btnPoseNext">Siguientes →</button>
+            <button type="button" class="btn btn-sm btn-glass" id="btnPoseNext">Siguientes →</button>
           </div>
         </div>
         <div id="posesGrid" class="grid-4"></div>
@@ -507,21 +528,19 @@
             <h2>🚀 Clúster Multi-GPU Kaggle &amp; Conector de Túnel en Caliente</h2>
             <p class="muted">Despliega con 1 clic el cuaderno GPU <code>viralforge-openjutsu-gpu</code> (monta automáticamente <code>SAM 2.1</code>, <code>Qwen2-VL</code>, <code>FLUX.1 Schnell</code>, <code>ControlNet Union Pro 2</code>, <code>DWPose</code>, <code>AI Influencer LoRAs</code>, <code>Qwen-Image-Edit 2511</code>, <code>Wan 2.2 Video</code> y <code>MuseTalk</code> desde <code>juanxaviercasa/*</code>) y conecta la URL de Cloudflare Tunnel sin reiniciar.</p>
           </div>
-          <div class="form-row">
-            <label>Cuenta de Kaggle (detectadas en <code>ABDM/kaggle_accounts</code>)
-              <select id="kgAccountSelect"></select>
-            </label>
-          </div>
+          <label>Cuenta de Kaggle (detectadas en <code>ABDM/kaggle_accounts</code>)
+            <select id="kgAccountSelect"></select>
+          </label>
           <div class="btn-row">
-            <button class="btn btn-primary" id="btnPushKaggle">🚀 Subir Cuaderno GPU OpenJutsu a Kaggle</button>
+            <button type="button" class="btn btn-primary" id="btnPushKaggle">🚀 Subir Cuaderno GPU OpenJutsu a Kaggle</button>
           </div>
           <div id="kgPushMsg" class="mt muted"></div>
 
           <hr class="sep" />
           <h3>Conectar URL de Túnel GPU en Caliente (Cloudflare / Kaggle / VPS)</h3>
-          <div class="form-row">
+          <div class="input-action-row">
             <input type="text" id="kgTunnelUrl" placeholder="https://xxxx-xxxx.trycloudflare.com" />
-            <button class="btn btn-accent" id="btnConnectTunnel" style="max-width:210px">Conectar Nodo GPU</button>
+            <button type="button" class="btn btn-accent" id="btnConnectTunnel">Conectar Nodo GPU</button>
           </div>
           <div id="kgConnectMsg" class="mt muted"></div>
         </div>
@@ -532,7 +551,7 @@
               <span class="section-tag">INFRAESTRUCTURA CLOUD 24/7</span>
               <h2>☁️ Estado de Instancias Oracle Cloud VPS (SSH)</h2>
             </div>
-            <button class="btn btn-sm btn-glass" id="btnCheckOracle">↻ Verificar VPS</button>
+            <button type="button" class="btn btn-sm btn-glass" id="btnCheckOracle">↻ Verificar VPS</button>
           </div>
           <p class="muted">Nodo principal <code>forjavia-pilot</code> (<code>147.15.95.128</code>) ejecutando <code>viralforge.service</code> y <code>viralforge-tunnel.service</code> en arquitectura ARM64.</p>
           <div id="oracleStatusBox" class="stack mt"></div>
@@ -568,13 +587,13 @@
         </div>
         <div class="btn-row" style="margin:0">
           <a id="lbDownload" class="btn btn-sm btn-primary" href="#" target="_blank" rel="noopener">⬇️ Abrir PNG Original</a>
-          <button class="btn btn-sm btn-glass" onclick="closePoseLightbox()">✕ Cerrar</button>
+          <button type="button" class="btn btn-sm btn-glass" onclick="closePoseLightbox()">✕ Cerrar</button>
         </div>
       </div>
       <img id="lbImage" src="" alt="Pose 900x1200" />
     </div>
   </div>
 
-  <script src="/static/app.js"></script>
+  <script src="/static/app.js?v=2.1"></script>
 </body>
 </html>
