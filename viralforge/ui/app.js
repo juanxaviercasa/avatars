@@ -85,6 +85,7 @@ async function loadAll() {
   renderKaggleCatalog(kg);
   checkOracleStatus();
   loadPosesCatalog();
+  loadCostumesCatalog();
 }
 
 function renderStats(status) {
@@ -106,6 +107,8 @@ function renderSelectors() {
   const posePrd = document.getElementById("poseProductSel");
   if (posePer) posePer.innerHTML = perOpts;
   if (posePrd) posePrd.innerHTML = prdOpts;
+  const costPer = document.getElementById("costumePersonaSel");
+  if (costPer) costPer.innerHTML = perOpts;
 
   const hookSel = document.getElementById("stHook");
   hookSel.innerHTML = `<option value="">Automático (Bandit Thompson Sampling)</option>` +
@@ -697,6 +700,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   initEarshotAndCinetic();
+  initCostumesAndOrchestrator();
 });
 
 // ---------------------------------------------------------------------- Funciones del Director de Poses (1,439 Poses)
@@ -1080,4 +1084,272 @@ async function generateAndRenderCineticPlan() {
     </div>
   `).join("");
 }
+
+// ---------------------------------------------------------------------- Armario Virtual IA (1,407 Outfits) & Orquestador Maestro 1-Clic
+async function loadCostumesCatalog() {
+  if (state.costumesAll && state.costumesAll.length) return;
+  try {
+    const res = await fetch("/static/costumes_1407.json");
+    if (res.ok) {
+      state.costumesAll = await res.json();
+    } else {
+      const apiRes = await api("/api/costumes?limit=300");
+      state.costumesAll = apiRes.items || [];
+    }
+  } catch (_) {
+    try {
+      const apiRes = await api("/api/costumes?limit=300");
+      state.costumesAll = apiRes.items || [];
+    } catch (__) {
+      state.costumesAll = [];
+    }
+  }
+  state.costumePage = 0;
+  populateOrchestratorSelectors();
+  filterAndRenderCostumes();
+}
+
+function populateOrchestratorSelectors() {
+  const cSel = document.getElementById("orchCostumeSel");
+  if (cSel && state.costumesAll && state.costumesAll.length) {
+    const sample = state.costumesAll.filter((_, idx) => idx % 28 === 0).slice(0, 45);
+    cSel.innerHTML = `
+      <option value="auto">🤖 Automático (AI Auto-Stylist según Influencer/Producto)</option>
+      <option value="none">Mantener vestuario base de la Influencer</option>
+      ${sample.map((c) => `<option value="${c.id}">${c.id} — ${c.title_es}</option>`).join("")}
+    `;
+  }
+}
+
+function initCostumesAndOrchestrator() {
+  loadCostumesCatalog();
+
+  for (const id of ["costumeCollection", "costumeGarment", "costumeQuery"]) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("input", () => { state.costumePage = 0; filterAndRenderCostumes(); });
+      el.addEventListener("change", () => { state.costumePage = 0; filterAndRenderCostumes(); });
+    }
+  }
+
+  const bcPrev = document.getElementById("btnCostumePrev");
+  const bcNext = document.getElementById("btnCostumeNext");
+  if (bcPrev) bcPrev.addEventListener("click", () => {
+    if ((state.costumePage || 0) > 0) { state.costumePage--; filterAndRenderCostumes(); }
+  });
+  if (bcNext) bcNext.addEventListener("click", () => {
+    state.costumePage = (state.costumePage || 0) + 1;
+    filterAndRenderCostumes();
+  });
+
+  const btnOrch = document.getElementById("btnRunAutoOrchestrator");
+  if (btnOrch) btnOrch.addEventListener("click", async () => {
+    const persona_id = document.getElementById("stPersona")?.value || (state.personas[0]?.id ?? "");
+    const product_id = document.getElementById("stProduct")?.value || (state.products[0]?.id ?? "");
+    const costume_id = document.getElementById("orchCostumeSel")?.value || "auto";
+    const group_id = document.getElementById("orchPoseSel")?.value || "auto";
+    const kit_name = document.getElementById("orchKitSel")?.value || "hype";
+    const script_text = document.getElementById("orchCustomScript")?.value.trim() || "";
+    const msg = document.getElementById("orchStatusMsg");
+
+    btnOrch.disabled = true;
+    if (msg) msg.textContent = "🤖 Emparejando Outfit 1,407 + 5 Ángulos ControlNet + Guion Bandit + Earshot SFX...";
+    try {
+      await api("/api/poses/lookbook-reel", {
+        method: "POST",
+        body: JSON.stringify({ group_id, persona_id, product_id, costume_id, kit_name, script_text }),
+      });
+      if (msg) msg.textContent = "✅ Reel Orquestado encolado con éxito. Renderizando en vivo abajo...";
+      await refreshJobsAndVariants();
+      document.getElementById("jobsLiveList")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    } catch (e) {
+      if (msg) msg.textContent = `Error: ${e.message}`;
+    } finally {
+      btnOrch.disabled = false;
+    }
+  });
+
+  const btnPrev = document.getElementById("btnPreviewAutoMatch");
+  if (btnPrev) btnPrev.addEventListener("click", async () => {
+    const box = document.getElementById("orchPreviewBox");
+    if (!box) return;
+    const persona_id = document.getElementById("stPersona")?.value || (state.personas[0]?.id ?? "");
+    const product_id = document.getElementById("stProduct")?.value || (state.products[0]?.id ?? "");
+    box.classList.remove("hidden");
+    box.innerHTML = `<p class="muted">Calculando combinación óptima IA...</p>`;
+
+    let data = null;
+    try {
+      data = await api("/api/costumes/auto-select", {
+        method: "POST",
+        body: JSON.stringify({ persona_id, product_id }),
+      });
+    } catch (_) {
+      const cAll = state.costumesAll || [];
+      const pAll = state.posesAll || [];
+      const costume = cAll[Math.floor(Math.random() * Math.max(1, Math.min(80, cAll.length)))] || null;
+      const poseGroup = pAll[0]?.group_id || "full_std_P001";
+      const poseAngles = pAll.filter((x) => x.group_id === poseGroup).slice(0, 5);
+      data = { costume, pose_group: poseGroup, pose_angles: poseAngles };
+    }
+
+    const c = data.costume;
+    const angles = data.pose_angles || [];
+    if (c) {
+      const sel = document.getElementById("orchCostumeSel");
+      if (sel && ![...sel.options].some((o) => o.value === c.id)) {
+        sel.insertAdjacentHTML("beforeend", `<option value="${c.id}">${c.id} — ${c.title_es}</option>`);
+      }
+    }
+
+    box.innerHTML = `
+      <div class="item-card">
+        <div class="row-between">
+          <strong>🎯 Selección Automática del Orquestador IA</strong>
+          <span class="badge badge-score">Pose: ${data.pose_group} • Outfit: ${c ? c.id : "auto"}</span>
+        </div>
+        <div class="grid-2 mt">
+          ${c ? `
+          <div style="display:flex;gap:12px;align-items:center">
+            <img src="${c.thumb_url}" onerror="this.onerror=null;this.src='${c.fallback_thumb_url}'" style="width:84px;height:126px;object-fit:cover;border-radius:10px;border:1px solid rgba(255,255,255,0.15);cursor:pointer" onclick="openCostumeLightbox('${c.id}')" alt="${c.id}" />
+            <div>
+              <span class="badge badge-hook">${c.collection_es}</span>
+              <strong style="display:block;margin-top:4px;font-size:13.5px">${c.title_es}</strong>
+              <code style="font-size:11px;color:#38bdf8;display:block;margin-top:4px">${c.prompt_en}</code>
+            </div>
+          </div>` : ""}
+          <div>
+            <small class="muted" style="display:block;margin-bottom:6px">Secuencia sincronizada de 5 cámaras ControlNet (${data.pose_group}):</small>
+            <div style="display:flex;gap:8px;overflow-x:auto">
+              ${angles.map((a) => `
+                <img src="${a.thumb_url}" onerror="this.onerror=null;this.src='${a.fallback_thumb_url}'" title="${a.angle_es}" style="width:58px;height:78px;object-fit:cover;border-radius:8px;border:1px solid rgba(56,189,248,0.35)" />
+              `).join("")}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function filterAndRenderCostumes() {
+  const all = state.costumesAll || [];
+  const grid = document.getElementById("costumesGrid");
+  if (!grid) return;
+
+  const col = document.getElementById("costumeCollection")?.value || "";
+  const gar = document.getElementById("costumeGarment")?.value || "";
+  const q = (document.getElementById("costumeQuery")?.value || "").trim().toLowerCase();
+
+  const filtered = all.filter((c) => {
+    if (col && c.collection !== col) return false;
+    if (gar && c.garment_type !== gar) return false;
+    if (q) {
+      const hay = `${c.id} ${c.title_es} ${c.prompt_en} ${c.collection_es} ${c.garment_es} ${(c.tags_es || []).join(" ")}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  const pageSize = 32;
+  const maxPage = Math.max(0, Math.ceil(filtered.length / pageSize) - 1);
+  if ((state.costumePage || 0) > maxPage) state.costumePage = maxPage;
+  const page = state.costumePage || 0;
+  const slice = filtered.slice(page * pageSize, (page + 1) * pageSize);
+
+  const badge = document.getElementById("costumeCountBadge");
+  if (badge) badge.textContent = `${filtered.length} outfits filtrados (de ${all.length})`;
+  const pageInfo = document.getElementById("costumePageInfo");
+  if (pageInfo) pageInfo.textContent = `Página ${page + 1} de ${maxPage + 1}`;
+
+  if (!slice.length) {
+    grid.innerHTML = `<p class="muted">No se encontraron outfits con esos criterios.</p>`;
+    return;
+  }
+
+  grid.innerHTML = slice.map((c) => `
+    <div class="pose-card">
+      <img class="pose-img" loading="lazy" src="${c.thumb_url}" onerror="this.onerror=null;this.src='${c.fallback_thumb_url}'" onclick="openCostumeLightbox('${c.id}')" alt="${c.title_es}" />
+      <div class="pose-body">
+        <div class="row-between">
+          <span class="badge badge-hook">${c.id}</span>
+          <span class="badge badge-score">${c.collection.toUpperCase()}</span>
+        </div>
+        <strong style="font-size:13px">${c.title_es}</strong>
+        <div class="muted" style="margin:0;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${c.prompt_en}">${c.prompt_en}</div>
+        <div class="btn-row" style="margin-top:6px">
+          <button type="button" class="btn btn-sm btn-primary" onclick="launchReelWithCostumeUI('${c.id}')">🎬 Reel 5 Ángulos</button>
+          <button type="button" class="btn btn-sm btn-glass" onclick="applyCostumeToPersonaUI('${c.id}')">👗 Vestir IA</button>
+          <button type="button" class="btn btn-sm btn-glass" onclick="importCostumeAsProductUI('${c.id}')">🛍️ A Producto</button>
+        </div>
+      </div>
+    </div>
+  `).join("");
+}
+
+window.openCostumeLightbox = function (costumeId) {
+  const c = (state.costumesAll || []).find((x) => x.id === costumeId);
+  if (!c) return;
+  const lb = document.getElementById("poseLightbox");
+  if (!lb) return;
+  document.getElementById("lbTitle").textContent = `${c.id} • ${c.title_es}`;
+  document.getElementById("lbSub").textContent = `${c.collection_es} — Tokens: ${c.prompt_en} (1366×2048 Studio PNG)`;
+  const img = document.getElementById("lbImage");
+  img.src = c.preview_url || c.image_url;
+  img.onerror = () => { img.onerror = null; img.src = c.fallback_preview_url || c.fallback_image_url; };
+  document.getElementById("lbDownload").href = c.image_url;
+  lb.classList.remove("hidden");
+};
+
+window.applyCostumeToPersonaUI = async function (costumeId) {
+  const persona_id = document.getElementById("costumePersonaSel")?.value || document.getElementById("stPersona")?.value || (state.personas[0]?.id ?? "");
+  const msg = document.getElementById("costumeActionMsg");
+  if (msg) msg.textContent = `👗 Aplicando Outfit ${costumeId} a la AI Influencer...`;
+  try {
+    await api("/api/costumes/apply-to-persona", {
+      method: "POST",
+      body: JSON.stringify({ persona_id, costume_id: costumeId }),
+    });
+    if (msg) msg.textContent = `✅ Outfit ${costumeId} aplicado a la AI Influencer (retrato y prompt actualizados).`;
+    await refreshBootstrap();
+  } catch (e) {
+    if (msg) msg.textContent = `Error aplicando outfit: ${e.message}`;
+  }
+};
+
+window.launchReelWithCostumeUI = async function (costumeId) {
+  const persona_id = document.getElementById("costumePersonaSel")?.value || document.getElementById("stPersona")?.value || (state.personas[0]?.id ?? "");
+  const product_id = document.getElementById("stProduct")?.value || (state.products[0]?.id ?? "");
+  const msg = document.getElementById("costumeActionMsg");
+  if (msg) msg.textContent = `🎬 Encolando Reel Lookbook 5 Ángulos con Outfit ${costumeId}...`;
+  try {
+    await api("/api/poses/lookbook-reel", {
+      method: "POST",
+      body: JSON.stringify({ group_id: "auto", persona_id, product_id, costume_id: costumeId, kit_name: "hype" }),
+    });
+    if (msg) msg.textContent = `✅ Reel con Outfit ${costumeId} encolado. Abriendo Estudio...`;
+    await refreshJobsAndVariants();
+    setTimeout(() => {
+      document.querySelector('[data-tab="studio"]')?.click();
+    }, 550);
+  } catch (e) {
+    if (msg) msg.textContent = `Error: ${e.message}`;
+  }
+};
+
+window.importCostumeAsProductUI = async function (costumeId) {
+  const msg = document.getElementById("costumeActionMsg");
+  if (msg) msg.textContent = `🛍️ Importando Outfit ${costumeId} como producto al catálogo...`;
+  try {
+    const prod = await api("/api/costumes/import-product", {
+      method: "POST",
+      body: JSON.stringify({ costume_id: costumeId, price: "49.90 USD" }),
+    });
+    if (msg) msg.textContent = `✅ Importado al catálogo: "${prod.title || prod.name}".`;
+    await refreshBootstrap();
+  } catch (e) {
+    if (msg) msg.textContent = `Error: ${e.message}`;
+  }
+};
+
 

@@ -351,6 +351,23 @@ def get_pose_group(group_id: str) -> list[dict[str, Any]]:
     return matches
 
 
+def auto_select_pose_group(persona: Persona | None = None, product: Product | None = None) -> str:
+    """Selecciona automáticamente el mejor grupo de 5 ángulos según la categoría del producto y estilo de la influencer."""
+    import random
+    catalog = ensure_poses_catalog()
+    prod_txt = f"{product.title if product else ''} {product.product_type if product else ''} {product.description if product else ''}".lower()
+    target_sys = "full_std"
+    if any(w in prod_txt for w in ("serum", "facial", "crema", "skincare", "labial", "ojos", "rostro", "gadget", "luz")):
+        target_sys = "upper"
+    elif any(w in prod_txt for w in ("fiesta", "vestido", "noche", "glam", "lujo", "perfume")):
+        target_sys = "full_sexy"
+
+    groups = sorted({p["group_id"] for p in catalog if p["system"] == target_sys})
+    if not groups:
+        groups = sorted({p["group_id"] for p in catalog})
+    return random.choice(groups[:25]) if groups else "full_std_P001"
+
+
 def fetch_pose_reference_image(pose: dict[str, Any], cache_dir: Path) -> Image.Image:
     """Descarga y cachea la lámina PNG 900×1200 de la pose (con fallback a GitHub Raw o silueta sintética)."""
     cache_dir.mkdir(parents=True, exist_ok=True)
@@ -393,6 +410,8 @@ def _compose_angle_frame(
     product: Product,
     w: int,
     h: int,
+    costume_im: Image.Image | None = None,
+    costume_meta: dict[str, Any] | None = None,
 ) -> Image.Image:
     """Compone un fotograma de estudio 1080×1920 guiado por el ángulo y la lámina de pose ControlNet."""
     angle = pose_meta.get("angle", "front")
@@ -444,6 +463,15 @@ def _compose_angle_frame(
         dr.rounded_rectangle((bx - 6, by - 6, bx + pr_sz + 6, by + pr_sz + 6), radius=22, fill=(255, 255, 255), outline=(124, 92, 255), width=4)
         canvas.paste(pr_card, (bx, by))
 
+    # Tarjeta HUD de Outfit / Armario IA (1,407 Costumes) debajo del blueprint de pose
+    if costume_im is not None and costume_meta is not None:
+        cw, ch = 220, 310
+        co_card = ImageOps.fit(costume_im.convert("RGB"), (cw, ch), Image.Resampling.LANCZOS)
+        cx, cy = w - cw - 34, 530
+        dr.rounded_rectangle((cx - 6, cy - 6, cx + cw + 6, cy + ch + 44), radius=20, fill=(15, 19, 32), outline=(244, 63, 94), width=3)
+        canvas.paste(co_card, (cx, cy))
+        dr.text((cx + 10, cy + ch + 8), f"OUTFIT {costume_meta['id']}", font=f_small, fill=(251, 113, 133))
+
     # Banner superior de cámara Multi-Ángulo
     dr.rounded_rectangle((34, 42, 680, 108), radius=18, fill=(16, 20, 35))
     dr.text((54, 58), f"🎥 {pose_meta['angle_es'].upper()} — {pose_meta['name_es'][:28]}", font=f_badge, fill=(255, 255, 255))
@@ -457,17 +485,40 @@ def render_multi_angle_pose_reel(
     product: Product,
     out_dir: Path,
     custom_script: str = "",
+    costume_id: str = "auto",
+    kit_name: str = "hype",
     progress_cb=None,
 ) -> dict[str, Any]:
-    """Renderiza un Reel Lookbook 9:16 (`1080×1920@30fps`) recorriendo los 5 ángulos de una pose."""
+    """Renderiza un Reel Lookbook 9:16 (`1080×1920@30fps`) recorriendo los 5 ángulos de una pose + Outfit 1,407."""
+    from . import costumes as costumes_mod
+
     out_dir.mkdir(parents=True, exist_ok=True)
+    if not group_id or group_id == "auto":
+        group_id = auto_select_pose_group(persona, product)
+
     poses = get_pose_group(group_id)
     if not poses:
         catalog = ensure_poses_catalog()
         poses = catalog[:5]
 
+    costume_meta: dict[str, Any] | None = None
+    costume_im: Image.Image | None = None
+    if costume_id and costume_id != "none":
+        try:
+            costume_meta = (
+                costumes_mod.auto_select_costume(persona=persona, product=product)
+                if costume_id == "auto"
+                else costumes_mod.get_costume(costume_id)
+            )
+            if costume_meta:
+                c_path = costumes_mod.download_costume_image(costume_meta["id"], high_res=False)
+                costume_im = Image.open(c_path).convert("RGB")
+        except Exception:
+            costume_meta = None
+            costume_im = None
+
     if progress_cb:
-        progress_cb("pose_blueprint", 0.15, f"Descargando {len(poses)} ángulos ControlNet para {group_id}...")
+        progress_cb("pose_blueprint", 0.15, f"Descargando {len(poses)} ángulos ControlNet ({group_id}) + Outfit ({costume_meta['id'] if costume_meta else 'base'})...")
 
     # 1. Locución con marcas de tiempo
     default_text = (
@@ -502,7 +553,10 @@ def render_multi_angle_pose_reel(
     angle_frames: list[np.ndarray] = []
     for p in poses:
         p_im = fetch_pose_reference_image(p, pose_cache)
-        frame_im = _compose_angle_frame(avatar_im, prod_im, p_im, p, persona, product, w, h)
+        frame_im = _compose_angle_frame(
+            avatar_im, prod_im, p_im, p, persona, product, w, h,
+            costume_im=costume_im, costume_meta=costume_meta,
+        )
         angle_frames.append(np.asarray(frame_im, dtype=np.uint8))
 
     # 2. Pista de audio maestra con SFX en cada cambio de ángulo
@@ -510,7 +564,7 @@ def render_multi_angle_pose_reel(
     beat_starts = [i * seg_dur for i in range(len(angle_frames))]
     pop_times = [b + 0.25 for b in beat_starts]
     master_wav = out_dir / "master_audio.wav"
-    audio_mod.build_mix(voice_wav, master_wav, beat_starts=beat_starts, pop_times=pop_times, sfx=True, kit_name="hype")
+    audio_mod.build_mix(voice_wav, master_wav, beat_starts=beat_starts, pop_times=pop_times, sfx=True, kit_name=kit_name or "hype")
 
     # 3. Codificación FFmpeg a 30fps con zoom suave + subtítulos Hormozi
     out_mp4 = out_dir / "reel.mp4"
@@ -581,4 +635,6 @@ def render_multi_angle_pose_reel(
         "duration": round(duration, 2),
         "angles_rendered": [p["angle_es"] for p in poses],
         "group_id": group_id,
+        "costume_id": costume_meta["id"] if costume_meta else None,
+        "kit_name": kit_name or "hype",
     }

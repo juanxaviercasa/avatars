@@ -1,0 +1,64 @@
+{
+  "name": "ViralForge Auto-Stylist: 1,407 Costume Gallery + Qwen-Image-Edit-2511 + ControlNet Pose",
+  "version": "1.0.0",
+  "nodes": {
+    "1": {
+      "class_type": "CostumeGalleryImage",
+      "inputs": {
+        "costume_id": "SPR-0001",
+        "asset_source": "默认素材",
+        "resize_mode": "等比留边",
+        "width": 1080,
+        "height": 1920,
+        "flip_horizontal": false
+      },
+      "_meta": {
+        "title": "Costume Gallery 1,407 Reference (Stone-dielianhua/ComfyUI_Costume-Gallery_ZH)"
+      }
+    },
+    "2": {
+      "class_type": "CostumeGalleryPrompt",
+      "inputs": {
+        "template": "Photorealistic studio portrait of {persona_prompt}, wearing {en}, commercial fashion photography, 85mm f/1.4",
+        "en_keywords": ["1", 2],
+        "zh_keywords": ["1", 3],
+        "costume_id": ["1", 1]
+      },
+      "_meta": {
+        "title": "Bilingual Costume Prompt Builder"
+      }
+    },
+    "3": {
+      "class_type": "LoadImage",
+      "inputs": {
+        "image": "persona_reference.jpg"
+      },
+      "_meta": {
+        "title": "AI Influencer Identity Lock Reference"
+      }
+    },
+    "4": {
+      "class_type": "QwenImageEdit2511Node",
+      "inputs": {
+        "subject_image": ["3", 0],
+        "garment_reference": ["1", 0],
+        "prompt": ["2", 0],
+        "denoise": 0.72,
+        "steps": 20
+      },
+      "_meta": {
+        "title": "Qwen-Image-Edit-2511 Virtual Wardrobe Transfer"
+      }
+    },
+    "5": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": ["4", 0],
+        "filename_prefix": "viralforge_costume_tryon"
+      },
+      "_meta": {
+        "title": "Save Styled Influencer Output"
+      }
+    }
+  }
+}

@@ -523,10 +523,12 @@ def api_poses_group(group_id: str) -> dict[str, Any]:
 
 
 class PoseLookbookReq(BaseModel):
-    group_id: str
+    group_id: str = "auto"
     persona_id: str
     product_id: str
     script_text: str = ""
+    costume_id: str = "auto"
+    kit_name: str = "hype"
 
 
 @app.post("/api/poses/lookbook-reel")
@@ -536,8 +538,80 @@ def api_poses_lookbook_reel(req: PoseLookbookReq) -> dict[str, Any]:
         persona_id=req.persona_id,
         product_id=req.product_id,
         script_text=req.script_text,
+        costume_id=req.costume_id,
+        kit_name=req.kit_name,
     )
     return {"variant": variant, "job": job}
+
+
+# ---------------------------------------------------------------------- Armario Virtual IA (1,407 Outfits) & Auto-Estilista
+@app.get("/api/costumes")
+def api_costumes_list(
+    collection: str = "",
+    garment_type: str = "",
+    q: str = "",
+    limit: int = 60,
+    offset: int = 0,
+) -> dict[str, Any]:
+    from . import costumes as costumes_mod
+    return costumes_mod.search_costumes(
+        collection=collection,
+        garment_type=garment_type,
+        q=q,
+        limit=min(300, max(1, limit)),
+        offset=max(0, offset),
+    )
+
+
+class AutoOrchestratePreviewReq(BaseModel):
+    persona_id: str
+    product_id: str
+    collection: str = ""
+
+
+@app.post("/api/costumes/auto-select")
+def api_costumes_auto_select(req: AutoOrchestratePreviewReq) -> dict[str, Any]:
+    from . import cinetic as cinetic_mod, costumes as costumes_mod, poses as poses_mod
+    st = store()
+    per = st.get("personas", req.persona_id, Persona)
+    prod = st.get("products", req.product_id, Product)
+    costume = costumes_mod.auto_select_costume(persona=per, product=prod, collection=req.collection)
+    pose_group = poses_mod.auto_select_pose_group(persona=per, product=prod)
+    plan = cinetic_mod.draw_cinetic_plan(energy="high", kit_name="hype", seconds=15)
+    return {
+        "costume": costume,
+        "pose_group": pose_group,
+        "pose_angles": poses_mod.get_pose_group(pose_group),
+        "cinetic_plan": plan,
+    }
+
+
+class ApplyCostumeReq(BaseModel):
+    persona_id: str
+    costume_id: str
+
+
+@app.post("/api/costumes/apply-to-persona")
+def api_costumes_apply(req: ApplyCostumeReq) -> dict[str, Any]:
+    from . import costumes as costumes_mod
+    try:
+        return costumes_mod.apply_costume_to_persona(req.persona_id, req.costume_id)
+    except Exception as exc:
+        raise HTTPException(400, str(exc)) from exc
+
+
+class ImportCostumeProductReq(BaseModel):
+    costume_id: str
+    price: str = "49.90 USD"
+
+
+@app.post("/api/costumes/import-product")
+def api_costumes_import_product(req: ImportCostumeProductReq) -> Product:
+    from . import costumes as costumes_mod
+    try:
+        return costumes_mod.import_costume_as_product(req.costume_id, req.price)
+    except Exception as exc:
+        raise HTTPException(400, str(exc)) from exc
 
 
 # ---------------------------------------------------------------------- Earshot (Sound-as-Code) & Cinetic (273 Técnicas Motion)

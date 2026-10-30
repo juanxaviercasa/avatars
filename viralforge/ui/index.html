@@ -80,18 +80,18 @@
             <small>ControlNet &amp; Lookbooks</small>
           </div>
         </button>
+        <button type="button" class="feature-chip" onclick="document.querySelector('[data-tab=costumes]').click()">
+          <span class="f-icon">👗</span>
+          <div class="f-meta">
+            <strong>1,407 Outfits IA</strong>
+            <small>Armario &amp; Auto-Estilista</small>
+          </div>
+        </button>
         <button type="button" class="feature-chip" onclick="document.querySelector('[data-tab=studio]').click(); document.getElementById('earshotCard')?.scrollIntoView({behavior:'smooth'})">
           <span class="f-icon">🎵</span>
           <div class="f-meta">
             <strong>Earshot + Cinetic</strong>
             <small>16 SFX Código + 273 Técnicas</small>
-          </div>
-        </button>
-        <button type="button" class="feature-chip" onclick="document.querySelector('[data-tab=engines]').click()">
-          <span class="f-icon">🚀</span>
-          <div class="f-meta">
-            <strong>Clúster Dual-T4 &amp; VPS</strong>
-            <small>34 Datasets Kaggle + Oracle</small>
           </div>
         </button>
       </div>
@@ -101,19 +101,61 @@
   <!-- Navigation Tabs -->
   <nav class="tabs-wrap" aria-label="Secciones del estudio">
     <div class="tabs">
-      <button type="button" class="tab active" data-tab="studio"><span class="tab-num">01</span><span>Laboratorio &amp; OpenJutsu</span></button>
+      <button type="button" class="tab active" data-tab="studio"><span class="tab-num">01</span><span>Orquestador &amp; Estudio</span></button>
       <button type="button" class="tab" data-tab="campaigns"><span class="tab-num">02</span><span>Fábrica Masiva A/B</span></button>
       <button type="button" class="tab" data-tab="reels"><span class="tab-num">03</span><span>Galería Reels &amp; Bandit</span></button>
       <button type="button" class="tab" data-tab="personas"><span class="tab-num">04</span><span>AI Influencers</span></button>
       <button type="button" class="tab" data-tab="products"><span class="tab-num">05</span><span>Catálogo &amp; Shopify</span></button>
       <button type="button" class="tab" data-tab="poses"><span class="tab-num">06</span><span>Director de Poses (1,439)</span></button>
-      <button type="button" class="tab" data-tab="engines"><span class="tab-num">07</span><span>Clúster Kaggle &amp; VPS</span></button>
+      <button type="button" class="tab" data-tab="costumes"><span class="tab-num">07</span><span>Armario IA (1,407 Outfits)</span></button>
+      <button type="button" class="tab" data-tab="engines"><span class="tab-num">08</span><span>Clúster Kaggle &amp; VPS</span></button>
     </div>
   </nav>
 
   <main class="container">
-    <!-- TAB 1: STUDIO -->
+    <!-- TAB 1: STUDIO & AUTO-ORCHESTRATOR -->
     <section class="tab-panel active" id="tab-studio">
+      <!-- PANEL ORQUESTADOR AUTOMÁTICO MAESTRO 1-CLIC -->
+      <div class="card card-accent mb" id="autoOrchestratorCard">
+        <div class="card-head">
+          <span class="section-tag">SISTEMA DE ORQUESTACIÓN AUTOMÁTICA INTEGRAL • FULL-STACK AUTO-PILOT</span>
+          <h2>🤖 Orquestador Maestro 1-Clic (AI Influencer + Outfit 1,407 + Pose 5 Ángulos + Cinetic 273 + Earshot SFX)</h2>
+          <p class="muted">En lugar de configurar cada pieza manualmente, el motor empareja automáticamente la <strong>AI Influencer</strong> y el <strong>Producto</strong> con el mejor <strong>Outfit de los 1,407 (`ComfyUI_Costume-Gallery_ZH`)</strong>, la mejor <strong>secuencia de 5 cámaras ControlNet (`1,439 Poses`)</strong>, el guion Bandit de mayor retención y el kit acústico procedural <strong>Earshot</strong>.</p>
+        </div>
+        <div class="form-row form-cols-4">
+          <label>👗 Vestuario / Outfit (1,407)
+            <select id="orchCostumeSel">
+              <option value="auto">🤖 Automático (AI Auto-Stylist según Influencer/Producto)</option>
+              <option value="none">Mantener vestuario base de la Influencer</option>
+            </select>
+          </label>
+          <label>🎯 Secuencia 5 Ángulos (1,439 Poses)
+            <select id="orchPoseSel">
+              <option value="auto">🤖 Automático (AI Auto-Director 5 Cámaras)</option>
+              <option value="full_std_P001">Cuerpo Completo · P001 (Editorial)</option>
+              <option value="upper_P001">Medio Cuerpo · P001 (Close-Up Producto)</option>
+              <option value="full_sexy_P001">Glamour / High-Fashion · P001</option>
+            </select>
+          </label>
+          <label>🎵 Kit Acústico Earshot + Cinetic
+            <select id="orchKitSel">
+              <option value="hype">Viral TikTok Hype (Camera Shutter + Cash Ding)</option>
+              <option value="crisp">Crisp SaaS &amp; E-Commerce (Wood Knock + Celesta)</option>
+              <option value="launch">High-Energy Launch (Sub-Bass 52Hz + Cut Hit)</option>
+              <option value="calm">Calm Luxury &amp; Skincare (Water Drop + Marimba)</option>
+            </select>
+          </label>
+          <label>Locución Comercial (opcional)
+            <input type="text" id="orchCustomScript" placeholder="Vacío = Autogenera guion ganador Bandit..." />
+          </label>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-primary" id="btnRunAutoOrchestrator">🚀 Lanzar Reel Orquestado 1-Clic (MP4 9:16 Completo)</button>
+          <button type="button" class="btn btn-glass" id="btnPreviewAutoMatch">🔍 Previsualizar Selección IA (Outfit + 5 Ángulos + Cinetic)</button>
+          <span class="muted" id="orchStatusMsg" style="margin:0"></span>
+        </div>
+        <div id="orchPreviewBox" class="mt hidden"></div>
+      </div>
       <div class="grid-2">
         <div class="card card-glow">
           <div class="card-head">
@@ -592,7 +634,70 @@
       </div>
     </section>
 
-    <!-- TAB 7: ENGINES, KAGGLE CLUSTER & ORACLE VPS -->
+    <!-- TAB 7: ARMARIO VIRTUAL IA (1,407 OUTFITS COMFYUI_COSTUME-GALLERY_ZH) -->
+    <section class="tab-panel" id="tab-costumes">
+      <div class="card card-glow mb">
+        <div class="row-between">
+          <div>
+            <span class="section-tag">STONE-DIELIANHUA / COMFYUI_COSTUME-GALLERY_ZH • 1,407 CONJUNTOS DE ESTUDIO</span>
+            <h2>👗 Armario Virtual IA &amp; Auto-Estilista (1,407 Outfits en 8 Colecciones Comerciales)</h2>
+            <p class="muted">Explora los <strong>1,407 conjuntos completos de vestimenta</strong> en alta resolución (<code>1366×2048 px</code>) con sus tokens textiles en inglés y etiquetas en español. Con 1 clic puedes <strong>vestir a tu AI Influencer</strong>, <strong>lanzar un Reel Lookbook 5 Ángulos con ese outfit</strong> o <strong>importarlo como Producto a tu Catálogo</strong>.</p>
+          </div>
+          <span class="badge badge-score" id="costumeCountBadge">1,407 outfits</span>
+        </div>
+
+        <div class="form-row form-cols-4 mt">
+          <label>Colección / Temporada (8)
+            <select id="costumeCollection">
+              <option value="">Todas las colecciones (1,407)</option>
+              <option value="spring">🌸 Primavera · Casual Chic (215)</option>
+              <option value="summer">☀️ Verano · Fresco &amp; Urbano (254)</option>
+              <option value="autumn">🍂 Otoño · Layering &amp; Editorial (244)</option>
+              <option value="winter">❄️ Invierno · Abrigos &amp; Punto (253)</option>
+              <option value="party">🥂 Fiesta &amp; Gala · Evento Nocturno (48)</option>
+              <option value="glam">✨ Glamour &amp; Noche · High Impact (140)</option>
+              <option value="swim">🏖️ Playa &amp; Resort · Swimwear (54)</option>
+              <option value="lounge">🛋️ Loungewear &amp; Intimates (199)</option>
+            </select>
+          </label>
+          <label>Tipo de Conjunto / Prenda
+            <select id="costumeGarment">
+              <option value="">Todos los tipos de prenda</option>
+              <option value="dress">Vestido Completo</option>
+              <option value="outerwear">Abrigo / Chaqueta / Layering</option>
+              <option value="skirt_set">Conjunto con Falda</option>
+              <option value="top_pants">Top + Pantalón / Shorts</option>
+              <option value="party_gala">Vestido de Fiesta / Gala</option>
+              <option value="resort_lounge">Resort &amp; Loungewear</option>
+            </select>
+          </label>
+          <label>AI Influencer Destino (para Vestir o Reel)
+            <select id="costumePersonaSel"></select>
+          </label>
+          <label>Buscar Outfit (color, prenda, ID...)
+            <input type="text" id="costumeQuery" placeholder="Ej: marfil, botas, cuero, denim, SPR-0001..." />
+          </label>
+        </div>
+        <div id="costumeActionMsg" class="mt muted"></div>
+      </div>
+
+      <div class="card">
+        <div class="row-between mb">
+          <div>
+            <span class="section-tag">CATÁLOGO TEXTIL 1366×2048 PX + TOKENS DE PROMPT</span>
+            <h3>Galería Interactiva de Vestuario &amp; Estilismo</h3>
+          </div>
+          <div class="btn-row" style="margin-top:0">
+            <button type="button" class="btn btn-sm btn-glass" id="btnCostumePrev">← Anteriores</button>
+            <span class="pill" id="costumePageInfo">Página 1</span>
+            <button type="button" class="btn btn-sm btn-glass" id="btnCostumeNext">Siguientes →</button>
+          </div>
+        </div>
+        <div id="costumesGrid" class="grid-4"></div>
+      </div>
+    </section>
+
+    <!-- TAB 8: ENGINES, KAGGLE CLUSTER & ORACLE VPS -->
     <section class="tab-panel" id="tab-engines">
       <div class="grid-2 mb">
         <div class="card card-glow">

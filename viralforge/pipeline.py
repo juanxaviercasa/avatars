@@ -336,38 +336,66 @@ def _safe_run_openjutsu(variant_id: str, job_id: str, source_video: str,
 
 def enqueue_pose_lookbook(
     *,
-    group_id: str,
+    group_id: str = "auto",
     persona_id: str,
     product_id: str,
     script_text: str = "",
+    costume_id: str = "auto",
+    kit_name: str = "hype",
 ) -> tuple[Variant, Job]:
-    """Crea una variante Lookbook Multi-Ángulo (5 ángulos ControlNet de una pose) y la encola."""
+    """Crea una variante Lookbook Multi-Ángulo (5 ángulos ControlNet + Outfit 1,407 + Earshot) y la encola."""
+    from . import costumes as costumes_mod, poses as poses_mod
+
     st = store()
-    sc_val, sc_br = score_hook(script_text.split(".")[0] if script_text.strip() else f"Lookbook 5 Ángulos {group_id}", "es")
+    persona = st.get("personas", persona_id, Persona)
+    product = st.get("products", product_id, Product)
+
+    resolved_group = group_id if (group_id and group_id != "auto") else poses_mod.auto_select_pose_group(persona, product)
+    resolved_costume = None
+    if costume_id and costume_id != "none":
+        resolved_costume = (
+            costumes_mod.auto_select_costume(persona=persona, product=product)
+            if costume_id == "auto"
+            else costumes_mod.get_costume(costume_id)
+        )
+    cid = resolved_costume["id"] if resolved_costume else "base"
+
+    if not script_text.strip() and persona and product:
+        gen_sc = writer.generate_scripts(product=product, persona=persona, n=1, target_seconds=16)[0]
+        script_text = gen_sc.full_text
+
+    sc_val, sc_br = score_hook(script_text.split(".")[0] if script_text.strip() else f"Lookbook {resolved_group} · {cid}", "es")
     script = Script(
-        hook_formula=f"pose_{group_id}",
-        framework="lookbook_5angles",
+        hook_formula=f"pose_{resolved_group}_{cid}",
+        framework="lookbook_5angles_wardrobe",
         angle="visual",
-        beats=[Beat(role="hook", text=script_text or f"Secuencia ControlNet 5 ángulos ({group_id})", visual="avatar_talk")],
+        beats=[Beat(role="hook", text=script_text or f"Secuencia ControlNet 5 ángulos ({resolved_group}) + Outfit {cid}", visual="avatar_talk")],
         hook_score=sc_val,
         score_breakdown=sc_br,
-        generator="pose_director",
+        generator="auto_orchestrator",
     )
     variant = Variant(product_id=product_id, persona_id=persona_id, script=script, status="queued")
     job = Job(
         kind="pose_lookbook",
         variant_id=variant.id,
         stage="queued",
-        params={"group_id": group_id, "persona_id": persona_id, "product_id": product_id},
+        params={"group_id": resolved_group, "costume_id": cid, "kit_name": kit_name, "persona_id": persona_id, "product_id": product_id},
     )
     variant.job_id = job.id
     st.put("variants", variant)
     st.put("jobs", job)
-    _executor.submit(_safe_run_pose_lookbook, variant.id, job.id, group_id, script_text)
+    _executor.submit(_safe_run_pose_lookbook, variant.id, job.id, resolved_group, script_text, cid, kit_name)
     return variant, job
 
 
-def _safe_run_pose_lookbook(variant_id: str, job_id: str, group_id: str, script_text: str) -> None:
+def _safe_run_pose_lookbook(
+    variant_id: str,
+    job_id: str,
+    group_id: str,
+    script_text: str,
+    costume_id: str = "auto",
+    kit_name: str = "hype",
+) -> None:
     from . import poses as poses_mod
     st = store()
     v = st.get("variants", variant_id, Variant)
@@ -381,7 +409,7 @@ def _safe_run_pose_lookbook(variant_id: str, job_id: str, group_id: str, script_
         return
     v.status = "rendering"
     st.put("variants", v)
-    _update_job(j, status="running", progress=0.05, stage="pose_director", msg=f"Iniciando Lookbook 5 Ángulos ({group_id})...")
+    _update_job(j, status="running", progress=0.05, stage="pose_director", msg=f"Iniciando Orquestador 5 Ángulos ({group_id}) + Outfit ({costume_id})...")
     try:
         out_dir = settings.outputs_dir / v.id
         res = poses_mod.render_multi_angle_pose_reel(
@@ -390,16 +418,23 @@ def _safe_run_pose_lookbook(variant_id: str, job_id: str, group_id: str, script_
             product=product,
             out_dir=out_dir,
             custom_script=script_text,
+            costume_id=costume_id,
+            kit_name=kit_name,
             progress_cb=lambda stg, p, m: _update_job(j, progress=p, stage=stg, msg=m),
         )
         v.status = "done"
         v.video_path = res["video_path"]
         v.thumb_path = res["thumb_path"]
         v.duration = res["duration"]
-        v.engines_used = {"pose_director": "controlnet-5angles-compositor", "group_id": group_id}
+        v.engines_used = {
+            "orchestrator": "5angles-pose + 1407-wardrobe + earshot",
+            "group_id": res.get("group_id") or group_id,
+            "costume_id": res.get("costume_id") or costume_id,
+            "earshot_kit": res.get("kit_name") or kit_name,
+        }
         st.put("variants", v)
         _update_job(j, status="done", progress=1.0, stage="done",
-                    msg=f"Lookbook 5 Ángulos completado ({v.duration}s) -> reel.mp4")
+                    msg=f"Reel Orquestado completado ({v.duration}s | Pose {group_id} | Outfit {costume_id}) -> reel.mp4")
     except Exception as exc:
         log.exception("Error en Pose Lookbook %s", v.id)
         v.status = "error"
@@ -438,6 +473,14 @@ def engine_status() -> dict:
             "angles_per_pose": 5,
             "comfyui_workflow": "workflows/controlnet_pose_flux.json",
             "kaggle_datasets": ["dwpose-controlnet-annotators", "flux1-controlnet-union-pro2", "controlnet-openpose-sdxl"],
+        },
+        "costume_wardrobe_1407": {
+            "costumes_count": 1407,
+            "collections": 8,
+            "auto_stylist": "active (Persona × Product semantic matcher)",
+            "comfyui_node": "Stone-dielianhua/ComfyUI_Costume-Gallery_ZH",
+            "comfyui_workflow": "workflows/costume_tryon_flux_qwen.json",
+            "kaggle_datasets": ["qwen-image-edit-2511", "flux1-schnell-pack", "ai-influencer-loras-vault"],
         },
         "earshot_and_cinetic": {
             "earshot_recipes": len(audio_mix.EARSHOT_RECIPES),

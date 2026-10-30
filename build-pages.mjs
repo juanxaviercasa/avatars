@@ -25,7 +25,7 @@ html = html
   .replace(/\/static\/app\.js(\?v=[^"']*)?/g, `/static/app.js?v=${buildVer}`);
 fs.writeFileSync(path.join(distDir, "index.html"), html, "utf-8");
 
-for (const assetName of ["poses_1439.json", "cinetic_techniques.json"]) {
+for (const assetName of ["poses_1439.json", "cinetic_techniques.json", "costumes_1407.json"]) {
   const assetSrc = path.join(root, "assets", assetName);
   if (fs.existsSync(assetSrc)) {
     fs.copyFileSync(assetSrc, path.join(srcDir, assetName));
