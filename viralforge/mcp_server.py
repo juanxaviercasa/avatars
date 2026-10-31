@@ -1,0 +1,90 @@
+"""Restricted MCP surface. Run locally with stdio; never expose the legacy API."""
+import os
+import logging
+from pathlib import Path
+import httpx
+
+from mcp.server.fastmcp import FastMCP
+from .db import store
+from .models import CampaignRequest, Job, Product, Persona, Variant
+from .config import settings
+
+mcp = FastMCP("ViralForge")
+
+
+@mcp.tool()
+def production_providers() -> dict:
+    """Describe only Kaggle and AI/ChatGPT through MCP. Never starts generation."""
+    from .production import provider_catalog
+    return provider_catalog()
+
+
+@mcp.tool()
+def production_plan(variant_id: str) -> dict:
+    """Plan identity, script, Kaggle bundle, local composition and QC without spending."""
+    from .production import plan_variant
+    return plan_variant(variant_id)
+
+
+@mcp.tool()
+def import_chatgpt_script(payload: dict) -> dict:
+    """Save ChatGPT's structured commercial script as a draft; never renders.
+
+    Payload keys: id (var_...), product_id, persona_id, script (Script schema).
+    Repeating the same ID/content is idempotent; differing content is rejected.
+    """
+    from .production import import_chatgpt_draft
+    return import_chatgpt_draft(payload)
+
+
+@mcp.tool()
+def catalog() -> dict:
+    """List catalog IDs and titles, without local paths or credentials."""
+    return {"products": [{"id": p.id, "title": p.title} for p in store().list("products", Product)],
+            "personas": [{"id": p.id, "name": p.name, "niche": p.niche} for p in store().list("personas", Persona)]}
+
+
+@mcp.tool()
+def campaign(brief: dict) -> dict:
+    """Create strategic scripts; rendering needs VF_MCP_ALLOW_RENDER=1 on the server."""
+    req = CampaignRequest.model_validate(brief)
+    if req.render and os.getenv("VF_MCP_ALLOW_RENDER") != "1":
+        raise ValueError("Render deshabilitado; use render=false para preparar guiones")
+    # Let the resident API process own its render queue; MCP disconnects must
+    # not terminate renders or create another independent executor.
+    response = httpx.post('http://127.0.0.1:' + str(settings.port) + '/api/campaigns/launch',
+                          json=req.model_dump(), timeout=90)
+    response.raise_for_status()
+    result = response.json()
+    return {"campaign_id": result["campaign_id"],
+            "variants": [{"id": v['id'], "text": ' '.join(b['text'] for b in v['script']['beats']), "caption": v['script']['caption']} for v in result["variants"]],
+            "jobs": [j['id'] for j in result["jobs"]]}
+
+
+@mcp.tool()
+def job_status(job_id: str) -> dict:
+    """Read progress without exposing logs, paths or provider responses."""
+    j = store().get("jobs", job_id, Job)
+    if not j:
+        raise ValueError("Trabajo inexistente")
+    return {"id": j.id, "status": j.status, "stage": j.stage, "progress": j.progress,
+            "variant_id": j.variant_id, "failed": bool(j.error)}
+
+
+@mcp.resource('viralforge://videos/{variant_id}', mime_type='video/mp4')
+def video(variant_id: str) -> bytes:
+    """Fetch a completed MP4 from the outputs directory, capped at 25 MB."""
+    v = store().get('variants', variant_id, Variant)
+    if not v or v.status != 'done' or not v.video_path:
+        raise ValueError('Video no disponible')
+    path = Path(v.video_path).resolve()
+    if not path.is_relative_to(settings.outputs_dir.resolve()) or path.suffix != '.mp4':
+        raise ValueError('Ruta de video no autorizada')
+    if path.stat().st_size > 25_000_000:
+        raise ValueError('Video demasiado grande para MCP; descargar mediante acceso privado')
+    return path.read_bytes()
+
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.WARNING)
+    mcp.run(transport="stdio")

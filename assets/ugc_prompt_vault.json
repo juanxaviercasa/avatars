@@ -1,0 +1,2051 @@
+{
+  "version": "1.0",
+  "source": "AI OFM Accelerator - JoinAIVault (Phase 2: AI Images)",
+  "total": 114,
+  "categories": [
+    "ugc",
+    "lifestyle",
+    "luxury",
+    "fitness",
+    "beauty",
+    "ads",
+    "fashion",
+    "creative"
+  ],
+  "prompts": [
+    {
+      "id": "ofm_p001",
+      "source": "ugc_vault",
+      "title": "Retrato Urbano Espontáneo (Anuncio Comercial)",
+      "text": "You can copy, paste, and customise them for your own niche, product, or brand.\n\nIf you recreate one, improve one, or adapt one to your niche, post it in the community so we can see it 🔥",
+      "category": "ads",
+      "gender": "any",
+      "scenario": "other",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p002",
+      "source": "ugc_vault",
+      "title": "Baño Hotel de Lujo (Lujo & Viajes)",
+      "text": "Extremely realistic close-up shot, looking towards camera, of an attractive 25 year old influencer woman, blonde hair in a luxury hotel bathroom, camera slightly above eye level looking down subtly, intimate framing.\n\n50mm lens, shallow depth of field, warm golden ambient lighting from wall sconces behind her, right light, natural skin texture with visible micro details and pores, glossy lips, sharp blue eyes with strong catchlights, relaxed expression mid-sentence, creamy warm background blur, cinematic indoor lighting, tungsten color temperature.\n\nSoft shadow gradients across cheekbones, high dynamic range, photorealistic skin tones, no over-smoothing, no CGI feel, vertical TikTok-style composition. ring lighting",
+      "category": "luxury",
+      "gender": "female",
+      "scenario": "hotel_bathroom",
+      "tones": [
+        "editorial",
+        "glamour",
+        "authentic"
+      ],
+      "best_for": [
+        "luxury",
+        "travel",
+        "fashion"
+      ]
+    },
+    {
+      "id": "ofm_p003",
+      "source": "ugc_vault",
+      "title": "Cocina Abierta Lifestyle (Belleza & Glow)",
+      "text": "Ultra-realistic young woman, early 20s, Mediterranean / Southern European features, sexy tanned skin tone, slightly fuller glossy lips, defined cheekbones, almond-shaped brown eyes, long dark brown hair with subtle waves, middle part.\n\nWearing a deep wine-red low-cut long-sleeve top with big breasts and cleavage showing, natural fabric stretch. Minimal makeup, natural skin texture, Set in a modern kitchen, soft warm orange overhead lighting + under-cabinet lights, neutral color temperature, no dramatic shadows. Camera at chest height, phone-selfie perspective, realistic smartphone lens distortion.\n\nMoody lighting Lighting, background, and camera angle must remain identical across all shots.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "kitchen",
+      "tones": [
+        "candid",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p004",
+      "source": "ugc_vault",
+      "title": "Café Terraza Europea (Belleza & Glow)",
+      "text": "Ultra-realistic vertical selfie of a 21-year-old blonde woman sipping iced tea with lemon from a clear plastic cup, straw between lips, arm extended holding phone, casual brunch setting outdoors. Camera slightly above eye line angled down gently, smartphone wide-angle lens (26mm equivalent), mild distortion on extended arm. Natural midday daylight (5600K), soft open shade lighting with gentle highlights on cheekbones and nose bridge. Subtle reflection of patio umbrellas in eyes. Realistic specular highlights on plastic cup lid and condensation droplets visible on cup surface.\n\nSkin must feel real but attractive: visible pores but not exaggerated, faint freckles across chest and shoulders, slight sun-kissed warmth on collarbones, natural skin texture on arms, subtle blush tone in cheeks, lips hydrated but not over-glossy. No heavy makeup. Natural eyelashes. Background: brick courtyard, café furniture, patio umbrellas casting soft shadows, blurred patrons behind her, realistic depth and compression from phone lens. Feels spontaneous and unfiltered.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "outdoor_cafe",
+      "tones": [
+        "candid",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p005",
+      "source": "ugc_vault",
+      "title": "Baño Hotel de Lujo (Lujo & Viajes)",
+      "text": "Extremely realistic close-up shot, looking towards camera, of an attractive 21 year old influencer woman, blonde hair in a luxury hotel bathroom, camera slightly above eye level looking down subtly, intimate framing.\n\n50mm lens, shallow depth of field, warm golden ambient lighting from wall sconces behind her, soft diffused key light directly in front creating smooth even skin illumination, natural skin texture with visible micro details and pores, glossy lips, sharp blue eyes with strong catchlights, relaxed expression mid-sentence, creamy warm background blur.\n\nCinematic indoor lighting, tungsten color temperature, soft shadow gradients across cheekbones, high dynamic range, photorealistic skin tones, no over-smoothing, no CGI feel, vertical TikTok-style composition.",
+      "category": "luxury",
+      "gender": "female",
+      "scenario": "hotel_bathroom",
+      "tones": [
+        "editorial",
+        "glamour",
+        "authentic"
+      ],
+      "best_for": [
+        "luxury",
+        "travel",
+        "fashion"
+      ]
+    },
+    {
+      "id": "ofm_p006",
+      "source": "ugc_vault",
+      "title": "Retrato Urbano Espontáneo (Anuncio Comercial)",
+      "text": "Ultra-photorealistic Instagram-style portrait of a stunning 24-year-old Black woman standing outdoors on a city street, framed from waist up, casually looking into the camera with a confident relaxed expression. Her hair is styled in long neat box braids, extremely detailed and realistic. Each braid shows tightly woven hair fibers with subtle strand texture and natural thickness variation. The braids fall naturally over her shoulders and chest, with a few braids slightly shifting forward as if moved by a light breeze. The braid roots are cleanly sectioned along the scalp with visible parting lines and natural follicle spacing. Delicate baby hairs (edges) softly frame her forehead and temples in subtle curved shapes. Her skin has rich melanin tone with extremely natural texture — visible pores, slight natural shine on the nose and cheeks, faint freckles, and subtle skin imperfections that make the portrait feel authentic. She is wearing a simple fitted top and small gold hoop earrings. One braid rests across her shoulder while several others fall down her back. Lighting is natural afternoon sunlight, soft and slightly directional, creating gentle highlights along the braids and soft shadows along the jawline. Shot as if captured on a high-end smartphone camera (iPhone-style portrait photography) with slight natural depth-of-field blur. The background is a softly blurred urban street with buildings and passing people out of focus. The photo has a slightly candid, lifestyle influencer aesthetic, not overly posed, like a real Instagram photo taken while walking through the city. Extreme detail in: braided hair structure individual hair fibers within braids scalp parting lines baby hairs around hairline natural skin pores and texture Photorealistic photography, 8K realism, natural lighting, lifestyle influencer portrait, shallow depth of field, authentic social media photography.",
+      "category": "ads",
+      "gender": "female",
+      "scenario": "other",
+      "tones": [
+        "candid",
+        "authentic"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p007",
+      "source": "ugc_vault",
+      "title": "Estudio de Podcast Profesional (Belleza & Glow)",
+      "text": "Ultra-realistic attractive, female lifestyle influencer, mid-gesture as if reacting naturally to the camera, mouth slightly open in a candid expression. Shot on a vertical smartphone camera, chest-up framing, eye-level angle. Natural glowing skin with visible texture, pores, subtle highlights on cheekbones and shoulders. Minimal makeup, glossy lips, soft eyebrows. delicate silver necklace and rings.\n\nReflections visible but not distracting. Warm, cinematic indoor lighting with gentle highlights and soft shadows, realistic color tones, no beauty filters. Authentic influencer/UGC vibe — not posed, not studio-lit, feels like a spontaneous phone recording moment. Hyper-realistic, DSLR-level detail, shallow depth of field, 4K realism, natural imperfections preserved. Sat down recording",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "podcast_studio",
+      "tones": [
+        "candid",
+        "editorial",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p008",
+      "source": "ugc_vault",
+      "title": "Baño Hotel de Lujo (Belleza & Glow)",
+      "text": "Hyper-realistic portrait of an attractive Indian woman seated on a Mediterranean villa balcony with terracotta flooring, wrought iron railing, olive trees in clay pots behind her. Late afternoon warm sunlight filtering through trees, creating soft dappled shadows on her shoulder. She has medium-deep caramel brown skin with natural luminosity, faint sun-kissed warmth on nose and cheeks, subtle peach fuzz visible on arms, slight natural skin sheen. Thick wavy black hair worn loose with volume, natural texture visible, subtle frizz at the ends. Makeup is soft glam but realistic — brown liner tightlined, neutral matte eyeshadow, subtle highlight on inner corner, satin-finish nude lipstick with natural lip lines visible. Wearing fitted black bandeau top and layered delicate gold chains, one small coin pendant resting slightly off-center. Pose is leaning slightly forward with forearms resting on glass-top table, shoulders relaxed, confident neutral expression, direct eye contact with camera. Shot on full-frame mirrorless camera, 35mm lens, f/2.0, shallow depth of field with creamy background bokeh. Slight lens falloff at corners. Natural warm white balance (5200K). Micro-details in skin, natural shadows under jawline, realistic depth, no artificial smoothing. Luxury travel aesthetic, 4K hyper-detailed.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "hotel_bathroom",
+      "tones": [
+        "glamour",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p009",
+      "source": "ugc_vault",
+      "title": "Selfie Natural en Auto (Lujo & Viajes)",
+      "text": "Attractive influencer lounging sideways on a cream velvet sofa in a high-rise apartment. One arm draped across the backrest, legs relaxed, structured cargo jeans and a fitted sheer black top. Sleek low ponytail, glossy lips, subtle contour, glowing skin. Floor-to-ceiling windows behind her with a hazy city skyline view.\n\nShot from slightly below eye level with a 50mm lens feel. Natural daylight diffused through glass, creating soft highlights on cheekbones and collarbones. Background softly blurred but recognizable as a luxury apartment. Ultra-realistic skin texture, slight shine on nose and forehead, natural fabric wrinkles. Editorial but candid Instagram energy.",
+      "category": "luxury",
+      "gender": "any",
+      "scenario": "car_selfie",
+      "tones": [
+        "candid",
+        "editorial",
+        "glamour"
+      ],
+      "best_for": [
+        "luxury",
+        "travel",
+        "fashion"
+      ]
+    },
+    {
+      "id": "ofm_p010",
+      "source": "ugc_vault",
+      "title": "Selfie Natural en Auto (Belleza & Glow)",
+      "text": "Ultra-tight close up of a Y2K-style AI influencer, filling the frame so only her eyes, nose and glossy lips dominate the shot. The emphasis is on wet-look lip gloss and shimmering eyelids catching the light. She’s wearing icy, frosted eyeshadow, thick mascara, and high-shine gloss that reflects the window highlights. Her expression is effortlessly confident — slightly bored, sultry, and completely unbothered.\n\nHer chin is angled up just a touch, head leaning back slightly while she stares straight into the camera lens. Captured like an iPhone front-facing selfie at very close range, with shallow depth of field so the background fades into a soft blur. Natural window light falls directly across her face, creating a soft glow with bright, reflective highlights on the lips and subtle skin sheen. Keep it extremely realistic — visible texture, natural shine, minor lens softness — pure early-2000s hot-girl selfie energy.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "candid"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p011",
+      "source": "ugc_vault",
+      "title": "Baño Hotel de Lujo (Belleza & Glow)",
+      "text": "Hyper-realistic tight close-up of a 22-year-old influencer in a high-end hotel bathroom, filming herself mid-sentence. Camera held just above eye level, slightly angled down, intimate framing with forehead almost touching top of frame. 50mm portrait look but with subtle smartphone edge distortion.\n\nLighting is mixed: warm wall sconces behind her (golden 2800K glow) combined with soft overhead white light reflecting off marble surfaces. Natural bounce light shaping jawline and cheekbones. Catchlights layered — small circular reflection from phone screen plus warm ambient glow.\n\nSkin must show uncompromising micro detail: pores visible across entire T-zone, faint texture under eyes, tiny asymmetry in lips, realistic gloss reflection broken into multiple micro highlights, faint blush variation, baby hairs along temples catching backlight. Teeth slightly imperfect in color.\n\nBackground softly blurred marble walls, warm practical lights creating golden bokeh, realistic specular highlights on chrome tap fixtures. Natural dynamic range, slight shadow falloff under chin. Looks like authentic influencer hotel story content, not staged photography.",
+      "category": "beauty",
+      "gender": "any",
+      "scenario": "hotel_bathroom",
+      "tones": [
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p012",
+      "source": "ugc_vault",
+      "title": "Espejo Baño Rutina Mañana (Belleza & Glow)",
+      "text": "Close-up mirror selfie of a stunning influencer in a bathroom at night. Harsh flash lighting reflecting off glossy lips and highlighted cheekbones. Wet-look hair slicked back. Dramatic winged liner, nude lip gloss, sculpted contour. Camera held close to face, flash slightly overexposed on forehead and nose. iPhone mirror selfie vibe. Tiny water droplets visible on bathroom mirror. Slight grain and lens distortion. Expression confident, pouty, direct eye contact with the lens. High contrast, sharp micro-details, visible skin texture — hyper-realistic club-ready energy.",
+      "category": "beauty",
+      "gender": "any",
+      "scenario": "bathroom_morning",
+      "tones": [
+        "dark",
+        "candid"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p013",
+      "source": "ugc_vault",
+      "title": "Retrato Urbano Espontáneo (Belleza & Glow)",
+      "text": "Extreme close-up of an attractive 22-year-old influencer in natural morning light, filling the frame from forehead to chin. Dewy skin, brushed brows, subtle cream blush, and clear lip gloss. Tiny freckles visible across her nose. Hair loosely tied back with a few soft strands falling forward. Expression calm, slightly sleepy but confident. Shot on iPhone front camera, very close distance, shallow depth of field with creamy background blur. Natural window light hitting from the side, creating soft highlights on cheekbones and lips. Realistic skin texture, faint under-eye creasing, natural shine on T-zone. Minimal makeup, effortless “I woke up like this” aesthetic.",
+      "category": "beauty",
+      "gender": "any",
+      "scenario": "other",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p014",
+      "source": "ugc_vault",
+      "title": "Selfie Natural en Auto (Belleza & Glow)",
+      "text": "Ultra-photorealistic vertical selfie of a 22-year-old blonde woman sitting in passenger seat of a parked car, arm extended holding phone, slight downward tilt from above eye level, 26mm smartphone lens distortion visible on extended arm.\n\nNatural daylight entering through windshield creating soft top-front illumination. Slight shadow under brows. Real reflections of dashboard and sky in pupils.\n\nSkin natural and attractive: visible pores on nose, subtle uneven tone on cheeks, faint freckles across collarbone, realistic lip gloss reflection, soft baby hairs near hairline. No smoothing. No glam filter.\n\nCar interior slightly blurred — seat stitching, dashboard texture, windshield glare streak. True-to-life white balance.\n\nFeels like “quick story before going inside.”",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "candid",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p015",
+      "source": "ugc_vault",
+      "title": "Dormitorio Cozy Iluminación Suave (Belleza & Glow)",
+      "text": "Hyper-realistic tight close-up of a 22-year-old female influencer filming in her bedroom at night, camera slightly elevated and very close to her face (approx 40cm distance), 35mm lens equivalent, shallow depth of field (f/1.6), diffused LED ring light positioned directly behind camera, producing soft frontal illumination with circular catchlights in both eyes and gentle shadow beneath chin. Skin must retain full texture fidelity: visible pores across T-zone, subtle oil sheen on nose bridge, faint texture across forehead, natural unevenness in tone, microscopic facial hairs near cheekbone, light creasing at corners of mouth mid-speech. Lips hydrated with realistic gloss reflection that breaks into multiple tiny highlights, not one flat shine. Foundation makeup must sit naturally on skin — slightly thicker near nose, subtly blended contour beneath cheekbones, individual lashes defined without clumping. Hair long, dark, center-parted, slightly messy with flyaway strands visible against darker background. Background: softly blurred bedroom with warm bedside lamp (2700K tungsten), neutral bedding tones, depth separation from subject. Slight digital sensor noise in shadows for realism. No over-sharpening. No artificial glow. Realistic eye moisture and depth. Vertical framing optimized for social content.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "bedroom_night",
+      "tones": [
+        "dark",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p016",
+      "source": "ugc_vault",
+      "title": "Espejo Baño Rutina Mañana (Belleza & Glow)",
+      "text": "Influencer leaning over a white bathtub filled with bubbles, wrapped in a towel. One hand gently moving the water. Marble walls, wooden bath tray with candle, skincare bottles, wine glass. Hair in messy bun, dewy skin, minimal makeup. Shot from a slight side angle at chest level, 35mm lens feel. Soft bathroom lighting mixed with natural daylight from a window. Candle glow reflecting subtly on skin. Realistic water texture, tiny droplets on arm, visible skin detail and natural glow. Calm, introspective mood. Looks like a wellness influencer carousel post.",
+      "category": "beauty",
+      "gender": "any",
+      "scenario": "bathroom_morning",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p017",
+      "source": "ugc_vault",
+      "title": "Selfie Natural en Auto (Estilo de Vida)",
+      "text": "Influencer standing at a marble kitchen island in a modern white kitchen. Hair wrapped in a silk bonnet or messy bun, cozy knit cardigan slightly open, natural glossy skin. Plate of breakfast and a glass of juice on the counter. She’s mid-motion, pulling a chair out or adjusting something — not looking at camera. Shot from across the island with shallow depth of field. Stainless steel appliances and marble backsplash softly blurred. Bright natural window light mixed with soft indoor lighting. Realistic shadows, subtle skin texture, slight under-eye creasing. Feels like a real “soft life” lifestyle post.",
+      "category": "lifestyle",
+      "gender": "any",
+      "scenario": "car_selfie",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "lifestyle",
+        "travel",
+        "food"
+      ]
+    },
+    {
+      "id": "ofm_p018",
+      "source": "ugc_vault",
+      "title": "Espejo Baño Rutina Mañana (Belleza & Glow)",
+      "text": "Macro-style close-up of an attractive influencer applying lip gloss. Wand hovering just over her bottom lip. Focus on the shine and texture of the gloss. Eyes slightly out of focus but still sharp enough to see long lashes and subtle shimmer shadow.\n\nShot handheld on iPhone, very shallow depth of field. Bathroom lighting mixed with window light. Ultra-detailed lips — visible natural lip lines, reflective gloss texture. Expression focused, calm, effortless beauty content vibe.",
+      "category": "beauty",
+      "gender": "any",
+      "scenario": "bathroom_morning",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p019",
+      "source": "ugc_vault",
+      "title": "Selfie Natural en Auto (Belleza & Glow)",
+      "text": "Overhead wide-angle iPhone selfie of a 22-year-old beach lifestyle creator with glowing caramel skin, soft brown almond-shaped eyes, and long braided hair cascading over one shoulder. She’s leaning on the wooden railing of an overwater villa in the Maldives, crystal-clear turquoise water visible beneath her. She wears a vibrant coral string bikini with subtle ribbed texture, layered shell anklet, small diamond nose stud, and wet-look glossy lips. Dewy skin with realistic texture — tiny freckles across nose bridge, faint under-eye creasing, visible collarbone highlights, natural stretch marks on shoulder. Light ocean breeze gently moving loose strands. Captured on iPhone 15 Pro Max, front camera, ultra-wide lens, HDR, natural morning light reflecting off the water creating soft upward glow. Realistic water reflections dancing on her skin. Shallow depth of field with dreamy ocean bokeh. Slight lens distortion from arm’s-length perspective for authenticity. Expression: relaxed, joyful, eyes half-squinting from brightness, soft open smile. Mood: luxury escape, “I woke up like this in paradise,” viral TikTok summer energy..",
+      "category": "beauty",
+      "gender": "any",
+      "scenario": "car_selfie",
+      "tones": [
+        "candid",
+        "glamour",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p020",
+      "source": "ugc_vault",
+      "title": "Selfie Natural en Auto (Belleza & Glow)",
+      "text": "Tight close-up of a stunning influencer mid-bite of a pizza slice. Slight gloss transfer on lips, playful smirk. Minimal glam makeup — mascara, subtle blush, glossy lips. Shot on iPhone front camera at arm’s length, shallow depth of field.\n\nWarm indoor restaurant lighting. Background softly blurred tables and ambient glow. Realistic texture — slight oil shine on lips, natural teeth detail, subtle crumbs. Expression playful and carefree, authentic social media moment.",
+      "category": "beauty",
+      "gender": "any",
+      "scenario": "car_selfie",
+      "tones": [
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p021",
+      "source": "ugc_vault",
+      "title": "Espejo Baño Rutina Mañana (Belleza & Glow)",
+      "text": "Ultra-photorealistic vertical close-up of a 22-year-old blonde woman sitting at a bathroom vanity applying mascara. Camera positioned slightly to the side at eye level (not a selfie), 35mm smartphone lens look, shallow depth of field but realistic phone HDR processing.\n\nSoft natural daylight entering from a small bathroom window (cool 5200K) mixed with warm vanity bulbs (3000K), creating balanced skin tones and gentle shadow under chin. Skin extremely natural: faint freckles across nose and chest, visible but subtle pores on cheeks, light under-eye depth, natural lip texture with light balm sheen. Mascara wand mid-application, tiny smudge visible near upper lash line.\n\nHair casually clipped back, a few loose strands near temples. Mirror reflection visible but slightly out of focus, realistic glass softness and micro dust specks. Bathroom counter slightly cluttered with makeup items. No glam filter. Feels like GRWM TikTok frame.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "bathroom_morning",
+      "tones": [
+        "candid"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p022",
+      "source": "ugc_vault",
+      "title": "Selfie Natural en Auto (Anuncio Comercial)",
+      "text": "Hyper-realistic extreme close-up of a 25-year-old male content creator sitting in the driver’s seat of a parked car, filming vertically. Camera slightly above eye line angled subtly downward, 35mm smartphone lens with mild distortion near edges. Natural daylight (5600K) entering through windshield, creating soft frontal illumination with subtle shadow under brow ridge. Side window adds gentle rim light on temple and ear.\n\nReal reflections of trees and sky visible in pupils. Skin texture must be uncompromisingly real: visible pores, faint beard stubble even if clean-shaven, subtle asymmetry in facial hair growth, slight oil sheen on nose bridge, micro forehead creases mid-expression, natural redness around nostrils. Teeth not overly white. Car interior softly blurred — seat stitching visible, dashboard texture realistic, slight windshield glare streak. True-to-life dynamic range. No glam filter. Feels like raw social rant content. Vertical framing.",
+      "category": "ads",
+      "gender": "male",
+      "scenario": "car_selfie",
+      "tones": [
+        "authentic"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p023",
+      "source": "ugc_vault",
+      "title": "Balcón Terraza Golden Hour (Lujo & Viajes)",
+      "text": "Ultra-realistic vertical selfie of a 23-year-old woman standing on hotel balcony overlooking tropical scenery. Phone arm extended, slight downward tilt. Bright daylight but softened by balcony shade. Natural sky reflection in eyes. Skin sun-kissed with visible shoulder freckles, subtle glow from humidity, lips natural and hydrated. Hair slightly wind-moved. Background: blurred palm trees, blue sky, distant ocean hint. Realistic HDR balance.",
+      "category": "luxury",
+      "gender": "female",
+      "scenario": "balcony",
+      "tones": [
+        "candid"
+      ],
+      "best_for": [
+        "luxury",
+        "travel",
+        "fashion"
+      ]
+    },
+    {
+      "id": "ofm_p024",
+      "source": "ugc_vault",
+      "title": "Restaurante Casual Candid (Belleza & Glow)",
+      "text": "Ultra-realistic vertical portrait of a 25-year-old brunette sitting inside a casual burger restaurant at night, holding half-eaten burger. Camera across table, eye-level framing. Mixed lighting: warm overhead bulbs and cool streetlight spilling through window. Realistic dynamic range. Skin detailed but flattering — slight natural oil sheen on nose, minimal makeup, subtle smile. Tiny sesame seed stuck to finger. Background blurred neon signage and window reflections. Looks like authentic social post.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "restaurant",
+      "tones": [
+        "dark",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p025",
+      "source": "ugc_vault",
+      "title": "Selfie Natural en Auto (Fitness Activo)",
+      "text": "Close-up of an attractive fitness influencer right after a workout. Face slightly flushed, natural sweat sheen on upper lip and forehead. Mascara slightly softened from humidity. Hair in messy ponytail. Shot on iPhone front camera inside gym, blurred machines in background. Overhead white gym lighting creating subtle highlights. Visible skin texture, light redness, realistic pores. Expression confident, catching breath, subtle smile. No heavy glam — raw, authentic post-workout energy.",
+      "category": "fitness",
+      "gender": "any",
+      "scenario": "car_selfie",
+      "tones": [
+        "authentic"
+      ],
+      "best_for": [
+        "fitness",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p026",
+      "source": "ugc_vault",
+      "title": "Espejo Baño Rutina Mañana (Belleza & Glow)",
+      "text": "Ultra-photorealistic vertical close-up of a 21-year-old woman applying moisturizer to cheek in bathroom at night. Camera slightly to the side, shoulder-level angle. Soft warm bathroom lighting (3000K) creating natural shadow falloff. Skin extremely realistic — visible pores, faint redness on cheeks, natural texture, slight uneven tone, subtle under-eye depth. Moisturizer mid-spread with natural sheen reflecting light. Hair loosely tied back. Background softly blurred tiled wall and towel hook. Feels intimate and unscripted.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "bathroom_morning",
+      "tones": [
+        "dark",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p027",
+      "source": "ugc_vault",
+      "title": "Selfie Natural en Auto (Belleza & Glow)",
+      "text": "Ultra-photorealistic close-up portrait of a beautiful Indian woman sitting inside a luxury beach cabana at sunset, soft ocean horizon visible behind sheer white curtains gently moving in the breeze. Warm golden-hour sunlight coming from camera-left at a 45-degree angle, wrapping softly across her cheekbones and creating subtle specular highlights on her skin. She has deep warm brown skin with visible natural skin texture, faint pores, soft baby hairs around the hairline, very slight under-eye creasing, natural asymmetry in eyebrows. Almond-shaped dark brown eyes with catchlights from the open sky, minimal eyeliner, light mascara, soft bronzer blended into temples, glossy nude-brown lips with micro light reflections. Hair is sleek, center-parted low bun with tiny loose strands near ears. She wears a matte black strapless bandeau top, layered 14k gold necklaces resting naturally against collarbones, small gold hoop earrings with realistic metallic reflections. Shot on iPhone 15 Pro front camera, 26mm equivalent lens, f/1.8, shallow depth of field, background softly melted but still recognisable — palm trees, white umbrellas, warm pastel sunset sky. Glass table reflection slightly visible at bottom of frame. Natural color science, no over-smoothing, slight dynamic range roll-off in highlights, cinematic yet believable influencer content. 4K ultra-detailed, no AI glossiness.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "editorial",
+        "glamour",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p028",
+      "source": "ugc_vault",
+      "title": "Supercar Paparazzi Nocturno (Belleza & Glow)",
+      "text": "Ultra-realistic iPhone-style portrait of a stunning Indian woman sitting in the passenger seat of a luxury SUV during late afternoon golden light. Sunlight entering through side window creating soft warm highlights on one side of her face, gentle shadow gradient across the other. She has medium-deep brown skin with visible skin texture, subtle glow on cheekbones, faint natural blemish near jawline for realism. Hair long and sleek, slightly tucked behind one ear. Makeup natural glam — soft brown smokey eye, light mascara, nude glossy lips with visible lip lines. Wearing a black strapless top, simple gold chain necklace, small hoops. Shot extremely close-up on iPhone front camera, slight wide-angle distortion at edges, shallow depth of field, background softly blurred leather interior visible. Natural color grading, no smoothing, slightly imperfect exposure like real social content. Hyper-real, indistinguishable from authentic influencer photo.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "luxury_car",
+      "tones": [
+        "glamour",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p029",
+      "source": "ugc_vault",
+      "title": "Balcón Terraza Golden Hour (Belleza & Glow)",
+      "text": "Attractive influencer standing on a high-rise balcony during sunset. Fitted lounge set or sleek dress. One hand resting on railing, city skyline behind her. Hair straight and sleek, subtle glam makeup with glossy lips.\n\nShot from slightly behind and to the side, 50mm portrait lens feel. Golden hour light hitting her cheek and shoulder. Skyline softly blurred. Natural lens compression. Realistic fabric movement from breeze. Effortless luxury lifestyle energy.",
+      "category": "beauty",
+      "gender": "any",
+      "scenario": "balcony",
+      "tones": [
+        "glamour"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p030",
+      "source": "prompt_bank_1",
+      "title": "Retrato Urbano Espontáneo (Anuncio Comercial)",
+      "text": "They’re designed to save you time, remove guesswork and help you get **better results faster**.\n\nYou don’t need to understand every technical detail - start by using them as-is, then edit small parts (style, subject, mood, camera, brand) to make them your own.\n\nThink of these as **proven starting points**! If you recreate any of the prompts or tweak them, post them in the community!",
+      "category": "ads",
+      "gender": "any",
+      "scenario": "other",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p031",
+      "source": "prompt_bank_1",
+      "title": "Selfie Natural en Auto (Anuncio Comercial)",
+      "text": "Young male model's bare back filling entire frame — covered in temporary tattoos of designer logos arranged like cattle brand marks. Some logos appear burned, scarred, raised. He looks over his shoulder, expression vacant, branded livestock meets runway star. Commentary on fashion ownership of bodies. Soft natural window light from side, intimate bedroom setting implied. Skin texture hyper-detailed. Juergen Teller rawness",
+      "category": "ads",
+      "gender": "male",
+      "scenario": "car_selfie",
+      "tones": [
+        "authentic"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p032",
+      "source": "prompt_bank_1",
+      "title": "Espejo Baño Rutina Mañana (Belleza & Glow)",
+      "text": "A realistic handheld mirror selfie of a trendy, attractive, tanned influencer young woman in a modern bathroom, framed from mid-torso to top of head, captured in real time with a front-facing smartphone camera. She stands slightly angled with her left shoulder forward, arm extended toward the mirror, holding the phone naturally at face level. Calm, neutral expression with softly parted lips, no smile.\n\nShot on a smartphone rear camera around 26–28mm equivalent, eye-level perspective, natural arm-length distance. Soft, warm indoor bathroom lighting from overhead recessed lights, even illumination with gentle highlights on cheekbones and nose, minimal shadows, neutral white balance.\n\nPreserve authentic high-quality skin texture with visible pores, natural blush, subtle redness and imperfections — no smoothing, no filters, no artificial glow. Dark brown shoulder-length hair worn loose with soft waves, natural volume, slight middle part, a few flyaways. Defined dark eyebrows, natural makeup look.\n\nWearing a fitted black sleeveless top and black bottoms, black leather shoulder bag with gold hardware on the left shoulder, gold bangle bracelet on the right wrist, small dangling earrings, minimal jewelry. Fine-line tattoos visible on the left arm.\n\nClean bathroom background with white walls, doorway visible behind her, towel hanging on a rack, light gray tiled floor. Background softly out of focus. Sharp focus on face. High resolution, candid, believable smartphone photography with no retouching.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "bathroom_morning",
+      "tones": [
+        "candid",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p033",
+      "source": "prompt_bank_1",
+      "title": "Selfie Natural en Auto (Belleza & Glow)",
+      "text": "A natural smartphone selfie taken inside a parked car during the day, framed from the shoulders up with the camera held slightly below eye level. The woman is seated in the front passenger seat, head subtly tilted back and turned slightly to the side, eyes looking upward as if thinking or daydreaming. One hand rests casually in her hair near the top of her head.\n\nSoft daylight enters from the side window, creating gentle, even illumination across her face with natural highlights on the cheeks and nose and no harsh shadows. Lighting feels unplanned and realistic, like a quick photo taken between moments.\n\nSkin texture is fully preserved — visible pores, natural blush, light redness, and real imperfections. No smoothing, no filters, no artificial glow. Makeup is minimal and natural, with defined lashes and soft lips. Hair is long, dark, straight, and slightly tousled, falling naturally around the face.\n\nShe wears a casual black sweatshirt, relaxed and unstyled. The car interior is clearly visible: light-colored roof lining, window frame, and subtle interior details. Background remains softly out of focus while the face stays sharp.\n\nShot on a smartphone camera with realistic perspective, slight natural grain, and true-to-life color. The overall feel is candid, personal, and indistinguishable from a real UGC selfie taken in the moment.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "candid",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p034",
+      "source": "prompt_bank_1",
+      "title": "Gimnasio Post-Entreno (Fitness Activo)",
+      "text": "An athlete is frozen mid-stride against a near-black void. The body is sharp at the center, but arms and legs stretch backward into elongated motion streaks, visually mapping speed.\n\nNike performance apparel fits tightly, revealing muscle tension and fabric strain. Branding is subtle, integrated into the design rather than highlighted.\n\nDirectional rim lighting traces the silhouette, separating the athlete from darkness. Sweat particles hang in the air, catching light.\n\nThe image communicates speed without showing distance. Performance becomes form.",
+      "category": "fitness",
+      "gender": "male",
+      "scenario": "gym",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "fitness",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p035",
+      "source": "prompt_bank_1",
+      "title": "Retrato Urbano Espontáneo (Cinemático Creativo)",
+      "text": "Ultra-high-resolution, perfectly vertical top-down aerial view (90° angle), no tilt, no perspective distortion. Thousands of small, realistic human figures are standing shoulder-to-shoulder, precisely positioned to form the exact shape of {ATTACHED LOGO/FLAG/FACE} when viewed from above. The human figures act like pixels — tightly packed, evenly spaced, with accurate edges and clean negative space. The formed shape is instantly recognizable, with sharp outlines and balanced proportions. Clothing colors of the people are deliberately arranged to match the design (e.g., green and white for a flag, light/dark tones for facial depth). The background environment is completely different from the reference image — choose one: vast desert floor, concrete rooftop plaza, snow-covered ground, futuristic white surface, or dry cracked earth. The background is minimal, uncluttered, and contrasts clearly with the human formation. Lighting is even and diffused (soft daylight), with no harsh shadows, ensuring maximum clarity of the shape. Style is cinematic realism, drone photography quality, extreme detail, sharp focus, 8K resolution, documentary-meets-art aesthetic. No text, no banners, no stage, no crowd randomness. Absolute precision in alignment — the people form the image perfectly, like a living mosaic.",
+      "category": "creative",
+      "gender": "male",
+      "scenario": "other",
+      "tones": [
+        "editorial"
+      ],
+      "best_for": [
+        "gaming",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p036",
+      "source": "prompt_bank_1",
+      "title": "Retrato Urbano Espontáneo (Cinemático Creativo)",
+      "text": "Ultra-high-resolution, perfectly vertical top-down aerial view (90° angle), no tilt, no perspective distortion. Thousands of small, realistic human figures are standing shoulder-to-shoulder, precisely positioned to form the exact shape of {ATTACHED LOGO/FLAG/FACE} when viewed from above. The human figures act like pixels — tightly packed, evenly spaced, with accurate edges and clean negative space. The formed shape is instantly recognizable, with sharp outlines and balanced proportions. Clothing colors of the people are deliberately arranged to match the design (e.g., green and white for a flag, light/dark tones for facial depth). The background environment is completely different from the reference image — choose one: vast desert floor, concrete rooftop plaza, snow-covered ground, futuristic white surface, or dry cracked earth. The background is minimal, uncluttered, and contrasts clearly with the human formation. Lighting is even and diffused (soft daylight), with no harsh shadows, ensuring maximum clarity of the shape. Style is cinematic realism, drone photography quality, extreme detail, sharp focus, 8K resolution, documentary-meets-art aesthetic. No text, no banners, no stage, no crowd randomness. Absolute precision in alignment — the people form the image perfectly, like a living mosaic.",
+      "category": "creative",
+      "gender": "male",
+      "scenario": "other",
+      "tones": [
+        "editorial"
+      ],
+      "best_for": [
+        "gaming",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p037",
+      "source": "prompt_bank_1",
+      "title": "Selfie Natural en Auto (Anuncio Comercial)",
+      "text": "A gritty, handheld iPhone flash photo shot at night on a glowing white salt flat. A young woman with short platinum hair and sharp cheekbones sits on the side of a neon-lit electric drift bike, leaning against the frame. Her arms are raised above her head mid-adjustment of a loose scarf, elbows catching the harsh flash. The bike is tilted slightly into the salt, glowing cyan underneath, while the horizon disappears into deep black. Salt crystals and dust are blown toward the camera, creating texture in the foreground. The flash creates blown highlights on her skin and deep shadows behind her. Slight motion blur in her hands. Uneven exposure. The image feels raw, accidental, and unplanned — like someone fired a flash without warning. No cinematic lighting, no polish, just brutal on-camera flash realism. Ultra-realistic iPhone paparazzi energy, grainy, imperfect, and chaotic.\n\nOn-image handwritten annotations “arms raised over her head” → arrow to her arms\n\n“neon drift bike” → arrow to glowing bike\n\n“salt texture, hard shadows” → arrow to ground\n\n“wind-blown scarf” → arrow to scarf\n\n“flash blown highlights” → arrow to her face",
+      "category": "ads",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "dark",
+        "editorial",
+        "authentic"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p038",
+      "source": "prompt_bank_1",
+      "title": "Supercar Paparazzi Nocturno (Lujo & Viajes)",
+      "text": "A raw night-time iPhone flash photo taken on an airport runway. The framing is slightly crooked, like a rushed paparazzi snap. In the foreground, a brunette woman with curtain bangs stands beside a lime-green Lamborghini Huracán parked on a cargo dolly. She is caught mid-pose, one hand near her lips, one knee bent playfully. She wears loose cargo jeans and a fitted tank top. Behind her, a massive cargo jet looms in darkness, its nose and engines barely visible beyond the flash falloff, loading ramp open with glowing yellow lights. The flash blows out highlights on her skin and the Lamborghini paint, while the airplane fades into shadow. Concrete texture is sharp and gritty. Harsh shadows everywhere. Feels spontaneous, flirty, unplanned — a real late-night airport moment.\n\nOn-image handwritten annotations\n\n“Lamborghini Huracán” → arrow to the car\n\n“cargo jet in darkness” → arrow to plane\n\n“on-camera flash shadows” → arrow to ground\n\n“mid-pose, one knee bent” → arrow to her legs\n\n“runway concrete texture” → arrow to floor",
+      "category": "luxury",
+      "gender": "female",
+      "scenario": "luxury_car",
+      "tones": [
+        "dark",
+        "candid",
+        "authentic"
+      ],
+      "best_for": [
+        "luxury",
+        "travel",
+        "fashion"
+      ]
+    },
+    {
+      "id": "ofm_p039",
+      "source": "prompt_bank_1",
+      "title": "Supercar Paparazzi Nocturno (Moda & Streetwear)",
+      "text": "A raw night-time iPhone flash photo at a roadside gas station. The woman is caught laughing while turning slightly away from the camera, blonde hair flying. Her face is slightly blurred from motion, imperfect focus, chaotic energy. She wears a red satin mini dress with bare shoulders glowing under the harsh flash. Behind her, a black Shelby GT500 Mustang is parked at the pump, its taillights glowing through the darkness. Gas station lights streak softly in the background. The flash blows out her skin highlights and creates deep shadows on the asphalt. The scene feels unpolished, intimate, and accidental — like a drunk friend snapped a photo without warning.\n\nOn-image handwritten annotations\n\n“Shelby GT500” → arrow to car\n\n“motion blur on face” → arrow to her head\n\n“open-shoulder dress” → arrow to her back\n\n“gas station lights” → arrow to background\n\n“harsh flash shadows” → arrow to ground",
+      "category": "fashion",
+      "gender": "female",
+      "scenario": "luxury_car",
+      "tones": [
+        "dark",
+        "authentic"
+      ],
+      "best_for": [
+        "fashion",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p040",
+      "source": "prompt_bank_1",
+      "title": "Supercar Paparazzi Nocturno (Lujo & Viajes)",
+      "text": "A gritty iPhone flash photo taken at night on a luxury marina dock. A woman with wet, wavy brown hair stands beside a silver Audi R8 parked near the water. She is caught mid-step, turning back toward the camera with one shoulder raised. She wears loose linen pants and a bikini top under an open jacket. Reflections from the water ripple across the car and dock. The flash blows out her skin and the metallic paint while the yachts behind fade into darkness. The moment feels messy, expensive, and unplanned.\n\nOn-image handwritten annotations\n\n“Audi R8” → arrow to car\n\n“wet hair” → arrow to her head\n\n“dock reflections” → arrow to ground\n\n“yachts in darkness” → arrow to background\n\n“flash blown highlights” → arrow to her skin",
+      "category": "luxury",
+      "gender": "female",
+      "scenario": "luxury_car",
+      "tones": [
+        "dark",
+        "glamour"
+      ],
+      "best_for": [
+        "luxury",
+        "travel",
+        "fashion"
+      ]
+    },
+    {
+      "id": "ofm_p041",
+      "source": "prompt_bank_1",
+      "title": "Dormitorio Cozy Iluminación Suave (Lujo & Viajes)",
+      "text": "1990s European luxury motorsport editorial, high-contrast black and white mixed with selective color, soft film grain, dramatic shadows, hard studio lighting, analog photography look, Vogue Italia / Helmut Newton / Richard Avedon energy, cold minimalism, fashion-model intensity, cinematic negative space, luxury myth-building, no modern tech, no neon, no CGI look, no social-media aesthetic. Black-and-white ultra-close-up portrait of a woman’s face wearing a white ribbed turtleneck. Her eyes are softly lit, lips slightly parted, skin texture visible, subtle freckles, dramatic shadow across half her face. Soft film grain, editorial lighting, luxury fashion photography, 1990s supermodel energy, high contrast, minimal background.",
+      "category": "luxury",
+      "gender": "female",
+      "scenario": "bedroom_night",
+      "tones": [
+        "editorial",
+        "glamour"
+      ],
+      "best_for": [
+        "luxury",
+        "travel",
+        "fashion"
+      ]
+    },
+    {
+      "id": "ofm_p042",
+      "source": "prompt_bank_1",
+      "title": "Espejo Baño Rutina Mañana (Belleza & Glow)",
+      "text": "Ultra-realistic close-up side-profile portrait of a beautiful young woman sitting at an outdoor café during golden hour, captured in a candid, unposed moment. The camera is positioned slightly in front of her face at a 3/4 profile angle, focusing on the left side of her face from forehead to lips, with her gaze looking slightly forward and off-camera, creating a natural, thoughtful, lifestyle look.\n\nHer skin is extremely detailed and natural — visible pores, subtle freckles, faint redness around the cheeks and nose, soft skin texture, realistic oil sheen on the forehead and cheekbones reflecting the sunlight, with tiny imperfections and micro-details preserved. No beauty retouching, no plastic skin — true editorial realism.\n\nHer eyes are sharp and glossy, with light reflecting naturally inside the pupils. Fine eyelashes, subtle eyeliner, natural eyebrows with visible hair strands. Lips are soft, slightly parted, natural pink tone with realistic moisture and texture. No heavy makeup — a clean, minimal, fresh-skin aesthetic.\n\nHer hair is pulled back tightly, revealing the forehead and temples, with tiny flyaway hairs and baby hairs visible along the hairline. Individual hair strands are crisp and naturally lit.\n\nThe lighting is pure natural sunlight, warm and directional, coming from the left side of the frame, casting soft highlights across her forehead, cheekbones, nose bridge, and upper lip. The light creates realistic shine on the skin and subtle shadow falloff on the opposite side of her face. No artificial lighting, no studio look — this must feel like a real candid photo taken on a phone or mirrorless camera in a café.\n\nThe background is a European-style outdoor café with wooden tables, wicker chairs, and glassware, softly blurred using shallow depth of field. The bokeh is creamy and cinematic, with warm sunlight filtering through the café structure. The background should feel alive but not distracting — softly out of focus with warm colors, highlights, and depth.\n\nCamera style:\n\nShot on a full-frame mirrorless camera using a 50mm or 85mm lens, wide aperture (f/1.8–f/2.2), ultra-shallow depth of field. The face is tack-sharp while the café behind melts into creamy bokeh.\n\nColor grading:\n\nWarm, natural tones, slightly golden highlights, realistic skin colors, subtle contrast, no HDR, no oversharpening, no AI-looking colors. Looks like a real lifestyle fashion photograph taken on a Sony A7R or iPhone Pro in perfect sunlight.\n\nComposition:\n\nHer face fills most of the frame, cropped just above the forehead and below the lips. The camera is very close, creating an intimate, editorial look. The angle shows her cheekbone structure, nose, lips, and eyes in elegant profile.\n\nMood & vibe:\n\nEffortless, candid, modern, European café aesthetic. Feels like a behind-the-scenes moment from a fashion or lifestyle shoot. Calm, soft, and intimate.\n\nQuality:\n\n8K, ultra-high resolution, extreme realism, photographic detail, true-to-life textures, natural skin, no stylization, no illustration, no CGI, no beauty filters.\n\nNegative prompts:\n\nNo cartoon, no anime, no CGI, no plastic skin, no over-smoothing, no glamour lighting, no artificial glow, no studio backdrop, no fake bokeh, no Instagram filter look, no distorted face, no warped eyes, no extra fingers, no heavy makeup, no fake skin texture.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "bathroom_morning",
+      "tones": [
+        "candid",
+        "editorial",
+        "glamour",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p043",
+      "source": "prompt_bank_1",
+      "title": "Estudio de Podcast Profesional (Belleza & Glow)",
+      "text": "Ultra-realistic podcast studio scene, cinematic photography.\n\nA confident, attractive young blonde woman influencer seated in a modern podcast studio, positioned on the left side of the frame, facing slightly toward the right as if speaking to someone off-camera.\n\nShe is mid-conversation, mouth slightly open, expressive but natural facial expression.\n\nProfessional podcast microphone on a boom arm in front of her, acoustic foam panels and warm studio lighting in the background.\n\nShallow depth of field, soft rim light on hair, realistic skin texture, subtle imperfections, natural makeup.\n\nShot on a 50mm lens, eye-level angle, realistic studio shadows, no over-polishing.\n\nStyle: candid podcast moment, authentic, conversational, not posed, indistinguishable from real photography.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "podcast_studio",
+      "tones": [
+        "candid",
+        "editorial",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p044",
+      "source": "prompt_bank_1",
+      "title": "Supercar Paparazzi Nocturno (Lujo & Viajes)",
+      "text": "1990s European luxury motorsport editorial, high-contrast black and white mixed with selective color, soft film grain, dramatic shadows, hard studio lighting, analog photography look, Vogue Italia / Helmut Newton / Richard Avedon energy, cold minimalism, fashion-model intensity, cinematic negative space, luxury myth-building, no modern tech, no neon, no CGI look, no social-media aesthetic. Ultra-realistic cinematic shot of a woman stepping out of a black AUREX Nocturne supercar in bright desert sunlight. The door is open wide, her bare legs stepping onto white sand, wind blowing through her blonde hair. The car paint reflects harsh sunlight, high contrast, glossy black bodywork, luxury fashion editorial vibe, natural light, 35mm film look, dramatic shadows, cinematic framing, no logos visible.",
+      "category": "luxury",
+      "gender": "female",
+      "scenario": "luxury_car",
+      "tones": [
+        "editorial",
+        "glamour"
+      ],
+      "best_for": [
+        "luxury",
+        "travel",
+        "fashion"
+      ]
+    },
+    {
+      "id": "ofm_p045",
+      "source": "prompt_bank_1",
+      "title": "Baño Hotel de Lujo (Belleza & Glow)",
+      "text": "Ultra-realistic female lifestyle influencer standing in a luxury home, mid-gesture as if reacting naturally to the camera, mouth slightly open in a candid expression. Shot on a vertical smartphone camera, chest-up framing, eye-level angle. Wet, slicked-back hair suggesting just stepped out of the shower. Natural glowing skin with visible texture, pores, subtle highlights on cheekbones and shoulders. Minimal makeup, glossy lips, soft eyebrows. Wearing a simple black strapless top, gold hoop earrings, delicate gold necklace and rings.\n\nBackground features a high-end modern bathroom with polished marble walls, warm ambient lighting, and multiple rectangular mirrors with soft LED backlighting creating depth and repetition. Reflections visible but not distracting. Warm, cinematic indoor lighting with gentle highlights and soft shadows, realistic color tones, no beauty filters. Authentic influencer/UGC vibe — not posed, not studio-lit, feels like a spontaneous phone recording moment. Hyper-realistic, DSLR-level detail, shallow depth of field, 4K realism, natural imperfections preserved.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "hotel_bathroom",
+      "tones": [
+        "candid",
+        "editorial",
+        "glamour",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p046",
+      "source": "prompt_bank_1",
+      "title": "Retrato Urbano Espontáneo (Cinemático Creativo)",
+      "text": "A real battlefield shot with practical explosions frozen mid-air using high-speed cinematography combined with time-stop VFX compositing. Dirt clumps, shrapnel, fire fragments, and smoke are physically suspended with accurate motion blur trails frozen in space. A real human mage stands center frame with one hand extended, subtle glowing glyphs only faintly visible, illuminating nearby debris with soft bounce light. The environment remains grounded: wet earth, torn uniforms, smoke columns partially frozen. Shot on an ARRI Alexa LF, natural film contrast, handheld micro-shake, cinematic color pipeline, zero stylized glow.",
+      "category": "creative",
+      "gender": "male",
+      "scenario": "other",
+      "tones": [
+        "editorial"
+      ],
+      "best_for": [
+        "gaming",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p047",
+      "source": "prompt_bank_1",
+      "title": "Retrato Urbano Espontáneo (Belleza & Glow)",
+      "text": "female model with shaved head, face wrapped entirely in transparent cling film pulled tight — features distorted, lips pressed against plastic, condensation from breath visible. Only her fierce eyes are clear, staring through the suffocation. Neck adorned with pearl choker pressing into flesh. Commentary on beauty standards as suffocation. Extreme close-up, catch lights in eyes, clinical lighting. Disturbing intimacy. Solve Sundsbo meets body horror",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "other",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p048",
+      "source": "prompt_bank_1",
+      "title": "Retrato Urbano Espontáneo (Belleza & Glow)",
+      "text": "Elderly Black female model, 70+, with silver cropped hair and deeply lined face — extreme beauty in age. She bites down hard on a leather designer belt wrapped around her fist, eyes locked on camera with defiance. Topless but obscured by dramatic shadow. Visible collar bones, strong shoulders. The belt has teeth marks, saliva visible. Commentary on fashion consuming women for decades. \"Fashion consumes\" banner. Harsh side lighting, half face in darkness. Helmut Newton meets Dorothea Lange.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "other",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p049",
+      "source": "prompt_bank_1",
+      "title": "Estudio de Podcast Profesional (Lujo & Viajes)",
+      "text": "Ultra-detailed studio photograph of an owl perched on a matte black plinth, holding a minimalist perfume bottle with its talons. Shot with a 100mm macro lens, f/6.3, ISO 100, extreme detail in feathers and glass reflections.\n\nLighting is low-key with precise highlights accentuating the bottle silhouette. Background pure black, luxury editorial style, surreal elegance, hyper-real textures, museum-quality product photography.",
+      "category": "luxury",
+      "gender": "any",
+      "scenario": "podcast_studio",
+      "tones": [
+        "editorial",
+        "glamour"
+      ],
+      "best_for": [
+        "luxury",
+        "travel",
+        "fashion"
+      ]
+    },
+    {
+      "id": "ofm_p050",
+      "source": "prompt_bank_1",
+      "title": "Retrato Urbano Espontáneo (Estilo de Vida)",
+      "text": "A hyper-detailed claymation puppet character standing in the same eerie, dilapidated weirdcore living room. The character has exaggerated facial features — large sculpted nose, heavy brow, slightly droopy eyelids, and rough handmade clay skin texture with fingerprints subtly visible. Messy clay hair spikes upward in uneven tufts. He wears an oversized dark hoodie with realistic fabric folds and a thick metallic chain necklace that shines under the dusty light. The lighting is warm but low, with visible rays coming from a ceiling lamp behind him, giving a dramatic silhouette effect around his head. Background features include a worn couch, broken walls, old picture frames, and soft dust floating through the air. The camera is at chest level, slightly wide-angle, giving him a looming presence. Realistic shadows, handcrafted stop-motion aesthetic, weirdcore atmosphere, space left below for text.",
+      "category": "lifestyle",
+      "gender": "any",
+      "scenario": "other",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "lifestyle",
+        "travel",
+        "food"
+      ]
+    },
+    {
+      "id": "ofm_p051",
+      "source": "prompt_bank_1",
+      "title": "Dormitorio Cozy Iluminación Suave (Belleza & Glow)",
+      "text": "Bathed in warm indoor light that casts a gentle, inviting glow across her face, a beautiful young woman settles comfortably in a spacious college lecture hall. Her long hair cascades naturally over the soft fabric of a casual hoodie, complementing the delicate makeup that accentuates her expressive eyes and confident smile. Holding her smartphone just above eye level, she captures a relaxed selfie, the frame tightly focused on her luminous skin and the subtle textures of fabric, while the bustling scene behind her softly recedes into a blurred array of students absorbed in laptops, notes, and quiet study. Scattered notebooks, water bottles, and backpacks ground the scene in an authentic academic atmosphere where candid moments flourish amid scholarly pursuit.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "bedroom_night",
+      "tones": [
+        "candid",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p052",
+      "source": "prompt_bank_1",
+      "title": "Selfie Natural en Auto (Estilo de Vida)",
+      "text": "Ultra-realistic cinematic close-up portrait of a **battle-scarred orc warrior** partially concealed in a dense, ancient forest. The orc has **weathered, leathery green-grey skin**, deep wrinkles carved into the brow and cheeks, **short protruding tusks**, a flattened nose, and **intense amber eyes** filled with intelligence and restrained aggression.\n\n**Dappled sunlight filters through thick jungle leaves**, casting **natural green light patterns across his face**, with sharp highlights and soft shadow falloff creating dramatic contrast. The foliage in the foreground softly frames the subject, with leaves partially obscuring the edges of the face for depth and realism.\n\nThe orc’s expression is calm but threatening — a silent hunter watching from the shadows. Skin texture is hyper-detailed with pores, scars, subtle dirt, and age lines. Slight moisture on the skin catches the light naturally.\n\nShot on a **cinema-grade camera**, shallow depth of field, **85mm lens**, razor-sharp facial focus with creamy forest bokeh in the background. Natural color grading, grounded fantasy realism, no stylization, no cartoon look.\n\n**Photorealistic lighting**, global illumination, volumetric forest atmosphere, ultra-high detail, 8K quality, realistic fantasy creature design, grounded, gritty, immersive, cinematic realism.",
+      "category": "lifestyle",
+      "gender": "male",
+      "scenario": "car_selfie",
+      "tones": [
+        "editorial"
+      ],
+      "best_for": [
+        "lifestyle",
+        "travel",
+        "food"
+      ]
+    },
+    {
+      "id": "ofm_p053",
+      "source": "prompt_bank_1",
+      "title": "Selfie Natural en Auto (Moda & Streetwear)",
+      "text": "A solitary human figure captured mid-movement inside a vast, undefined studio space where the background fades from deep charcoal into near-black. The subject is wearing sharply tailored, minimalist clothing with architectural shoulders and matte textures. The body appears partially duplicated through time, creating layered motion trails that suggest hesitation, memory, and forward momentum happening simultaneously.\n\nThe face is intentionally unreadable — not blurred, but fragmented through subtle directional motion, as if the camera shutter stayed open during an emotional shift. Fine film grain floats across the image, adding tactile depth. Lighting is sculpted from a single high side-light, carving sharp highlights along the jaw, collarbones, and hands while leaving the rest in soft shadow.\n\nThere is no visible environment — only atmosphere. The air itself feels thick, slightly smoky, catching faint highlights. Edges of the figure show minimal chromatic separation, suggesting instability without entering digital glitch territory.\n\nThe overall feeling is quiet intensity: identity in transition, fashion as armor, motion as emotion. Ultra-high resolution, editorial fine-art photography, museum-grade composition.",
+      "category": "fashion",
+      "gender": "male",
+      "scenario": "car_selfie",
+      "tones": [
+        "editorial"
+      ],
+      "best_for": [
+        "fashion",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p054",
+      "source": "prompt_bank_1",
+      "title": "Retrato Urbano Espontáneo (Anuncio Comercial)",
+      "text": "A fashion portrait where the human body appears anatomically correct but subtly impossible. The subject stands upright, facing forward, wearing an elongated, high-neck couture garment with smooth, bone-like contours. The garment seems grown rather than stitched, merging seamlessly into the body’s silhouette.\n\nMultiple exposures of the subject’s head are layered vertically, each slightly offset, creating the illusion of cognitive echoes. The expressions across these layers are neutral, almost serene, emphasizing calm rather than chaos. Skin tones are natural but desaturated, leaning into sculptural realism.\n\nLighting is soft but directional, similar to a gallery installation. Shadows are gentle and deliberate, shaping the form without harsh contrast. The background is a muted gradient — warm grey fading into cool slate — designed to keep all attention on form and posture.\n\nThe image feels like a frozen moment from a conceptual fashion performance. Hyper-real textures, subtle fabric sheen, zero visible branding, timeless and unsettling in a restrained way.",
+      "category": "ads",
+      "gender": "male",
+      "scenario": "other",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p055",
+      "source": "prompt_bank_1",
+      "title": "Retrato Urbano Espontáneo (Anuncio Comercial)",
+      "text": "A central figure stands beneath a vertical column of cold white light descending from above, cutting through a dark, fog-filled environment. The subject wears ceremonial, futuristic clothing with layered translucent fabrics that catch and refract the light, creating glowing edges and soft halos.\n\nThe figure’s head is tilted upward, eyes closed, as if surrendering to the light. Around them, faint silhouettes suggest a gathering or ritual, but they remain intentionally out of focus and indistinct. The environment feels cavernous and sacred without being religious.\n\nColor grading leans cool — icy blues, faint cyan highlights, deep blacks — with minimal warmth reserved only for skin tones. Light interacts with airborne particles, creating depth and dimensionality without clutter.\n\nThe image communicates transcendence, belief, and transformation through modern visual language. Cinematic scale, slow energy, ultra-high dynamic range.",
+      "category": "ads",
+      "gender": "any",
+      "scenario": "other",
+      "tones": [
+        "editorial"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p056",
+      "source": "prompt_bank_1",
+      "title": "Espejo Baño Rutina Mañana (Belleza & Glow)",
+      "text": "Ultra-realistic close-up mirror selfie of an attractive, sun-kissed woman with deep natural tan skin, subtle freckles, flawless texture, and cinematic realism. She is holding a purple smartphone close to her face, the phone dominating the left side of the frame, captured at a tight, intimate angle.\n\nThe camera perspective is slightly below eye level, creating a confident, alluring look.\n\nShe has no headscarf, with long, dark, glossy hair flowing naturally around her shoulders, softly framing her face. Her facial structure is slightly different from typical influencer symmetry — more realistic, organic beauty — with strong brows, sharp winged eyeliner, full lips, and a calm, confident expression.\n\nShe wears a minimal, elegant yellow bikini top, showing natural skin texture, realistic shadows, and subtle imperfections that enhance realism. Her skin reflects warm daylight with soft highlights and gentle contrast, emphasizing a healthy, tanned glow.\n\nThe environment is a bright, modern interior with large windows behind her, warm neutral tones, soft daylight spilling across the scene. Background is slightly out of focus (natural depth of field), keeping attention on her face and the phone.\n\nPhotorealistic lighting, true-to-life proportions, hyper-detailed skin pores, realistic reflections on the purple phone, natural color grading, no plastic look, no AI artifacts.\n\nShot feels like a real iPhone mirror selfie, editorial yet casual, indistinguishable from real photography, 4K ultra-high detail, cinematic realism.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "bathroom_morning",
+      "tones": [
+        "candid",
+        "editorial",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p057",
+      "source": "prompt_bank_1",
+      "title": "Retrato Urbano Espontáneo (Estilo de Vida)",
+      "text": "The scene unfolds in near darkness, lit entirely by fire. Flames flicker off-frame, casting unstable orange and red highlights that slide across skin, fabric, and smoke.\n\nThe subject stands still, hands raised near the head, fingers hovering without touching. The pose feels ritualistic, instinctive, ancient. Smoke coils upward, softening edges and dissolving the boundary between body and environment.\n\nClothing is structured yet reflective, catching firelight unpredictably. Highlights bloom and disappear as flames move, creating constant micro-motion within a still image.\n\nThere is no visible location — only heat, light, shadow, and breath. The background remains intentionally ambiguous.\n\nThe image feels like a moment stolen from a hypnotic art film. Primal, sensual, controlled.",
+      "category": "lifestyle",
+      "gender": "any",
+      "scenario": "other",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "lifestyle",
+        "travel",
+        "food"
+      ]
+    },
+    {
+      "id": "ofm_p058",
+      "source": "prompt_bank_1",
+      "title": "Estudio de Podcast Profesional (Lujo & Viajes)",
+      "text": "Hyper-realistic fashion-luxury product image of a leopard sitting calmly on a stone pedestal, a high-end perfume bottle placed between its front paws. Camera at eye level with the animal, 85mm lens, f/2.8, shallow depth of field separating subject from background.\n\nLighting is dramatic studio lighting with soft rim light highlighting fur texture and bottle edges. Color grading cinematic and premium, ultra-sharp details in fur, glass, and reflections. Mood: power, elegance, control. Luxury fragrance campaign style.",
+      "category": "luxury",
+      "gender": "any",
+      "scenario": "podcast_studio",
+      "tones": [
+        "editorial",
+        "glamour"
+      ],
+      "best_for": [
+        "luxury",
+        "travel",
+        "fashion"
+      ]
+    },
+    {
+      "id": "ofm_p059",
+      "source": "prompt_bank_1",
+      "title": "Retrato Urbano Espontáneo (Moda & Streetwear)",
+      "text": "A fashion figure floats mid-air, caught between ascent and descent. Fabric lifts upward as if gravity has briefly lost authority.\n\nThe garment is layered, pleated, and sculptural. Each fold is rendered with extreme detail, frozen in a moment of perfect chaos. The body remains composed — relaxed limbs, calm expression — contrasting the violent elegance of the fabric.\n\nLighting is soft and ambient, creating a dreamlike, weightless atmosphere. Shadows are gentle, preserving texture without grounding the subject.\n\nThe background is empty and infinite, removing all reference points.\n\nThe image feels like a pause in physics.",
+      "category": "fashion",
+      "gender": "any",
+      "scenario": "other",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "fashion",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p060",
+      "source": "prompt_bank_1",
+      "title": "Estudio de Podcast Profesional (Moda & Streetwear)",
+      "text": "Surreal fashion editorial photograph of a woman standing upright inside a transparent inflatable cube, cube edges slightly warped and reflecting studio light, shot at eye level using a 50mm lens on a full-frame camera, f/4 to isolate subject while keeping cube edges sharp, ISO 100.\n\nBackground is a solid high-saturation monochrome color with zero gradient. Subject wears avant-garde fashion with exaggerated proportions, glossy materials, and sculptural accessories. Lighting is high-key studio flash from above with subtle under-lighting to create an unnatural, almost clinical feel. Facial expression calm and emotionless. Clean shadows directly beneath the subject, editorial pop-surrealism style, extreme clarity, hyper-real textures, museum-grade contemporary art photography.",
+      "category": "fashion",
+      "gender": "female",
+      "scenario": "podcast_studio",
+      "tones": [
+        "dark",
+        "editorial"
+      ],
+      "best_for": [
+        "fashion",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p061",
+      "source": "prompt_bank_1",
+      "title": "Estudio de Podcast Profesional (Anuncio Comercial)",
+      "text": "A fashion figure stands upright, facing forward, body completely still, while the head becomes the site of disruption. The clothing is stark and minimal — a long-sleeve, high-neck garment in deep black or muted grey, texture smooth and uninterrupted, allowing the silhouette to feel clean and controlled.\n\nWhere the head should be singular, it is instead interrupted by a sculptural form that appears both organic and artificial. The structure twists around the skull in smooth, bone-like curves, partially obscuring the face while revealing fragments of eyes, nose, and mouth through negative space. The object feels grown, not worn — like an extension of thought rather than an accessory.\n\nLighting is neutral and studio-clean, similar to high-end editorial fashion photography. Shadows are soft but deliberate, enhancing the sculpture’s curves without dramatizing them. The background is flat, desaturated, and quiet.\n\nThe emotional tone is restrained, intellectual, slightly alien. The image feels like a collaboration between a fashion photographer and a contemporary sculptor. High resolution, controlled composition, unsettling calm.",
+      "category": "ads",
+      "gender": "any",
+      "scenario": "podcast_studio",
+      "tones": [
+        "editorial"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p062",
+      "source": "prompt_bank_1",
+      "title": "Retrato Urbano Espontáneo (Anuncio Comercial)",
+      "text": "A fashion figure stands upright, but immediately begins to dissolve into a vertical cascade of colour and light. The garment is elongated and sculptural, with clean lines that contrast against the chaos unfolding around it. The silhouette is readable for a split second before light takes over.\n\nFrom the shoulders upward, the head becomes a prism. Light fractures across the face, splitting skin tones into unnatural gradients — electric blue sliding into hot pink, then collapsing into deep purple shadows. Facial features smear vertically, as if pulled by gravity made of light.\n\nThe surrounding space behaves incorrectly. Light streaks fall downward like liquid, bending slightly as they pass the body. Colour intensity varies unpredictably — some areas blown out and glowing, others dense and velvety. Nothing feels digital-clean; everything feels exposed, overdeveloped, pushed.\n\nThe background is a soft void saturated with colour, not black but endlessly deep. The image reads less like a photograph and more like a physical print that has been chemically altered. High-fashion abstraction, experimental colour photography, identity reduced to vertical light.",
+      "category": "ads",
+      "gender": "any",
+      "scenario": "other",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p063",
+      "source": "prompt_bank_1",
+      "title": "Selfie Natural en Auto (Fitness Activo)",
+      "text": "Ultra-realistic close-up portrait of a female CrossFit athlete in her early 30s, captured immediately after an intense workout in a raw, unposed moment. The camera is positioned at eye level, slightly to her right at a 3/4 angle, focusing on her face from ear to past nose, with her gaze forward and slightly upward as she catches her breath, creating a powerful, exhausted, triumphant expression.\n\nHer skin displays authentic exertion response — visible beads of sweat across forehead, temples, and upper lip, some spherical catching light, others streaking downward. Skin is flushed with deep blotchy redness across cheeks, neck, and upper chest — the patchy redness of real effort, not retouched fitness photography. Pores visibly dilated, olive Mediterranean complexion showing through the flush. Realistic imperfections: faded acne scars on left cheek, small mole near jawline, healing bruise on shoulder. Fine vellus hair catching light and holding tiny sweat droplets. No retouching, no glow — raw athletic realism.\n\nHer eyes are intense with post-workout adrenaline, dilated pupils, visible blood vessels from exertion. Dark eyebrows slightly disheveled, mascara beginning to smudge at outer corners. Expression shows exhaustion and triumph: lips parted showing teeth, nostrils flared, jaw tense.\n\nHer dark hair is in a messy ponytail with flyaway strands stuck to damp skin of forehead and temples. Baby hairs along hairline visible and sweat-dampened.\n\nThe lighting is harsh overhead fluorescent gym lighting mixed with natural daylight from industrial windows — multiple catchlights in eyes, unflattering cross-shadows, greenish color cast on skin. Shine on forehead, nose, and cheekbones where sweat collected. No beauty lighting — real gym conditions.\n\nThe background is a blurred industrial CrossFit gym — out-of-focus pull-up rigs, stacked bumper plates, rubber flooring, motion blur of another athlete walking past. Hexagonal bokeh from overhead tube lights.\n\nCamera style: Shot on Sony A7R V with 90mm f/2.8 Macro at f/2.8, full-frame, shallow depth of field. Focal point on near eye. Face fills 70% of frame.\n\nColor grading: Sony natural color profile — greenish fluorescent cast uncorrected, realistic exertion redness, no oversaturation, no HDR. Looks like behind-the-scenes from a fitness documentary.\n\nComposition: Face slightly right of center, negative space left showing gym. Cropped above hairline, below collarbone.\n\nMood & vibe: Raw, powerful, authentic. Feels like a documentary still — the moments sponsors don't show. Gritty, real, triumphant.\n\nQuality: 8K, extreme realism, true-to-life textures, no stylization, no fitness magazine retouching.\n\nNegative prompts: No cartoon, no anime, no plastic skin, no smoothing, no beauty lighting, no glamour fitness aesthetic, no perfect makeup, no dry skin, no even skin tone, no posed expression, no ring light.",
+      "category": "fitness",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "glamour",
+        "authentic"
+      ],
+      "best_for": [
+        "fitness",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p064",
+      "source": "prompt_bank_1",
+      "title": "Espejo Baño Rutina Mañana (Anuncio Comercial)",
+      "text": "Bold high-fashion campaign photograph for Versace capturing the house's maximalist DNA — Baroque opulence, Mediterranean sensuality, unapologetic glamour. The camera is positioned at slight low angle, 3 meters from subject, shooting with moderate telephoto to compress the ornate environment around the model.\n\nThe model is female, early 20s, striking Italian features with dark eyes and strong bone structure, radiating the Versace woman's confident sexuality. She wears a signature Versace look: a body-hugging mini dress in the house's iconic Baroque print — swirling gold on black, Medusa heads woven through the pattern, the unmistakable DNA Donatella has refined for decades. Gold Medusa earrings catch the light, chunky gold chain belt cinches the waist, strappy Medusa-head heels visible. Her pose is powerful — weight on back leg, one hand on hip, chin lifted, direct eye contact with absolute confidence. She's not seducing the camera, she's commanding it.\n\nThe environment is peak Versace fantasy: a room in a Milanese palazzo with excessive Baroque detailing — gold leaf moldings, hand-painted ceiling frescoes visible at frame top, black marble floors with gold veining, an ornate mirror reflecting more gold, a velvet chaise longue in Versace's signature cobalt blue. The room is real, not CGI — the specific maximalism of Italian aristocratic interiors that inspired Gianni's original vision.\n\nThe lighting is dramatic fashion lighting with warmth — key light from upper right creating defined cheekbones and jawline, fill keeping shadows open, a kicker light adding separation from the busy background. The gold elements throughout catch light and glow. This is glamorous, not natural.\n\nCamera style: Hasselblad H6D with 100mm at f/2.8, fashion photography standard. Shallow depth of field keeps the model razor sharp while the Baroque interior falls into painterly softness. The medium format rendering flatters skin and fabric equally.\n\nColor grading: Rich, saturated, warm — the Versace palette of gold, black, and jewel tones. Shadows pushed warm not cool, highlights creamy, skin tones bronzed and luminous. Mert & Marcus meets Mario Testino — the house's visual vocabulary.\n\nComposition: Model positioned at center-left, the ornate room filling the frame around her like a gilded frame within the frame. The mirror creates depth. Aspect ratio 2:3 portrait for magazine full-page.\n\nMood & vibe: Unapologetic glamour, Mediterranean power, fashion as armor. Feels like a Versace campaign that would run in Vogue Italia — sexy, luxurious, utterly confident.\n\nQuality: 8K, extreme detail in fabric print, gold hardware, skin luminosity, Baroque architectural details, jewelry reflection.\n\nNegative prompts: No minimalism, no muted colors, no casual clothing, no natural/relaxed pose, no outdoor setting, no streetwear styling, no cool color grade, no modest expression, no Scandinavian aesthetic.",
+      "category": "ads",
+      "gender": "female",
+      "scenario": "bathroom_morning",
+      "tones": [
+        "editorial",
+        "glamour"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p065",
+      "source": "prompt_bank_1",
+      "title": "Selfie Natural en Auto (Anuncio Comercial)",
+      "text": "Ultra-cinematic close-up of a fighter pilot in the cockpit during a high-G combat maneuver, captured with the visceral intensity of a Top Gun action sequence. The camera is mounted inside the cockpit at dashboard level, angled upward at the pilot's face, capturing both the human intensity and the blur of sky rotating violently through the canopy behind.\n\nThe pilot is male, early 30s, face contorted under extreme G-force — cheeks pulled downward, lips stretched, veins visible at temples, jaw clenched around the strain. His eyes stay locked forward with supernatural focus through the physical punishment. Sweat beads on his forehead beneath the helmet edge, oxygen mask pressed tight against his face, the microphone catching his controlled breathing. His flight suit shows authentic wear — patches, velcro slightly frayed, name and call sign visible on chest. Gloved hands grip the flight stick with white-knuckle intensity, tendons visible through the leather. His visor reflects the instrument panel glow and the chaos of sky outside.\n\nThe cockpit environment is cramped authentic military — HUD projecting targeting data, analog gauges mixed with digital displays, warning lights amber and red, scratched canopy glass, the controlled chaos of a real fighter jet interior. Through the canopy behind him, the world is sideways — ocean and sky blurred at impossible angles, another aircraft barely visible in the distance, the curvature of Earth at high altitude.\n\nThe lighting is dynamic and motivated — harsh sunlight blasting through the canopy from one angle creating blown highlights and lens flare, instrument panel casting green-amber glow upward on his chin and mask, the constantly shifting light of an aircraft in aggressive maneuvering.\n\nCamera style: Shot on IMAX-certified Panavision spherical lenses, the actual Top Gun: Maverick camera package. Shallow depth of field keeps the pilot's eyes sharp while cockpit edges and canopy view fall soft. Subtle vibration in the frame from airframe stress. The image has that massive-format clarity with organic filmic texture.\n\nColor grading: Modern blockbuster naturalism — rich skin tones, deep teals in shadow, amber warmth in highlights, punchy contrast without crushing blacks. Tony Scott meets Joseph Kosinski aesthetic.\n\nComposition: Pilot's face fills upper two-thirds, instruments at bottom edge, canopy chaos at top. Framing is tight and claustrophobic, emphasizing the confined intensity. Aspect ratio 1.90:1 IMAX.\n\nMood & vibe: Visceral intensity, controlled fear, peak human performance. Feels like the hero shot before the impossible maneuver.\n\nQuality: 8K IMAX resolution, extreme detail in facial strain, sweat, helmet wear, instrument reflections, canopy scratches, sky blur.\n\nNegative prompts: No cartoon, no CGI face, no clean pristine cockpit, no calm expression, no static sky, no video game aesthetic, no fake helmet, no green screen look.",
+      "category": "ads",
+      "gender": "male",
+      "scenario": "car_selfie",
+      "tones": [
+        "editorial",
+        "authentic"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p066",
+      "source": "prompt_bank_1",
+      "title": "Selfie Natural en Auto (Fitness Activo)",
+      "text": "Authentic sports photography of a Kenyan distance runner crossing the Olympic finish line, arms raised in triumph. Camera at track level, 4 meters from finish, angled slightly upward, telephoto compressing the stadium — exactly how an accredited photographer captures this moment.\n\nThe athlete is female, mid-20s, Kenyan, her face showing specific exhaustion of a 10,000-meter race — not a pretty cry but real athletic distress transformed into joy. Dark brown skin with visible red and purple undertones from extreme exertion, sweat running in rivulets down temples and neck. Real texture: visible pores across nose and forehead, slight roughness from Rift Valley training sun, small old scar near hairline, chapped lips from mouth-breathing. Expression is raw — mouth open gulping air, eyes scrunched with tears and effort, grimace-smile of crossing first. Not beautiful, transcendent.\n\nHer body shows elite East African distance runner physique: extremely lean, almost gaunt, visible clavicles, ropy musculature. Arms raised imperfectly — one higher than other, fingers spread unevenly, genuine emotion not rehearsed. Red and green Kenyan singlet dark with sweat, race number pinned crooked, one safety pin loose. Legs show race wear: dried salt, track dust, visible tendons.\n\nStadium captured through sports photography conventions: crowd a blur of color, camera flashes as circular bokeh, flags as colorful smears, Olympic rings out of focus. Other runners behind — one bent over, another still finishing.\n\nThe lighting is realistic stadium arrays — multiple overheads for broadcast, no single dramatic key. Afternoon sun adds warm fill mixing with cooler stadium lights.\n\nCamera style: Canon EOS-1D X Mark III with 400mm f/2.8 at f/3.2, exactly what Getty photographers use. Shutter 1/1600s with slight motion blur in raised hands. Telephoto compression flattens crowd.\n\nColor grading: Minimal editorial sports adjustment — accurate stadium colors, true skin tones, Kenya's red and green. Wire service standard post.\n\nComposition: Athlete at left third crossing visible finish line. Finish camera gantry enters from top. Crowd fills background. Aspect ratio 3:2.\n\nMood & vibe: Authentic triumph, documentary sports photography. The actual AP photo that appears in newspapers.\n\nQuality: 8K, extreme detail in skin texture, sweat, pores, salt residue, muscular definition, fabric, crowd bokeh.\n\nNegative prompts: No smooth skin, no perfect tears, no glamour lighting, no model physique, no clean uniform, no perfect pose, no CGI crowd, no retouched face.",
+      "category": "fitness",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "dark",
+        "editorial",
+        "glamour",
+        "authentic"
+      ],
+      "best_for": [
+        "fitness",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p067",
+      "source": "prompt_bank_1",
+      "title": "Selfie Natural en Auto (Anuncio Comercial)",
+      "text": "A UFC fighter posed as a Renaissance oil painting in the style of Caravaggio, dramatic chiaroscuro lighting revealing a warrior's body against pure black void. Camera simulates the viewing angle of a museum visitor, straight-on at eye level, the figure rendered as if on a 2-meter tall canvas.\n\nThe fighter is male, late 20s, mixed ethnicity, captured in a classical contrapposto pose — weight on back leg, torso turned, head looking over shoulder into the darkness. His body shows the specific physique of a professional fighter: functional muscle definition, visible vascularity, the scars and wear of competition. His hands are wrapped in traditional white tape, knuckles showing healed cuts and calcium deposits. His face is battle-worn but noble: a small scar through one eyebrow, slightly cauliflowered ear, a nose that's been broken, but expression showing dignity and quiet strength. His skin shows the texture of a warrior — not smooth, but lived in.\n\nThe rendering mimics oil painting: visible brushstroke texture throughout, the specific way oil paint captures skin tones with underpainting showing through, the almost luminous quality of Renaissance flesh rendering. Craquelure aging effects — tiny networked cracks in the paint surface — are visible, suggesting this is an old master work. The edge of an ornate gilded frame is visible at the extreme edges of the composition.\n\nThe background is Caravaggio's signature: pure black void, the figure emerging from total darkness with no environmental context, all attention on the human form.\n\nThe lighting is single-source dramatic chiaroscuro — strong directional light from upper left illuminating the torso, face, and wrapped hands while everything else falls into deep shadow. The light appears to be candlelight or oil lamp: warm, flickering quality implied in the rendering. At least 60% of the figure is in shadow, with the light dramatically sculpting musculature.\n\nCamera style: This should appear to be a high-resolution photograph of an oil painting hanging in a museum — not a photograph of a person. The texture of canvas weave is subtly visible. The \"lens\" is documenting artwork, not creating it.\n\nColor grading: Old master palette — rich warm browns, deep ochres, cream highlights on skin, the specific limited palette of Renaissance painting before modern pigments. Varnish yellowing adds an aged quality to the overall tonality.\n\nComposition: Figure positioned according to classical proportions, occupying the central two-thirds of the vertical frame. The contrapposto creates diagonal energy. Hands are positioned prominently, given their importance to the fighter's identity.\n\nMood & vibe: Timeless warrior nobility, classical meets contemporary, sport as art. Feels like a discovered masterpiece in a European museum — \"Unknown Fighter, School of Caravaggio, c. 1605.\"\n\nQuality: 8K resolution, extreme detail in brushstroke texture, craquelure patterns, skin rendering, gilded frame detail, canvas weave.\n\nNegative prompts: No photograph of a real person, no modern background, no MMA gear, no octagon, no gloves, no bright colors, no flat lighting, no digital rendering, no smooth textures.",
+      "category": "ads",
+      "gender": "male",
+      "scenario": "car_selfie",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p068",
+      "source": "prompt_bank_1",
+      "title": "Selfie Natural en Auto (Anuncio Comercial)",
+      "text": "Extreme close-up of a deconstructed lemon tart at a three-Michelin-star restaurant, capturing the precision and artistry of high-end gastronomy. Camera positioned at 45-degree overhead angle, 30cm from plate, macro lens isolating the dish against the blurred white tablecloth.\n\nThe dish is architectural: a perfect quenelle of yuzu curd with visible citrus oil sheen, positioned beside shattered sugar work that catches light like amber glass, micro-dots of lemon gel placed with surgical precision, edible flowers (micro violas and borage) adding color accents, gold leaf fragments catching light, a swoosh of passion fruit coulis painted across the white ceramic. Crumbs of brown butter shortbread provide textural contrast. Condensation is visible on the cool curd, suggesting it just arrived at the table. Every element is intentional — this is food as art.\n\nThe plate itself is a design object: matte white ceramic with an organic asymmetrical shape, the kind of custom piece commissioned specifically for this dish. A silver dessert fork enters frame at edge, suggesting the moment before first bite.\n\nThe environment is implied through blur: white tablecloth with subtle texture, the edge of a wine glass with golden dessert wine, soft candlelight bokeh in the distance suggesting the intimate restaurant setting.\n\nThe lighting is soft directional key light from upper left, creating gentle shadows that provide dimension without harshness. The light is designed for food photography — it makes the curd glisten, the sugar work sparkle, and the sauce shine.\n\nCamera style: Phase One IQ4 150MP medium format with 120mm macro at f/4, focus-stacked for acceptable sharpness across the entire dish while maintaining some depth falloff. The resolution captures every texture — the sheen on the curd, the crystal structure of the sugar, the vein pattern in the edible flowers.\n\nColor grading: Clean, natural, appetizing — whites are pure, yellows of the citrus elements pop without oversaturation, greens of herbs are fresh. Food & Wine magazine cover quality — enhanced for appetite appeal but still believable.\n\nComposition: Dish fills frame according to rule of thirds, with the quenelle at power point. Sugar work creates visual interest at opposite side. Negative space in the blurred background prevents claustrophobia.\n\nMood & vibe: Aspirational, precise, delicious. Feels like Michelin Guide documentation or a fine dining magazine spread.\n\nQuality: 8K, extreme detail in every element — curd texture, sugar crystal structure, gold leaf wrinkles, sauce viscosity, ceramic glaze.\n\nNegative prompts: No cartoon, no CGI, no fast food, no messy plating, no dark moody lighting, no overhead flat shot, no busy background, no plastic dishware, no artificial-looking food.",
+      "category": "ads",
+      "gender": "any",
+      "scenario": "car_selfie",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p069",
+      "source": "prompt_bank_1",
+      "title": "Selfie Natural en Auto (Anuncio Comercial)",
+      "text": "Environmental portrait of a weathered Icelandic fisherman standing at the bow of his boat at 4 AM during midnight sun. Camera at eye level, 2 meters from subject, shooting with moderate telephoto to compress the fjord landscape behind him.\n\nThe fisherman is in his late 60s, his face a roadmap of life at sea: deep wrinkles carved by decades of wind and salt, weathered ruddy complexion, pale blue eyes squinting against the horizon, grey stubble of several days, thinning grey hair beneath a worn wool cap. He wears a classic yellow oilskin rain slicker, faded and patched from years of use, the material showing water droplets from sea spray. His hands, visible gripping the boat rail, are thick-fingered and scarred — working hands. His expression is calm, watchful, reading the sea.\n\nThe Icelandic environment tells the story: misty fjord waters stretching behind him with steep mountain walls rising on both sides, snow visible on peaks even in summer, low clouds clinging to mountainsides. The midnight sun casts an ethereal soft glow — not true daylight but that surreal luminous quality of northern summer nights. Sea birds are visible as distant specks.\n\nThe lighting is the magical midnight sun — a soft, directionless luminosity that creates minimal shadows and that specific flat but glowing quality unique to Arctic summer. The light is cool but warm simultaneously — blue ambient with golden direct light from sun near horizon.\n\nCamera style: Nikon Z9 with 85mm f/1.4 at f/2.0, creating shallow depth of field that keeps the face sharp while the fjord behind falls into creamy bokeh. The rendering has that Nikon characteristic — excellent color and skin tones.\n\nColor grading: Muted natural tones — the specific blue-grey-green of Icelandic landscape, yellow of the slicker providing color pop, authentic weathered skin tones. Steve McCurry meets National Geographic documentary aesthetic.\n\nComposition: Fisherman positioned at right third, boat bow leading into frame from bottom left, fjord landscape occupying left two-thirds as context. Horizon at upper third.\n\nMood & vibe: Timeless, dignified, connection to nature and tradition. Feels like National Geographic or a documentary about disappearing ways of life.\n\nQuality: 8K, extreme detail in facial texture, fabric weathering, water droplets, distant landscape despite bokeh.\n\nNegative prompts: No cartoon, no CGI, no young subject, no clean new clothing, no harsh sunlight, no tropical location, no posed smile, no modern commercial fishing vessel.",
+      "category": "ads",
+      "gender": "male",
+      "scenario": "car_selfie",
+      "tones": [
+        "dark",
+        "authentic"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p070",
+      "source": "prompt_bank_1",
+      "title": "Selfie Natural en Auto (Fitness Activo)",
+      "text": "Dynamic action shot of a skateboarder mid-kickflip at a Venice Beach skatepark at sunset. Camera positioned at ground level, shooting upward, 2 meters from subject, capturing both the frozen trick and the dramatic backlit sky.\n\nThe skater is male, early 20s, Latino, captured at the apex of a kickflip — the board frozen mid-rotation beneath his feet, separated by 15 centimeters, visible griptape and deck graphic spinning. His body shows the specific posture of this trick: knees bent preparing to catch, arms out for balance, eyes locked on the board. He wears a worn vintage t-shirt, loose jeans rolled at ankle, classic Vans. His face shows pure concentration. Tiny details: scratched knuckles, tattoos on forearms, sweat droplets suspended around him.\n\nThe Venice Beach environment provides context: concrete bowl and ramp edges visible, palm trees silhouetted against sky, other skaters blurred in motion in background, iconic Venice Beach architecture in far distance. The California skate culture aesthetic.\n\nThe lighting is dramatic golden hour backlighting — sun setting directly behind the skater, creating a strong silhouette effect with bright rim lighting around his entire figure. Long shadows stretch toward camera. The sky shows sunset gradient from golden yellow to deep orange to purple.\n\nCamera style: Canon EOS-1D X Mark III with 35mm f/1.4 at f/2.8, shot from low angle. Shutter speed 1/4000s freezing all motion completely — board, sweat, dust particles. Focus on the board gap between feet.\n\nColor grading: Gritty street photography with golden hour warmth — crushed blacks in shadows creating silhouette, warm golden tones in highlights, slightly desaturated midtones. Professional sports meets street documentation aesthetic.\n\nComposition: Skater and board at frame center, elevated against sky. Ground level creates dramatic upward perspective. Palm trees at frame edges provide environment.\n\nMood & vibe: Youthful energy, California cool, athletic grace. Feels like a Thrasher Magazine cover or Nike SB campaign.\n\nQuality: 8K, extreme detail in frozen motion — board graphics, shoe soles, sweat droplets, fabric movement.\n\nNegative prompts: No cartoon, no CGI, no motion blur on subject, no indoor skatepark, no competition setting, no helmet (keeping authentic street skating aesthetic), no midday flat lighting.",
+      "category": "fitness",
+      "gender": "male",
+      "scenario": "car_selfie",
+      "tones": [
+        "authentic"
+      ],
+      "best_for": [
+        "fitness",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p071",
+      "source": "prompt_bank_1",
+      "title": "Selfie Natural en Auto (Fitness Activo)",
+      "text": "Black and white documentary photograph of an aging boxer training alone in a run-down neighborhood gym. Camera positioned at hip height, shooting slightly upward, 3 meters from subject, capturing both the boxer and the environmental storytelling of the gym.\n\nThe boxer is male, late 50s, African American, past his prime but still training. He's mid-punch against a worn heavy bag, body showing the muscle memory of thousands of hours. His face is weathered with old scar tissue around his eyebrows, a nose broken multiple times, hands wrapped in tape that's beginning to unravel. He wears a grey hoodie with cut-off sleeves and worn sweatpants. His expression is pure focus — this is meditation, not competition.\n\nThe gym is a character itself: run-down with visible water stains on ceiling tiles, dirty windows with light streaming through, faded posters of Ali, Frazier, and Leonard peeling from the walls, worn equipment patched with tape. Dust particles float in the light shafts. A speed bag hangs motionless in background. No one else is present — this is early morning solitude.\n\nThe lighting is pure available light — dirty windows providing soft directional light from frame left, creating strong shadows and beautiful falloff. Dust particles catch the light rays. No flash, no studio equipment.\n\nCamera style: Shot on Leica M10 Monochrom with 35mm f/2 Summicron at f/4, slightly wide angle but not distorted. The image has that specific Leica rendering — micro-contrast, beautiful tonal graduation, sharp but not clinical.\n\nColor grading: Black and white with rich full-range tonality — deep blacks that aren't crushed, bright highlights that aren't blown, beautiful midtones with information. Henri Cartier-Bresson meets Gordon Parks aesthetic.\n\nComposition: Boxer positioned at left third, heavy bag at center, environmental context filling right side. Light source (window) visible at frame edge. Leading lines from gym equipment draw to subject.\n\nMood & vibe: Solitary dignity, quiet determination, blue-collar beauty. Feels like a Magnum Photos essay or documentary still.\n\nQuality: 8K monochrome, extreme detail in textures — skin, fabric, leather bag, peeling posters, dust particles.\n\nNegative prompts: No color, no modern gym, no other people, no bright lighting, no clean environment, no young athlete, no posed portrait, no action movie aesthetic.",
+      "category": "fitness",
+      "gender": "male",
+      "scenario": "car_selfie",
+      "tones": [
+        "dark",
+        "authentic"
+      ],
+      "best_for": [
+        "fitness",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p072",
+      "source": "prompt_bank_1",
+      "title": "Selfie Natural en Auto (Belleza & Glow)",
+      "text": "High-fashion editorial shot of a model in a flowing crimson silk gown on cracked desert earth at magic hour. Camera at eye level, 10 meters distance, slightly low angle to elongate figure against dramatic sky, medium telephoto for compression and separation.\n\nThe model is late 20s, angular bone structure, standing in a power pose with weight on back leg, chin raised. The crimson silk gown is haute couture — dramatic sweeping train extending 3 meters behind, fabric catching wind and creating sculptural shapes. The material shows beautiful texture: light catching silk threads, subtle sheen variations as fabric folds. Her makeup is editorial bold: strong contoured cheekbones, dramatic smoky eye, matte burgundy lip. Hair pulled back severely in a low chignon. Expression is defiant and powerful — this is fashion as armor.\n\nThe desert landscape is stark beauty: cracked dry earth in hexagonal patterns extending to horizon, texture visible in each dried mud tile. A dust storm approaches in far background, creating apocalyptic amber-ochre sky gradient. No vegetation, no structures — pure minimalist void emphasizing the figure.\n\nThe lighting is pure magic hour — sun 10 degrees above horizon, warm amber-gold directional light from frame right, casting long shadows and illuminating the crimson silk to almost glow. The approaching dust storm diffuses the light slightly, creating softer gradients. Rim light separates the figure from background.\n\nCamera style: Hasselblad H6D-100c medium format with 150mm at f/4, shallow depth of field isolating figure from landscape. Resolution and tonal range of medium format digital.\n\nColor grading: Muted warm tones with pops of saturated crimson — desaturated background earth tones, amber sky, the gown as sole color punch. Vogue Italia editorial aesthetic, painterly quality.\n\nComposition: Model at right third, gown train extending left. Horizon at lower third, sky dominating upper frame. Dust storm provides background texture without distraction.\n\nMood & vibe: Powerful, apocalyptic beauty, fashion as statement. Feels like the cover of Vogue or a Valentino campaign.\n\nQuality: 8K medium format resolution, extreme detail in fabric texture, skin, cracked earth pattern, atmospheric effects.\n\nNegative prompts: No cartoon, no CGI, no casual clothing, no smile, no flat lighting, no midday sun, no green vegetation, no cluttered background, no Instagram filter look.",
+      "category": "beauty",
+      "gender": "any",
+      "scenario": "car_selfie",
+      "tones": [
+        "editorial"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p073",
+      "source": "prompt_bank_1",
+      "title": "Espejo Baño Rutina Mañana (Anuncio Comercial)",
+      "text": "Dramatic freeze-frame of a basketball player releasing a three-point shot at the buzzer, team down by two, ball frozen inches from fingertips. Camera positioned courtside at shoulder height, 5 meters from shooter, angled slightly upward, telephoto compressing background crowd into a wall of energy.\n\nThe player is African American, late 20s, face showing supernatural focus — eyes locked on rim with tunnel vision, jaw clenched. Shooting form textbook perfect at moment of release: right arm extended with follow-through, wrist snapped, left guide hand separating from ball. Sweat droplets suspended in air catching arena lights. Jersey deep purple with gold trim, dark with sweat. Sneakers show court dust, legs at full extension.\n\nThe basketball is frozen 30cm from fingertips in perfect backspin, orange leather and black seams tack-sharp, NBA logo visible.\n\nBackground shows the stakes: scoreboard readable through bokeh displaying down by 2, 0.3 seconds remaining, GAME 7. 20,000 fans captured in motion blur with raised arms and open mouths. Hundreds of phone screens create blue-white rectangular bokeh. Opposing bench players frozen mid-rise.\n\nThe lighting is NBA arena configuration — powerful overhead arrays, follow-spots adding glamour rim lighting. Polished hardwood creates mirror-like secondary light from below.\n\nCamera style: Sony A1 with 400mm f/2.8 at f/2.8. Shutter 1/4000s freezing all motion. Telephoto compression flattens crowd into solid wall.\n\nColor grading: Broadcast-accurate arena colors — team purple and gold, parquet floor, accurate skin tones. High punchy contrast.\n\nComposition: Shooter occupies left two-thirds, ball and arm creating line toward implied rim off-frame. Defender's hand entering from right. Scoreboard in upper background.\n\nMood & vibe: Unbearable tension, frozen time, career-defining. The photograph that defines a legacy.\n\nQuality: 8K, extreme detail in expression, muscle, sweat droplets, ball texture, crowd energy.\n\nNegative prompts: No cartoon, no CGI, no empty arena, no static crowd, no motion blur on player, no outdoor court, no posed shot.",
+      "category": "ads",
+      "gender": "any",
+      "scenario": "bathroom_morning",
+      "tones": [
+        "glamour"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p074",
+      "source": "prompt_bank_2",
+      "title": "Espejo Baño Rutina Mañana (Fitness Activo)",
+      "text": "Full-length mirror selfie of a 26-year-old blonde American woman taken in the changing-room corridor of a Reformer Pilates studio in West Hollywood at 11:05am. Slicked-back low ponytail held with a black silk scrunchie, a single gold Mejuri huggie in each ear, a slim gold paperclip necklace, a Cartier Love bracelet in yellow gold. Wearing a matte-black cropped long-sleeve Alo zip-up half-unzipped over a white Alo ribbed bra, matching high-waisted black leggings, white Adidas Sambas with bone-white socks. Holding an iced oat-milk matcha with a hard plastic reusable cup and a pink silicone straw, a tan leather Celine bucket bag slung on one shoulder, phone in the other hand angled down at the mirror. Head tilted slightly, a closed-mouth smile, eyes on the phone screen. A small geometric tattoo on the inner wrist, a thin gold anklet. Behind her in the mirror: a row of small wooden lockers with brass key-fobs, a shelf with rolled white towels, a reed diffuser on a low cabinet, a soft-pink neon sign reading \"breathe\", a eucalyptus wreath on a door, another woman out of focus tying her shoelaces on a bench. Shot on iPhone 15 Pro front camera, 24mm, soft warm LED cove lighting, no flash, slight fingerprint smear on the mirror edge. Skin: clean post-workout glow, no makeup beyond tinted lip balm and a brow gel, pink flush across the cheekbones, visible pores across the nose, a faint mark from where sunglasses sat on the bridge of the nose, barely-there tan line from a swimsuit at the shoulder. Color grade: warm oat-and-cream highlights, soft shadow falloff, very mild iPhone HDR, clean modern editorial rendering.",
+      "category": "fitness",
+      "gender": "female",
+      "scenario": "bathroom_morning",
+      "tones": [
+        "dark",
+        "candid",
+        "editorial",
+        "authentic"
+      ],
+      "best_for": [
+        "fitness",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p075",
+      "source": "prompt_bank_2",
+      "title": "Espejo Baño Rutina Mañana (Belleza & Glow)",
+      "text": "Waist-up photo of a 30-year-old Italian-American woman sitting on the edge of a grey velvet sofa in a Hoboken apartment at 4:25pm. Fair olive skin with a natural sun flush across the cheeks, long dark-brown hair freshly air-dried in loose waves pulled off the face with a cream silk headband, small gold huggies, a single thin gold chain with a Saint Christopher pendant, a small diamond nose stud. Lived-in natural makeup: dewy skin with a little concealer at the tear troughs, glossy brown tinted balm, brushed-up brows, mascara only. Wearing a fitted black short-sleeve half-zip crop with the zip pulled halfway, heather-grey cotton drawstring sleep shorts, no bra, bare feet on the rug with a glossy OPI \"Bubble Bath\" pedicure. A slim gold Michael Kors watch on the left wrist, a Cartier Love bracelet dupe in yellow gold, a stack of four thin gold rings, long square acrylics in a milky French. Sitting leaned slightly forward with both hands cupped around a tall clear glass of iced coffee with oat milk, condensation beading down the glass, straw angled toward the mouth, head tilted down, eyes lifting to meet the camera, lips closed around the straw mid-sip. Behind her: a low marble-topped coffee table with a Diptyque Baies candle burning, a folded NYT Sunday crossword half-done in pen, an AirPods Max in silver resting on the page, an empty Sweetgreen bowl with a fork still in it, a La Croix can; a tall ring light folded on a stand propped by the wall, a gold-framed mirror, a gallery wall of black-and-white family photos, a marble console with a tall monstera in a woven basket, a stainless KitchenAid just visible through a doorway, warm late-afternoon sun slanting across a parquet floor. Shot on iPhone 15 Pro rear camera, 26mm, warm late-afternoon golden window light from camera-right, natural bloom on the highlights. Skin: subtly highlighted cheekbones, visible peach fuzz along the jaw, a small healing blemish covered with a hydrocolloid dot on the temple, a faint sunburn across the tops of the shoulders, a beauty mark near the collarbone, slightly rough skin on the elbows. Color grade: warm cream-peach highlights, soft sage shadows, mild iPhone HDR glow, slight halation on the iced coffee glass.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "bathroom_morning",
+      "tones": [
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p076",
+      "source": "prompt_bank_2",
+      "title": "Selfie Natural en Auto (Belleza & Glow)",
+      "text": "Third-person photo of a 25-year-old Mexican-American woman walking out of a Starbucks in a strip-mall parking lot in Phoenix at 7:55am, taken by a friend a few steps ahead. Long caramel-honey hair with money-piece highlights in a high messy bun with a black claw clip, face-framing wispy pieces. Tiny gold hoops, a gold nameplate necklace reading \"Mia\", thin gold chain with a cross, stacked thin gold rings. Worn pink Victoria's Secret Pink cropped hoodie half-unzipped over a white ribbed tank, grey sweat shorts rolled once at the hem, white ankle socks and worn white Hoka Clifton 9s. Fresh acrylic almond nails in nude chrome, a small butterfly tattoo on the inner wrist, a thin gold anklet. Huge iced Starbucks cup with a Ventura Strawberry Açaí Refresher in one hand, an AirPods Pro case and car keys (with a pink puffy Sanrio keychain) in the other. Walking mid-stride, looking down at the phone tucked under her thumb on the coffee cup, small natural smile. Behind her: a beige stucco strip-mall wall with the Starbucks logo, a nail salon two doors down, a white Hyundai Elantra with a pink steering wheel cover just visible, heat shimmer on the asphalt, cacti and a Taco Bell sign in the middle distance, a cloudless hard-blue Arizona sky. Shot on iPhone 14 Pro rear camera, 24mm, harsh overhead morning sun, no flash, slight motion blur on the coffee hand. Skin: visible acne scarring along the jawline partially covered with concealer, a streak of bronzer slightly too dark at the temple, glossy lip, mascara still clumped from yesterday, a small freckle on the upper lip, no airbrushing. Color grade: blown-out desert-sun highlights, hard cyan shadows, warm sand midtones, slight iPhone clipped highlights on the white hoodie.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "dark",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p077",
+      "source": "prompt_bank_2",
+      "title": "Espejo Baño Rutina Mañana (Fitness Activo)",
+      "text": "Mirror selfie of a 27-year-old Korean-American man taken in the empty weight-room of a concrete-floor gym at 10:47pm. Lean muscular build, damp black hair with a half-grown out fade, a thin gold chain catching the ceiling light, faded grey Nike Pro compression shirt pushed up to reveal lower abs, black Gym+Coffee shorts slightly low on the hips, white ankle socks and black Nike Metcons, black wrist wraps half-unravelled dangling from one wrist. Holds an iPhone 15 Pro in the right hand angled at the mirror, left arm tensed holding a chalk-dusted 32kg kettlebell at his side, a faint vein running down the forearm, knuckles slightly scuffed. Looking down at the phone, lips parted in focus, short stubble uneven along the jaw, a small pink razor-burn patch under the chin, one eyebrow marginally higher than the other. Black G-Shock GA-2100 on the left wrist with a clear chalk smear across the face. Behind him in the mirror: a rack of hex dumbbells, a loaded trap bar on the floor, a water bottle and an AirPods case on a wooden bench, harsh white LED ceiling panels overhead, a smudged fingerprint across the mirror at hand-height, faint dried sweat droplets on the glass. Shot on iPhone 15 Pro rear camera, 24mm, overhead LED light, no flash. Skin: visible pores at the nose bridge, sweat sheen across the forehead and upper lip, a small pink healing spot near the temple, faint tan line at the neckline of the shirt, a vein visible at the bicep. Color grade: cool fluorescent white highlights, slightly green cast in the shadows, mild iPhone over-sharpening on the textured wall.",
+      "category": "fitness",
+      "gender": "male",
+      "scenario": "bathroom_morning",
+      "tones": [
+        "dark",
+        "candid",
+        "authentic"
+      ],
+      "best_for": [
+        "fitness",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p078",
+      "source": "prompt_bank_2",
+      "title": "Selfie Natural en Auto (Anuncio Comercial)",
+      "text": "Street-style iPhone selfie of a 25-year-old Korean-Japanese woman in Shibuya during a light February rain. Oversized chocolate-brown leather trench, collar popped, charcoal printed silk scarf knotted babushka-style under the chin. Tortoiseshell oval cat-eye sunglasses sit low. Matte brown lipstick smudged slightly at one corner, three small gold huggies stacked in the visible ear. Lips pursed, head tilted down. Behind her: glossy wet black asphalt, kanji neon bleeding pink and electric blue, the chrome flank of a parked taxi just out of focus. Overcast diffused light gives the skin a cool porcelain quality with visible peach fuzz along the upper cheek. Shot on iPhone 15 Pro front camera, 26mm. In the lens of her sunglasses, a faint reflection of her opposite hand and the dripping ribs of a clear umbrella. Cool color grade: blue-grey highlights, magenta neon spill in the shadows. Realism cues: a small healing blemish under the jaw, slightly chapped lower lip, one stray hair stuck to the wet temple.",
+      "category": "ads",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "candid"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p079",
+      "source": "prompt_bank_2",
+      "title": "Gimnasio Post-Entreno (Fitness Activo)",
+      "text": "Mid-length portrait of a 24-year-old Korean-Australian woman sitting cross-legged on a sage-green pilates reformer, towel draped across the shoulders, just finished a class. Sleek matte-black cropped long-sleeve zip-up half-unzipped over a white scoop-neck sports bra, high-waisted matte-black leggings, white ankle socks. Hair pulled into a high slick bun with a single black silk scrunchie, no flyaways. Small gold huggies, a thin gold chain with a tiny coin pendant, a Garmin watch on the left wrist, a frosted Stanley cup with a lemon slice held loosely in one hand. Looking off-camera to the left, lips slightly parted, a faint flush across the cheeks from the workout, a small bead of sweat at the temple. Behind her: a long white-oak studio with a row of identical reformers in soft focus, floor-to-ceiling arched windows pouring late-morning light across the blonde wood floor, a spider plant on a low ledge, the faint silhouette of an instructor at the back. Shot on Sony A7IV with 35mm f/1.8, natural light, shallow depth of field. Skin: dewy from the workout, visible pores across the cheekbones, no foundation, a single small freckle on the upper lip, slightly red ear-tips. Color grade: muted sage and cream highlights, soft shadow falloff, clean modern editorial tone with mild film emulation.",
+      "category": "fitness",
+      "gender": "female",
+      "scenario": "gym",
+      "tones": [
+        "editorial",
+        "authentic"
+      ],
+      "best_for": [
+        "fitness",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p080",
+      "source": "prompt_bank_2",
+      "title": "Selfie Natural en Auto (Fitness Activo)",
+      "text": "Waist-up photo of a 23-year-old Black American woman sitting on the edge of a rumpled bed in a one-bedroom Houston apartment at 6:20pm, just back from the gym and not yet showered. Medium-brown skin with a warm red undertone, dark brown box braids pulled into a high bun wrapped in a black silk scarf, baby hairs laid in sharp swoops, a gold Cuban link hoop in each ear, a thin gold \"Nessa\" nameplate. Barely-there makeup: a swipe of brown lip liner with clear gloss, day-old winged liner smudged into a soft shadow, visible sweat on the hairline. Wearing a black fitted short-sleeve quarter-zip crop with the zip pulled low, dove-grey drawstring cotton shorts rolled once at the waistband, white ankle socks pushed down, one Nike Air Force 1 already kicked off on the rug. A gold cross necklace resting on the collarbone, a thin gold bezel-set tennis bracelet, stacked thin gold rings, long almond acrylics in a glossy mocha. Phone in one hand scrolling Instagram, other hand loosely resting on the thigh, head tilted down toward the screen, shoulders relaxed, a tiny smile at something on the phone. Behind her: tangled white bedsheets and a dove-grey duvet pushed to one side, a fluffy cream throw half on the floor, a gym bag open spilling out a Stanley Quencher and a pair of Adidas sliders, a nightstand with a Maison Margiela Replica \"Lazy Sunday Morning\" candle and a Billie razor, a tall artificial fiddle-leaf plant in the corner, warm oak laminate flooring, the corner of a framed print of a black-and-white beach photograph. Shot on iPhone 15 Pro rear camera, 24mm, soft late-afternoon sidelight from a window off-frame left mixed with a warm overhead pendant, slight window glare in the background. Skin: post-workout dewy sheen, visible pores at the nose, a small healing bump at the jawline, ashy dry patches just barely visible on the elbows, a faint stretch mark on the outer thigh, a tiny old burn scar on the forearm. Color grade: warm honey highlights, soft mocha shadows, slight iPhone HDR lift on the bedsheets, mild over-sharpening on the braid texture.",
+      "category": "fitness",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "dark",
+        "authentic"
+      ],
+      "best_for": [
+        "fitness",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p081",
+      "source": "prompt_bank_2",
+      "title": "Selfie Natural en Auto (Belleza & Glow)",
+      "text": "Full-body candid of a 22-year-old Italian-American woman with shoulder-length jet-black hair and chunky face-framing layers, standing in front of the open glass-door beer-and-energy fridge of a New Jersey 7-Eleven at night. Faded baby-pink Ed Hardy tiger graphic baby tee, low-rise butter-yellow Diesel jeans with visible whiskering, a chocolate-brown studded leather belt, a quilted Dior saddle bag slung crossbody, a thin silver belly chain catching the fluorescent light. Hand resting on one hip, the other holding a cracked-open Celsius can angled toward the camera, head tilted slightly, one brow raised, lips parted in a half-smirk, a faint smudge of brown lipliner past the lip line. Behind her: a wall of glowing fridges packed with Red Bull, Celsius, Ghost, Monster, sodas; the buzzing yellow strip lights overhead, a smudged price sticker reading $3.49 stuck to the glass beside her shoulder. Shot on iPhone 15 Pro rear camera, 24mm equivalent, available fluorescent light, no flash, slight motion shake. Skin: visible pores across the T-zone, faint shine on the forehead, a small healing pimple by the jawline, mascara slightly clumped on one set of lashes, a thin smudge of self-tan unblended at the wrist. Color grade: cool fluorescent green-white highlights, deep magenta shadows from the energy-drink branding, slight halation around the brightest tube light, mild iPhone over-sharpening at the edges.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "dark",
+        "candid",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p082",
+      "source": "prompt_bank_2",
+      "title": "Baño Hotel de Lujo (Belleza & Glow)",
+      "text": "Mirror selfie of a 24-year-old Brazilian woman taken in the marble bathroom of a South Beach Airbnb at 11:48pm, ten minutes before going out. Sun-kissed golden-olive skin, long bleached honey-blonde hair with a slightly darker root in loose curled waves pushed to one side, a small diamond septum ring, small diamond studs, a stack of thin gold chains with a heart pendant resting at the sternum. Full glam: glossy nude-brown lip overlined, snatched contour, a feathered brow, dewy skin, long wispy lashes. Wearing a tiny chocolate-brown satin slip mini-dress with thin spaghetti straps and a cowl neck, body glitter sparingly across the collarbone and down the shoulders, a gold body chain visible at the waist, chunky gold Wolf Circus hoops. Clear Perspex Femme LA heels already on, French-tip almond nails, a gold ankle bracelet. Holding an iPhone 15 Pro Max at hip-height in the right hand, left hand lifting the phone case at eye level to check the lighting, slight lean with one hip out, head tilted, lips slightly parted with a closed-mouth micro-smile, eyes on the screen. Behind her in the mirror: a cluttered cream marble countertop — a black Dyson Airwrap plugged in with the cord dangling, a Rare Beauty blush, a Laneige Lip Sleeping Mask, a Fenty Gloss Bomb with the lid off, a half-drunk espresso martini in a coupe glass with a single coffee bean floating, a small travel-size Sol de Janeiro 62, a bottle of Vintner's Daughter serum, a damp white hotel towel on the floor, a hairbrush with a ball of blonde hair caught in it. A ring light clipped to the mirror frame casting cool white onto the face. Reflected beyond: an open suitcase on the tiled floor spilling outfits, a \"Do Not Disturb\" tag hanging on the doorknob, another friend half-in-frame zipping up a strappy sandal. Shot on iPhone 15 Pro Max front camera, 24mm, ring-light fill plus warm marble-bathroom overheads, no flash, slight fingerprint smudge visible at one corner of the mirror. Skin: dewy highlighter catching on the cheekbones and collarbone, visible pores at the T-zone, a fresh small pimple on the jawline poorly concealed with brown-toned concealer, a tan line from a bikini string at the upper chest, a small bandaid on one heel where the new shoe is already rubbing, faint self-tan streak unblended at the inner ankle. Color grade: cool ring-light whites on the face against warm tungsten marble shadows, slight bloom on the highlights, mild iPhone over-sharpening on the glitter. The photo reads as \"fit check before the club\"",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "hotel_bathroom",
+      "tones": [
+        "dark",
+        "candid",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p083",
+      "source": "prompt_bank_2",
+      "title": "Dormitorio Cozy Iluminación Suave (UGC Auténtico)",
+      "text": "Casual iPhone selfie of a 20-year-old half-Norwegian woman with strawberry-blonde hair, two thin braids framing the face, loose wisps caught by the wind. Vintage forest-green wool aviator ear-flap hat with weathered brown leather trim, small black oval Y2K sunglasses pushed slightly down the nose, a chunky cream cable-knit balaclava bunched around her neck, the unzipped collar of a black thermal base layer beneath. Wind-bitten pink cheeks, a faint white sunscreen streak unrubbed across the nose bridge. Behind her: a snow-covered timber lodge with smoke curling from a stone chimney, dense pines, snow-weighted branches, late-afternoon alpenglow turning the powder peach. Shot on iPhone 15 Pro front camera, 26mm, slight lens flare from the low sun catching the corner of the frame. Skin: dry from cold, freckles across the nose bridge, faint chapping on the lips, the ghost of breath fog at the corner of the mouth. Color grade: warm peach highlights against cool blue snow shadows.",
+      "category": "ugc",
+      "gender": "female",
+      "scenario": "bedroom_night",
+      "tones": [
+        "candid",
+        "authentic"
+      ],
+      "best_for": [
+        "lifestyle",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p084",
+      "source": "prompt_bank_2",
+      "title": "Selfie Natural en Auto (Belleza & Glow)",
+      "text": "A relaxed photo of a 26-year-old half-Lebanese woman lying belly-down across a rumpled white-linen hotel bed in a Rome boutique hotel, propped on both elbows scrolling her phone. Cropped grey marl Champion hoodie pushed up at the sleeves, no pants visible under the duvet pulled across the lower back, hair in a damp messy bun fresh from the shower, two loose front pieces falling forward. A small gold hoop in each ear, a thin curb-chain anklet visible past the duvet, chipped cherry-red pedicure, an oversized vintage gold Cartier Tank watch on the wrist holding the phone. The bed: room-service tray pushed to the side with a half-eaten cornetto, a small espresso cup with foam residue, a folded copy of La Repubblica, a glass bottle of Acqua Panna sweating onto a paper coaster. Behind her: tall French shutters cracked open, sheer curtains glowing with morning light, a sliver of terracotta rooftop and a TV antenna visible past the railing. Shot on iPhone 14 Pro rear camera, 26mm, soft directional natural light from camera-right, shallow depth of field, slight bloom on the highlights. Skin: faint red sleep-line across one cheek, shiny T-zone with no makeup, light peach-fuzz catching the side light, faded barely-there freckles across the nose bridge, a small mole on the upper arm. Color grade: warm cream highlights, soft sage shadows, gentle film-like grain, slightly washed contrast.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p085",
+      "source": "prompt_bank_2",
+      "title": "Supercar Paparazzi Nocturno (Anuncio Comercial)",
+      "text": "Three-quarter photo of a 42-year-old white-Australian man standing by the back of his open SUV in the car park of a coastal golf club near Noosa at 3:45pm on a Sunday, taken by his mate in the passenger seat. Tall, slightly soft at the waistline, sun-faded sandy-brown hair flattened by the cap with a visible sweat ring across the forehead, three-day stubble patchy along the jawline and thin across the chin. A deep farmer's-style tan across the forearms and V of the neck, pale above. Wearing a white Lululemon Metal Vent Tech polo with a faint sweat patch down the back, slate-grey FootJoy golf shorts, a thin brown leather belt, a pair of dusty white FootJoy Pro SL spikes, low-cut ankle socks. A faded FootJoy visor dangling from one hand, oversized Oakley sunglasses pushed back on the head, a Garmin S70 GPS watch on the left wrist showing a finished round with a distinct tan line beneath the strap, a thin black elastic band on the right wrist. Leaning against the open boot, one foot crossed over the other, a frosty VB longneck in one hand, the other resting on the roofline. Head turned slightly, mid-sentence in a story, a genuine lopsided grin, squinting slightly into the sun. A bronze wedding band. In the boot: a stuffed navy Titleist Players 4 stand bag with heads sticking out, a white glove hanging by the velcro strap, a scuffed yardage book, a sleeve of Pro V1s, a crumpled grip-towel, a salt-stained hat, a muddy pair of thongs. Behind him: the clubhouse car park baking in the afternoon sun, a row of other SUVs, a glimpse of the 18th green in the middle distance with two guys still putting, a clubhouse verandah with umbrellas and other golfers already on pints, gum trees and a slice of Pacific beyond. Shot on iPhone 15 Pro rear camera, 24mm, hard late-afternoon sun raking from camera-left, slight lens flare. Skin: sunburnt nose and forearms, a faint tan line from the visor across the forehead, broken capillaries across the cheeks, peeling skin at the V of the neckline, a small nick on the chin from that morning's shave, a dried bit of sunscreen not fully rubbed in at the temple, grimy fingernails from teeing up.",
+      "category": "ads",
+      "gender": "male",
+      "scenario": "luxury_car",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p086",
+      "source": "prompt_bank_2",
+      "title": "Selfie Natural en Auto (Belleza & Glow)",
+      "text": "Editorial hero shot of a single frosted-glass skincare bottle with a matte-black weighted cap, standing centred on a polished slab of pale travertine stone wet with a thin film of water. Label: minimalist cream with small black serif text reading \"MARÉA — Hydrating Vitamin C Serum · 30ml\". A single cut halved fresh fig beside the bottle, juice seeping into the stone. A thin ribbon of serum has just dropped from the pipette and caught mid-fall onto the stone, a small pool at the base. Soft directional morning light from camera-left, a warm amber reflection on the bottle's shoulder, a long cool-grey travertine shadow to the right. Shot on Hasselblad X2D with 90mm macro, tack sharp on the pipette tip, f/5.6, luxury beauty campaign tone. Visible surface realism: water droplet surface tension on the stone, frosted-glass diffusion softening the serum colour, the pulpy pink interior of the fig catching the light.",
+      "category": "beauty",
+      "gender": "any",
+      "scenario": "car_selfie",
+      "tones": [
+        "editorial",
+        "glamour"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p087",
+      "source": "prompt_bank_2",
+      "title": "Dormitorio Cozy Iluminación Suave (Anuncio Comercial)",
+      "text": "Grainy iPhone selfie of a 23-year-old Latina woman, long jet-black middle-parted hair tucked behind one ear, the other side falling forward across the collarbone. Chrome-grey silk bandana folded as a thin headband across the forehead, slim rectangular black sunglasses with a small metallic logo at the temple. Worn black leather moto jacket open over a white ribbed cropped tank, layered silver curb chain with a thin pendant. Lips parted, balm catching the overhead fluorescent. Selfie arm extended, the back of her hand visible at the bottom edge. Behind her: a long industrial pedestrian tunnel, raw concrete walls layered with red and white spray-paint tags, a row of buzzing fluorescent strips overhead, a blown-out cyan sodium lamp at the vanishing point. Shot on iPhone 13 Pro front camera with flash on, 26mm. Skin: visible pores across the T-zone, faint bronzer streaks unblended at the jawline, a single highlighter dot under each eye catching the flash. Color grade: cool cyan highlights, deep magenta shadows, heavy ISO grain in the darks.",
+      "category": "ads",
+      "gender": "female",
+      "scenario": "bedroom_night",
+      "tones": [
+        "dark",
+        "candid",
+        "authentic"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p088",
+      "source": "prompt_bank_2",
+      "title": "Selfie Natural en Auto (Fitness Activo)",
+      "text": "Third-person photo of a 28-year-old Puerto Rican woman sitting on a green wooden bench along the Central Park Reservoir loop at 7:35am on a Saturday, taken by a running buddy a few steps ahead. Warm olive-tan skin with a light natural sweat sheen, long dark-brown hair in a sleek high pony pulled back tight, a single gold Miami Cuban link chain, small gold huggies. Wearing a peach Alo Airbrush long-sleeve crop with thumbholes pushed down over the hands, matching high-waisted peach biker shorts, black Hoka Mach X in white-and-peach, a black Garmin Forerunner 255 on the wrist showing a finished run screen. Nike running belt around the hips with a half-empty water flask sticking out, wireless AirPods Pro in the ears, Oakley Sutro sunglasses pushed up on the head holding back flyaways. A thin gold anklet, a short geometric tattoo on the inner forearm. Sitting on one hip with one leg stretched out long, the other bent, both hands wrapped around a Bluestone Lane iced oat-milk latte just picked up from the park concession, a small spot of condensation already on the thigh where she rested it. Head tilted slightly, looking off past the camera toward the water, a tiny genuine smile of post-run endorphins. Behind her: the reservoir with early-morning joggers blurred in the background, the silhouette of a West Side apartment tower catching first sun, autumn-tinted maples, a blue NYC Parks bin, another runner stretching on a bench further down, a golden retriever pulling its owner past in soft motion-blur. Shot on iPhone 15 Pro rear camera, 26mm, warm low-angle morning sun raking from camera-right, slight lens flare in the upper corner. Skin: dewy sweat on the forehead and temples, hairline damp, visible pores on the cheekbones, a slight pink flush from exertion, mascara slightly migrated under one eye, a tan line at the sock line on the ankle, a small mosquito bite on the calf, shaved-leg razor burn faintly pink at one shin. Color grade: warm honey highlights, cool teal-green park shadows, slight halation on the coffee cup, mild iPhone HDR lift. The photo reads as \"post-run content drop before brunch\" with the caption energy already baked in.",
+      "category": "fitness",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "authentic"
+      ],
+      "best_for": [
+        "fitness",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p089",
+      "source": "prompt_bank_2",
+      "title": "Dormitorio Cozy Iluminación Suave (Fitness Activo)",
+      "text": "Full-length photo of a 34-year-old half-Korean half-white woman standing at the glass front door of a boutique barre studio in Kitsilano, Vancouver at 7:10am, taken by a friend inside the lobby. Light-tan skin with a natural post-class flush, long dark-brown hair in a low slick bun with a tortoiseshell clip, a single thin gold chain, small gold huggies, tortoiseshell round sunglasses pushed on top of the head. Wearing a cream ribbed Vuori Halo zip-up half-unzipped, a white sports bra beneath, high-waisted charcoal seamless leggings, white Adidas Sambas, a black Free People belt bag slung across the body. A Lululemon water bottle in one hand, a reusable ceramic Blank Street matcha cup in the other, an Apple Watch on a green sport-loop. Caught mid-shoulder-push of the heavy glass door, head turned over the shoulder to say something to whoever's filming, a natural mid-word grin. Behind the glass: the studio lobby with a blonde-wood bench, a row of cubbies, a small bouquet of eucalyptus, a chalkboard schedule. Through the reflection in the door: the wet Vancouver street, parked Subarus, a misty grey North Shore mountain in the distance. Shot on iPhone 15 Pro rear camera, 24mm, soft overcast morning light plus warm interior lobby glow, slight reflection overlay on the glass. Skin: dewy post-class glow, visible pores on the nose, a red patch of wind-chap along the cheek, no makeup beyond tinted balm, a mosquito bite on the collarbone.",
+      "category": "fitness",
+      "gender": "female",
+      "scenario": "bedroom_night",
+      "tones": [
+        "authentic"
+      ],
+      "best_for": [
+        "fitness",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p090",
+      "source": "prompt_bank_2",
+      "title": "Espejo Baño Rutina Mañana (Belleza & Glow)",
+      "text": "Mid-range photo of a 26-year-old Japanese man mid-haircut in a small Harajuku barber shop at 5:15pm on a Friday, taken by the barber holding the phone while he's in the mirror. Lean build, medium height, fair skin with a cool undertone. Jet-black hair being sharpened into a two-block fade — clippers audible — one side already cut clean, the other still being finished, a freshly-lined crisp hairline at the temple, a tissue paper collar tucked into the neckline of the black nylon barber cape, a small sprinkle of hair clippings on the cape and across the forearm where it's visible. A single silver cross earring in the left ear, a second small silver cuff on the upper cartilage, a tiny beauty mark under the right eye. Natural sparse mustache freshly line-trimmed, no beard. Under the cape: a tan Carhartt WIP work jacket unzipped at the top, a black Supreme box-logo tee just visible at the chest, a thin silver rope chain. A vintage Seiko 5 on the left wrist resting on the arm of the chair, chipped black nail polish on the thumb, three silver rings. Head angled slightly down as directed, eyes flicking up to meet the camera in the mirror with a calm almost-smirk, lips softly parted. Behind him in the mirror: the barber in a black apron holding clippers and a comb, a second barber working on another customer out of focus, a row of reclining brown-leather barber chairs, a ledge of combs in blue Barbicide, Suavecito pomade tins, a bottle of Layrite, a straight razor, a neck duster, warm amber pendant lights casting soft puddles of light, a vintage red-and-white barber pole visible through the window, neon Japanese signage reflected in the glass. Shot on iPhone 14 Pro rear camera through the barbershop mirror, 26mm, warm tungsten pendant light only, slight fingerprint smudge at the corner of the mirror, faint reflection of the shop interior overlapping the image. Skin: smooth but visible pores on the nose, a single small pimple on the cheek, oily T-zone sheen from the day, red irritation along the freshly-faded hairline where the clippers just passed, one stray eyebrow hair.",
+      "category": "beauty",
+      "gender": "male",
+      "scenario": "bathroom_morning",
+      "tones": [
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p091",
+      "source": "prompt_bank_2",
+      "title": "Selfie Natural en Auto (Belleza & Glow)",
+      "text": "Mid-length photo of a 24-year-old Danish woman sitting cross-legged on the arm of a light-oak IKEA sofa in a small Nørrebro apartment at 2:50pm on a Sunday. Pale-neutral skin with faint rosacea on the cheeks, long dirty-blonde hair in a messy low bun with a brown claw clip, two shorter face-framing pieces falling loose, small silver huggies, a thin silver chain. Minimal makeup: bare skin with a slight redness around the nose from a lingering cold, tinted Aquaphor on the lips, yesterday's mascara leaving a faint smudge under one eye. Wearing a fitted black short-sleeve half-zip crop with the zip pulled down to mid-chest, soft grey marl jersey shorts with a white drawstring tied in a bow, bare feet. A slim silver Swatch on the left wrist, a single thin silver ring on the index finger, unmanicured short clear nails. One hand tucked under the thigh, the other loosely holding a half-eaten cinnamon snurre on a small white plate, head tilted slightly toward the camera, mouth closed in a small caught-mid-chew smile. Behind her: a cluttered low coffee table with a half-drunk glass of Rioja, an open paperback face-down, an AirPods Pro case, a candle burning in a smoked-glass holder, a copy of Kinfolk magazine; on the wall a single unframed Matisse cutout poster taped up slightly crooked, a paper lantern pendant lamp overhead, a dark green velvet armchair in the corner with a folded knit blanket, a tall sash window with soft grey Copenhagen afternoon light, the edge of a bicycle leaned against it. Shot on iPhone 15 Pro rear camera, 24mm, soft overcast daylight as the primary source plus a warm overhead pendant, no flash. Skin: visible pores on the nose, a small healing spot on the chin, peach fuzz catching the side light along the jaw, a faint pink patch on one cheek, a small bruise on the shin from a bike pedal, slightly dry cuticles. Color grade: soft cream-beige highlights, cool sage-grey shadows, muted contrast, mild iPhone HDR lift.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "dark",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p092",
+      "source": "prompt_bank_2",
+      "title": "Retrato Urbano Espontáneo (UGC Auténtico)",
+      "text": "iPhone screenshot of an iMessage conversation, iOS 17 style, contact name at top reading \"Martin (Boss) 🫠\". Status bar: 11:47pm, 12% battery (red), one bar of signal, Wi-Fi off. Five grey incoming bubbles stacked from the boss with timestamps \"11:41 PM\": \"Hey you up?\", \"Need you to jump on something\", \"The deck for tomorrow isn't going to work\", \"Can you redo slides 4 through 22 tonight\", \"Thanks legend 🙏\". One small typing indicator (three grey dots) still showing beneath. The reply field at the bottom is empty. Clean iOS rendering, crisp SF Pro font, correct bubble tails, correct spacing. No blue reply bubbles at all — this is a one-sided hook.",
+      "category": "ugc",
+      "gender": "any",
+      "scenario": "other",
+      "tones": [
+        "dark"
+      ],
+      "best_for": [
+        "lifestyle",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p093",
+      "source": "prompt_bank_2",
+      "title": "Editorial de Moda Alta Costura (Belleza & Glow)",
+      "text": "Full-body fashion editorial of a tall model standing in the middle of an empty concrete courtyard at golden hour, body angled slightly, one hand in pocket. Wearing a structured oversized burnt-orange wool double-breasted coat, belted at the waist, over a cream cashmere polo-neck and wide-leg chocolate-brown tailored trousers, square-toed black leather loafers. A small structured black top-handle bag held loosely at the side. Hair slicked back into a low knot, no visible jewelry, clean makeup. Low hard golden sun rakes from camera-right, throwing a long sharp shadow across the concrete and igniting the orange coat so it glows against the neutral setting. Shot on Canon R5 with 85mm f/1.4, shallow depth of field with the coat texture crisp and the background softly dropping away. Fashion campaign tone reminiscent of The Row or Khaite lookbook imagery. Color grade: saturated burnt-orange hero, desaturated cream and slate concrete, deep honey sun highlights, crushed blacks.",
+      "category": "beauty",
+      "gender": "any",
+      "scenario": "fashion_editorial",
+      "tones": [
+        "editorial"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p094",
+      "source": "prompt_bank_2",
+      "title": "Dormitorio Cozy Iluminación Suave (Anuncio Comercial)",
+      "text": "Grainy iPhone selfie of a 23-year-old Latina woman, long jet-black middle-parted hair tucked behind one ear, the other side falling forward across the collarbone. Chrome-grey silk bandana folded as a thin headband across the forehead, slim rectangular black sunglasses with a small metallic logo at the temple. Worn black leather moto jacket open over a white ribbed cropped tank, layered silver curb chain with a thin pendant. Lips parted, balm catching the overhead fluorescent. Selfie arm extended, the back of her hand visible at the bottom edge. Behind her: a long industrial pedestrian tunnel, raw concrete walls layered with red and white spray-paint tags, a row of buzzing fluorescent strips overhead, a blown-out cyan sodium lamp at the vanishing point. Shot on iPhone 13 Pro front camera with flash on, 26mm. Skin: visible pores across the T-zone, faint bronzer streaks unblended at the jawline, a single highlighter dot under each eye catching the flash. Color grade: cool cyan highlights, deep magenta shadows, heavy ISO grain in the darks.",
+      "category": "ads",
+      "gender": "female",
+      "scenario": "bedroom_night",
+      "tones": [
+        "dark",
+        "candid",
+        "authentic"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p095",
+      "source": "prompt_bank_2",
+      "title": "Retrato Urbano Espontáneo (Estilo de Vida)",
+      "text": "An off-guard photo of a 26-year-old Black woman walking out of a 24-hour Brooklyn bodega at 1am, caught mid-step by a friend a few feet ahead. She's looking down at the bagel sandwich in her hand, half-unwrapped foil, a smear of cream cheese on her thumb. Oversized black wool overcoat draped open over a cropped white wifebeater and low-slung baggy denim, scuffed black leather loafers, no socks. Long box braids pulled into a high pony, gold hoops, a single thin gold chain. Reading glasses pushed up into the hair. Behind her: the deli's yellow-lit awning, a hand-painted lottery sign, a stack of newspapers in a wire rack, a parked yellow cab half in frame, steam rising from a manhole down the street. Shot on Fujifilm X100V, 23mm, ISO 3200, slight motion blur on the foreground arm. Realism cues: visible texture on the coat wool, faint reflection of the deli light on her forehead, lip balm catching at one corner of the mouth, a small chip on one nail. Color grade: warm sodium-vapor highlights, deep cyan shadows in the street, slight halation around the brightest lights.",
+      "category": "lifestyle",
+      "gender": "female",
+      "scenario": "other",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "lifestyle",
+        "travel",
+        "food"
+      ]
+    },
+    {
+      "id": "ofm_p096",
+      "source": "prompt_bank_2",
+      "title": "Selfie Natural en Auto (Fitness Activo)",
+      "text": "Mid-range photo of a 23-year-old Black British man cooking in the narrow galley kitchen of a converted Victorian flat in Peckham at 10pm. Tall, slim-athletic build, freshly lined-up fade with a part, small diamond stud in each ear, a thin Cuban gold chain. Faded vintage New York Knicks jersey over a white long-sleeve, charcoal Nike tech-fleece joggers, white tube socks, no shoes. At the hob stirring a scratched carbon-steel pan of jollof rice, wooden spoon in the right hand, the left resting on the counter next to a chopping board with half a scotch bonnet, a small pile of diced onion, a wine glass of Malbec on a ring of condensation. Slight dad-bod softness at the waist, a long faded thigh tattoo just visible through the joggers. A black Apple Watch on the left wrist, the strap slightly worn. Behind him: open metro-tile splashback, a cluttered magnetic knife strip, a Breville kettle, a row of mismatched spice jars with handwritten labels, a dog-eared Yotam Ottolenghi cookbook propped open against a bottle of olive oil, a steamy window above the sink catching the kitchen light, a Bluetooth speaker on a shelf playing vinyl sleeves leaning behind it. Shot on Fujifilm X-T4 with 35mm f/1.4, warm tungsten kitchen light, slight steam softening the frame. Skin: dewy from the cooking heat, a small sheen on the forehead, short chin-beard freshly shaped with a sharp line, a tiny cut on the knuckle of the stirring hand, a faded barely-visible shaving bump under the chin. Color grade: warm amber tungsten highlights, deep green-black shadows, gentle Fuji Classic Neg rendering, soft film-like grain.",
+      "category": "fitness",
+      "gender": "male",
+      "scenario": "car_selfie",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "fitness",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p097",
+      "source": "prompt_bank_2",
+      "title": "Retrato Urbano Espontáneo (UGC Auténtico)",
+      "text": "Straight-on photo of a football manager's tactics whiteboard in a changing room. Green pitch graphic printed onto the board, clearly well-used with ghost marks from previous games. Covered in hand-drawn markings in dry-wipe marker. Eleven red O's arranged in a 4-3-3 formation representing the home team, eleven blue X's in a 5-4-1 representing the opposition. Arrows in black dry-wipe marker showing movement: a central midfielder dropping deep with a curved arrow labelled \"DROP + PIVOT\", two forwards making diagonal runs into the channels, a dotted-line showing the opposition pressing trigger with a note \"WAIT FOR HIS TOUCH\". A rough hand-drawn diamond in the centre circle with \"PRESS HERE\" aggressively underlined. A shooting arrow from the striker position to goal with \"2ND HALF GAMEPLAN — LEFT CHANNEL\". Marker-smudges on the board edge from previous sessions not fully cleaned, a half-erased set-piece routine still faintly visible. A yellow marker and a half-full water bottle resting in the pen tray. Shot on iPhone, harsh fluorescent changing-room light, slight motion blur from a hand just leaving frame.",
+      "category": "ugc",
+      "gender": "male",
+      "scenario": "other",
+      "tones": [
+        "authentic"
+      ],
+      "best_for": [
+        "lifestyle",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p098",
+      "source": "prompt_bank_2",
+      "title": "Flash Paparazzi Nocturno (Anuncio Comercial)",
+      "text": "A candid third-person photo of a 24-year-old British-Pakistani woman taken by a friend across a low riad rooftop table in Marrakech at dusk. She's mid-laugh, head thrown slightly back, one hand reaching for a small painted glass of mint tea, steam still rising. Loose oatmeal linen shirt half-tucked into faded straight-leg jeans, a stack of mismatched silver bangles sliding down the wrist, tiny gold nose stud catching the last light. Dark wavy hair pulled into a low messy claw clip with face-framing pieces escaping. Behind her: ochre clay walls, a row of brass lanterns just lit, the silhouettes of two friends out of focus on the far side of the table, the Atlas mountains a hazy purple line at the horizon. Shot on iPhone 15 Pro rear camera, 26mm, available light, no flash. The photographer's thumb is faintly visible at the bottom-left corner of the frame. Skin: warm undertones, faint sweat sheen at the hairline, a small healing scratch on the forearm, soft baby hairs lit from behind. Color grade: deep amber highlights, plum shadows, slight motion blur on the laughing hand.",
+      "category": "ads",
+      "gender": "female",
+      "scenario": "night_flash",
+      "tones": [
+        "dark",
+        "candid"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p099",
+      "source": "prompt_bank_2",
+      "title": "Resort Tropical / Playa (Estilo de Vida)",
+      "text": "A medium-wide photo of a 21-year-old Australian woman sitting cross-legged in the open back doors of an old cream VW T3 camper parked above a Cornish beach. She's wrapped in a faded rust-orange beach towel, peeling a clementine into her lap, eyes down on her hands. Salt-tangled blonde hair air-drying in loose waves, a thin braided leather choker at the throat, a small faded tattoo of a seagull on the inside of one ankle. Behind her, through the open van: a slice of grey-green ocean, a lone surfer paddling out, marram grass on the dunes, an enamel mug steaming on the van floor. Shot on Contax T2 35mm film, available overcast light, slight grain. Realism cues: goosebumps on the upper arms, a faint sunburn line across the nose, salt residue dried on the calves, one earring slightly off-center. Color grade: muted sage highlights, milky shadows, gentle film halation around the open van doorway, soft natural skin without retouching.",
+      "category": "lifestyle",
+      "gender": "female",
+      "scenario": "beach_maldives",
+      "tones": [
+        "authentic"
+      ],
+      "best_for": [
+        "lifestyle",
+        "travel",
+        "food"
+      ]
+    },
+    {
+      "id": "ofm_p100",
+      "source": "prompt_bank_2",
+      "title": "Selfie Natural en Auto (Estilo de Vida)",
+      "text": "Three-quarter length photo of a 28-year-old Black-Dominican woman standing at the edge of a Roma Norte rooftop restaurant just after sunset, mid-laugh, looking slightly off-camera. Long honey-blonde knotless braids pulled half-up with a small claw clip, baby hairs slicked at the temples. Strapless chocolate-brown satin corset top, low-slung wide-leg butter cream trousers, a thin gold body chain across the lower back just visible, gold layered necklaces, big gold hammered hoops, a stack of thin gold rings, a small Bottega Jodie bag in caramel hooked on the crook of one elbow. A nearly empty mezcal coupe in one hand, a freshly lit cigarette in the other. Behind her: a row of Edison bulbs strung across the rooftop just lit, the silhouettes of two friends laughing at a low table with mezcal bottles and small plates, a cathedral spire visible against the deep violet sky, distant city lights starting to glow. Shot on Canon R6 Mark II with 50mm f/1.4, mixed available light (warm string-bulb tungsten and ambient sky), shallow depth of field. Skin: glowing with subtle highlighter on the cheekbones, glossy lip catching the bulb light, very faint sweat sheen along the collarbone, a small healing scratch on the arm, glossy nail extensions in nude with a single chrome accent finger. Color grade: warm tungsten highlights against deep magenta-blue dusk shadows, gentle halation around each Edison bulb, slight orange lens flare bottom-left.",
+      "category": "lifestyle",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "lifestyle",
+        "travel",
+        "food"
+      ]
+    },
+    {
+      "id": "ofm_p101",
+      "source": "prompt_bank_2",
+      "title": "Café Terraza Europea (Anuncio Comercial)",
+      "text": "Flat-lay of a torn-out newspaper clipping resting on a white marble surface, the paper yellowed at the edges, fibres visible along the torn line. Masthead fragment at the top reading \"THE DAILY CHRONICLE — BUSINESS SECTION\". Headline in bold serif: \"Small London Studio Reshaping Creative Industry With AI Tools\". A column of body text in newspaper 9pt with a drop cap on the first paragraph, a small grainy photograph in the middle showing a founder at a desk with two monitors, caption beneath: \"Founder of Echoform at their Shoreditch studio\". Visible text discussing \"rapid adoption\", \"industry disruption\", and \"market valuation\". A small pull-quote in italics: \"'We built it because we needed it ourselves.'\". A coffee-cup ring in the corner, a small yellow highlighter streak across one paragraph. Shot on iPhone overhead, natural window light, slight paper grain and print dot-pattern visible.",
+      "category": "ads",
+      "gender": "any",
+      "scenario": "outdoor_cafe",
+      "tones": [
+        "dark"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p102",
+      "source": "prompt_bank_2",
+      "title": "Selfie Natural en Auto (Anuncio Comercial)",
+      "text": "Three-quarter photo of a 29-year-old Japanese-Filipino man leaning back against the rear quarter of a pearl-white Nissan Skyline R34 GTR in the sub-basement of Daikoku PA on a Friday night. Medium-length black hair tucked behind one ear, a small skull-ring, a thin rope chain. Black Aimé Leon Dore beanie pushed back, black Stone Island crewneck with the compass badge at the sleeve, baggy Carhartt double-knee work pants in faded hickory-brown, black leather Birkenstock Bostons. A faded back-piece tattoo showing at the neck, another small Kanji character on the knuckle of one hand. Arms folded loosely, one ankle crossed over the other, head turned to talk to someone off-frame, a half-laugh mid-speech, a lit cigarette pinched between two fingers dropping ash onto the polished concrete. A worn-in Seiko SKX007 on a black rubber strap. Behind him: the Skyline's tail lights glowing red, a row of tuned cars out of focus (an RX-7, a Supra, a Civic EK on airbags), low yellow sodium pendant lights, a haze of exhaust smoke catching the glow, a graffiti-tagged concrete pillar, the silhouettes of car guys clustered around an open hood three bays over. Shot on Sony A7III with 35mm f/1.4, mixed sodium-vapor and LED light, slight motion blur on someone walking past in the deep background. Skin: oily T-zone catching the yellow light, visible pores at the nose, a small faded pimple mark on the cheek, stubble grown in unevenly along the jaw with a slightly patchy chin, a cigarette-stained fingertip on the smoking hand. Color grade: warm amber sodium highlights, cool cyan shadows from distant LED strips, deep magenta glow from the tail lights, subtle film halation around bright points.",
+      "category": "ads",
+      "gender": "male",
+      "scenario": "car_selfie",
+      "tones": [
+        "dark",
+        "authentic"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p103",
+      "source": "prompt_bank_2",
+      "title": "Selfie Natural en Auto (Lujo & Viajes)",
+      "text": "Mid-range photo of a 27-year-old English woman standing at the edge of a whitewashed cave hotel terrace in Oia, Santorini at 7:05pm, taken by her partner from a few steps back. Fair-pale skin freshly pink-tinged from the sun, long wavy honey-blonde hair slightly windblown, falling off one shoulder, tortoiseshell Celine Triomphe sunglasses pushed up on the head, small gold hoops, a single thin gold chain with a disc pendant. Wearing a flowy white linen halter-neck Reformation mini-dress with a small back tie and a tiny chocolate stain on the hem she hasn't noticed, nude Tkees sandals, a small tan Polene Numéro Un Nano bag over one shoulder, a Cartier Love bracelet in yellow gold, a stack of thin gold rings, a new thin white tan line on the wrist where her watch usually sits. Standing with one hand resting on the white curved railing, the other holding a coupe glass of rosé catching the light, head turned three-quarters toward the camera with a soft genuine laugh, hair lifted by a breeze. Behind her: the iconic caldera cascade of whitewashed cubist buildings and blue church domes tumbling down to the deep-navy Aegean, a cruise ship tiny on the horizon, the sun a thick gold disc just above the water casting a long shimmering path, a pair of doves on a nearby wall, a linen cushion on a low bench with a half-read paperback by Ottessa Moshfegh face-down and a hotel key fob, a small ceramic bowl of olives and feta, a sweating bottle of Domaine Sigalas assyrtiko. Another couple out of focus at the next terrace holding up phones. Shot on iPhone 15 Pro rear camera in portrait mode at 26mm equivalent, golden-hour side light from camera-left, natural warm halation, very mild background bokeh. Skin: sunburnt bridge of the nose just starting to flake, a small peeling patch on the shoulder, freckles coming out across the cheekbones, faint sunscreen residue at the hairline, a mosquito bite on the ankle, a small healing graze on the shin from climbing off a boat yesterday, pink wine-stain at the corner of one lip. Color grade: rich honey-gold highlights, deep Aegean blue shadows, slight golden-hour lens bloom, classic iPhone HDR pop.",
+      "category": "luxury",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "luxury",
+        "travel",
+        "fashion"
+      ]
+    },
+    {
+      "id": "ofm_p104",
+      "source": "prompt_bank_2",
+      "title": "Dormitorio Cozy Iluminación Suave (Belleza & Glow)",
+      "text": "Three-quarter profile photo of a 29-year-old Argentine woman sitting at a long oak communal table in a co-working space in Príncipe Real, Lisbon at 2:45pm on a Thursday, taken by a coworker from the opposite end of the table. Warm olive skin, shoulder-length wavy dark-auburn hair with curtain bangs tucked behind one ear, small gold huggies, thin gold chain with a zodiac pendant, clear square blue-light glasses pushed up on the head acting as a hairband, a small diamond nose stud. Minimal dewy makeup, tinted balm only, brushed-up brows. Wearing a fitted rust-orange ribbed long-sleeve top, loose cream pleated trousers, tan Birkenstock Bostons visible under the table, a slim gold Monica Vinader bangle, two thin gold rings, a silver Casio A158 on the left wrist. Leaning slightly into the screen of an open MacBook Air with a cherry-red case and a sticker of a small cat on the lid, typing with both hands, head tilted, a focused half-smile as if a message just came in. A pair of wired Apple EarPods in her ears trailing down into the laptop. On the table: a half-drunk iced Americano in a glass Joco cup with a reusable straw, a small plate with half a pastel de nata and a fork, a hardback notebook open with a gel pen clipped, a Moleskine planner, an iPhone 15 face-up showing a Slack notification preview, a Yeti water bottle, an AirPods Max in forest green pushed to one side, a couple of biros, a charity-shop-find vintage ashtray used as a paperclip dish, a packet of Lusitana sugar. Behind her: other heads-down workers blurred, a brass pendant lamp overhead, a wall of tall arched windows pouring soft Lisbon afternoon light flecked with dust motes, green tiled azulejos on the far wall, a rubber plant, a chalkboard with a coffee menu. Shot on Fujifilm X-T4 with 35mm f/1.4, mixed warm pendant and cool window light, shallow depth with the laptop crisp and the room softly dropping away. Skin: faint oiliness at the forehead from the afternoon, visible pores on the cheekbones, a mark on the bridge of the nose from where glasses sat, a healing blemish on the jaw, slight indentation on the finger where a ring usually sits, a small mosquito bite on the ankle.",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "bedroom_night",
+      "tones": [
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p105",
+      "source": "prompt_bank_2",
+      "title": "Café Terraza Europea (Anuncio Comercial)",
+      "text": "Overhead flat-lay of a large sheet of cream paper filled with a hand-drawn fantasy map in black ink with occasional soft watercolour washes. A full continent illustrated in the Tolkien tradition — densely detailed coastlines with tiny repeated waves indicating the sea, mountain ranges drawn as rows of tiny crosshatched peaks labelled \"The Iron Spine\" and \"The Dragon's Back\", forests indicated by clusters of tiny trees (\"The Silverwood\", \"Thornwood\"), rivers winding with named tributaries, lakes in pale blue wash. Scattered across the continent: hand-lettered place names in an ornate medieval calligraphy — \"Highmere\", \"Thornwick\", \"Castle of a Thousand Stairs\", \"Port Varelle\", \"The Ruined Keep\". A small hand-drawn skull marks one cursed location. An ornate compass rose in the corner. A decorative border with Celtic-knot motifs. A title banner at the top: \"THE LANDS OF ARROWEN · Third Age\". A small legend in the corner indicating castles, towns, ruins, ports. The paper slightly aged at the edges, a coffee-ring in one corner, a pencil draft visible faintly beneath some of the inking. Shot overhead on Sony A7IV with 50mm macro, warm natural light.",
+      "category": "ads",
+      "gender": "any",
+      "scenario": "outdoor_cafe",
+      "tones": [
+        "authentic"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p106",
+      "source": "prompt_bank_2",
+      "title": "Selfie Natural en Auto (UGC Auténtico)",
+      "text": "First-person dashboard POV from the driver's seat of a 2003 Honda Civic, parked at night at the edge of a petrol-station forecourt. The dash clock reads 2:47 AM. The fuel gauge is on E. The cassette deck has a burned CD labelled in black Sharpie \"TRACK SEVEN ONLY — PLAY IT\". On the dashboard: a crumpled McDonald's bag, a cold cup of coffee in a paper cup, a rolled-up map of the Pacific Coast Highway with a red biro line drawn across it, a disposable camera with the counter reading \"12\", a paperback of \"On the Road\" with a receipt as a bookmark, a single red rose slightly wilted, a phone face-down buzzing with an unanswered call showing \"MUM (14 missed)\". The passenger seat: a duffle bag half-zipped, a pillow, a suede jacket, a polaroid of a smiling young woman held in place by the seatbelt catch. Through the windshield: the petrol station's fluorescent canopy, one other car at a pump, a long empty highway stretching into darkness, a faint pink glow on the horizon suggesting dawn in a couple of hours. Shot on Canon R6 with 24mm, mixed fluorescent-canopy and dashboard-glow lighting, cinematic first-person tone, the story written in the objects.",
+      "category": "ugc",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "dark",
+        "editorial",
+        "authentic"
+      ],
+      "best_for": [
+        "lifestyle",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p107",
+      "source": "prompt_bank_2",
+      "title": "Selfie Natural en Auto (Anuncio Comercial)",
+      "text": "Straight-on product shot of a tall cylindrical oat-milk carton standing on a pale-blue studio sweep. The carton design: bright matte cream base with a huge hand-illustrated oat-stalk wrapping around the side in a warm mustard-yellow, a playful handwritten logo at the top reading \"BIG OAT\" in bold uneven black script. Below the logo in smaller neat sans-serif: \"barista blend · foams like a dream\". A small \"250ml\" mark on the lower-front and a tiny ingredient list visible on the side. A friendly cartoon mascot — a single-eyed oat grain in rollerskates — printed on the neck. A splash of oat milk caught mid-pour in front of the carton, a single wheat stalk resting across the base, a curl of steam suggesting a coffee just out of frame. Hard overhead light creating a crisp shadow to the right. Shot on Phase One with 80mm, f/8, high saturation, vibrant grocery-shelf product tone, tack sharp with a touch of specular shine on the carton seam.",
+      "category": "ads",
+      "gender": "any",
+      "scenario": "car_selfie",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p108",
+      "source": "avatar_realistic",
+      "title": "Retrato Urbano Espontáneo (Moda & Streetwear)",
+      "text": "Tiny wording changes can completely transform how human a face looks, how skin reacts to light, and whether an image feels like a real photo or obvious AI. The cheat-sheet below shows you the small but powerful phrases that consistently push AI models toward **true photographic realism**, especially when generating people.\n\nUse these as your foundation whenever you want faces, skin, and environments to feel like they were captured with a real camera, not generated by a computer.\n\nAdding even minor changes to your prompts can make a massive difference. If you are struggling to get the outcome you want, try adding some from this cheat-sheet to help you out!\n\nTHE BEST MODEL FOR REALISTIC AVATARS IS **NANOBANANA PRO!**",
+      "category": "fashion",
+      "gender": "male",
+      "scenario": "other",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "fashion",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p109",
+      "source": "avatar_realistic",
+      "title": "Espejo Baño Rutina Mañana (Estilo de Vida)",
+      "text": "```\n\n1️⃣ CORE PHOTOREALISM TRIGGERS (MOST IMPORTANT)\n\n```\n\nAlways include at least 2–3 of these:\n\n- photorealistic\n\n- ultra-realistic\n\n- real-world photography\n\n- cinematic realism\n\n- lifelike details\n\n- natural imperfections\n\n- true-to-life textures\n\n- realistic skin / materials / surfaces\n\n✅ Example:\n\n\"ultra-realistic cinematic photography with natural imperfections\"\n\n```\n\n2️⃣ CAMERA & LENS WORDS (THIS MAKES OR BREAKS REALISM)\n\n```\n\nThese words tell the AI this is a photo and not a fake image.\n\nCamera Language\n\n- DSLR photography\n\n- mirrorless camera\n\n- cinematic film still\n\n- documentary-style photography\n\n- street photography\n\n- studio portrait photography\n\nLens & Optics\n\n- 35mm lens (most natural realism)\n\n- 50mm lens (human eye look)\n\n- 85mm portrait lens (faces)\n\n- shallow depth of field\n\n- natural bokeh\n\n- realistic focal length\n\n✅ Example:\n\n\"shot on a 35mm lens, shallow depth of field, natural bokeh\"\n\nREMEMBER: ChatGPT can help you to craft your prompts! Send it your photo, and ask \"this doesn't look real enough to me, can we add some more detail to the prompt?\"\n\n```\n\n3️⃣ LIGHTING WORDS\n\n```\n\nAvoid fantasy lighting. Use real-world lighting terms:\n\n- natural light\n\n- soft window light\n\n- golden hour sunlight\n\n- overcast daylight\n\n- practical lighting\n\n- studio softbox lighting\n\n- subtle rim light\n\n- realistic shadows\n\n❌ Avoid: neon glow, magical light, fantasy lighting (unless intentional)\n\n✅ Example:\n\n\"soft natural daylight with realistic shadows\"\n\nNatural daylight is probably my most used phrase when prompting for realism. Daylight highlights all of the imperfections we have and creates an image that is how we see the world every day.\n\n✅ Example: Both are AI generated, but one looks insanely real.",
+      "category": "lifestyle",
+      "gender": "male",
+      "scenario": "bathroom_morning",
+      "tones": [
+        "editorial"
+      ],
+      "best_for": [
+        "lifestyle",
+        "travel",
+        "food"
+      ]
+    },
+    {
+      "id": "ofm_p110",
+      "source": "avatar_realistic",
+      "title": "Selfie Natural en Auto (Anuncio Comercial)",
+      "text": "```\n\n4️⃣ TEXTURE & DETAIL WORDS (IMPORTANT)\n\n```\n\nThese prevent the plastic AI look even further:\n\n- high-detail textures\n\n- realistic surface detail\n\n- visible pores\n\n- fabric grain\n\n- skin micro-details\n\n- dust, scratches, wear\n\n- slight imperfections\n\n- tactile materials\n\n✅ Example:\n\n\"visible skin pores, natural fabric grain, slight imperfections.\"\n\nImperfections is the big one! Unless you tell it not to, AI sometimes loves to make skin perfect and plastic, adding the small imperfections adds a level of realism that makes your avatars next level.\n\nThen once you pair this with natural lighting etc, the whole image transforms.\n\n```\n\n5️⃣ COLOR & TONE CONTROL (REALISM = RESTRAINT)\n\n```\n\nUse controlled, photographic color language:\n\n- natural color grading\n\n- muted tones\n\n- earthy color palette\n\n- cinematic color balance\n\n- realistic contrast\n\n- soft highlights, deep shadows\n\n❌ Avoid: hyper-saturated, neon, cartoon colors\n\n```\n\n6️⃣ COMPOSITION WORDS (think like a photographer)\n\n```\n\nThese subtly push realism:\n\n- rule of thirds\n\n- eye-level shot\n\n- candid moment\n\n- unstaged composition\n\n- natural framing\n\n- foreground / background separation\n\n```\n\n7️⃣ GRAIN & IMAGE QUALITY (THE FINAL 10%)\n\n```\n\nThese make more cinematic images feel captured instead of AI generated:\n\n- subtle film grain\n\n- cinematic grain\n\n- high dynamic range (HDR, used lightly)\n\n- sharp focus\n\n- clean but not overly polished\n\n```\n\n8️⃣ NEGATIVE WORDS (CRITICAL)\n\n```\n\nNot getting the result you want? Add negatives to your prompts to protect realism:\n\nNegative Prompt Essentials\n\n- No cartoon style\n\n- No CGI\n\n- No 3D render\n\n- No game engine\n\n- No plastic skin\n\n- No unrealistic lighting\n\n- No text, logo, watermark\n\nYou'll end up with something like this:\n\n\"Ultra-realistic cinematic photography of a female model, shot on a 35mm lens, natural day time lighting, realistic shadows, shallow depth of field, true-to-life textures, visible imperfections, subtle film grain, natural color grading\"\n\n```\n\nThen you just need to add the context of what you want.\n\n```\n\nOnce you've got your basic prompt, like I mentioned before, ask ChatGPT to transform it into something better - \"make this prompt way more detailed\" ⬇️\n\nUltra-realistic, true-to-life cinematic photography of a female model captured as if shot on a full-frame professional DSLR with a 35mm prime lens at f/1.8, using natural midday sunlight filtered through the atmosphere, creating physically-accurate soft highlights and deep realistic shadows. The image exhibits authentic optical depth of field with natural lens falloff, subtle background bokeh, and gentle edge softness, while the main subject remains razor-sharp. Surfaces show real-world micro-texture including skin pores, fabric weave, dust, fingerprints, smudges, scratches, and slight wear — nothing looks airbrushed or artificially clean. Lighting behaves realistically with light wrap, bounce light, and soft ambient occlusion, producing dimensional depth and grounded presence. Color grading is neutral and photographic with true whites, natural skin tones, and slight warm daylight bias, avoiding oversaturation or artificial HDR. There is fine cinematic film grain and sensor noise in the shadows, preserving organic realism. Highlights roll off smoothly with no clipping, and blacks retain detail instead of crushing. The image looks like a high-end still frame from a real cinematic camera, not an illustration, render, or digital painting — it should be visually indistinguishable from real life photography. ⬇️",
+      "category": "ads",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "candid",
+        "editorial",
+        "authentic"
+      ],
+      "best_for": [
+        "tech",
+        "fashion",
+        "general"
+      ]
+    },
+    {
+      "id": "ofm_p111",
+      "source": "avatar_realistic",
+      "title": "Selfie Natural en Auto (Belleza & Glow)",
+      "text": "Ultra-realistic close-up selfie of a beautiful woman sitting on her bed, soft natural morning light through sheer curtains, phone held at arm’s length, natural skin texture with faint freckles, light eye bags, glossy lips, messy hair tied loosely, white oversized t-shirt, cozy bedroom blurred behind her, raw iPhone selfie look, no makeup filter, UGC TikTok aesthetic, hyper-realistic skin pores and hair strands, 8K photorealism, no cartoon, no fantasy, no plastic skin, unstaged composition, skin micro-details⬇️",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "car_selfie",
+      "tones": [
+        "candid",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p112",
+      "source": "avatar_realistic",
+      "title": "Espejo Baño Rutina Mañana (Belleza & Glow)",
+      "text": "Ultra-realistic, close-up front-facing smartphone selfie of a beautiful young woman standing in a modern, softly lit bathroom, captured as if filmed on a real iPhone Pro front camera in 8K resolution. She is holding her phone slightly angled in front of her face, partially obscuring it in a natural, casual influencer pose, with her fingers and phone edges visible in the frame. The lighting comes from warm white LED strips and ceiling lights, creating soft facial highlights, realistic skin shine, and gentle light bloom in the mirror. Her skin shows real-world micro-detail including pores, faint blemishes, subtle redness, and natural oiliness — nothing airbrushed or plasticky. Her lips are slightly glossy with realistic light reflections and texture. She is wearing a loose, casual hoodie with visible fabric fibers, folds, and natural wrinkles. The mirror shows authentic reflections, slight glare, and depth, with soft background blur from shallow depth of field. The overall look is raw, unfiltered UGC influencer style, like a real bathroom mirror selfie posted to TikTok or Instagram Stories, with natural phone camera sharpness, slight digital noise, and zero artificial beauty retouching — it should look indistinguishable from a real photo taken by a real person. ⬇️",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "bathroom_morning",
+      "tones": [
+        "candid",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p113",
+      "source": "avatar_realistic",
+      "title": "Retrato Urbano Espontáneo (Belleza & Glow)",
+      "text": "Ultra-realistic, cinematic beauty UGC portrait of a young woman sitting on a soft, beige sofa in a bright, modern apartment living room, holding a pink lipstick in her hand and presenting it toward the camera in a natural influencer product-demo pose. She is framed from the waist up, facing forward, making direct eye contact with the camera with a calm, confident, slightly conversational expression, as if speaking to her audience. Her hair is wet and slicked back naturally, with realistic strands clumping together and subtle shine from moisture. Her skin shows true-to-life texture including pores, faint freckles, slight redness, and natural glow — no heavy makeup, no airbrushing. Her lips have a soft, natural sheen and realistic texture.\n\nShe is wearing a simple black strapless top, with visible fabric tension and folds, and minimal gold jewelry including hoop earrings and rings that catch the light with soft metallic reflections. The lipstick is held delicately between her fingers, with her other hand posed underneath it in a classic beauty-influencer product framing gesture, showing natural fingernails, skin creases, and subtle hand imperfections.\n\nThe environment is a warm, cozy, high-end apartment living room with cream-colored cushions, textured fabric throws, and large windows behind her. Soft natural daylight streams through the windows, creating gentle highlights on her face, realistic shadow falloff, and warm ambient bounce light across the room. The background is slightly out of focus with shallow depth of field, producing natural bokeh and giving the subject strong separation from the environment.\n\nThe image is captured as if shot on a real full-frame camera with a 35mm lens at a wide aperture, producing authentic optical depth, slight edge softness, and crisp focus on the subject’s eyes and the lipstick. Color grading is neutral and photographic with warm daylight tones, realistic skin colors, and no artificial HDR or oversaturation. Fine film grain and subtle sensor noise are present in the shadows, giving the image an organic, cinematic feel. ⬇️",
+      "category": "beauty",
+      "gender": "female",
+      "scenario": "other",
+      "tones": [
+        "candid",
+        "editorial",
+        "authentic"
+      ],
+      "best_for": [
+        "beauty",
+        "wellness",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": "ofm_p114",
+      "source": "avatar_realistic",
+      "title": "Retrato Urbano Espontáneo (Estilo de Vida)",
+      "text": "Hope this helps. If you create any realistic avatars like this be sure to show us all! 🚀",
+      "category": "lifestyle",
+      "gender": "any",
+      "scenario": "other",
+      "tones": [
+        "authentic",
+        "candid"
+      ],
+      "best_for": [
+        "lifestyle",
+        "travel",
+        "food"
+      ]
+    }
+  ]
+}

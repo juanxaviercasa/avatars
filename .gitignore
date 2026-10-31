@@ -11,3 +11,9 @@ __pycache__/
 data/
 !data/.gitkeep
 .pytest_cache/
+*.zip
+evidencias/
+fuentes/
+outputs/
+validacion_gpu/
+work/

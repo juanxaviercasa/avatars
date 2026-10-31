@@ -83,6 +83,8 @@ def render_variant_sync(variant: Variant, job: Job | None = None,
             res = tts.synthesize(beat.text, persona, b_wav)
             tts_engine_used = res.engine
             samples = ffmpeg.decode_audio(res.wav, sr)
+            if not len(samples) or not np.isfinite(samples).all() or float(np.max(np.abs(samples))) < 0.001:
+                raise RuntimeError("La locucion esta vacia o es silenciosa")
             dur = len(samples) / sr
             beat.start = round(cursor, 3)
             beat.end = round(cursor + dur + pause_s, 3)
@@ -152,6 +154,11 @@ def render_variant_sync(variant: Variant, job: Job | None = None,
             on_progress=_prog,
         )
 
+        if ffmpeg.probe_duration(out_mp4) <= 0:
+            raise RuntimeError("El render no contiene un video valido")
+        ffmpeg.probe_video(out_mp4)
+        ffmpeg.run(["-i", str(out_mp4), "-map", "0:v:0", "-map", "0:a:0", "-f", "null", "-" ])
+        variant.error = None
         variant.status = "done"
         variant.video_path = str(out_mp4)
         variant.thumb_path = str(out_thumb)
@@ -206,6 +213,8 @@ def _safe_run_render(variant_id: str, job_id: str, music_path: str | None) -> No
 
 def launch_campaign(req: CampaignRequest) -> dict:
     """Crea la matriz Producto × Persona × Variantes, puntúa los guiones y encola los renders."""
+    from .strategy import validate_campaign
+    validate_campaign(req)
     st = store()
     campaign_id = new_id("cmp")
     variants: list[Variant] = []
@@ -238,6 +247,9 @@ def launch_campaign(req: CampaignRequest) -> dict:
                     script=sc,
                     status="queued" if req.render else "done",
                 )
+                if req.offer_url:
+                    from .strategy import tracking_url
+                    v.script.caption += " " + tracking_url(req.offer_url, campaign_id, v.id)
                 st.put("variants", v)
                 variants.append(v)
                 if req.render:
@@ -246,6 +258,8 @@ def launch_campaign(req: CampaignRequest) -> dict:
     st.raw_put("campaigns", campaign_id, {
         "id": campaign_id,
         "name": req.name,
+        "niche": req.niche, "audience": req.audience, "objective": req.objective,
+        "offer_url": req.offer_url, "hypothesis": req.hypothesis,
         "product_ids": req.product_ids,
         "persona_ids": req.persona_ids,
         "variant_ids": [v.id for v in variants],
@@ -488,6 +502,18 @@ def engine_status() -> dict:
             "cinetic_techniques": 273,
             "cinetic_categories": 14,
             "frame_accurate_timing": "30fps & 60fps micro-offsets + Perceptual Audio Critic",
+        },
+        "ugc_prompt_vault": {
+            "prompts_count": 114,
+            "categories": 8,
+            "hook_formulas": 4,
+            "source": "AI OFM Accelerator (JoinAIVault)",
+            "auto_selector": "active (Niche + Tone + Product semantic matcher)",
+        },
+        "viral_niches_vault": {
+            "niches_count": 12,
+            "bandit_priors": "Thompson Sampling Beta(alpha, beta) calibrated",
+            "source": "AI OFM Accelerator (Phase 10: 12 Viral Niches)",
         },
         "lipsync": {
             "lipsync_url": settings.lipsync_url or None,

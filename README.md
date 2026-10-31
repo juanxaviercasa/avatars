@@ -14,7 +14,7 @@
 .\.venv\Scripts\python.exe run.py --demo-reel
 ```
 
-> **Funciona al 100 % desde el primer segundo sin GPU ni claves de pago** gracias a su arquitectura híbrida con cadena de *fallback* automática: si no detecta servidores GPU locales (`ComfyUI`, `F5-TTS`, `LivePortrait/MuseTalk`) ni claves en la nube (`fal.ai`, `OpenAI`, `Gemini`), utiliza el motor de plantillas psicológicas, locución neural `edge-tts` con marcas de tiempo exactas por palabra, composición de estudio en CPU y codificación H.264/AAC vía FFmpeg.
+> El modo CPU compone videos con voz y subtítulos cuando hay un proveedor TTS disponible. Si no consigue voz audible, el trabajo falla con un error. Los retratos fotorrealistas y la sincronización labial requieren motores específicos: el avatar ilustrado de respaldo no equivale a esas capacidades. Consulte las auditorías y los resultados de pruebas antes de usar una ruta en producción.
 
 ---
 
@@ -34,9 +34,16 @@
 | **Imagen y Try-On** | `viralforge/engines/image.py` | Cadena: `ComfyUI (PuLID / InstantID / IDM-VTON)` $\rightarrow$ `fal.ai` $\rightarrow$ `Compositor de estudio en CPU`. |
 | **OpenJutsu Reshoot** | `viralforge/engines/openjutsu.py` | Video-to-Video Character & Garment Swap (`d3voz/openjutsu`: `SAM 2.1` + `Qwen2-VL` + `Wan 2.2` + fallback híbrido en CPU con *motion tracking* en 3 modos: `hybrid_reshoot`, `full_replace`, `pip_twin`). |
 | **Director de Poses (1,439)** | `viralforge/poses.py`, `workflows/controlnet_pose_flux.json` | Catálogo interactivo de **1,439 poses esquemáticas** (`288` grupos × **5 ángulos de cámara**: *Frente, Diagonal 3/4, Perfil, Picado Selfie, Contrapicado Hero* en `900×1200 PNG`, basado en `anhao/ai-pose-gallery-zh`), integrado con `DWPose` + `FLUX.1-ControlNet-Union-Pro-2.0` y generador de Reels Lookbook Multi-Ángulo en 1 clic. |
-| **Clúster Kaggle & VPS** | `viralforge/kaggle_cluster.py` | Orquestador de los 20+ datasets de IA en Kaggle (`juanxaviercasa/*`), 11 cuentas de rotación GPU, generación/despliegue de `viralforge-openjutsu-gpu.ipynb` y monitor del VPS de Oracle Cloud (`deploy_oracle_vps.py`). |
+| **Clúster Kaggle & VPS** | `viralforge/kaggle_cluster.py` | Orquestador de los 20+ datasets de IA en Kaggle (`juanxaviercasa/*`), cuentas del equipo con selección explícita, generación/despliegue de `viralforge-openjutsu-gpu.ipynb` y monitor del VPS de Oracle Cloud (`deploy_oracle_vps.py`). |
 | **Lip-Sync** | `viralforge/engines/lipsync.py` | Cadena: `Bridge local (LivePortrait/MuseTalk)` $\rightarrow$ `fal.ai sync-lipsync` $\rightarrow$ `Animador reactivo a la energía RMS de la voz a 30 FPS`. |
 | **Subtítulos Dinámicos** | `viralforge/render/captions.py` | Subtítulos palabra a palabra estilo Alex Hormozi con resaltado activo, efecto *pop* y palabras de énfasis. |
 | **Mezcla de Audio y SFX** | `viralforge/render/audio.py` | Síntesis procedural de efectos de retención (*impact*, *whoosh*, *pop*, *riser*) y *ducking* automático de música de fondo. |
 | **Compositor 9:16** | `viralforge/render/composer.py` | Renderizador vertical `1080x1920` con escenas multicámara (`avatar_talk`, `product_hero`, `product_detail`, `split`, `text_slam`, `price_drop`), tarjeta de descuento y barra de progreso. |
 | **API & Estudio Web** | `viralforge/api.py`, `viralforge/ui/` | Servidor FastAPI + interfaz de producción oscura de 6 paneles. |
+
+
+## Conexiones y pruebas de GPU
+
+El conector `viralforge.kaggle_batch` admite selección explícita de `cuenta_7` y `cuenta_8` para retratos, comprueba sesiones activas y conserva las credenciales en el equipo coordinador. No cambia automáticamente de cuenta tras un rechazo. El preset FLUX portado desde JARVIS usa T5 FP16 y 512×512. Consulte `JARVIS-INTEGRATION.md` para procedencia y `PRUEBAS-GPU-2026-10-30.md` para los resultados y límites de esta ejecución.
+
+Los recursos generados se conservan en la biblioteca privada: `GET /api/media-assets` lista metadatos y `/media/assets/{id}` sirve únicamente archivos autorizados dentro de uploads/generated. Un clip de apoyo sin audio no es un avatar parlante ni prueba de sincronización labial.

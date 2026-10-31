@@ -185,6 +185,8 @@ def synthesize(text: str, persona: Persona, out: str | Path) -> TTSResult:
         ("system-voice", lambda: _system_voice(clean, persona, out)),
         ("silence", lambda: _silence(clean, persona, out)),
     ])
+    if res.value is None or res.value.engine == "silence":
+        raise RuntimeError("No se pudo generar voz audible; configure un proveedor TTS. No se entregara un video silencioso.")
     return res.value
 
 

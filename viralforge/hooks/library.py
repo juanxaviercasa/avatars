@@ -163,6 +163,27 @@ HOOKS: list[HookFormula] = [
         {"es": ["No me esperaba esto para nada.", "Mi cara cuando lo probé por primera vez."],
          "en": ["I did not expect this at all.", "My face when I tried it for the first time."]},
         {"es": ["😳😳😳"], "en": ["😳😳😳"]}, prior=0.51),
+    # Fórmulas UGC del curso AI OFM Accelerator (JoinAIVault - Phase 6)
+    HookFormula(
+        "ofm_ugc_curiosity", "UGC Curiosidad (AI Vault)", "intriga + bucle abierto",
+        {"es": ["¿Sabías que {product} puede {benefit}? Nadie habla de esto...", "¿Sabías este secreto sobre {product}? Te va a volar la cabeza."],
+         "en": ["Did you know {product} can {benefit}? Nobody talks about this...", "Did you know this secret about {product}? Mind blown."]},
+        {"es": ["NADIE HABLA DE ESTO 🤫"], "en": ["NOBODY TALKS ABOUT THIS 🤫"]}, prior=0.66),
+    HookFormula(
+        "ofm_ugc_pain", "UGC Dolor Directo (AI Vault)", "focalización en dolor agudo",
+        {"es": ["Si sufres de {pain}, esto es exactamente lo que necesitas ver hoy.", "Para de perder el tiempo si tu problema es {pain}."],
+         "en": ["If you struggle with {pain}, this is exactly what you need to see.", "Stop wasting time if your problem is {pain}."]},
+        {"es": ["MIRA ESTO YA ⚠️"], "en": ["WATCH THIS NOW ⚠️"]}, prior=0.65),
+    HookFormula(
+        "ofm_ugc_comparison", "UGC Transformación 30D (AI Vault)", "prueba empírica + expectativa",
+        {"es": ["Probé {product} durante 30 días. Esto es lo que pasó...", "Usé {product} por 3 semanas seguidas y el resultado no tiene sentido."],
+         "en": ["I tried {product} for 30 days. Here's what actually happened...", "I used {product} for 3 weeks straight and the result is insane."]},
+        {"es": ["PROBÉ 30 DÍAS ⏳"], "en": ["TRIED FOR 30 DAYS ⏳"]}, prior=0.68),
+    HookFormula(
+        "ofm_ugc_story", "UGC Historia Personal (AI Vault)", "empatía narrativa",
+        {"es": ["Hace meses estaba en tu misma situación con {pain}. Hoy {benefit}.", "Nunca pensé que compartiría esto, pero {product} me cambió la rutina."],
+         "en": ["Months ago I was in your exact situation with {pain}. Now {benefit}.", "I never thought I'd share this, but {product} changed my routine."]},
+        {"es": ["MI HISTORIA REAL 💬"], "en": ["MY REAL STORY 💬"]}, prior=0.63),
 ]
 
 # ---------------------------------------------------------------------------

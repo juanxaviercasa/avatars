@@ -1,0 +1,23 @@
+{
+  "LEEME.txt": "acf345f28560059815115cff4818a38c3e430ea9eea2a7b2c7da0f4262459623",
+  "INFORME-AVATAR-REALISTAS.md": "3c691da9f7709c70e0ac4d0f1cee586b24bb7a6020240d179356a00781a64e71",
+  "evidencias/music-cloudflare-e2e.json": "b6e2b9a92cfb6306519dc0a001645e049f10b385ad0da11cd60e2799335ad395",
+  "evidencias/music-owned-files-audit.json": "115ed4027aa604d3c96a0e5d69278b9c85afbd3d69f4319ebb860933ec9e0dab",
+  "evidencias/coder14-file-creation-result.json": "132b2aff11aaa9a58d96d76bfeb85bbe7fd7a0cbe3f210b5db78726a9a9c60d3",
+  "evidencias/LTX25-LIVE-VALIDATION.json": "901edc2dd8090099f3695151e6af50ed4b9df1382a2b3aa0079b8cba40a93ce0",
+  "fuentes/media_engine.py": "1c38cacdcee501d57a0cfd0c19fd613712e2df02cddb4b9a8783f9be1960a984",
+  "fuentes/kaggle_runner.py": "b2e4a2f59c48f7209aed483989d2a9bb74d602d43f83a3a10355467c987939bf",
+  "fuentes/wan-reference-workflow.json": "a42b9979e57b71670214f4ef89b85741da654a236b9f1a0212ba0dded5b8b64b",
+  "fuentes/ltx25_adapter.py": "4c2a09c8b040b356c0b4281453b8dad7d3b1aab6b004769487424a8221f195f5",
+  "fuentes/account-routing.js": "51b0d5b0db2cc0af210dbc89aec4d02f85fea1e235054cb66c12bdc4d1c8ebb9",
+  "fuentes/catalog.js": "045a8f30ee51609df0569d0349d1b4ab039904a2de03e11d16ad79e170ff0526",
+  "fuentes/music_backend.py": "c36bc90dc63761e7d39195590112488b013c2671038556744ed378f13f77e291",
+  "fuentes/WAN-WORKFLOW-LICENSE.txt": "5dccd61c80c847cd6b22fa98124010163ab8646e573557a16a5cae31122f2056",
+  "fuentes/security.js": "b9a609e425f90df4145a656970d811e09d8fd6b2a4f5ffa7ca3d5a902d1dc905",
+  "fuentes/ltx25/owned-datasets-validation.json": "5df4ce2a80b451d60dace31dce5ba95d36f9d7e93696f299f032432964841f1d",
+  "fuentes/ltx25/reference-workflow.json": "0d2b464cb272f8847476d58d87dcbc2883807ceccdd1f4980dd15cf0408a2ab4",
+  "fuentes/ltx25/launch_ltx25.py": "9f5faa5b1c656877650f8e92e183d27cc858e5a83cbfa15ed0749a3551cf133a",
+  "fuentes/ltx25/kaggle_probe.py": "fa91d6cbb196f0d33285753cffe574ceb826ad49daeb3057e695504d07f0722c",
+  "fuentes/ltx25/WORKFLOW-LICENSE.txt": "5dccd61c80c847cd6b22fa98124010163ab8646e573557a16a5cae31122f2056",
+  "fuentes/ltx25/validated-weights.json": "36dae7d8c1199b54613554c49a02602b6d787bd0edd08709b44392c0d24735ec"
+}

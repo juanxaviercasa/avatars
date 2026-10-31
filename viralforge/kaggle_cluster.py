@@ -194,6 +194,8 @@ _KNOWN_USERNAMES = {
     "cuenta_3": "zenitmath",
     "cuenta_5": "jhonhair",
     "cuenta_6": "nubepymes",
+    "cuenta_7": "reverseingenieer",
+    "cuenta_8": "academiavirtual",
     "juanxaviercasa": "juanxaviercasa",
     "juxacasa": "juxacasa",
     "zenitmath": "zenitmath",
@@ -308,10 +310,20 @@ from fastapi.responses import FileResponse, JSONResponse
 
 app = FastAPI(title="ViralForge OpenJutsu GPU Node")
 
+@app.middleware("http")
+async def authenticate(req: Request, call_next):
+    import secrets
+    token = os.environ.get("VF_GPU_TOKEN", "")
+    if not token:
+        return JSONResponse({"detail": "Worker token not configured"}, status_code=503)
+    if not secrets.compare_digest(req.headers.get("authorization", ""), "Bearer " + token):
+        return JSONResponse({"detail": "Unauthorized"}, status_code=401)
+    return await call_next(req)
+
 @app.get("/health")
 def health():
     datasets = [os.path.basename(p) for p in glob.glob("/kaggle/input/*")]
-    return {"status": "online", "datasets_mounted": datasets, "roles": ["openjutsu", "llm", "lipsync", "tryon"]}
+    return {"status": "online", "datasets_mounted": datasets, "roles": [], "inference_ready": False}
 
 @app.post("/v1/chat/completions")
 async def chat_proxy(req: Request):
@@ -335,8 +347,7 @@ async def openjutsu_reshoot(
     v_path.write_bytes(await video.read())
     f_path.write_bytes(await face.read())
     out_path = work / "out_reshoot.mp4"
-    shutil.copyfile(v_path, out_path)
-    return FileResponse(out_path, media_type="video/mp4", filename="reshoot.mp4")
+    return JSONResponse({"detail": "GPU reshoot adapter not installed; refusing to return the original video as generated output"}, status_code=503)
 """
 Path("gateway_server.py").write_text(gateway_code, encoding="utf-8")
 threading.Thread(target=lambda: subprocess.run("uvicorn gateway_server:app --host 0.0.0.0 --port 8090", shell=True), daemon=True).start()

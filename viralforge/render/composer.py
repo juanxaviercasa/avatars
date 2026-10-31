@@ -239,7 +239,14 @@ def compose_reel(
                 ch = chunks[chunk_idx]
                 if ch.start - 0.05 <= t <= ch.end + 0.12:
                     cap_img = captions.render_chunk_frame(ch, t, w, persona.brand_color, persona.accent_color)
-                    frame.alpha_composite(cap_img, (0, int(h * 0.73)))
+                    # Keep multiline captions inside the vertical safe area, also
+                    # when composing smaller previews with fixed-size fonts.
+                    max_cap_height = max(1, int(h * 0.24))
+                    if cap_img.height > max_cap_height:
+                        scale = max_cap_height / cap_img.height
+                        cap_img = cap_img.resize((max(1, round(cap_img.width * scale)), max_cap_height), Image.LANCZOS)
+                    cap_y = min(int(h * 0.73), h - cap_img.height - int(h * 0.08))
+                    frame.alpha_composite(cap_img, ((w - cap_img.width) // 2, cap_y))
 
             # 7) Barra de progreso superior + flash suave en cambios de beat
             fdraw = ImageDraw.Draw(frame, "RGBA")
@@ -260,14 +267,31 @@ def compose_reel(
 
             if on_progress and (f_idx % 10 == 0 or f_idx == total_frames - 1):
                 on_progress((f_idx + 1) / total_frames)
+    except BaseException:
+        if proc.poll() is None:
+            proc.kill()
+        proc.wait(timeout=10)
+        if proc.stderr:
+            proc.stderr.close()
+        raise
     finally:
         if video_reader:
             video_reader.close()
         if proc.stdin:
-            proc.stdin.close()
+            try:
+                proc.stdin.close()
+            except OSError:
+                pass
 
-    stderr = proc.stderr.read().decode("utf-8", "ignore") if proc.stderr else ""
-    rc = proc.wait(timeout=300)
+    try:
+        stderr = proc.stderr.read().decode("utf-8", "ignore") if proc.stderr else ""
+        rc = proc.wait(timeout=300)
+    finally:
+        if proc.poll() is None:
+            proc.kill()
+            proc.wait(timeout=10)
+        if proc.stderr:
+            proc.stderr.close()
     if rc != 0:
         raise RuntimeError(f"FFmpeg falló al codificar el reel: {stderr[-1200:]}")
     if not thumb_saved and out_mp4.exists():

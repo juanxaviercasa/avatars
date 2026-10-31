@@ -1,0 +1,1 @@
+Empieza por INFORME-AVATAR-REALISTAS.md. Fuentes sin claves. Los scripts son plantillas o adaptadores: consulta sus dependencias antes de ejecutarlos. No incluye pesos, secretos, fuentes de notebooks con RUN_CONFIG real ni resultados de usuarios. SHA256SUMS.json verifica los archivos del paquete.

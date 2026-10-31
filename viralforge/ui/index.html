@@ -94,6 +94,13 @@
             <small>16 SFX Código + 273 Técnicas</small>
           </div>
         </button>
+        <button type="button" class="feature-chip" onclick="document.querySelector('[data-tab=prompts]').click()">
+          <span class="f-icon">💎</span>
+          <div class="f-meta">
+            <strong>Vault Prompts &amp; Nichos</strong>
+            <small>114 Prompts + 12 Nichos Virales</small>
+          </div>
+        </button>
       </div>
     </div>
   </section>
@@ -108,7 +115,8 @@
       <button type="button" class="tab" data-tab="products"><span class="tab-num">05</span><span>Catálogo &amp; Shopify</span></button>
       <button type="button" class="tab" data-tab="poses"><span class="tab-num">06</span><span>Director de Poses (1,439)</span></button>
       <button type="button" class="tab" data-tab="costumes"><span class="tab-num">07</span><span>Armario IA (1,407 Outfits)</span></button>
-      <button type="button" class="tab" data-tab="engines"><span class="tab-num">08</span><span>Clúster Kaggle &amp; VPS</span></button>
+      <button type="button" class="tab" data-tab="prompts"><span class="tab-num">08</span><span>Vault Prompts (114) &amp; Nichos (12)</span></button>
+      <button type="button" class="tab" data-tab="engines"><span class="tab-num">09</span><span>Clúster Kaggle &amp; VPS</span></button>
     </div>
   </nav>
 
@@ -161,7 +169,7 @@
           <div class="card-head">
             <span class="section-tag">MOTOR PSICOLÓGICO DE RETENCIÓN</span>
             <h2>Generador de Guiones con Estructura Ganadora</h2>
-            <p class="muted">Combina el ADN de tu AI Influencer + tu producto + 22 fórmulas de gancho psicológico (0-3s) y 8 estructuras de conversión.</p>
+            <p class="muted">Combina el ADN de tu AI Influencer + tu producto + 26 fórmulas de gancho psicológico (incluye 4 fórmulas UGC AI OFM Accelerator) y 8 estructuras de conversión.</p>
           </div>
           <div class="form-row form-cols-2">
             <label>AI Influencer
@@ -341,7 +349,7 @@
             <p class="muted">Cruza múltiples productos × múltiples AI Influencers × N ángulos. El motor Bayesiano elige los ganchos con mayor probabilidad de conversión y renderiza todos los reels en segundo plano.</p>
           </div>
           <label>Nombre de la Campaña
-            <input type="text" id="cmpName" value="Campaña Viral Q4" />
+            <label>Nicho<input id="cmpNiche" required></label><label>Audiencia<input id="cmpAudience" required></label><label>Oferta (HTTPS)<input id="cmpOffer" type="url" required></label><label>Hipótesis a probar<input id="cmpHypothesis" required></label><p>Prueba inicial: máximo 6 videos. Evalúa clics y ventas antes de escalar.</p><input type="text" id="cmpName" value="Campaña Viral Q4" />
           </label>
           <div class="form-row form-cols-2">
             <div>
@@ -697,7 +705,95 @@
       </div>
     </section>
 
-    <!-- TAB 8: ENGINES, KAGGLE CLUSTER & ORACLE VPS -->
+    <!-- TAB 8: VAULT DE PROMPTS UGC & 12 NICHOS VIRALES (AI OFM ACCELERATOR) -->
+    <section class="tab-panel" id="tab-prompts">
+      <div class="card card-accent mb">
+        <div class="row-between">
+          <div>
+            <span class="section-tag">AI OFM ACCELERATOR • JOIN-AI-VAULT (114 PROMPTS + 12 NICHOS VIRALES)</span>
+            <h2>💎 Vault de Prompts IA &amp; Laboratorio de Nichos Virales</h2>
+            <p class="muted">Colección de <strong>114 prompts de fotorrealismo extremo</strong> para avatares UGC, influencers y escenas comerciales en NanoBanana PRO, Midjourney V7 y GPT Image 2.0, más los <strong>12 nichos virales probados</strong> con distribuciones Beta Thompson Sampling.</p>
+          </div>
+          <div class="btn-row" style="margin-top:0">
+            <button type="button" class="btn btn-sm btn-primary" id="btnAutoPickPrompt">⚡ Auto-Seleccionar Prompt para Mi Influencer</button>
+          </div>
+        </div>
+        <div class="form-row form-cols-4 mt">
+          <label>Categoría
+            <select id="promptCategory">
+              <option value="">Todas las categorías (114)</option>
+              <option value="beauty">💄 Belleza &amp; Glow (43)</option>
+              <option value="ads">🛍️ Anuncio Comercial (26)</option>
+              <option value="fitness">🏃 Fitness Activo (13)</option>
+              <option value="luxury">💎 Lujo &amp; Viajes (11)</option>
+              <option value="lifestyle">☕ Lifestyle Diario (9)</option>
+              <option value="fashion">👗 Moda &amp; Streetwear (5)</option>
+              <option value="ugc">📱 UGC Auténtico (4)</option>
+              <option value="creative">🎬 Cinemático Creativo (3)</option>
+            </select>
+          </label>
+          <label>Escenario / Entorno
+            <select id="promptScenario">
+              <option value="">Todos los escenarios</option>
+              <option value="hotel_bathroom">Baño Hotel de Lujo</option>
+              <option value="bathroom_morning">Espejo Baño Rutina Mañana</option>
+              <option value="car_selfie">Selfie Natural en Auto</option>
+              <option value="luxury_car">Supercar Paparazzi Nocturno</option>
+              <option value="gym">Gimnasio Post-Entreno</option>
+              <option value="kitchen">Cocina Abierta Lifestyle</option>
+              <option value="bedroom_night">Dormitorio Cozy Iluminación Suave</option>
+              <option value="balcony">Balcón Terraza Golden Hour</option>
+              <option value="beach_maldives">Resort Tropical / Playa</option>
+              <option value="outdoor_cafe">Café Terraza Europea</option>
+              <option value="podcast_studio">Estudio de Podcast Profesional</option>
+              <option value="fashion_editorial">Editorial de Moda Alta Costura</option>
+              <option value="night_flash">Flash Paparazzi Nocturno</option>
+              <option value="restaurant">Restaurante Casual Candid</option>
+            </select>
+          </label>
+          <label>Género del Personaje
+            <select id="promptGender">
+              <option value="">Todos los géneros</option>
+              <option value="female">Femenino (61)</option>
+              <option value="male">Masculino (22)</option>
+              <option value="any">Cualquiera / Mixto (31)</option>
+            </select>
+          </label>
+          <label>Buscar Prompt por Keyword
+            <input type="text" id="promptQuery" placeholder="Ej: selfie, iphone, pores, luxury, gold, gym..." />
+          </label>
+        </div>
+        <div id="promptActionMsg" class="mt muted"></div>
+      </div>
+
+      <!-- 12 NICHOS VIRALES ACCORDION/GRID -->
+      <div class="card mb">
+        <div class="card-head">
+          <span class="section-tag">ESTRATEGIAS ALGORÍTMICAS DE CRECIMIENTO</span>
+          <h3>📊 12 Nichos Virales Probados (Bandit Bayesiano Thompson Sampling)</h3>
+          <p class="muted">Nichos optimizados con priors probabilísticos Beta(α, β) para maximizar la tasa de reproducción completa (completion rate) y CTR orgánico en TikTok, Reels y Shorts.</p>
+        </div>
+        <div id="viralNichesGrid" class="grid-4"></div>
+      </div>
+
+      <!-- PROMPTS GRID -->
+      <div class="card">
+        <div class="row-between mb">
+          <div>
+            <span class="section-tag">BIBLIOTECA DE PROMPTS FOTORREALISTAS (114 FICHAS)</span>
+            <h3>Explorador de Prompts UGC &amp; Copia 1-Clic</h3>
+          </div>
+          <div class="btn-row" style="margin-top:0">
+            <button type="button" class="btn btn-sm btn-glass" id="btnPromptPrev">← Anteriores</button>
+            <span class="pill" id="promptPageInfo">Página 1</span>
+            <button type="button" class="btn btn-sm btn-glass" id="btnPromptNext">Siguientes →</button>
+          </div>
+        </div>
+        <div id="promptsGrid" class="grid-3"></div>
+      </div>
+    </section>
+
+    <!-- TAB 9: ENGINES, KAGGLE CLUSTER & ORACLE VPS -->
     <section class="tab-panel" id="tab-engines">
       <div class="grid-2 mb">
         <div class="card card-glow">

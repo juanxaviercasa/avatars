@@ -149,6 +149,12 @@ class Job(BaseModel):
 class CampaignRequest(BaseModel):
     """Una campaña = matriz productos × personas × ganchos × estructuras."""
     name: str = "Campaña"
+    niche: str = ""
+    audience: str = ""
+    objective: Literal["traffic", "leads", "sales"] = "sales"
+    offer_url: str = ""
+    hypothesis: str = ""
+    max_videos: int = Field(6, ge=1, le=20)
     product_ids: list[str]
     persona_ids: list[str]
     variants_per_combo: int = Field(3, ge=1, le=20)

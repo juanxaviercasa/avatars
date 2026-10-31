@@ -114,6 +114,13 @@ class VideoReader:
 
     def close(self) -> None:
         try:
-            self._proc.kill()
-        except Exception:
-            pass
+            if self._proc.poll() is None:
+                self._proc.terminate()
+            try:
+                self._proc.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                self._proc.kill()
+                self._proc.wait(timeout=5)
+        finally:
+            if self._proc.stdout:
+                self._proc.stdout.close()

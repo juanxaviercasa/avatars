@@ -49,6 +49,8 @@ from .models import CampaignRequest, Job, Metrics, Persona, Product, Script, Var
 from .script import writer
 
 app = FastAPI(title="ViralForge Studio", version="1.0.0")
+from .production_api import router as production_router
+app.include_router(production_router)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 UI_DIR = Path(__file__).resolve().parent / "ui"
@@ -353,7 +355,10 @@ def media_variant_thumb(variant_id: str) -> FileResponse:
 
 @app.post("/api/campaigns/launch")
 def api_launch_campaign(req: CampaignRequest) -> dict:
-    return pipeline.launch_campaign(req)
+    try:
+        return pipeline.launch_campaign(req)
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
 
 
 @app.get("/api/campaigns")
@@ -650,6 +655,125 @@ def api_cinetic_plan(req: CineticPlanReq) -> dict[str, Any]:
         seconds=int(round(req.duration_s)),
         seed=req.seed,
     )
+
+
+# ---------------------------------------------------------------------- Prompt Vault & Viral Niches (AI OFM Accelerator)
+class PromptAutoSelectReq(BaseModel):
+    niche: str = "general"
+    gender: str = "female"
+    tone: str = "authentic"
+    product_keywords: str = ""
+    seed: int | None = None
+
+
+class ApplyHookReq(BaseModel):
+    formula_id: str
+    producto: str
+    beneficio: str = ""
+    problema: str = ""
+    tiempo: str = "30 días"
+    resultado: str = ""
+    lang: str = "es"
+
+
+@app.get("/api/prompts")
+def api_list_prompts(
+    query: str = "",
+    category: str = "",
+    gender: str = "",
+    tone: str = "",
+    limit: int = 20,
+    offset: int = 0,
+) -> dict[str, Any]:
+    from . import prompt_vault
+    return prompt_vault.search_prompts(
+        query=query,
+        category=category,
+        gender=gender,
+        tone=tone,
+        limit=limit,
+        offset=offset,
+    )
+
+
+@app.get("/api/prompts/stats")
+def api_prompt_stats() -> dict[str, Any]:
+    from . import prompt_vault
+    return prompt_vault.get_vault_stats()
+
+
+@app.post("/api/prompts/auto-select")
+def api_prompt_auto_select(req: PromptAutoSelectReq) -> dict[str, Any]:
+    from . import prompt_vault
+    selected = prompt_vault.auto_select_prompt(
+        niche=req.niche,
+        gender=req.gender,
+        tone=req.tone,
+        product_keywords=req.product_keywords,
+        seed=req.seed,
+    )
+    if not selected:
+        raise HTTPException(404, "No matching prompt found in vault")
+    variants = prompt_vault.generate_prompt_variants(
+        base_prompt_id=selected["id"],
+        n_variants=3,
+        product_name=req.product_keywords,
+    )
+    return {
+        "selected": selected,
+        "variants": variants,
+    }
+
+
+@app.get("/api/prompts/hooks")
+def api_get_hook_formulas(niche: str = "") -> list[dict]:
+    from . import prompt_vault
+    return prompt_vault.get_hook_formulas(niche=niche)
+
+
+@app.post("/api/prompts/apply-hook")
+def api_apply_hook(req: ApplyHookReq) -> dict[str, Any]:
+    from . import prompt_vault
+    rendered = prompt_vault.apply_hook_formula(
+        formula_id=req.formula_id,
+        producto=req.producto,
+        beneficio=req.beneficio,
+        problema=req.problema,
+        tiempo=req.tiempo,
+        resultado=req.resultado,
+        lang=req.lang,
+    )
+    return {"formula_id": req.formula_id, "hook": rendered}
+
+
+@app.get("/api/niches")
+def api_list_viral_niches() -> dict[str, Any]:
+    niches_file = Path(__file__).resolve().parent.parent / "assets" / "viral_niches.json"
+    if not niches_file.exists():
+        niches_file = Path(__file__).resolve().parent / "ui" / "viral_niches.json"
+    if not niches_file.exists():
+        raise HTTPException(404, "Viral niches catalog not found")
+    import json
+    return json.loads(niches_file.read_text(encoding="utf-8"))
+
+
+# ---------------------------------------------------------------------- Generated media library
+@app.get('/api/media-assets')
+def list_media_assets() -> list[dict]:
+    keys=('id','kind','engine','width','height','duration','sha256','review')
+    return [{k:item[k] for k in keys if k in item} for item in store().raw_list('media_assets')]
+
+
+@app.get('/media/assets/{asset_id}')
+def get_media_asset(asset_id: str) -> FileResponse:
+    asset=next((item for item in store().raw_list('media_assets') if item.get('id')==asset_id),None)
+    if not asset:
+        raise HTTPException(404,'Media asset not found')
+    path=Path(asset.get('path','')).resolve()
+    allowed=(settings.uploads_dir/'generated').resolve()
+    if not path.is_relative_to(allowed) or path.suffix.lower() not in ('.mp4','.png') or not path.is_file():
+        raise HTTPException(404,'Media asset unavailable')
+    return FileResponse(path,media_type='video/mp4' if path.suffix.lower()=='.mp4' else 'image/png',filename=path.name)
 
 
 # ---------------------------------------------------------------------- UI Estática

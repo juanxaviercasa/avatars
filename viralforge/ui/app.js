@@ -1,7 +1,11 @@
-const DEFAULT_ORACLE_TUNNEL = "https://hydrogen-jesse-paxil-raleigh.trycloudflare.com";
+const DEFAULT_ORACLE_TUNNEL = ""; // Configure a stable HTTPS API endpoint in Backend settings.
 let API_BASE = (localStorage.getItem("vf_api_base") || "").replace(/\/+$/, "");
 
 const _host = window.location.hostname;
+const MANAGED_WEB = ["avatars.sistemazenit.com", "origin-avatars.sistemazenit.com"].includes(_host);
+// The authenticated site always uses its own origin, including when a browser
+// still has an obsolete temporary tunnel saved from an earlier installation.
+if (MANAGED_WEB) API_BASE = "";
 if (!API_BASE && _host !== "localhost" && _host !== "127.0.0.1" && !_host.endsWith(".trycloudflare.com")) {
   API_BASE = DEFAULT_ORACLE_TUNNEL;
 }
@@ -14,6 +18,12 @@ function resolveUrl(path) {
 function updateBackendLabel() {
   const el = document.getElementById("lblBackendMode");
   if (!el) return;
+  if (MANAGED_WEB) {
+    el.textContent = "Cerrar sesión";
+    const button = document.getElementById("btnConfigBackend");
+    if (button) button.title = "Cerrar la sesión del estudio";
+    return;
+  }
   if (!API_BASE) {
     el.textContent = "Local / Mismo Host";
   } else if (API_BASE.includes("trycloudflare.com")) {
@@ -50,7 +60,11 @@ function setupTabs() {
       document.querySelectorAll(".tab").forEach((b) => b.classList.remove("active"));
       document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
       btn.classList.add("active");
-      document.getElementById(`tab-${btn.dataset.tab}`).classList.add("active");
+      const targetPanel = document.getElementById(`tab-${btn.dataset.tab}`);
+      if (targetPanel) targetPanel.classList.add("active");
+      if (btn.dataset.tab === "poses") loadPosesCatalog();
+      if (btn.dataset.tab === "costumes") loadCostumesCatalog();
+      if (btn.dataset.tab === "prompts") { loadPromptVault(); loadViralNiches(); }
     });
   });
 }
@@ -471,6 +485,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnCfg = document.getElementById("btnConfigBackend");
   if (btnCfg) {
     btnCfg.addEventListener("click", async () => {
+      if (MANAGED_WEB) {
+        const response = await fetch("/auth/logout", { method: "POST", credentials: "same-origin" });
+        if (!response.ok) throw new Error("No se pudo cerrar la sesión");
+        window.location.assign("/auth/login");
+        return;
+      }
       const next = prompt(
         "URL del Backend API de ViralForge (deja vacío para usar el mismo servidor o pega tu túnel Cloudflare del VPS de Oracle):",
         API_BASE || DEFAULT_ORACLE_TUNNEL
@@ -568,7 +588,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     await api("/api/campaigns/launch", {
       method: "POST",
-      body: JSON.stringify({ name, product_ids, persona_ids, variants_per_combo, target_seconds, exploration, render: true }),
+      body: JSON.stringify({ name, product_ids, persona_ids, variants_per_combo, target_seconds, exploration, render: true, niche: document.getElementById("cmpNiche").value, audience: document.getElementById("cmpAudience").value, offer_url: document.getElementById("cmpOffer").value, hypothesis: document.getElementById("cmpHypothesis").value, max_videos: 6 }),
     });
     document.querySelector('[data-tab="studio"]').click();
     await refreshJobsAndVariants();
@@ -701,6 +721,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initEarshotAndCinetic();
   initCostumesAndOrchestrator();
+  initPromptsAndNiches();
 });
 
 // ---------------------------------------------------------------------- Funciones del Director de Poses (1,439 Poses)
@@ -1351,5 +1372,216 @@ window.importCostumeAsProductUI = async function (costumeId) {
     if (msg) msg.textContent = `Error: ${e.message}`;
   }
 };
+
+// ---------------------------------------------------------------------- Funciones de Prompts UGC (114) & Nichos (12)
+async function loadPromptVault() {
+  if (state.promptsAll && state.promptsAll.length) return;
+  try {
+    const res = await fetch("/static/ugc_prompt_vault.json");
+    if (res.ok) {
+      const data = await res.json();
+      state.promptsAll = data.prompts || [];
+    } else {
+      const apiRes = await api("/api/prompts?limit=200");
+      state.promptsAll = apiRes.items || [];
+    }
+  } catch (_) {
+    try {
+      const apiRes = await api("/api/prompts?limit=200");
+      state.promptsAll = apiRes.items || [];
+    } catch (__) {
+      state.promptsAll = [];
+    }
+  }
+  state.promptPage = 0;
+  filterAndRenderPrompts();
+}
+
+async function loadViralNiches() {
+  if (state.nichesAll && state.nichesAll.length) return;
+  try {
+    const res = await fetch("/static/viral_niches.json");
+    if (res.ok) {
+      const data = await res.json();
+      state.nichesAll = data.niches || [];
+    } else {
+      const apiRes = await api("/api/niches");
+      state.nichesAll = apiRes.niches || [];
+    }
+  } catch (_) {
+    try {
+      const apiRes = await api("/api/niches");
+      state.nichesAll = apiRes.niches || [];
+    } catch (__) {
+      state.nichesAll = [];
+    }
+  }
+  renderViralNiches();
+}
+
+function renderViralNiches() {
+  const grid = document.getElementById("viralNichesGrid");
+  if (!grid) return;
+  const list = state.nichesAll || [];
+  grid.innerHTML = list.map((n) => `
+    <div class="niche-card">
+      <div class="niche-head">
+        <span class="niche-title">${escapeHtml(n.name_es || n.name)}</span>
+        <span class="niche-score">★ ${n.virality_score}/10</span>
+      </div>
+      <p class="niche-desc">${escapeHtml(n.description)}</p>
+      <div class="prompt-tags">
+        <span class="prompt-tag cat">${escapeHtml(n.format || "")}</span>
+        <span class="prompt-tag">${escapeHtml(n.difficulty || "")}</span>
+        <span class="prompt-tag">Retención ${((n.avg_retention || 0.7) * 100).toFixed(0)}%</span>
+      </div>
+      <div class="niche-meta">
+        <span>Earshot: <b>${escapeHtml(n.earshot_kit || "hype")}</b></span>
+        <span>Bandit: <b>Beta(${n.bandit_prior_alpha || 2.5}, ${n.bandit_prior_beta || 1.0})</b></span>
+      </div>
+    </div>
+  `).join("");
+}
+
+function filterAndRenderPrompts() {
+  const grid = document.getElementById("promptsGrid");
+  if (!grid) return;
+  const all = state.promptsAll || [];
+
+  const cat = document.getElementById("promptCategory")?.value || "";
+  const scenario = document.getElementById("promptScenario")?.value || "";
+  const gender = document.getElementById("promptGender")?.value || "";
+  const q = (document.getElementById("promptQuery")?.value || "").toLowerCase().trim();
+
+  const filtered = all.filter((p) => {
+    if (cat && p.category !== cat) return false;
+    if (scenario && p.scenario !== scenario) return false;
+    if (gender && p.gender !== gender && p.gender !== "any") return false;
+    if (q && !p.text.toLowerCase().includes(q) && !p.title.toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  const PAGE_SIZE = 12;
+  const maxPage = Math.max(0, Math.ceil(filtered.length / PAGE_SIZE) - 1);
+  if (state.promptPage > maxPage) state.promptPage = maxPage;
+  const page = state.promptPage || 0;
+
+  const pageInfo = document.getElementById("promptPageInfo");
+  if (pageInfo) {
+    pageInfo.textContent = `Pág. ${page + 1} de ${Math.max(1, maxPage + 1)} (${filtered.length} prompts)`;
+  }
+
+  const slice = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+  if (!slice.length) {
+    grid.innerHTML = '<div class="muted item-card" style="grid-column: 1/-1">No se encontraron prompts con esos filtros.</div>';
+    return;
+  }
+
+  grid.innerHTML = slice.map((p) => `
+    <div class="prompt-card">
+      <div class="prompt-head">
+        <span class="prompt-title">${escapeHtml(p.title)}</span>
+        <button type="button" class="btn btn-sm btn-glass" onclick="copyPromptText('${p.id}')" title="Copiar prompt completo">📋 Copiar</button>
+      </div>
+      <div class="prompt-text">${escapeHtml(p.text)}</div>
+      <div class="prompt-tags">
+        <span class="prompt-tag cat">${escapeHtml(p.category)}</span>
+        <span class="prompt-tag">${escapeHtml(p.scenario)}</span>
+        <span class="prompt-tag">${escapeHtml(p.gender)}</span>
+        ${(p.tones || []).map((t) => `<span class="prompt-tag">${escapeHtml(t)}</span>`).join("")}
+      </div>
+      <div class="btn-row" style="margin-top:4px">
+        <button type="button" class="btn btn-sm btn-primary" onclick="applyPromptToInfluencer('${p.id}')">👤 Usar en AI Influencer</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+window.copyPromptText = function (promptId) {
+  const p = (state.promptsAll || []).find((item) => item.id === promptId);
+  if (!p) return;
+  const finish = () => {
+    const msg = document.getElementById("promptActionMsg");
+    if (msg) msg.textContent = `✅ Prompt "${p.title}" copiado al portapapeles.`;
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(p.text).then(finish).catch(() => {
+      prompt("Copia el prompt:", p.text);
+    });
+  } else {
+    prompt("Copia el prompt:", p.text);
+  }
+};
+
+window.applyPromptToInfluencer = function (promptId) {
+  const p = (state.promptsAll || []).find((item) => item.id === promptId);
+  if (!p) return;
+  const promptInput = document.getElementById("perPrompt");
+  if (promptInput) {
+    promptInput.value = p.text;
+    document.querySelector('[data-tab="personas"]')?.click();
+    const msg = document.getElementById("promptActionMsg");
+    if (msg) msg.textContent = `✅ Prompt cargado en el formulario de AI Influencers.`;
+  }
+};
+
+function initPromptsAndNiches() {
+  loadPromptVault();
+  loadViralNiches();
+
+  for (const id of ["promptCategory", "promptScenario", "promptGender", "promptQuery"]) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener(el.tagName === "INPUT" ? "input" : "change", () => {
+        state.promptPage = 0;
+        filterAndRenderPrompts();
+      });
+    }
+  }
+
+  const btnPrev = document.getElementById("btnPromptPrev");
+  const btnNext = document.getElementById("btnPromptNext");
+  if (btnPrev) {
+    btnPrev.addEventListener("click", () => {
+      if ((state.promptPage || 0) > 0) {
+        state.promptPage--;
+        filterAndRenderPrompts();
+      }
+    });
+  }
+  if (btnNext) {
+    btnNext.addEventListener("click", () => {
+      state.promptPage = (state.promptPage || 0) + 1;
+      filterAndRenderPrompts();
+    });
+  }
+
+  const btnAuto = document.getElementById("btnAutoPickPrompt");
+  if (btnAuto) {
+    btnAuto.addEventListener("click", async () => {
+      const persona_id = document.getElementById("stPersona")?.value || (state.personas[0]?.id ?? "");
+      const persona = (state.personas || []).find((x) => x.id === persona_id);
+      const niche = persona?.niche || "general";
+      const gender = persona?.gender || "female";
+      const tone = persona?.tone || "authentic";
+
+      const msg = document.getElementById("promptActionMsg");
+      if (msg) msg.textContent = `Buscando mejor prompt para nicho "${niche}"...`;
+
+      try {
+        const res = await api("/api/prompts/auto-select", {
+          method: "POST",
+          body: JSON.stringify({ niche, gender, tone }),
+        });
+        if (res && res.selected) {
+          if (msg) msg.textContent = `✅ Prompt recomendado: "${res.selected.title}". Copiando...`;
+          window.copyPromptText(res.selected.id);
+        }
+      } catch (e) {
+        if (msg) msg.textContent = `Error: ${e.message}`;
+      }
+    });
+  }
+}
 
 
