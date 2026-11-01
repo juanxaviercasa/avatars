@@ -1,6 +1,18 @@
 const DEFAULT_ORACLE_TUNNEL = ""; // Configure a stable HTTPS API endpoint in Backend settings.
 let API_BASE = (localStorage.getItem("vf_api_base") || "").replace(/\/+$/, "");
 
+// ── Utilidad de seguridad ──────────────────────────────────────────────────────
+// Escapa caracteres HTML especiales para prevenir XSS en innerHTML dinámico.
+function escapeHtml(str) {
+  if (str == null) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 const _host = window.location.hostname;
 const MANAGED_WEB = ["avatars.sistemazenit.com", "origin-avatars.sistemazenit.com"].includes(_host);
 // The authenticated site always uses its own origin, including when a browser
@@ -1575,6 +1587,12 @@ function initPromptsAndNiches() {
         });
         if (res && res.selected) {
           if (msg) msg.textContent = `✅ Prompt recomendado: "${res.selected.title}". Copiando...`;
+          // Asegurarse que el prompt está en state.promptsAll antes de copiar.
+          // Si no está (vault no cargado aún), insertar desde la respuesta de la API.
+          if (!(state.promptsAll || []).find((p) => p.id === res.selected.id)) {
+            state.promptsAll = state.promptsAll || [];
+            state.promptsAll.push(res.selected);
+          }
           window.copyPromptText(res.selected.id);
         }
       } catch (e) {

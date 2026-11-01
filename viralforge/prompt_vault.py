@@ -305,10 +305,15 @@ UGC_HOOK_FORMULAS: list[dict] = [
 
 
 def get_hook_formulas(niche: str = "") -> list[dict]:
-    """Devuelve las fórmulas de hook UGC, filtradas por niche si se especifica."""
+    """Devuelve las fórmulas de hook UGC, filtradas por niche si se especifica.
+    Si el niche no coincide con ninguna fórmula (niche inválido/no mapeado),
+    devuelve todas las fórmulas como fallback en lugar de lista vacía.
+    """
     if not niche:
         return UGC_HOOK_FORMULAS
-    return [f for f in UGC_HOOK_FORMULAS if not f.get("best_for") or niche.lower() in f["best_for"]]
+    filtered = [f for f in UGC_HOOK_FORMULAS if not f.get("best_for") or niche.lower() in f["best_for"]]
+    # Fallback: si el niche no coincide con ninguna fórmula específica, devolver todo
+    return filtered if filtered else UGC_HOOK_FORMULAS
 
 
 def apply_hook_formula(

@@ -301,6 +301,12 @@ class CreateVariantReq(BaseModel):
 
 @app.post("/api/variants")
 def create_variant(req: CreateVariantReq) -> dict:
+    st = store()
+    # Validar que producto y persona existen antes de crear la variante
+    if not st.get("products", req.product_id, Product):
+        raise HTTPException(404, f"Producto '{req.product_id}' no encontrado")
+    if not st.get("personas", req.persona_id, Persona):
+        raise HTTPException(404, f"Persona '{req.persona_id}' no encontrada")
     v = Variant(product_id=req.product_id, persona_id=req.persona_id, script=req.script)
     store().put("variants", v)
     job = pipeline.enqueue_render(v) if req.render_now else None
@@ -743,6 +749,8 @@ def api_apply_hook(req: ApplyHookReq) -> dict[str, Any]:
         resultado=req.resultado,
         lang=req.lang,
     )
+    if not rendered:
+        raise HTTPException(404, f"Fórmula de hook '{req.formula_id}' no encontrada")
     return {"formula_id": req.formula_id, "hook": rendered}
 
 
