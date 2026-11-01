@@ -90,6 +90,9 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable viralforge.service >/dev/null 2>&1
 sudo systemctl restart viralforge.service
+if systemctl is-enabled viralforge-web.service >/dev/null 2>&1; then
+    sudo systemctl restart viralforge-web.service >/dev/null 2>&1 || true
+fi
 sleep 2
 sudo systemctl is-active viralforge.service
 curl -fsS http://127.0.0.1:8765/api/status | head -c 240
