@@ -356,19 +356,25 @@ def generate_lofi_background(
         root_val = np.sin(2 * np.pi * roots[b] * t_m, dtype=np.float32) * 0.16 * np.exp(-(t_in_bar[mask]) * 0.32, dtype=np.float32)
         sig[mask] = (chord_val * env_m + root_val)
 
-    # 2. Batería acústica pura: Solo golpes de tambor y bombo (Sin ruidos de vinilo ni rayado)
+    # 2. Batería acústica pura con presencia y pegada (Bombo y tambor limpios, cero ruido de vinilo)
     drums = np.zeros(n, dtype=np.float32)
 
-    # Bombo (Kick) acústico profundo y definido
-    k_len = int(sr * 0.24)
+    # Bombo (Kick) acústico profundo y definido con transitorio audible
+    k_len = int(sr * 0.25)
     tk = np.arange(k_len, dtype=np.float32) / sr
-    f_kick = 118 * np.exp(-tk * 28) + 42
-    kick_sample = np.sin(2 * np.pi * np.cumsum(f_kick) / sr) * np.exp(-tk * 10) * 0.65
+    f_kick = 140 * np.exp(-tk * 32) + 48
+    phase = 2 * np.pi * np.cumsum(f_kick) / sr
+    body = np.sin(phase) * np.exp(-tk * 11) * 0.85
+    click = np.sin(2 * np.pi * 1200 * tk) * np.exp(-tk * 85) * 0.20
+    kick_sample = body + click
 
-    # Tambor / Caja (Snare-Rimshot) cálido y acústico sin ruido blanco
-    s_len = int(sr * 0.16)
+    # Tambor / Caja acústica con tono resonante y chasquido nítido (sin ruido de vinilo)
+    s_len = int(sr * 0.18)
     ts = np.arange(s_len, dtype=np.float32) / sr
-    snare_sample = (np.sin(2 * np.pi * 190 * ts) + 0.35 * np.sin(2 * np.pi * 330 * ts)) * np.exp(-ts * 24) * 0.50
+    tone1 = np.sin(2 * np.pi * 210 * ts) * np.exp(-ts * 22) * 0.65
+    tone2 = np.sin(2 * np.pi * 380 * ts) * np.exp(-ts * 28) * 0.35
+    snap = np.sin(2 * np.pi * 850 * ts) * np.exp(-ts * 50) * 0.25
+    snare_sample = tone1 + tone2 + snap
 
     num_bars = int(duration_seconds / bar_dur) + 2
     for bar in range(num_bars):
@@ -388,7 +394,7 @@ def generate_lofi_background(
                 drums[pos:end_p] += snare_sample[: end_p - pos]
 
     # Mezcla limpia (Sin vinilo ni siseos)
-    full_mix = sig + drums * 0.75
+    full_mix = sig + drums * 0.90
     return np.tanh(full_mix * 1.3) * gain
 
     # Fade in / fade out suave de 1.8 segundos

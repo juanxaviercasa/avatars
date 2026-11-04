@@ -90,7 +90,7 @@ def polish_video(
             headline=clean_hook,
             out_path=hook_png,
         )
-        overlay_inputs.append((hook_png, 0.00, 2.00, 110))
+        overlay_inputs.append((hook_png, 0.00, 2.00, 75))
 
         # 2. B-Roll Hiperrealista 1: Sala de Museo (2.0s a 5.5s)
         broll_museum_src = settings.root / "assets" / "broll" / "museum_hall.jpg"
@@ -101,7 +101,7 @@ def polish_video(
                 caption="🏛️ CONTEXTO: MUSEO VISITADO",
                 out_path=broll_m_png,
             )
-            overlay_inputs.append((broll_m_png, 2.00, 5.50, 120))
+            overlay_inputs.append((broll_m_png, 2.00, 5.50, 75))
 
         # 3. Tarjeta Estratégica del Enunciado (Split-Screen Compacto y Alto Contraste)
         prob_png = workdir / "problem_statement_card.png"
@@ -116,7 +116,7 @@ def polish_video(
             out_path=prob_png,
         )
         # Mostrar enunciado antes y después del segundo B-roll hasta la fórmula
-        overlay_inputs.append((prob_png, 5.50, 9.50, 100))
+        overlay_inputs.append((prob_png, 5.50, 9.50, 75))
 
         # 4. B-Roll Hiperrealista 2: Mezcla de Productos Químicos (9.5s a 14.5s)
         broll_chem_src = settings.root / "assets" / "broll" / "chemistry_beakers.jpg"
@@ -127,10 +127,10 @@ def polish_video(
                 caption="🧪 SITUACIÓN: MEZCLA DE PRODUCTOS (S/. 5 Y S/. 8)",
                 out_path=broll_c_png,
             )
-            overlay_inputs.append((broll_c_png, 9.50, 14.50, 120))
+            overlay_inputs.append((broll_c_png, 9.50, 14.50, 75))
 
         # Continuación del Enunciado mientras el docente plantea en la pizarra
-        overlay_inputs.append((prob_png, 14.50, 75.00, 100))
+        overlay_inputs.append((prob_png, 14.50, 75.00, 75))
 
         # 5. Progresión Dinámica e Interactiva de Ecuaciones (Estilo Manim)
         # Etapa 1 (75.5s a 86.5s): Fórmula Maestra Teórica
@@ -140,7 +140,7 @@ def polish_video(
             formula_latex=r"P_m = \frac{P_1 V_1 + P_2 V_2}{V_1 + V_2}",
             out_path=f1_png,
         )
-        overlay_inputs.append((f1_png, 75.50, 86.50, 110))
+        overlay_inputs.append((f1_png, 75.50, 86.50, 75))
 
         # Etapa 2 (86.5s a 105.0s): Sustitución de Variables en Vivo
         f2_png = workdir / "formula_stage2.png"
@@ -149,7 +149,7 @@ def polish_video(
             formula_latex=r"7 = \frac{5(42 - V_2) + 8V_2}{42}",
             out_path=f2_png,
         )
-        overlay_inputs.append((f2_png, 86.50, 105.00, 110))
+        overlay_inputs.append((f2_png, 86.50, 105.00, 75))
 
         # Etapa 3 (105.0s a 146.0s): Despeje Algebraico Paso a Paso
         f3_png = workdir / "formula_stage3.png"
@@ -158,7 +158,7 @@ def polish_video(
             step_latex=r"294 = 210 + 3V_2 \Rightarrow 84 = 3V_2",
             out_path=f3_png,
         )
-        overlay_inputs.append((f3_png, 105.00, 146.00, 110))
+        overlay_inputs.append((f3_png, 105.00, 146.00, 75))
 
         # Etapa 4 (146.0s a 156.0s): Reducción Directa
         f4_png = workdir / "formula_stage4.png"
@@ -167,7 +167,7 @@ def polish_video(
             formula_latex=r"V_2 = \frac{84}{3} = 28\text{ L}",
             out_path=f4_png,
         )
-        overlay_inputs.append((f4_png, 146.00, 156.00, 110))
+        overlay_inputs.append((f4_png, 146.00, 156.00, 75))
 
         # Etapa 5 (156.0s a 159.2s): Badge GIGANTE de Clave Verificada en LaTeX
         ans_png = workdir / "solution_card.png"
@@ -176,7 +176,7 @@ def polish_video(
             out_path=ans_png,
             result_latex=r"\mathbf{V_2 = 28\text{ L} \quad (CLAVE)}",
         )
-        overlay_inputs.append((ans_png, 156.00, 159.20, 110))
+        overlay_inputs.append((ans_png, 156.00, 159.20, 75))
 
         # Etapa 6 (159.2s a Fin): Tarjeta de Conversión VIP Skool
         cta_png = workdir / "cta_card.png"
@@ -207,9 +207,9 @@ def polish_video(
         total_samples = len(orig_samples)
         mixed_audio = np.copy(orig_samples)
 
-        # Inyectar música procedural Lo-Fi de fondo con auto-ducking bajo la voz
+        # Inyectar música procedural Lo-Fi de fondo con auto-ducking bajo la voz (volumen audible del bombo y tambor)
         try:
-            lofi_bg = audio_mix.generate_lofi_background(dur, sr=audio_mix.SR, gain=0.18)
+            lofi_bg = audio_mix.generate_lofi_background(dur, sr=audio_mix.SR, gain=0.34)
             if len(lofi_bg) >= total_samples:
                 mixed_audio += lofi_bg[:total_samples]
             else:
@@ -316,10 +316,10 @@ def polish_video(
             "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,split=3[v_cam_wide][v_raw2][v_raw3]"
         )
         filter_chains.append(
-            "[v_raw2]crop=iw/1.16:ih/1.16:iw*0.05:ih*0.14,scale=1080:1920[v_cam_speaker]"
+            "[v_raw2]crop=iw/1.16:ih/1.16:iw*0.05:0,scale=1080:1920[v_cam_speaker]"
         )
         filter_chains.append(
-            "[v_raw3]crop=iw/1.26:ih/1.26:iw*0.16:ih*0.18,scale=1080:1920[v_cam_board]"
+            "[v_raw3]crop=iw/1.18:ih/1.18:iw*0.12:0,scale=1080:1920[v_cam_board]"
         )
         filter_chains.append(
             f"[v_cam_wide][v_cam_speaker]overlay=0:0:enable='{sp_enable}'[v_step1]"
