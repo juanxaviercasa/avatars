@@ -67,14 +67,21 @@ def polish_video(
             if wc.exists():
                 try:
                     import json
-                    words_list = json.loads(wc.read_text(encoding="utf-8"))
+                    raw_data = json.loads(wc.read_text(encoding="utf-8"))
+                    if isinstance(raw_data, dict) and "words" in raw_data:
+                        words_list = raw_data["words"]
+                    elif isinstance(raw_data, list):
+                        words_list = raw_data
                     break
                 except Exception:
                     pass
         words = words_list
     elif isinstance(words, (str, Path)) and str(words).endswith(".json"):
         import json
-        words = json.loads(Path(words).read_text(encoding="utf-8"))
+        raw_data = json.loads(Path(words).read_text(encoding="utf-8"))
+        words = raw_data.get("words", raw_data) if isinstance(raw_data, dict) else raw_data
+    elif isinstance(words, dict) and "words" in words:
+        words = words["words"]
     elif not isinstance(words, list):
         words = []
 
@@ -102,7 +109,7 @@ def polish_video(
             on_progress(0.15, "Diseñando tarjetas gráficas PNG de alta definición...")
 
         # 3) Análisis de Copy y Planificación Matemática con Math Copilot
-        full_transcript = " ".join((w.get("formatted") or w.get("word", "")) for w in words)
+        full_transcript = " ".join((w.get("formatted") or w.get("word", "") if isinstance(w, dict) else str(w)) for w in words)
         copilot_plan = analyze_transcript(full_transcript, words, dur)
 
         overlay_inputs: list[tuple[Path, float, float, int, int | None]] = []
