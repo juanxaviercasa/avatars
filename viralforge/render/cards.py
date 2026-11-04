@@ -15,10 +15,17 @@ cajas de texto desalineadas y aspecto aficionado).
 from __future__ import annotations
 
 import os
+import re
 from pathlib import Path
 from typing import Any
 
 from PIL import Image, ImageDraw, ImageFont
+
+
+def _clean_text(s: str) -> str:
+    """Elimina emojis o caracteres no soportados por tipografías TTF estándar para evitar cuadros vacíos."""
+    # Mantiene letras latinas, números, puntuación y símbolos matemáticos comunes
+    return re.sub(r'[^\w\s.,!?:;/\-+%()#$@&<>=ÁÉÍÓÚáéíóúÑñÜü"\'`·₁₂₃⁴]', '', str(s)).strip()
 
 
 def _get_font(size: int, bold: bool = True) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
@@ -81,7 +88,7 @@ def create_hook_card(
     draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=26, fill=bg_color, outline=accent_color + (230,), width=3)
 
     # 2. Píldora de categoría / materia superior
-    tag_clean = category_tag.upper().strip()
+    tag_clean = _clean_text(category_tag).upper()
     tag_bbox = draw.textbbox((0, 0), tag_clean, font=f_tag)
     tag_w = tag_bbox[2] - tag_bbox[0]
     pill_w = tag_w + 36
@@ -93,7 +100,7 @@ def create_hook_card(
     draw.text((pill_x1 + 18, pill_y1 + 5), tag_clean, font=f_tag, fill=accent_color + (255,))
 
     # 3. Titular de impacto centrado (máx 2 líneas si es largo)
-    title_clean = headline.upper().strip()
+    title_clean = _clean_text(headline).upper()
     # Word wrap si supera 880px
     words = title_clean.split()
     lines = []
@@ -165,13 +172,13 @@ def create_skool_cta_card(
     draw.text((p_x1 + 16, p_y1 + 5), badge_text, font=f_badge, fill=(255, 228, 94, 255))
 
     # 3. Nombre de la comunidad destacado
-    title = community_name.upper().strip()
+    title = _clean_text(community_name).upper()
     t_bbox = draw.textbbox((0, 0), title, font=f_main)
     t_w = t_bbox[2] - t_bbox[0]
     draw.text(((width - t_w) // 2, 70), title, font=f_main, fill=(255, 255, 255, 255))
 
     # 4. Botón de llamado a la acción (Action Pill)
-    btn_text = action_text.strip()
+    btn_text = _clean_text(action_text)
     btn_bbox = draw.textbbox((0, 0), btn_text, font=f_btn)
     btn_w = btn_bbox[2] - btn_bbox[0]
     bp_w = min(width - 40, btn_w + 44)
