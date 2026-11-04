@@ -305,6 +305,74 @@ def render_sfx_samples(sfx_id: str, sr: int = SR) -> np.ndarray:
     return synthesize_sfx(sfx_id)
 
 
+def generate_lofi_background(
+    duration_seconds: float,
+    sr: int = SR,
+    gain: float = 0.18,
+) -> np.ndarray:
+    """
+    Sintetizador procedural de música de fondo Lo-Fi / Focus Ambient en NumPy (Sound-as-Code).
+
+    Produce una progresión de acordes cálidos estilo Rhodes Jazz (Fmaj7 - Em7 - Dm7 - Cmaj7),
+    sub-bass armónico y textura sutil de vinilo, masterizada para ducking bajo la voz.
+    """
+    n = int(sr * duration_seconds)
+    if n <= 0:
+        return np.zeros(0, dtype=np.float32)
+
+    t = np.arange(n, dtype=np.float32) / sr
+
+    # Acordes de estudio Lo-Fi (F3, E3, D3, C3)
+    chords = [
+        [174.61, 220.00, 261.63, 329.63],  # Fmaj7
+        [164.81, 196.00, 246.94, 293.66],  # Em7
+        [146.83, 174.61, 220.00, 261.63],  # Dm7
+        [130.81, 164.81, 196.00, 246.94],  # Cmaj7
+    ]
+    roots = [87.31, 82.41, 73.42, 65.41]
+    bpm = 76.0
+    beat_dur = 60.0 / bpm
+    bar_dur = beat_dur * 4.0
+
+    bar_idx = (t / bar_dur).astype(int) % len(chords)
+    t_in_bar = t % bar_dur
+    env = np.exp(-t_in_bar * 0.72, dtype=np.float32)
+
+    sig = np.zeros(n, dtype=np.float32)
+    vibrato = np.sin(2 * np.pi * 4.2 * t, dtype=np.float32) * 1.4
+
+    for b in range(len(chords)):
+        mask = (bar_idx == b)
+        if not np.any(mask):
+            continue
+        t_m = t[mask]
+        env_m = env[mask]
+        vib_m = vibrato[mask]
+        chord_val = np.zeros(np.sum(mask), dtype=np.float32)
+        for f in chords[b]:
+            chord_val += np.sin(2 * np.pi * (f + vib_m) * t_m, dtype=np.float32) * 0.11
+        # Segundo armónico cálido
+        chord_val += np.sin(4 * np.pi * (chords[b][0] + vib_m) * t_m, dtype=np.float32) * 0.035
+        # Sub-bass
+        root_val = np.sin(2 * np.pi * roots[b] * t_m, dtype=np.float32) * 0.18 * np.exp(-(t_in_bar[mask]) * 0.42, dtype=np.float32)
+        sig[mask] = (chord_val * env_m + root_val)
+
+    # Textura sutil de cinta analógica / vinilo
+    rng = np.random.default_rng(42)
+    vinyl = rng.standard_normal(n).astype(np.float32) * 0.012
+
+    # Saturación analógica suave y escala de ganancia
+    sig = np.tanh((sig + vinyl) * 1.5) * gain
+
+    # Fade in / fade out suave de 1.8 segundos
+    fade = min(int(sr * 1.8), n // 4)
+    if fade > 1:
+        sig[:fade] *= np.linspace(0, 1, fade, dtype=np.float32)
+        sig[-fade:] *= np.linspace(1, 0, fade, dtype=np.float32)
+
+    return sig.astype(np.float32)
+
+
 def render_sfx_wav(sfx_id: str, out_wav: str | Path) -> Path:
     """Renderiza una receta Earshot a un archivo WAV para preescucha o mezcla."""
     sig = synthesize_sfx(sfx_id)

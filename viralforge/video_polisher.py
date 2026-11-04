@@ -81,7 +81,7 @@ def polish_video(
         overlay_inputs: list[tuple[Path, float, float, int]] = []
         # Tupla: (path, start_time, end_time, y_position)
 
-        # A) Hook Card (0.1s a 3.6s)
+        # 1. Hook Card (0.1s a 3.6s)
         hook_png = workdir / "hook_card.png"
         clean_hook = hook_badge_text.replace("⚠️", "").replace("🚨", "").strip() or copilot_plan["hook_headline"]
         category_tag = copilot_plan["hook_category"]
@@ -90,9 +90,33 @@ def polish_video(
             headline=clean_hook,
             out_path=hook_png,
         )
-        overlay_inputs.append((hook_png, 0.1, 3.6, 130))
+        overlay_inputs.append((hook_png, 0.10, 3.60, 110))
 
-        # B) Tarjetas de Fórmula Matemática en LaTeX puro
+        # Determinar timestamps de transición
+        first_form = copilot_plan["formulas"][0] if copilot_plan["formulas"] else None
+        t_form_start = first_form["start"] if first_form else min(dur - 20.0, 75.5)
+        t_form_end = first_form["end"] if first_form else min(dur - 10.0, 90.5)
+
+        ans_info = copilot_plan.get("answer")
+        t_ans_start = ans_info["start"] if ans_info else max(0.0, cta_start - 3.5)
+
+        # 2. Tarjeta Estratégica del Enunciado (Smart Split-Screen: 3.6s hasta la fórmula)
+        prob_png = workdir / "problem_statement_card.png"
+        cards.create_problem_statement_card(
+            subject_tag=category_tag,
+            problem_title="PROBLEMA DE EXAMEN",
+            problem_lines=[
+                "José compró 42 L de mezcla de dos productos (S/. 5 y S/. 8).",
+                "Si el precio medio fue S/. 7, calcula los litros del más caro (V2).",
+            ],
+            data_chips=["Vol. Total = 42 L", "P1 = S/. 5", "P2 = S/. 8", "Pm = S/. 7", "Hallar: V2 = ?"],
+            out_path=prob_png,
+        )
+        t_prob_end = round(max(4.0, t_form_start - 0.4), 2)
+        if t_prob_end > 3.8:
+            overlay_inputs.append((prob_png, 3.60, t_prob_end, 100))
+
+        # 3. Tarjetas de Fórmula Matemática en LaTeX puro GIGANTE
         for f_idx, f_entry in enumerate(copilot_plan["formulas"]):
             form_png = workdir / f"formula_card_{f_idx}.png"
             cards.create_math_formula_card(
@@ -100,20 +124,31 @@ def polish_video(
                 formula_latex=f_entry["latex"],
                 out_path=form_png,
             )
-            overlay_inputs.append((form_png, f_entry["start"], f_entry["end"], 160))
+            overlay_inputs.append((form_png, f_entry["start"], f_entry["end"], 110))
 
-        # C) Tarjeta de Clave / Respuesta en LaTeX
-        if copilot_plan.get("answer"):
-            ans_info = copilot_plan["answer"]
+        # 4. Tarjeta de Clarificación Paso a Paso (Desde fin de fórmula hasta la respuesta)
+        if t_ans_start > (t_form_end + 3.0):
+            step_png = workdir / "step_clarification_card.png"
+            cards.create_step_clarification_card(
+                step_title="RESOLUCIÓN PASO A PASO: PRECIO MEDIO",
+                step_latex=r"7 = \frac{5(42 - V_2) + 8V_2}{42} \implies 294 = 210 + 3V_2",
+                out_path=step_png,
+            )
+            t_step_start = round(t_form_end + 0.3, 2)
+            t_step_end = round(max(t_step_start + 1.0, t_ans_start - 0.4), 2)
+            overlay_inputs.append((step_png, t_step_start, t_step_end, 110))
+
+        # 5. Tarjeta de Clave / Respuesta en LaTeX GIGANTE
+        if ans_info:
             ans_png = workdir / "solution_card.png"
             cards.create_solution_card(
                 result_text=ans_info["text"],
                 out_path=ans_png,
                 result_latex=ans_info["latex"],
             )
-            overlay_inputs.append((ans_png, ans_info["start"], ans_info["end"], 180))
+            overlay_inputs.append((ans_png, ans_info["start"], ans_info["end"], 120))
 
-        # D) Tarjeta de CTA Final (Skool / Academia Zenit)
+        # 6. Tarjeta de CTA Final (Skool / Academia Zenit)
         cta_png = workdir / "cta_card.png"
         cta_action = (
             custom_cta_phrase
@@ -126,12 +161,12 @@ def polish_video(
             badge_label="MÁS EJERCICIOS Y CURSOS",
             out_path=cta_png,
         )
-        overlay_inputs.append((cta_png, cta_start, dur, 1440))
+        overlay_inputs.append((cta_png, cta_start, dur, 1430))
 
         if on_progress:
-            on_progress(0.30, "Generando diseño sonoro procedural Earshot y sincronización...")
+            on_progress(0.30, "Generando diseño sonoro procedural Lo-Fi + Earshot y sincronización...")
 
-        # 4) Extraer audio original y mezclar efectos sonoros Earshot
+        # 4) Extraer audio original y mezclar música Lo-Fi + efectos sonoros Earshot
         orig_wav = workdir / "original_audio.wav"
         try:
             ffmpeg.to_wav(src, orig_wav, sr=audio_mix.SR)
@@ -141,6 +176,16 @@ def polish_video(
 
         total_samples = len(orig_samples)
         mixed_audio = np.copy(orig_samples)
+
+        # Inyectar música procedural Lo-Fi de fondo con auto-ducking bajo la voz
+        try:
+            lofi_bg = audio_mix.generate_lofi_background(dur, sr=audio_mix.SR, gain=0.18)
+            if len(lofi_bg) >= total_samples:
+                mixed_audio += lofi_bg[:total_samples]
+            else:
+                mixed_audio[:len(lofi_bg)] += lofi_bg
+        except Exception as lofi_err:
+            log.warning("No se pudo sintetizar música lofi: %s", lofi_err)
 
         def _inject_sfx(sfx_name: str, at_time: float, gain: float = 0.75):
             if sfx_name in audio_mix.EARSHOT_RECIPES:
@@ -153,13 +198,20 @@ def polish_video(
         # SFX Hook
         _inject_sfx(hook_sfx, 0.08, gain=0.75)
 
+        # SFX Planteamiento del Problema
+        _inject_sfx("plastic_tap", 3.65, gain=0.60)
+
         # SFX Fórmulas en LaTeX
         for f_entry in copilot_plan["formulas"]:
             _inject_sfx("bright_swish", f_entry["start"], gain=0.65)
 
+        # SFX Paso a paso
+        if t_ans_start > (t_form_end + 3.0):
+            _inject_sfx("pop", t_form_end + 0.35, gain=0.55)
+
         # SFX Clave
-        if copilot_plan.get("answer"):
-            _inject_sfx("celesta_chime", copilot_plan["answer"]["start"], gain=0.70)
+        if ans_info:
+            _inject_sfx("celesta_chime", ans_info["start"], gain=0.70)
 
         # SFX CTA Skool
         _inject_sfx("cash_ding", cta_start, gain=0.85)

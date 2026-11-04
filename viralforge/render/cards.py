@@ -200,12 +200,13 @@ def create_math_formula_card(
     formula_title: str,
     formula_latex: str,
     out_path: str | Path,
-    width: int = 960,
-    height: int = 210,
+    width: int = 1020,
+    height: int = 330,
 ) -> Path:
     """
-    Crea una tarjeta flotante con la fórmula matemática clave renderizada en LaTeX puro.
-    Incluye barra de fracción, subíndices, superíndices y tipografía matemática Computer Modern.
+    Crea una tarjeta flotante GIGANTE con la fórmula matemática clave renderizada en LaTeX puro.
+    Incluye barra de fracción, subíndices, superíndices y tipografía matemática Computer Modern
+    escalada para llenar el ancho disponible y ser visible en cualquier pantalla móvil.
     """
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -213,38 +214,37 @@ def create_math_formula_card(
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    f_sub = _get_font(22, bold=True)
-    f_math = _get_font(36, bold=True)
+    f_sub = _get_font(24, bold=True)
+    f_math = _get_font(42, bold=True)
 
     # Fondo azul/cian tecnológico con esquinas redondeadas y resplandor
-    bg_color = (10, 22, 42, 245)
-    cyan_glow = (56, 189, 248, 230)  # #38bdf8
-    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=24, fill=bg_color, outline=cyan_glow, width=3)
+    bg_color = (8, 18, 38, 248)
+    cyan_glow = (56, 189, 248, 240)  # #38bdf8
+    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=26, fill=bg_color, outline=cyan_glow, width=4)
 
     # Header / Píldora
     title_text = _clean_text(formula_title).upper().strip()
     draw.text((36, 18), title_text, font=f_sub, fill=(56, 189, 248, 255))
 
-    # Renderizado matemático LaTeX / KaTeX de alta definición
+    # Renderizado matemático LaTeX / KaTeX de alta definición (Escalado gigante)
     try:
         from . import latex_renderer
-        # No limpiar con _clean_text porque LaTeX requiere barras invertidas y llaves {}
         clean_latex = formula_latex.strip()
-        ltx_img = latex_renderer.render_latex_to_image(clean_latex, color="white", fontsize=52, dpi=240)
-        max_w = width - 70
-        max_h = height - 50
-        if ltx_img.width > max_w or ltx_img.height > max_h:
-            ratio = min(max_w / ltx_img.width, max_h / ltx_img.height)
-            new_size = (int(ltx_img.width * ratio), int(ltx_img.height * ratio))
-            ltx_img = ltx_img.resize(new_size, Image.Resampling.LANCZOS)
-        paste_x = (width - ltx_img.width) // 2
-        paste_y = 48 + (height - 48 - ltx_img.height) // 2
+        ltx_img = latex_renderer.render_latex_to_image(clean_latex, color="white", fontsize=60, dpi=280)
+        target_w = width - 80
+        target_h = height - 72
+        ratio = min(target_w / ltx_img.width, target_h / ltx_img.height)
+        new_w = max(1, int(ltx_img.width * ratio))
+        new_h = max(1, int(ltx_img.height * ratio))
+        ltx_img = ltx_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
+        paste_x = (width - new_w) // 2
+        paste_y = 54 + (height - 54 - new_h) // 2
         img.paste(ltx_img, (paste_x, paste_y), ltx_img)
     except Exception as err:
         expr = _clean_text(formula_latex)
         e_bbox = draw.textbbox((0, 0), expr, font=f_math)
         e_w = e_bbox[2] - e_bbox[0]
-        draw.text(((width - e_w) // 2, 85), expr, font=f_math, fill=(255, 255, 255, 255))
+        draw.text(((width - e_w) // 2, 95), expr, font=f_math, fill=(255, 255, 255, 255))
 
     img.save(out_path, format="PNG")
     return out_path
@@ -254,11 +254,11 @@ def create_solution_card(
     result_text: str,
     out_path: str | Path,
     result_latex: str | None = None,
-    width: int = 880,
-    height: int = 160,
+    width: int = 1020,
+    height: int = 290,
 ) -> Path:
     """
-    Crea una tarjeta verde esmeralda destacando la clave / resultado final en LaTeX o texto destacado.
+    Crea una tarjeta verde esmeralda destacando la clave / resultado final en LaTeX puro GIGANTE.
     """
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -266,28 +266,28 @@ def create_solution_card(
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    f_lbl = _get_font(20, bold=True)
-    f_res = _get_font(42, bold=True)
+    f_lbl = _get_font(24, bold=True)
+    f_res = _get_font(56, bold=True)
 
     # Fondo verde esmeralda oscuro con borde brillante
-    bg_color = (6, 35, 22, 245)
-    green_glow = (52, 211, 153, 240)  # #34d399
-    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=24, fill=bg_color, outline=green_glow, width=3)
+    bg_color = (6, 35, 22, 248)
+    green_glow = (52, 211, 153, 245)  # #34d399
+    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=26, fill=bg_color, outline=green_glow, width=4)
 
-    draw.text((34, 18), "RESPUESTA VERIFICADA DEL EXAMEN", font=f_lbl, fill=green_glow)
+    draw.text((36, 18), "RESPUESTA VERIFICADA DEL EXAMEN", font=f_lbl, fill=green_glow)
 
     if result_latex:
         try:
             from . import latex_renderer
-            ltx_img = latex_renderer.render_latex_to_image(result_latex, color="#FFE45E", fontsize=38, dpi=220)
-            max_w = width - 80
-            max_h = height - 56
-            if ltx_img.width > max_w or ltx_img.height > max_h:
-                ratio = min(max_w / ltx_img.width, max_h / ltx_img.height)
-                new_size = (int(ltx_img.width * ratio), int(ltx_img.height * ratio))
-                ltx_img = ltx_img.resize(new_size, Image.Resampling.LANCZOS)
-            paste_x = (width - ltx_img.width) // 2
-            paste_y = 52 + (height - 52 - ltx_img.height) // 2
+            ltx_img = latex_renderer.render_latex_to_image(result_latex, color="#FFE45E", fontsize=64, dpi=280)
+            target_w = width - 80
+            target_h = height - 68
+            ratio = min(target_w / ltx_img.width, target_h / ltx_img.height)
+            new_w = max(1, int(ltx_img.width * ratio))
+            new_h = max(1, int(ltx_img.height * ratio))
+            ltx_img = ltx_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
+            paste_x = (width - new_w) // 2
+            paste_y = 52 + (height - 52 - new_h) // 2
             img.paste(ltx_img, (paste_x, paste_y), ltx_img)
             img.save(out_path, format="PNG")
             return out_path
@@ -297,7 +297,117 @@ def create_solution_card(
     res_clean = _clean_text(result_text)
     r_bbox = draw.textbbox((0, 0), res_clean, font=f_res)
     r_w = r_bbox[2] - r_bbox[0]
-    draw.text(((width - r_w) // 2, 68), res_clean, font=f_res, fill=(255, 255, 255, 255))
+    draw.text(((width - r_w) // 2, 90), res_clean, font=f_res, fill=(255, 228, 94, 255))
+
+    img.save(out_path, format="PNG")
+    return out_path
+
+
+def create_problem_statement_card(
+    subject_tag: str,
+    problem_title: str,
+    problem_lines: list[str],
+    data_chips: list[str],
+    out_path: str | Path,
+    width: int = 1020,
+    height: int = 340,
+) -> Path:
+    """
+    Crea una tarjeta panorámica de planteamiento del problema (Split-screen estratégico).
+    Permite al estudiante leer el enunciado y datos mientras el docente explica en la pizarra.
+    """
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+
+    f_tag = _get_font(20, bold=True)
+    f_title = _get_font(24, bold=True)
+    f_text = _get_font(26, bold=False)
+    f_chip = _get_font(21, bold=True)
+
+    # Fondo glassmorphism oscuro con resplandor dorado
+    bg_color = (12, 17, 30, 245)
+    border_color = (255, 228, 94, 220)
+    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=26, fill=bg_color, outline=border_color, width=3)
+
+    # 1. Píldora superior de materia
+    tag_clean = _clean_text(subject_tag).upper()
+    tb = draw.textbbox((0, 0), tag_clean, font=f_tag)
+    tw = tb[2] - tb[0]
+    draw.rounded_rectangle([32, 16, 32 + tw + 28, 48], radius=14, fill=(255, 228, 94, 35), outline=(255, 228, 94, 180), width=1)
+    draw.text((46, 22), tag_clean, font=f_tag, fill=(255, 228, 94, 255))
+
+    # Título a la derecha
+    t_clean = _clean_text(problem_title).upper()
+    draw.text((32 + tw + 45, 22), t_clean, font=f_title, fill=(255, 255, 255, 240))
+
+    # 2. Líneas del enunciado (Tipografía limpia y legible)
+    y_text = 66
+    for line in problem_lines[:3]:
+        l_clean = _clean_text(line)
+        draw.text((36, y_text), l_clean, font=f_text, fill=(240, 245, 255, 255))
+        y_text += 40
+
+    # 3. Chips de datos extraídos en la base
+    chip_x = 36
+    chip_y = height - 56
+    for chip in data_chips[:5]:
+        c_clean = _clean_text(chip)
+        cb = draw.textbbox((0, 0), c_clean, font=f_chip)
+        cw = cb[2] - cb[0] + 24
+        draw.rounded_rectangle([chip_x, chip_y, chip_x + cw, chip_y + 36], radius=12, fill=(38, 189, 248, 30), outline=(56, 189, 248, 200), width=1)
+        draw.text((chip_x + 12, chip_y + 6), c_clean, font=f_chip, fill=(56, 189, 248, 255))
+        chip_x += cw + 14
+
+    img.save(out_path, format="PNG")
+    return out_path
+
+
+def create_step_clarification_card(
+    step_title: str,
+    step_latex: str,
+    out_path: str | Path,
+    width: int = 1020,
+    height: int = 280,
+) -> Path:
+    """
+    Tarjeta de clarificación paso a paso para el desarrollo algebraico.
+    Muestra la ecuación de resolución en LaTeX gigante con tipografía nítida.
+    """
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+
+    f_sub = _get_font(22, bold=True)
+
+    bg_color = (13, 20, 38, 245)
+    border_color = (168, 85, 247, 230)  # Púrpura neón
+    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=24, fill=bg_color, outline=border_color, width=3)
+
+    # Header
+    title_text = _clean_text(step_title).upper().strip()
+    draw.text((36, 18), title_text, font=f_sub, fill=(192, 132, 252, 255))
+
+    # LaTeX gigante
+    try:
+        from . import latex_renderer
+        clean_latex = step_latex.strip()
+        ltx_img = latex_renderer.render_latex_to_image(clean_latex, color="white", fontsize=56, dpi=260)
+        target_w = width - 80
+        target_h = height - 68
+        ratio = min(target_w / ltx_img.width, target_h / ltx_img.height)
+        new_w = max(1, int(ltx_img.width * ratio))
+        new_h = max(1, int(ltx_img.height * ratio))
+        ltx_img = ltx_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
+        paste_x = (width - new_w) // 2
+        paste_y = 52 + (height - 52 - new_h) // 2
+        img.paste(ltx_img, (paste_x, paste_y), ltx_img)
+    except Exception:
+        pass
 
     img.save(out_path, format="PNG")
     return out_path

@@ -43,7 +43,13 @@ def render_latex_to_image(
     if clean_expr.startswith("$") and clean_expr.endswith("$"):
         clean_expr = clean_expr[1:-1].strip()
 
-    # Formato de visualización matemática LaTeX (mathtext no usa \displaystyle)
+    # Normalizar macros incompatibles con el parser mathtext
+    clean_expr = clean_expr.replace(r"\displaystyle", "")
+    clean_expr = clean_expr.replace(r"\implies", r"\Rightarrow")
+    clean_expr = clean_expr.replace(r"\iff", r"\Leftrightarrow")
+    clean_expr = clean_expr.replace(r"\bold", r"\mathbf")
+
+    # Formato de visualización matemática LaTeX (mathtext)
     math_str = f"${clean_expr}$"
 
     fig = plt.figure(figsize=(8, 2.5))
