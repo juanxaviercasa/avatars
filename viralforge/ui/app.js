@@ -1671,8 +1671,8 @@ let polishState = {
 const CTA_PRESETS = {
   website: {
     label: "URL o Nombre del Sitio Web / Tienda",
-    placeholder: "ej: www.zenitmatematicas.com o Enlace en mi perfil",
-    defaultTarget: "www.zenitmatematicas.com",
+    placeholder: "ej: www.skool.sistemazenit.com o Enlace en mi perfil",
+    defaultTarget: "www.skool.sistemazenit.com",
     badge: "MÁS EJERCICIOS Y CURSOS 🚀",
     action: "Enlace en mi perfil: {target}",
     sfx: "Cash Ding",
@@ -1866,7 +1866,7 @@ function initPolishPanel() {
       const hookBadge = document.getElementById("polishHookBadge")?.value || "¡NO COMETAS ESTE ERROR! ⚠️";
       const hookSfx = document.getElementById("polishHookSfx")?.value || "cut_hit";
       const ctaObj = document.getElementById("polishCtaObjective")?.value || "website";
-      const ctaTarget = document.getElementById("polishCtaTarget")?.value || "www.zenitmatematicas.com";
+      const ctaTarget = document.getElementById("polishCtaTarget")?.value || "www.skool.sistemazenit.com";
       const customPhrase = document.getElementById("polishCtaCustomPhrase")?.value || "";
 
       btnRender.disabled = true;

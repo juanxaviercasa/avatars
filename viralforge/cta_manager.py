@@ -41,8 +41,8 @@ CTA_OBJECTIVES: dict[str, CTAObjective] = {
         spoken_phrase_template="Ve al enlace en mi perfil para ver más problemas resueltos y el curso completo.",
         earshot_sfx="cash_ding",
         target_label="URL o Nombre del Sitio Web",
-        target_placeholder="ej: www.zenitmatematicas.com o Enlace en mi perfil",
-        default_target="Enlace en mi perfil",
+        target_placeholder="ej: www.skool.sistemazenit.com o Enlace en mi perfil",
+        default_target="www.skool.sistemazenit.com",
     ),
     "whatsapp": CTAObjective(
         id="whatsapp",
