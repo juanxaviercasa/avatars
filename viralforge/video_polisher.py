@@ -51,6 +51,33 @@ def polish_video(
     if not src.exists():
         raise FileNotFoundError(f"Video origen no encontrado: {src}")
 
+    # Robustez posicional: si el segundo argumento es una ruta de salida .mp4/.mov
+    if isinstance(words, (str, Path)) and not str(words).endswith(".json"):
+        out_mp4 = words
+        words_candidates = [
+            src.with_suffix(".words.json"),
+            src.parent / f"{src.stem}.words.json",
+            settings.cache_dir / f"{src.name}.words.json",
+            settings.cache_dir / f"{src.stem}.words.json",
+            settings.data_dir / "uploads" / "local_media" / f"{src.stem}.words.json",
+            settings.data_dir / "uploads" / "local_media" / f"{src.name}.words.json",
+        ]
+        words_list = []
+        for wc in words_candidates:
+            if wc.exists():
+                try:
+                    import json
+                    words_list = json.loads(wc.read_text(encoding="utf-8"))
+                    break
+                except Exception:
+                    pass
+        words = words_list
+    elif isinstance(words, (str, Path)) and str(words).endswith(".json"):
+        import json
+        words = json.loads(Path(words).read_text(encoding="utf-8"))
+    elif not isinstance(words, list):
+        words = []
+
     workdir = Path(tempfile.mkdtemp(prefix="vf_polish_", dir=settings.cache_dir))
     out_path = Path(out_mp4) if out_mp4 else (settings.outputs_dir / f"polished_{src.stem}.mp4")
     out_path.parent.mkdir(parents=True, exist_ok=True)
