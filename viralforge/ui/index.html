@@ -112,56 +112,92 @@
     </div>
   </section>
 
-  <!-- Navigation Tabs (Agrupada por Categorías y Responsive con Selector Desplegable) -->
+  <!-- Navigation Tabs (Cuadrícula Adaptativa 100% Responsiva: Desktop 5x2, Móvil 2 Cols, Cero Scroll Horizontal) -->
   <nav class="tabs-wrap" aria-label="Secciones del estudio">
     <div class="tabs-control-bar">
       <!-- Filtro rápido por categorías -->
       <div class="tabs-categories" role="tablist" aria-label="Categorías de herramientas">
-        <button type="button" class="tab-cat-btn active" data-cat="all">✨ Todas (10)</button>
+        <button type="button" class="tab-cat-btn active" data-cat="all">✨ Todas las Herramientas (10)</button>
         <button type="button" class="tab-cat-btn" data-cat="prod">🎬 Producción (4)</button>
         <button type="button" class="tab-cat-btn" data-cat="assets">👤 Assets &amp; Moda (4)</button>
         <button type="button" class="tab-cat-btn" data-cat="intel">⚡ Sistema &amp; Vault (2)</button>
       </div>
 
-      <!-- Menú desplegable directo para pantallas divididas / móviles -->
+      <!-- Menú desplegable directo para selección en 1 clic -->
       <div class="tab-quick-select-wrap">
         <select id="tabQuickSelect" class="tab-quick-select" aria-label="Navegar directamente a cualquier pestaña">
           <optgroup label="🎬 Producción &amp; Reels">
-            <option value="studio" selected>01. Orquestador &amp; Estudio</option>
-            <option value="campaigns">02. Fábrica Masiva A/B</option>
-            <option value="reels">03. Galería Reels &amp; Bandit</option>
-            <option value="polish">🔥 10. Pulidor Viral (.MOV / MP4)</option>
+            <option value="studio" selected>🤖 01. Orquestador &amp; Estudio</option>
+            <option value="campaigns">🏭 02. Fábrica Masiva A/B</option>
+            <option value="reels">📊 03. Galería Reels &amp; Bandit</option>
+            <option value="polish">🎬 10. Pulidor Viral (.MOV / MP4)</option>
           </optgroup>
           <optgroup label="👤 Identidad, Influencers &amp; Outfits">
-            <option value="personas">04. AI Influencers</option>
-            <option value="products">05. Catálogo &amp; Shopify</option>
-            <option value="poses">06. Director de Poses (1,439)</option>
-            <option value="costumes">07. Armario IA (1,407 Outfits)</option>
+            <option value="personas">👤 04. AI Influencers</option>
+            <option value="products">🛍️ 05. Catálogo &amp; Shopify</option>
+            <option value="poses">🎯 06. Director de Poses (1,439)</option>
+            <option value="costumes">👗 07. Armario IA (1,407 Outfits)</option>
           </optgroup>
           <optgroup label="⚡ Estrategia &amp; Clúster">
-            <option value="prompts">08. Vault Prompts &amp; Nichos</option>
-            <option value="engines">09. Clúster Kaggle &amp; VPS</option>
+            <option value="prompts">💎 08. Vault Prompts &amp; Nichos</option>
+            <option value="engines">⚡ 09. Clúster Kaggle &amp; VPS</option>
           </optgroup>
         </select>
       </div>
     </div>
 
-    <!-- Barra de pestañas con flechas de desplazamiento lateral -->
-    <div class="tabs-scroll-container">
-      <button type="button" class="tab-nav-arrow" id="btnTabScrollLeft" title="Desplazar a la izquierda" aria-label="Desplazar a la izquierda">◀</button>
-      <div class="tabs" id="tabsBar">
-        <button type="button" class="tab active" data-tab="studio" data-cat="prod"><span class="tab-num">01</span><span>Orquestador &amp; Estudio</span></button>
-        <button type="button" class="tab" data-tab="campaigns" data-cat="prod"><span class="tab-num">02</span><span>Fábrica Masiva A/B</span></button>
-        <button type="button" class="tab" data-tab="reels" data-cat="prod"><span class="tab-num">03</span><span>Galería Reels &amp; Bandit</span></button>
-        <button type="button" class="tab" data-tab="personas" data-cat="assets"><span class="tab-num">04</span><span>AI Influencers</span></button>
-        <button type="button" class="tab" data-tab="products" data-cat="assets"><span class="tab-num">05</span><span>Catálogo &amp; Shopify</span></button>
-        <button type="button" class="tab" data-tab="poses" data-cat="assets"><span class="tab-num">06</span><span>Director de Poses (1,439)</span></button>
-        <button type="button" class="tab" data-tab="costumes" data-cat="assets"><span class="tab-num">07</span><span>Armario IA (1,407 Outfits)</span></button>
-        <button type="button" class="tab" data-tab="prompts" data-cat="intel"><span class="tab-num">08</span><span>Vault Prompts (114) &amp; Nichos (12)</span></button>
-        <button type="button" class="tab" data-tab="engines" data-cat="intel"><span class="tab-num">09</span><span>Clúster Kaggle &amp; VPS</span></button>
-        <button type="button" class="tab tab-highlight" data-tab="polish" data-cat="prod"><span class="tab-num">10</span><span>Pulidor Viral (.MOV / MP4)</span></button>
-      </div>
-      <button type="button" class="tab-nav-arrow" id="btnTabScrollRight" title="Desplazar a la derecha" aria-label="Desplazar a la derecha">▶</button>
+    <!-- Cuadrícula Responsiva de Pestañas (5x2 en Desktop/Tablet, 2 cols en Móvil, CERO Scroll) -->
+    <div class="tabs" id="tabsBar">
+      <button type="button" class="tab active" data-tab="studio" data-cat="prod">
+        <span class="tab-icon">🤖</span>
+        <span class="tab-num">01</span>
+        <span class="tab-title">Orquestador</span>
+      </button>
+      <button type="button" class="tab" data-tab="campaigns" data-cat="prod">
+        <span class="tab-icon">🏭</span>
+        <span class="tab-num">02</span>
+        <span class="tab-title">Fábrica A/B</span>
+      </button>
+      <button type="button" class="tab" data-tab="reels" data-cat="prod">
+        <span class="tab-icon">📊</span>
+        <span class="tab-num">03</span>
+        <span class="tab-title">Galería &amp; Bandit</span>
+      </button>
+      <button type="button" class="tab" data-tab="personas" data-cat="assets">
+        <span class="tab-icon">👤</span>
+        <span class="tab-num">04</span>
+        <span class="tab-title">AI Influencers</span>
+      </button>
+      <button type="button" class="tab" data-tab="products" data-cat="assets">
+        <span class="tab-icon">🛍️</span>
+        <span class="tab-num">05</span>
+        <span class="tab-title">Catálogo Shopify</span>
+      </button>
+      <button type="button" class="tab" data-tab="poses" data-cat="assets">
+        <span class="tab-icon">🎯</span>
+        <span class="tab-num">06</span>
+        <span class="tab-title">Poses (1,439)</span>
+      </button>
+      <button type="button" class="tab" data-tab="costumes" data-cat="assets">
+        <span class="tab-icon">👗</span>
+        <span class="tab-num">07</span>
+        <span class="tab-title">Armario (1,407)</span>
+      </button>
+      <button type="button" class="tab" data-tab="prompts" data-cat="intel">
+        <span class="tab-icon">💎</span>
+        <span class="tab-num">08</span>
+        <span class="tab-title">Vault Prompts</span>
+      </button>
+      <button type="button" class="tab" data-tab="engines" data-cat="intel">
+        <span class="tab-icon">⚡</span>
+        <span class="tab-num">09</span>
+        <span class="tab-title">Clúster &amp; VPS</span>
+      </button>
+      <button type="button" class="tab tab-highlight" data-tab="polish" data-cat="prod">
+        <span class="tab-icon">🎬</span>
+        <span class="tab-num">10</span>
+        <span class="tab-title">Pulidor .MOV</span>
+      </button>
     </div>
   </nav>
 

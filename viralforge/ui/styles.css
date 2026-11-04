@@ -464,41 +464,9 @@ code, pre {
   border-color: var(--primary);
 }
 
-.tabs-scroll-container {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  width: 100%;
-  position: relative;
-}
-
-.tab-nav-arrow {
-  appearance: none;
-  background: rgba(14, 19, 36, 0.95);
-  border: 1px solid var(--border);
-  color: var(--muted);
-  border-radius: 10px;
-  width: 32px;
-  height: 42px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0;
-  font-size: 11px;
-  transition: all 0.16s ease;
-  user-select: none;
-}
-
-.tab-nav-arrow:hover {
-  background: rgba(255, 61, 110, 0.15);
-  color: #fff;
-  border-color: var(--primary);
-}
-
 .tabs {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 6px;
   padding: 6px;
   background: rgba(10, 14, 25, 0.88);
@@ -515,20 +483,60 @@ code, pre {
   background: transparent;
   color: var(--muted);
   border: 1px solid transparent;
-  padding: 10px 12px;
+  padding: 9px 10px;
   border-radius: 11px;
   cursor: pointer;
   font-family: inherit;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 11.5px;
   white-space: nowrap;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 7px;
-  flex: 1 1 auto;
+  justify-content: flex-start;
+  gap: 6px;
   min-width: 0;
+  overflow: hidden;
   transition: all 0.18s ease;
+}
+
+.tab-icon {
+  font-size: 13.5px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.tab-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11.5px;
+}
+
+.tab-num {
+  flex-shrink: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9.5px;
+  padding: 2px 5px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--muted);
+}
+
+.tab:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.tab.active {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(255, 61, 110, 0.28), rgba(255, 228, 94, 0.14));
+  border-color: rgba(255, 61, 110, 0.55);
+  box-shadow: 0 4px 18px -4px rgba(255, 61, 110, 0.45);
+}
+
+.tab.active .tab-num {
+  background: var(--primary);
+  color: #fff;
 }
 
 .tab.tab-hidden {
@@ -543,6 +551,17 @@ code, pre {
 .tab.tab-highlight:hover {
   border-color: rgba(56, 189, 248, 0.8);
   background: rgba(56, 189, 248, 0.16);
+}
+
+.tab.tab-highlight.active {
+  border-color: #38bdf8;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.3), rgba(255, 61, 110, 0.2));
+  box-shadow: 0 4px 18px -4px rgba(56, 189, 248, 0.5);
+}
+
+.tab.tab-highlight.active .tab-num {
+  background: #38bdf8;
+  color: #0b0f19;
 }
 
 .tab span:last-child {
@@ -1193,30 +1212,18 @@ input[type="color"] {
     margin-inline: auto;
   }
   .tabs {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 61, 110, 0.45) rgba(255, 255, 255, 0.04);
-    padding-bottom: 6px;
-  }
-  .tabs::-webkit-scrollbar {
-    height: 5px;
-  }
-  .tabs::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: 4px;
-  }
-  .tabs::-webkit-scrollbar-thumb {
-    background: rgba(255, 61, 110, 0.45);
-    border-radius: 4px;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+    width: 100%;
+    overflow: visible;
   }
   .tab {
-    flex: 0 0 auto;
-    padding-inline: 15px;
-    scroll-snap-align: start;
+    padding: 8px 8px;
+    font-size: 11px;
+  }
+  .tab-title {
+    font-size: 11px;
   }
   .grid-4 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1276,6 +1283,32 @@ input[type="color"] {
 
 /* --- Móvil (<= 640px) --- */
 @media (max-width: 640px) {
+  .tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    padding: 6px;
+  }
+  .tab {
+    padding: 9px 8px;
+    font-size: 11px;
+    justify-content: flex-start;
+  }
+  .tab-quick-select-wrap {
+    width: 100%;
+  }
+  .tab-quick-select {
+    width: 100%;
+  }
+  .tabs-categories {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .tab-cat-btn {
+    flex: 1 1 auto;
+    text-align: center;
+    padding: 4px 6px;
+    font-size: 10px;
+  }
   .topbar {
     position: relative;
   }

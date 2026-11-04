@@ -136,20 +136,6 @@ function setupTabs() {
       }
     });
   });
-
-  // Flechas de desplazamiento lateral
-  const btnLeft = document.getElementById("btnTabScrollLeft");
-  const btnRight = document.getElementById("btnTabScrollRight");
-  if (btnLeft && tabsBar) {
-    btnLeft.addEventListener("click", () => {
-      tabsBar.scrollBy({ left: -240, behavior: "smooth" });
-    });
-  }
-  if (btnRight && tabsBar) {
-    btnRight.addEventListener("click", () => {
-      tabsBar.scrollBy({ left: 240, behavior: "smooth" });
-    });
-  }
 }
 
 async function loadAll() {
