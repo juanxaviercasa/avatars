@@ -272,20 +272,60 @@ def polish_video(
             on_progress(0.60, "Configurando motor de composición gráfica y barra de retención...")
 
         # 6) Armar filter_complex con todas las capas gráficas
-        # Recuadre dinámico cinematográfico (Punch-In Zoom 1.15x) en momentos clave:
-        # 0.0s a 3.6s (Gancho del orador), 75.5s a 84.5s (Presentación de fórmula), 156.0s a 159.2s (Clave final)
-        # Plano general 1.0x nítido durante la explicación y escritura en la pizarra
+        # Juegos de cámara dinámicos estilo Netflix / Videoclip (Cortes rítmicos cada ~4 segundos):
+        # CAM 1: Plano General 1.0x (Establecimiento y relación docente-pizarra)
+        # CAM 2: Plano Medio Orador 1.16x (Enfoque en orador y contacto visual)
+        # CAM 3: Plano Detalle Pizarra 1.26x (Acercamiento a la tiza y ecuaciones)
+        speaker_intervals = [
+            (0.0, 2.0),     # Gancho inicial
+            (23.5, 28.0),   # Diálogo docente
+            (41.5, 46.0),   # Énfasis explicativo
+            (59.5, 64.0),   # Premisa clave
+            (75.5, 81.0),   # Introducción de la fórmula
+            (95.5, 100.0),  # Aclaración de sustitución
+            (114.0, 118.5), # Énfasis algebraico
+            (132.0, 136.5), # Proceso de despeje
+            (151.0, 156.0), # Preparación de la clave
+            (156.0, 159.2), # Revelación final de la clave
+        ]
+        board_intervals = [
+            (5.5, 9.5),     # Lectura del problema en pizarra
+            (19.0, 23.5),   # Escritura volumen total 42L
+            (28.0, 32.5),   # Escritura de precios P1 y P2
+            (37.0, 41.5),   # Escritura de precio medio Pm
+            (46.0, 50.5),   # Detalle de datos
+            (55.0, 59.5),   # Detalle de datos
+            (64.0, 68.5),   # Incógnita V2=?
+            (81.0, 86.5),   # Escritura fórmula Pm = (P1V1 + P2V2)/(V1+V2)
+            (91.0, 95.5),   # Escritura 7 = (5(42-V2)+8V2)/42
+            (100.0, 105.0), # Detalle sustitución
+            (109.5, 114.0), # Escritura 294 = 210 + 3V2
+            (118.5, 123.0), # Escritura 84 = 3V2
+            (127.5, 132.0), # Detalle algebraico
+            (136.5, 141.0), # Escritura 84 / 3
+            (146.0, 151.0), # Escritura resultado V2 = 28
+        ]
+
+        sp_enable = "+".join(f"between(t,{s:.1f},{e:.1f})" for s, e in speaker_intervals)
+        bd_enable = "+".join(f"between(t,{s:.1f},{e:.1f})" for s, e in board_intervals)
+
         ass_filter_path = str(ass_path).replace("\\", "/").replace(":", "\\:")
 
         filter_chains = []
         filter_chains.append(
-            "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,split=2[v_raw_base][v_crop]"
+            "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,split=3[v_cam_wide][v_raw2][v_raw3]"
         )
         filter_chains.append(
-            "[v_crop]crop=iw*0.86:ih*0.86:iw*0.07:ih*0.07,scale=1080:1920[v_zoom]"
+            "[v_raw2]crop=iw/1.16:ih/1.16:iw*0.05:ih*0.14,scale=1080:1920[v_cam_speaker]"
         )
         filter_chains.append(
-            "[v_raw_base][v_zoom]overlay=0:0:enable='between(t,0,3.60)+between(t,75.5,84.5)+between(t,156.0,159.2)'[vbase]"
+            "[v_raw3]crop=iw/1.26:ih/1.26:iw*0.16:ih*0.18,scale=1080:1920[v_cam_board]"
+        )
+        filter_chains.append(
+            f"[v_cam_wide][v_cam_speaker]overlay=0:0:enable='{sp_enable}'[v_step1]"
+        )
+        filter_chains.append(
+            f"[v_step1][v_cam_board]overlay=0:0:enable='{bd_enable}'[vbase]"
         )
         filter_chains.append(
             f"[vbase]drawbox=x=0:y=0:w='iw*(t/{dur:.2f})':h=14:color=#FFE45E@1:t=fill[vpbar]"
