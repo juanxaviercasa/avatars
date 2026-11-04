@@ -132,8 +132,9 @@ def create_hook_card(
 
 def create_skool_cta_card(
     community_name: str,
-    action_text: str,
-    out_path: str | Path,
+    action_text: str = "Enlace en mi perfil: www.skool.sistemazenit.com",
+    out_path: str | Path = "cta_card.png",
+    badge_label: str = "MÁS EJERCICIOS Y CURSOS",
     width: int = 980,
     height: int = 250,
 ) -> Path:
@@ -141,9 +142,9 @@ def create_skool_cta_card(
     Crea la tarjeta de invitación VIP para la comunidad en Skool.
 
     Estructura:
-      [ 🎓 COMUNIDAD EXCLUSIVA DE ESTUDIANTES ]
-      ACADEMIA ZENIT (SKOOL)
-      👉 Toca el enlace en mi perfil para unirte gratis
+      [ MÁS EJERCICIOS Y CURSOS ]
+      ACADEMIA ZENIT
+      👉 Enlace en mi perfil: www.skool.sistemazenit.com
     """
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -153,15 +154,15 @@ def create_skool_cta_card(
 
     f_badge = _get_font(22, bold=True)
     f_main = _get_font(44, bold=True)
-    f_btn = _get_font(26, bold=True)
+    f_btn = _get_font(25, bold=True)
 
     # 1. Fondo contenedor con gradiente simulado y borde brillante
     bg_color = (13, 17, 30, 245)
     border_color = (255, 228, 94, 250)  # Amarillo dorado
     draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=28, fill=bg_color, outline=border_color, width=4)
 
-    # 2. Píldora superior "COMUNIDAD OFICIAL • SKOOL"
-    badge_text = "COMUNIDAD OFICIAL EN SKOOL"
+    # 2. Píldora superior "MÁS EJERCICIOS Y CURSOS"
+    badge_text = _clean_text(badge_label).upper()
     b_bbox = draw.textbbox((0, 0), badge_text, font=f_badge)
     b_w = b_bbox[2] - b_bbox[0]
     p_x1 = (width - (b_w + 32)) // 2

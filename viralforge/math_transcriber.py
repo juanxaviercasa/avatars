@@ -96,6 +96,20 @@ def transcribe_math_video(
     if suffix not in (".mov", ".mp4", ".m4v", ".webm", ".mkv"):
         raise ValueError(f"Formato no soportado: {suffix}. Usa .mov o .mp4")
 
+    # Cache en disco para ejecuciones instantáneas
+    cache_path = path.with_suffix(".words.json")
+    if cache_path.exists():
+        try:
+            import json
+            with open(cache_path, "r", encoding="utf-8") as f:
+                cached_res = json.load(f)
+            if cached_res.get("words") and cached_res.get("full_text"):
+                if on_progress:
+                    on_progress(1.0, "Cargando transcripción desde cache...")
+                return cached_res
+        except Exception:
+            pass
+
     workdir = Path(tempfile.mkdtemp(prefix="vf_math_", dir=settings.cache_dir))
     wav_path = workdir / "audio_16k.wav"
 
@@ -157,7 +171,7 @@ def transcribe_math_video(
         if on_progress:
             on_progress(1.0, "Transcripción matemática completada.")
 
-        return {
+        result = {
             "full_text": raw_full_text,
             "corrected_text": corrected_full_text,
             "words": normalized_words,
@@ -166,6 +180,16 @@ def transcribe_math_video(
             "model_used": _LOADED_MODEL_SIZE or model_size,
             "source_file": path.name,
         }
+
+        # Guardar en cache persistente
+        try:
+            import json
+            with open(cache_path, "w", encoding="utf-8") as f:
+                json.dump(result, f, ensure_ascii=False, indent=2)
+        except Exception:
+            pass
+
+        return result
 
     finally:
         # Limpieza de archivo de audio temporal

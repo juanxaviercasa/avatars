@@ -154,23 +154,39 @@ def analyze_transcript(
 
     formulas_timeline = []
     if matched_formula and max_score >= 1:
-        # Encontrar el momento exacto en que se menciona la fórmula
+        # Encontrar el momento exacto en que el docente habla de o introduce la fórmula
+        # Prioridad 1: Cue directo ("fórmula", "teorema", "propiedad", "ley")
+        # Prioridad 2: Coincidencia con frase clave de la fórmula
         t_mention = None
         for w in words:
             w_txt = (w.get("formatted") or w.get("word", "")).lower()
-            if any(kw in w_txt for kw in ["fórmula", "precio", "mezcla", "igual", "seno", "derivada", "pitágoras"]):
-                t_mention = float(w.get("start", 0))
-                if t_mention > 5.0 and t_mention < (video_duration - 15.0):
+            t_w = float(w.get("start", 0))
+            if 5.0 <= t_w <= (video_duration - 12.0):
+                if any(cue in w_txt for cue in ["fórmul", "formul", "teorema", "propiedad"]):
+                    t_mention = t_w
                     break
 
+        if t_mention is None:
+            # Buscar mención de la fórmula en sí
+            for w in words:
+                w_txt = (w.get("formatted") or w.get("word", "")).lower()
+                t_w = float(w.get("start", 0))
+                if 5.0 <= t_w <= (video_duration - 12.0):
+                    if any(kw in w_txt for kw in ["seno", "pitágoras", "cuadrática", "derivada", "partes"]):
+                        t_mention = t_w
+                        break
+
         t_start = t_mention if t_mention else max(8.0, video_duration * 0.35)
+        # Mantener visible mientras explica la estructura de la fórmula (~14s)
+        t_end = round(min(video_duration - 5.0, t_start + 14.5), 2)
+
         formulas_timeline.append({
             "id": matched_formula["id"],
             "title": matched_formula["title"],
             "latex": matched_formula["latex"],
             "subject": matched_formula["subject"],
             "start": round(t_start, 2),
-            "end": round(min(video_duration - 6.0, t_start + 11.5), 2),
+            "end": t_end,
         })
 
     # 2. Detectar clave / resultado final en el tercio final
@@ -194,14 +210,18 @@ def analyze_transcript(
 
     if t_ans and t_ans > (video_duration * 0.60):
         # Expresión en LaTeX para la respuesta final
-        latex_ans = f"V_2 = {ans_val}" if "volumen" in text_lower else f"x = {ans_val}"
-        answer_info = {
-            "val": ans_val,
-            "text": f"RESPUESTA: {latex_ans}",
-            "latex": rf"\mathbf{{{latex_ans}}}",
-            "start": round(t_ans - 0.5, 2),
-            "end": round(min(video_duration - 4.0, t_ans + 4.5), 2),
-        }
+        latex_ans = f"V_2 = {ans_val}\\text{{ L}}" if "volumen" in text_lower else f"x = {ans_val}"
+        cta_window_start = max(0.0, video_duration - 3.8)
+        ans_start = max(0.0, min(t_ans - 0.5, cta_window_start - 3.2))
+        ans_end = cta_window_start  # Conecta perfectamente con el CTA sin sobreponerse jamás
+        if ans_start < ans_end:
+            answer_info = {
+                "val": ans_val,
+                "text": f"RESPUESTA: {latex_ans}",
+                "latex": rf"\mathbf{{{latex_ans}}}",
+                "start": round(ans_start, 2),
+                "end": round(ans_end, 2),
+            }
 
     # 3. Detectar silencios para Jump Cuts
     pauses = detect_dead_air_pauses(words, min_pause_seconds=0.60)

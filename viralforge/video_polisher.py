@@ -115,9 +115,15 @@ def polish_video(
 
         # D) Tarjeta de CTA Final (Skool / Academia Zenit)
         cta_png = workdir / "cta_card.png"
+        cta_action = (
+            custom_cta_phrase
+            if custom_cta_phrase and ("skool" in custom_cta_phrase.lower() or "enlace" in custom_cta_phrase.lower())
+            else "Enlace en mi perfil: www.skool.sistemazenit.com"
+        )
         cards.create_skool_cta_card(
             community_name=cta_target or "ACADEMIA ZENIT",
-            action_text="Toca el enlace en mi perfil para unirte gratis",
+            action_text=cta_action,
+            badge_label="MÁS EJERCICIOS Y CURSOS",
             out_path=cta_png,
         )
         overlay_inputs.append((cta_png, cta_start, dur, 1440))
@@ -201,8 +207,14 @@ def polish_video(
             in_idx = 2 + idx
             input_args.extend(["-i", str(png_path)])
             out_label = f"vlay{idx}"
+            # Animación de entrada y transición cinematográfica (0.28s)
+            if y_pos >= 1000:
+                y_expr = f"if(lt(t,{t_in:.2f}+0.28), {y_pos} + (1.0 - (t-{t_in:.2f})/0.28)*130, {y_pos})"
+            else:
+                y_expr = f"if(lt(t,{t_in:.2f}+0.28), {y_pos} - (1.0 - (t-{t_in:.2f})/0.28)*120, {y_pos})"
+
             filter_chains.append(
-                f"[{prev_label}][{in_idx}:v]overlay=x=(W-w)/2:y={y_pos}:enable='between(t,{t_in:.2f},{t_out:.2f})'[{out_label}]"
+                f"[{prev_label}][{in_idx}:v]overlay=x=(W-w)/2:y='{y_expr}':enable='between(t,{t_in:.2f},{t_out:.2f})'[{out_label}]"
             )
             prev_label = out_label
 

@@ -119,6 +119,22 @@ def math_detect_jump_cuts(words: list[dict], min_pause_seconds: float = 0.5) -> 
     return math_copilot.detect_dead_air_pauses(words, min_pause_seconds=min_pause_seconds)
 
 
+@mcp.tool()
+def math_plan_jumpcut_segments(words: list[dict], video_duration: float, min_pause_seconds: float = 0.60) -> dict:
+    """Calcula los segmentos activos de video para jump-cuts y re-mapea los timestamps para retención viral."""
+    from .render import cuts
+    segments = cuts.calculate_active_speech_segments(words, video_duration, min_pause_seconds=min_pause_seconds)
+    total_trimmed = sum(s_end - s_start for s_start, s_end in segments)
+    saved_seconds = round(video_duration - total_trimmed, 2)
+    return {
+        "original_duration": video_duration,
+        "trimmed_duration": round(total_trimmed, 2),
+        "saved_dead_air_seconds": saved_seconds,
+        "active_segments": segments,
+        "cut_count": len(segments) - 1,
+    }
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.WARNING)
     mcp.run(transport="stdio")
