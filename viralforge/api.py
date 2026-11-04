@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -779,9 +780,134 @@ def get_media_asset(asset_id: str) -> FileResponse:
         raise HTTPException(404,'Media asset not found')
     path=Path(asset.get('path','')).resolve()
     allowed=(settings.uploads_dir/'generated').resolve()
-    if not path.is_relative_to(allowed) or path.suffix.lower() not in ('.mp4','.png') or not path.is_file():
+    if not path.is_relative_to(allowed) or path.suffix.lower() not in ('.mp4','.mov','.png') or not path.is_file():
         raise HTTPException(404,'Media asset unavailable')
-    return FileResponse(path,media_type='video/mp4' if path.suffix.lower()=='.mp4' else 'image/png',filename=path.name)
+    return FileResponse(path,media_type='video/mp4' if path.suffix.lower() in ('.mp4','.mov') else 'image/png',filename=path.name)
+
+
+# ---------------------------------------------------------------------- Pulidor de Videos Educativos / iPhone .MOV & MP4
+@app.get("/api/polish/cta-objectives")
+def api_polish_cta_objectives() -> list[dict[str, Any]]:
+    from . import cta_manager
+    return cta_manager.list_cta_objectives()
+
+
+@app.get("/api/polish/local-videos")
+def api_polish_local_videos() -> list[dict[str, Any]]:
+    """Lista videos en las carpetas de subida y medios locales disponibles para pulir."""
+    search_dirs = [
+        settings.uploads_dir / "local_media",
+        settings.uploads_dir / "openjutsu_refs",
+        settings.uploads_dir,
+    ]
+    found = []
+    seen = set()
+    for sdir in search_dirs:
+        if not sdir.exists():
+            continue
+        for p in sdir.glob("*.*"):
+            if p.suffix.lower() in (".mov", ".mp4", ".m4v", ".webm") and p.name not in seen:
+                seen.add(p.name)
+                found.append({
+                    "name": p.name,
+                    "path": str(p),
+                    "size_mb": round(p.stat().st_size / (1024 * 1024), 2),
+                    "ext": p.suffix.lower(),
+                })
+    return found
+
+
+@app.post("/api/polish/transcribe")
+async def api_polish_transcribe(
+    subject: str = Form("algebra"),
+    model_size: str = Form("large-v3"),
+    existing_video_name: str = Form(""),
+    video: UploadFile | None = File(None),
+) -> dict[str, Any]:
+    from . import math_transcriber
+    target_path = None
+    media_dir = settings.uploads_dir / "local_media"
+    media_dir.mkdir(parents=True, exist_ok=True)
+
+    if video is not None and video.filename:
+        ext = Path(video.filename).suffix.lower() or ".mov"
+        saved = media_dir / f"raw_{int(time.time()*1000)}{ext}"
+        saved.write_bytes(await video.read())
+        target_path = saved
+    elif existing_video_name.strip():
+        cand = media_dir / existing_video_name.strip()
+        if not cand.exists():
+            cand = settings.uploads_dir / "openjutsu_refs" / existing_video_name.strip()
+        if not cand.exists():
+            cand = settings.uploads_dir / existing_video_name.strip()
+        if cand.exists():
+            target_path = cand
+        else:
+            raise HTTPException(404, f"Video local '{existing_video_name}' no encontrado")
+    else:
+        raise HTTPException(400, "Debes subir un archivo (.mov o .mp4) o seleccionar un video local existente")
+
+    try:
+        res = math_transcriber.transcribe_math_video(
+            video_path=target_path,
+            subject=subject,
+            model_size=model_size,
+        )
+        res["video_path"] = str(target_path)
+        res["video_name"] = target_path.name
+        return res
+    except Exception as exc:
+        raise HTTPException(500, f"Error transcribiendo video: {exc}") from exc
+
+
+class PolishRenderReq(BaseModel):
+    video_path: str
+    words: list[dict[str, Any]]
+    hook_badge_text: str = "¡NO COMETAS ESTE ERROR! ⚠️"
+    hook_sfx: str = "cut_hit"
+    cta_objective_id: str = "website"
+    cta_target: str = "Enlace en mi perfil"
+    custom_cta_phrase: str = ""
+
+
+@app.post("/api/polish/render")
+def api_polish_render(req: PolishRenderReq) -> dict[str, Any]:
+    from . import video_polisher
+    src = Path(req.video_path)
+    if not src.exists():
+        cand = settings.uploads_dir / "local_media" / src.name
+        if cand.exists():
+            src = cand
+        else:
+            raise HTTPException(404, f"Video '{req.video_path}' no encontrado")
+
+    res = video_polisher.polish_video(
+        source_video=src,
+        words=req.words,
+        hook_badge_text=req.hook_badge_text,
+        hook_sfx=req.hook_sfx,
+        cta_objective_id=req.cta_objective_id,
+        cta_target=req.cta_target,
+        custom_cta_phrase=req.custom_cta_phrase,
+    )
+    out_file = Path(res["out_video"])
+    thumb_file = Path(res["thumb"])
+    res["download_url"] = f"/media/outputs/{out_file.name}"
+    res["thumb_url"] = f"/media/outputs/{thumb_file.name}"
+    return res
+
+
+@app.get("/media/outputs/{filename}")
+def media_output_download(filename: str) -> FileResponse:
+    target = (settings.outputs_dir / filename).resolve()
+    if not target.is_relative_to(settings.outputs_dir.resolve()) or not target.is_file():
+        matches = list(settings.outputs_dir.glob(f"*/{filename}"))
+        if matches and matches[0].is_file():
+            target = matches[0]
+        else:
+            raise HTTPException(404, "Archivo de salida no encontrado")
+    media_type = "video/mp4" if target.suffix.lower() in (".mp4", ".mov") else "image/jpeg"
+    return FileResponse(target, media_type=media_type, filename=target.name)
 
 
 # ---------------------------------------------------------------------- UI Estática

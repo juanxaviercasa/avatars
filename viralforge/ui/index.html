@@ -101,6 +101,13 @@
             <small>114 Prompts + 12 Nichos Virales</small>
           </div>
         </button>
+        <button type="button" class="feature-chip" onclick="document.querySelector('[data-tab=polish]').click()">
+          <span class="f-icon">🎬</span>
+          <div class="f-meta">
+            <strong>Pulidor iPhone .MOV</strong>
+            <small>Matemáticas, Whisper &amp; CTA</small>
+          </div>
+        </button>
       </div>
     </div>
   </section>
@@ -117,6 +124,7 @@
       <button type="button" class="tab" data-tab="costumes"><span class="tab-num">07</span><span>Armario IA (1,407 Outfits)</span></button>
       <button type="button" class="tab" data-tab="prompts"><span class="tab-num">08</span><span>Vault Prompts (114) &amp; Nichos (12)</span></button>
       <button type="button" class="tab" data-tab="engines"><span class="tab-num">09</span><span>Clúster Kaggle &amp; VPS</span></button>
+      <button type="button" class="tab" data-tab="polish"><span class="tab-num">10</span><span>Pulidor Viral (.MOV / MP4)</span></button>
     </div>
   </nav>
 
@@ -847,6 +855,160 @@
           <h2>Arquitectura Híbrida de Motores (GPU Local / Kaggle / Nube / CPU Fallback)</h2>
         </div>
         <div id="enginesStatusGrid" class="grid-3 mt"></div>
+      </div>
+    </section>
+
+    <!-- TAB 10: PULIDOR VIRAL DE VIDEOS PROPIOS (IPHONE .MOV / MP4 & MATEMÁTICAS) -->
+    <section class="tab-panel" id="tab-polish">
+      <!-- CABECERA DE LA SECCIÓN -->
+      <div class="card card-accent mb">
+        <div class="card-head">
+          <span class="section-tag">PULIDOR DE VIDEOS PROPIOS • IPHONE .MOV &amp; MP4 • MATEMÁTICAS &amp; CTA DIRIGIDO</span>
+          <h2>🎬 Pulidor Viral de Videos Propios (Whisper Large-v3 + Subtítulos Hormozi + Earshot + CTA Objetivo)</h2>
+          <p class="muted">Diseñado específicamente para tus grabaciones de iPhone (<code>.mov</code>) o cámara (<code>.mp4</code>) donde explicas problemas y clases de matemáticas. <strong>Whisper Large-v3</strong> transcribe y normaliza los términos técnicos (álgebra, cálculo, trigonometría), inyecta el gancho visual de 0-3s, el diseño sonoro procedural <strong>Earshot</strong> y la tarjeta final dirigida a tu <strong>objetivo comercial exacto</strong> (Web, WhatsApp, Comentar palabra clave o Guardar).</p>
+        </div>
+      </div>
+
+      <!-- PASO 1: SELECCIÓN DEL VIDEO Y MATERIA -->
+      <div class="card mb">
+        <div class="card-head">
+          <span class="section-tag">PASO 1</span>
+          <h2>📁 Seleccionar Video (.MOV / MP4) y Glosario Matemático</h2>
+          <p class="muted">Elige un video ya sincronizado en el servidor o sube uno nuevo directamente desde tu iPhone / PC sin necesidad de convertirlo.</p>
+        </div>
+        <div class="form-row form-cols-3">
+          <label>📹 Videos Locales Detectados en Servidor
+            <select id="polishLocalVideoSel">
+              <option value="">Cargando videos locales...</option>
+            </select>
+          </label>
+          <label>O sube archivo (.mov iPhone o .mp4)
+            <input type="file" id="polishVideoFile" accept=".mov,.mp4,.m4v,.webm" />
+          </label>
+          <label>📐 Especialidad Matemática (Whisper Bias)
+            <select id="polishSubjectSel">
+              <option value="algebra">Álgebra (Polinomios, Ecuaciones, Factorización)</option>
+              <option value="calculo">Cálculo (Derivadas, Integrales, Límites)</option>
+              <option value="trigonometria">Trigonometría (Seno, Coseno, Identidades)</option>
+              <option value="geometria">Geometría (Pitágoras, Áreas, Ángulos)</option>
+              <option value="aritmetica">Aritmética (MCM, MCD, Fracciones, %)</option>
+              <option value="general">Matemáticas General</option>
+            </select>
+          </label>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-primary" id="btnTranscribeMath">
+            🎙️ Transcribir y Normalizar Matemáticas (Whisper Large)
+          </button>
+          <button type="button" class="btn btn-glass" id="btnRefreshLocalVideos">
+            🔄 Actualizar Lista de Videos
+          </button>
+        </div>
+        <div id="polishTranscribeMsg" class="muted mt"></div>
+      </div>
+
+      <!-- PASO 2: REVISIÓN DE TRANSCRIPCIÓN Y GANCHO 0-3S -->
+      <div class="card mb" id="polishStep2Card">
+        <div class="card-head">
+          <span class="section-tag">PASO 2</span>
+          <h2>✍️ Revisar Transcripción y Configurar Gancho Psicológico (0-3s)</h2>
+          <p class="muted">Whisper aplica automáticamente correcciones fonéticas de matemáticas. Puedes ajustar cualquier palabra antes de quemar los subtítulos.</p>
+        </div>
+        <div class="form-row form-cols-2">
+          <div>
+            <label>Subtítulos Transcritos y Corregidos (Editable)
+              <textarea id="polishTranscribedText" rows="6" placeholder="El texto transcrito aparecerá aquí tras presionar 'Transcribir'..."></textarea>
+            </label>
+            <div class="row-between mt" style="font-size:12px;color:#94a3b8">
+              <span id="polishWordCount">Palabras: 0</span>
+              <span id="polishDuration">Duración: 0.0s</span>
+            </div>
+          </div>
+          <div>
+            <label>⚡ Cartel de Gancho Visual (Primeros 3 segundos)
+              <input type="text" id="polishHookBadge" value="¡NO COMETAS ESTE ERROR! ⚠️" placeholder="ej: ¿CÓMO RESOLVER ESTO EN 30s? 📐" />
+            </label>
+            <div class="btn-row mt" style="margin-bottom:12px">
+              <button type="button" class="btn btn-sm btn-glass" onclick="document.getElementById('polishHookBadge').value='¡NO COMETAS ESTE ERROR! ⚠️'">Error Común ⚠️</button>
+              <button type="button" class="btn btn-sm btn-glass" onclick="document.getElementById('polishHookBadge').value='¿CÓMO RESOLVER ESTO EN 30s? ⏱️'">Reto 30s ⏱️</button>
+              <button type="button" class="btn btn-sm btn-glass" onclick="document.getElementById('polishHookBadge').value='TRUCO CLAVE DE EXAMEN 🔥'">Clave Examen 🔥</button>
+              <button type="button" class="btn btn-sm btn-glass" onclick="document.getElementById('polishHookBadge').value='NADIE TE ENSEÑA ESTE MÉTODO 🤫'">Método Secreto 🤫</button>
+            </div>
+            <label>🎵 Efecto Acústico Earshot del Gancho
+              <select id="polishHookSfx">
+                <option value="cut_hit">Cut Hit (Impacto seco para enganchar)</option>
+                <option value="bright_swish">Bright Swish (Transición luminosa moderna)</option>
+                <option value="camera_shutter">Camera Shutter (Obturador fotográfico viral)</option>
+                <option value="impact">Impact (Golpe cinemático grave)</option>
+                <option value="pop">Pop (Burbuja limpia de atención)</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- PASO 3: OBJETIVO DEL CTA (DIRIGIDO, NO ALEATORIO) -->
+      <div class="card mb">
+        <div class="card-head">
+          <span class="section-tag">PASO 3</span>
+          <h2>🎯 Objetivo de Conversión (Llamada a la Acción Dirigida)</h2>
+          <p class="muted">Elige exactamente adónde quieres que vaya el tráfico o qué acción debe tomar el alumno al terminar el video.</p>
+        </div>
+        <div class="form-row form-cols-2">
+          <div>
+            <label>Tipo de Objetivo (CTA)
+              <select id="polishCtaObjective">
+                <option value="website">🌐 Tráfico a Sitio Web / Tienda / Curso</option>
+                <option value="whatsapp">📲 Mensaje a WhatsApp (Clases / Asesoría)</option>
+                <option value="comment_keyword">💬 Comentar Palabra Clave (Lead Magnet / PDF)</option>
+                <option value="save_bookmark">📌 Guardar para Repasar (Algoritmo TikTok / Reels)</option>
+                <option value="follow_profile">➕ Seguir la Cuenta (Crecimiento de Comunidad)</option>
+                <option value="custom">✍️ Llamada a la Acción Personalizada</option>
+              </select>
+            </label>
+            <label id="polishCtaTargetContainer" class="mt">
+              <span id="polishCtaTargetLabel">URL o Nombre del Sitio Web</span>
+              <input type="text" id="polishCtaTarget" value="www.zenitmatematicas.com" placeholder="ej: www.tudominio.com o Enlace en mi perfil" />
+            </label>
+            <label class="mt">Frase de Cierre Personalizada (Opcional)
+              <input type="text" id="polishCtaCustomPhrase" placeholder="Deja vacío para usar la frase optimizada automática" />
+            </label>
+          </div>
+          <div>
+            <label>Vista Previa de la Tarjeta Final (Últimos 3.5 segundos):</label>
+            <div id="polishCtaCardPreview" class="item-card" style="background:#0f1322;border:1px solid #38bdf8;padding:18px;border-radius:12px;margin-top:6px;text-align:center">
+              <div id="prevCtaBadge" style="color:#FFE45E;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase">MÁS EJERCICIOS Y CURSOS 🚀</div>
+              <div id="prevCtaAction" style="color:#ffffff;font-size:18px;font-weight:800;margin:8px 0">Enlace en mi perfil: www.zenitmatematicas.com</div>
+              <div id="prevCtaSfx" class="badge badge-score" style="margin-top:6px">🎵 Sonido Earshot: Cash Ding</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PASO 4: RENDERIZAR VIDEO PULIDO -->
+      <div class="card mb">
+        <div class="card-head">
+          <span class="section-tag">PASO 4</span>
+          <h2>⚡ Ejecutar Pulido y Exportar Video 9:16</h2>
+          <p class="muted">Ensambla el video original con los subtítulos cinéticos sincronizados, la barra de progreso de retención, los efectos Earshot y el CTA final.</p>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-primary" id="btnRenderPolish">
+            ⚡ Renderizar Video Pulido Completo (MP4 9:16)
+          </button>
+        </div>
+        <div id="polishRenderStatus" class="muted mt"></div>
+
+        <!-- RESULTADO DEL VIDEO PULIDO -->
+        <div id="polishResultBox" class="mt hidden">
+          <div class="item-card" style="max-width:420px;margin:20px auto 0;text-align:center">
+            <h3>✅ Video Pulido con Éxito</h3>
+            <video id="polishResultVideo" controls preload="metadata" style="width:100%;border-radius:12px;aspect-ratio:9/16;background:#000;margin:12px 0"></video>
+            <div class="btn-row" style="justify-content:center">
+              <a id="polishDownloadBtn" class="btn btn-primary" href="#" download="video_pulido.mp4">⬇️ Descargar MP4 para Redes</a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </main>

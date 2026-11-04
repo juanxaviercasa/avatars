@@ -77,6 +77,7 @@ function setupTabs() {
       if (btn.dataset.tab === "poses") loadPosesCatalog();
       if (btn.dataset.tab === "costumes") loadCostumesCatalog();
       if (btn.dataset.tab === "prompts") { loadPromptVault(); loadViralNiches(); }
+      if (btn.dataset.tab === "polish") initPolishPanel();
     });
   });
 }
@@ -734,6 +735,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initEarshotAndCinetic();
   initCostumesAndOrchestrator();
   initPromptsAndNiches();
+  initPolishPanel();
 });
 
 // ---------------------------------------------------------------------- Funciones del Director de Poses (1,439 Poses)
@@ -1601,5 +1603,246 @@ function initPromptsAndNiches() {
     });
   }
 }
+
+// ---------------------------------------------------------------------- Pulidor de Videos (.MOV / MP4 & Matemáticas)
+let polishState = {
+  words: [],
+  videoPath: "",
+  duration: 0,
+  ctaObjectives: [],
+};
+
+const CTA_PRESETS = {
+  website: {
+    label: "URL o Nombre del Sitio Web / Tienda",
+    placeholder: "ej: www.zenitmatematicas.com o Enlace en mi perfil",
+    defaultTarget: "www.zenitmatematicas.com",
+    badge: "MÁS EJERCICIOS Y CURSOS 🚀",
+    action: "Enlace en mi perfil: {target}",
+    sfx: "Cash Ding",
+  },
+  whatsapp: {
+    label: "Número o Enlace de WhatsApp",
+    placeholder: "ej: +51 999 888 777 o Enlace en el perfil",
+    defaultTarget: "Escríbeme al WhatsApp de mi perfil",
+    badge: "CLASES & ASESORÍA PERSONALIZADA 📲",
+    action: "WhatsApp: {target}",
+    sfx: "Celesta Chime",
+  },
+  comment_keyword: {
+    label: "Palabra clave que deben comentar",
+    placeholder: "ej: ALGEBRA, GUIA, EXAMEN",
+    defaultTarget: "GUIA",
+    badge: "DESCARGA LA GUÍA EN PDF 📥",
+    action: 'Comenta "{target}" abajo 👇',
+    sfx: "Pop",
+  },
+  save_bookmark: {
+    label: "Motivo para guardar (opcional)",
+    placeholder: "ej: Para repasar antes del examen",
+    defaultTarget: "Para tu examen",
+    badge: "TRUCO CLAVE DE EXAMEN 📌",
+    action: "Guarda este vídeo para tu examen 📌",
+    sfx: "Plastic Tap",
+  },
+  follow_profile: {
+    label: "Materia o tema del curso",
+    placeholder: "ej: Álgebra, Cálculo, Geometría",
+    defaultTarget: "Matemáticas",
+    badge: "APRENDE MATEMÁTICAS FÁCIL 📐",
+    action: "Sígueme para dominar {target} 📐",
+    sfx: "Marimba Note",
+  },
+  custom: {
+    label: "Texto exacto de la llamada a la acción",
+    placeholder: "ej: Inscríbete en el taller de este sábado",
+    defaultTarget: "Únete al grupo de estudio en el perfil",
+    badge: "SIGUIENTE PASO 🎯",
+    action: "{target}",
+    sfx: "Bright Swish",
+  },
+};
+
+function updateCtaPreview() {
+  const objKey = document.getElementById("polishCtaObjective")?.value || "website";
+  const preset = CTA_PRESETS[objKey] || CTA_PRESETS.website;
+  const targetVal = document.getElementById("polishCtaTarget")?.value || preset.defaultTarget;
+
+  const lbl = document.getElementById("polishCtaTargetLabel");
+  const inp = document.getElementById("polishCtaTarget");
+  if (lbl) lbl.textContent = preset.label;
+  if (inp && !inp.value) inp.placeholder = preset.placeholder;
+
+  const prevBadge = document.getElementById("prevCtaBadge");
+  const prevAction = document.getElementById("prevCtaAction");
+  const prevSfx = document.getElementById("prevCtaSfx");
+
+  if (prevBadge) prevBadge.textContent = preset.badge;
+  if (prevAction) prevAction.textContent = preset.action.replace("{target}", targetVal);
+  if (prevSfx) prevSfx.textContent = `🎵 Sonido Earshot: ${preset.sfx}`;
+}
+
+async function loadPolishLocalVideos() {
+  const sel = document.getElementById("polishLocalVideoSel");
+  if (!sel) return;
+  try {
+    const list = await api("/api/polish/local-videos");
+    if (!list.length) {
+      sel.innerHTML = '<option value="">No se encontraron videos en la carpeta del servidor</option>';
+      return;
+    }
+    sel.innerHTML = '<option value="">-- Selecciona un video detectado --</option>' +
+      list.map((v) => `<option value="${escapeHtml(v.name)}">${escapeHtml(v.name)} (${v.size_mb} MB)</option>`).join("");
+  } catch (err) {
+    sel.innerHTML = `<option value="">Error cargando videos: ${err.message}</option>`;
+  }
+}
+
+function initPolishPanel() {
+  loadPolishLocalVideos();
+  updateCtaPreview();
+
+  const ctaSel = document.getElementById("polishCtaObjective");
+  if (ctaSel) {
+    ctaSel.addEventListener("change", () => {
+      const preset = CTA_PRESETS[ctaSel.value] || CTA_PRESETS.website;
+      const inp = document.getElementById("polishCtaTarget");
+      if (inp) inp.value = preset.defaultTarget;
+      updateCtaPreview();
+    });
+  }
+
+  const ctaInp = document.getElementById("polishCtaTarget");
+  if (ctaInp) {
+    ctaInp.addEventListener("input", updateCtaPreview);
+  }
+
+  const btnRefresh = document.getElementById("btnRefreshLocalVideos");
+  if (btnRefresh) {
+    btnRefresh.addEventListener("click", () => {
+      loadPolishLocalVideos();
+    });
+  }
+
+  const btnTranscribe = document.getElementById("btnTranscribeMath");
+  if (btnTranscribe) {
+    btnTranscribe.addEventListener("click", async () => {
+      const fileInput = document.getElementById("polishVideoFile");
+      const localSel = document.getElementById("polishLocalVideoSel");
+      const subject = document.getElementById("polishSubjectSel")?.value || "algebra";
+      const statusEl = document.getElementById("polishTranscribeMsg");
+
+      const file = fileInput?.files?.[0];
+      const localVideo = localSel?.value;
+
+      if (!file && !localVideo) {
+        if (statusEl) statusEl.innerHTML = '<span style="color:#ef4444">⚠️ Por favor selecciona un video local de la lista o sube un archivo (.mov de iPhone o .mp4).</span>';
+        return;
+      }
+
+      btnTranscribe.disabled = true;
+      btnTranscribe.textContent = "🎙️ Transcribiendo con Whisper Large-v3...";
+      if (statusEl) statusEl.innerHTML = '<span style="color:#38bdf8">⏳ Extrayendo audio y transcribiendo con vocabulario de <strong>' + escapeHtml(subject.toUpperCase()) + '</strong>... Esto toma unos segundos.</span>';
+
+      try {
+        const formData = new FormData();
+        formData.append("subject", subject);
+        formData.append("model_size", "large-v3");
+        if (file) {
+          formData.append("video", file);
+        } else {
+          formData.append("existing_video_name", localVideo);
+        }
+
+        const res = await fetch(resolveUrl("/api/polish/transcribe"), {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const txt = await res.text();
+          throw new Error(txt || res.statusText);
+        }
+
+        const data = await res.json();
+        polishState.words = data.words || [];
+        polishState.videoPath = data.video_path || "";
+        polishState.duration = data.duration_s || 0;
+
+        const txtArea = document.getElementById("polishTranscribedText");
+        if (txtArea) txtArea.value = data.corrected_text || data.full_text || "";
+
+        const cnt = document.getElementById("polishWordCount");
+        if (cnt) cnt.textContent = `Palabras: ${polishState.words.length}`;
+
+        const dur = document.getElementById("polishDuration");
+        if (dur) dur.textContent = `Duración: ${polishState.duration}s`;
+
+        if (statusEl) statusEl.innerHTML = `<span style="color:#34d399">✅ Transcripción matemática completada con éxito (${polishState.words.length} palabras detectadas en ${polishState.duration}s).</span>`;
+      } catch (err) {
+        if (statusEl) statusEl.innerHTML = `<span style="color:#ef4444">❌ Error: ${escapeHtml(err.message)}</span>`;
+      } finally {
+        btnTranscribe.disabled = false;
+        btnTranscribe.textContent = "🎙️ Transcribir y Normalizar Matemáticas (Whisper Large)";
+      }
+    });
+  }
+
+  const btnRender = document.getElementById("btnRenderPolish");
+  if (btnRender) {
+    btnRender.addEventListener("click", async () => {
+      const statusEl = document.getElementById("polishRenderStatus");
+      const resultBox = document.getElementById("polishResultBox");
+
+      if (!polishState.videoPath) {
+        if (statusEl) statusEl.innerHTML = '<span style="color:#ef4444">⚠️ Primero debes transcribir un video en el Paso 1.</span>';
+        return;
+      }
+
+      const hookBadge = document.getElementById("polishHookBadge")?.value || "¡NO COMETAS ESTE ERROR! ⚠️";
+      const hookSfx = document.getElementById("polishHookSfx")?.value || "cut_hit";
+      const ctaObj = document.getElementById("polishCtaObjective")?.value || "website";
+      const ctaTarget = document.getElementById("polishCtaTarget")?.value || "www.zenitmatematicas.com";
+      const customPhrase = document.getElementById("polishCtaCustomPhrase")?.value || "";
+
+      btnRender.disabled = true;
+      btnRender.textContent = "⚡ Renderizando video 9:16 (Subtítulos, Earshot & CTA)...";
+      if (statusEl) statusEl.innerHTML = '<span style="color:#38bdf8">⏳ Codificando video MP4 1080×1920 con FFmpeg y efectos de sonido Earshot...</span>';
+      if (resultBox) resultBox.classList.add("hidden");
+
+      try {
+        const res = await api("/api/polish/render", {
+          method: "POST",
+          body: JSON.stringify({
+            video_path: polishState.videoPath,
+            words: polishState.words,
+            hook_badge_text: hookBadge,
+            hook_sfx: hookSfx,
+            cta_objective_id: ctaObj,
+            cta_target: ctaTarget,
+            custom_cta_phrase: customPhrase,
+          }),
+        });
+
+        if (statusEl) statusEl.innerHTML = `<span style="color:#34d399">🎉 ¡Video pulido con éxito! Listo para publicar en TikTok, Reels o Shorts.</span>`;
+
+        if (resultBox) {
+          resultBox.classList.remove("hidden");
+          const vid = document.getElementById("polishResultVideo");
+          const dl = document.getElementById("polishDownloadBtn");
+          const fullVideoUrl = resolveUrl(res.download_url);
+          if (vid) vid.src = fullVideoUrl;
+          if (dl) dl.href = fullVideoUrl;
+        }
+      } catch (err) {
+        if (statusEl) statusEl.innerHTML = `<span style="color:#ef4444">❌ Error al renderizar: ${escapeHtml(err.message)}</span>`;
+      } finally {
+        btnRender.disabled = false;
+        btnRender.textContent = "⚡ Renderizar Video Pulido Completo (MP4 9:16)";
+      }
+    });
+  }
+}
+
 
 
