@@ -87,17 +87,17 @@ def create_hook_card(
     bg_color = (11, 15, 25, 240)  # Dark Navy con 94% opacidad
     draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=26, fill=bg_color, outline=accent_color + (230,), width=3)
 
-    # 2. Píldora de categoría / materia superior
+    # 2. Píldora de categoría / materia superior (Fondo Oro Sólido + Texto Oscuro para contraste 18:1)
     tag_clean = _clean_text(category_tag).upper()
     tag_bbox = draw.textbbox((0, 0), tag_clean, font=f_tag)
     tag_w = tag_bbox[2] - tag_bbox[0]
     pill_w = tag_w + 36
     pill_x1 = (width - pill_w) // 2
-    pill_y1 = 22
+    pill_y1 = 20
     pill_x2 = pill_x1 + pill_w
     pill_y2 = pill_y1 + 36
-    draw.rounded_rectangle([pill_x1, pill_y1, pill_x2, pill_y2], radius=18, fill=(255, 228, 94, 38), outline=accent_color + (180,), width=1)
-    draw.text((pill_x1 + 18, pill_y1 + 5), tag_clean, font=f_tag, fill=accent_color + (255,))
+    draw.rounded_rectangle([pill_x1, pill_y1, pill_x2, pill_y2], radius=16, fill=(255, 228, 94, 255))
+    draw.text((pill_x1 + 18, pill_y1 + 5), tag_clean, font=f_tag, fill=(11, 15, 25, 255))
 
     # 3. Titular de impacto centrado (máx 2 líneas si es largo)
     title_clean = _clean_text(headline).upper()

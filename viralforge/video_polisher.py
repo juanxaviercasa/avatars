@@ -81,7 +81,7 @@ def polish_video(
         overlay_inputs: list[tuple[Path, float, float, int]] = []
         # Tupla: (path, start_time, end_time, y_position)
 
-        # 1. Hook Card de Apertura (0.0s a 3.6s)
+        # 1. Hook Card de Apertura (0.0s a 2.0s, dando paso al B-roll del museo sin sobremontarse)
         hook_png = workdir / "hook_card.png"
         clean_hook = hook_badge_text.replace("⚠️", "").replace("🚨", "").strip() or copilot_plan["hook_headline"]
         category_tag = copilot_plan["hook_category"]
@@ -90,7 +90,7 @@ def polish_video(
             headline=clean_hook,
             out_path=hook_png,
         )
-        overlay_inputs.append((hook_png, 0.00, 3.60, 110))
+        overlay_inputs.append((hook_png, 0.00, 2.00, 110))
 
         # 2. B-Roll Hiperrealista 1: Sala de Museo (2.0s a 5.5s)
         broll_museum_src = settings.root / "assets" / "broll" / "museum_hall.jpg"
