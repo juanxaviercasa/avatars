@@ -16,13 +16,14 @@ class TestMathPolish(unittest.TestCase):
 
     def test_cta_objectives_list(self):
         objs = cta_manager.list_cta_objectives()
-        self.assertEqual(len(objs), 6)
+        self.assertGreaterEqual(len(objs), 6)
         ids = {o["id"] for o in objs}
         self.assertIn("website", ids)
         self.assertIn("whatsapp", ids)
         self.assertIn("comment_keyword", ids)
         self.assertIn("save_bookmark", ids)
         self.assertIn("follow_profile", ids)
+        self.assertIn("skool", ids)
         self.assertIn("custom", ids)
 
     def test_cta_card_builder(self):

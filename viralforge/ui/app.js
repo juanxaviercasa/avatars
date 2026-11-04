@@ -1709,6 +1709,14 @@ const CTA_PRESETS = {
     action: "Sígueme para dominar {target} 📐",
     sfx: "Marimba Note",
   },
+  skool: {
+    label: "Nombre de la comunidad o enlace en bio",
+    placeholder: "ej: Academia Zenit (enlace en perfil)",
+    defaultTarget: "Academia Zenit",
+    badge: "ÚNETE A LA COMUNIDAD EN SKOOL 🎓",
+    action: "Entra a: {target} en Skool 🚀",
+    sfx: "Cash Ding",
+  },
   custom: {
     label: "Texto exacto de la llamada a la acción",
     placeholder: "ej: Inscríbete en el taller de este sábado",
