@@ -108,7 +108,7 @@ def polish_video(
 
         # Inyectar Earshot Hook SFX en t=0.08s
         if hook_sfx in audio_mix.EARSHOT_RECIPES:
-            sfx_samples = audio_mix.render_sfx_samples(hook_sfx, audio_mix.SR)
+            sfx_samples = audio_mix.synthesize_sfx(hook_sfx)
             idx_start = int(0.08 * audio_mix.SR)
             idx_end = min(total_samples, idx_start + len(sfx_samples))
             mixed_audio[idx_start:idx_end] += sfx_samples[: idx_end - idx_start] * 0.75
@@ -116,7 +116,7 @@ def polish_video(
         # Inyectar Earshot CTA SFX en t = duración - 3.2s
         cta_sfx_name = cta_data.get("earshot_sfx", "cash_ding")
         if cta_sfx_name in audio_mix.EARSHOT_RECIPES:
-            sfx_samples = audio_mix.render_sfx_samples(cta_sfx_name, audio_mix.SR)
+            sfx_samples = audio_mix.synthesize_sfx(cta_sfx_name)
             idx_start = max(0, int((dur - 3.2) * audio_mix.SR))
             idx_end = min(total_samples, idx_start + len(sfx_samples))
             mixed_audio[idx_start:idx_end] += sfx_samples[: idx_end - idx_start] * 0.85

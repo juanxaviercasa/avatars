@@ -300,6 +300,11 @@ def synthesize_sfx(sfx_id: str) -> np.ndarray:
     return entry["fn"]()
 
 
+def render_sfx_samples(sfx_id: str, sr: int = SR) -> np.ndarray:
+    """Alias para sintetizar muestras Earshot."""
+    return synthesize_sfx(sfx_id)
+
+
 def render_sfx_wav(sfx_id: str, out_wav: str | Path) -> Path:
     """Renderiza una receta Earshot a un archivo WAV para preescucha o mezcla."""
     sig = synthesize_sfx(sfx_id)
