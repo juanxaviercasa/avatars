@@ -393,17 +393,17 @@ def generate_lofi_background(
                 end_p = min(n, pos + s_len)
                 drums[pos:end_p] += snare_sample[: end_p - pos]
 
-    # Mezcla limpia (Sin vinilo ni siseos)
-    full_mix = sig + drums * 0.90
-    return np.tanh(full_mix * 1.3) * gain
+    # Mezcla limpia con pegada (Sin vinilo ni siseos)
+    full_mix = sig + drums * 1.05
+    mixed = np.tanh(full_mix * 1.3) * gain
 
-    # Fade in / fade out suave de 1.8 segundos
-    fade = min(int(sr * 1.8), n // 4)
+    # Fade in / fade out suave de 1.5 segundos
+    fade = min(int(sr * 1.5), n // 4)
     if fade > 1:
-        sig[:fade] *= np.linspace(0, 1, fade, dtype=np.float32)
-        sig[-fade:] *= np.linspace(1, 0, fade, dtype=np.float32)
+        mixed[:fade] *= np.linspace(0, 1, fade, dtype=np.float32)
+        mixed[-fade:] *= np.linspace(1, 0, fade, dtype=np.float32)
 
-    return sig.astype(np.float32)
+    return mixed.astype(np.float32)
 
 
 def render_sfx_wav(sfx_id: str, out_wav: str | Path) -> Path:

@@ -48,6 +48,8 @@ def render_latex_to_image(
     clean_expr = clean_expr.replace(r"\implies", r"\Rightarrow")
     clean_expr = clean_expr.replace(r"\iff", r"\Leftrightarrow")
     clean_expr = clean_expr.replace(r"\bold", r"\mathbf")
+    clean_expr = clean_expr.replace(r"\quad", "  ")
+    clean_expr = clean_expr.replace(r"\qquad", "    ")
 
     # Formato de visualización matemática LaTeX (mathtext)
     math_str = f"${clean_expr}$"
