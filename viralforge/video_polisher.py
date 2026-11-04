@@ -172,20 +172,20 @@ def polish_video(
         overlay_inputs.append((prob_png, 14.50, 74.50, 75, None))
 
         # 5. Capa de Ilustraciones de Cantidades en Espacios Vacíos de la Pizarra
-        # 5.1 Gráfico 1: Contenedor de Mezcla Total (42 Litros) en el espacio derecho libre
+        # 5.1 Gráfico 1: Contenedor de Mezcla Total (42 Litros) en el espacio inferior libre (y=1040)
         vol_png = workdir / "volume_container.png"
         cards.create_volume_container_card(total_volume_liters=42, out_path=vol_png)
-        overlay_inputs.append((vol_png, 26.00, 41.00, 390, 560))
+        overlay_inputs.append((vol_png, 26.00, 39.00, 1040, 560))
 
-        # 5.2 Gráfico 2: Comparativa de Precios P1 (S/. 5) vs P2 (S/. 8) y Pm (S/. 7)
+        # 5.2 Gráfico 2: Comparativa de Precios P1 (S/. 5) vs P2 (S/. 8) y Pm (S/. 7) en el espacio inferior libre (y=1020)
         comp_png = workdir / "product_comparison.png"
         cards.create_product_comparison_card(p1_price=5, p2_price=8, pm_target=7, out_path=comp_png)
-        overlay_inputs.append((comp_png, 42.00, 72.00, 380, 550))
+        overlay_inputs.append((comp_png, 42.00, 68.00, 1020, 550))
 
-        # Pop-art Badge 2: Alerta de Fórmula Inminente
+        # Pop-art Badge 2: Alerta de Fórmula Inminente (En zona segura y=340, sobre el pizarrón)
         badge2_png = workdir / "badge_formula.png"
         cards.create_popart_callout_badge("📐 ¡FÓRMULA CLAVE!", "formula", badge2_png)
-        overlay_inputs.append((badge2_png, 72.50, 75.50, 440, 560))
+        overlay_inputs.append((badge2_png, 72.50, 75.50, 340, 560))
 
         # 6. Progresión Dinámica de Ecuaciones Micro-Sincronizada (8 Etapas sin adelantarse a la tiza)
         # Etapa 1 (75.5s a 93.0s): Fórmula Maestra Teórica
@@ -215,24 +215,26 @@ def polish_video(
         )
         overlay_inputs.append((f2b_png, 102.00, 122.00, 75, None))
 
-        # Pop-art Badge 3: Despeje V1
+        # Pop-art Badge 3: Despeje V1 (En zona segura y=340, libre de escritura y de manos)
         badge3_png = workdir / "badge_despeje.png"
-        cards.create_popart_callout_badge("⚡ ¡V₁ = 42 - V₂!", "warning", badge3_png)
-        overlay_inputs.append((badge3_png, 103.00, 109.00, 440, 560))
+        cards.create_popart_callout_badge("⚡ ¡V1 = 42 - V2!", "warning", badge3_png)
+        overlay_inputs.append((badge3_png, 103.00, 108.50, 340, 560))
 
-        # Etapa 3A (122.0s a 133.0s): Multiplicación en cruz (42 * 7 = 294)
+        # Etapa 3A (122.0s a 133.0s): Multiplicación en cruz (42 * 7 = 294) - Proporcional no exagerada
         f3a_png = workdir / "formula_stage3a.png"
         cards.create_step_clarification_card(
             step_title="MULTIPLICACIÓN EN CRUZ",
             step_latex=r"7 \times 42 = 294",
             out_path=f3a_png,
+            width=900,
+            height=210,
         )
         overlay_inputs.append((f3a_png, 122.00, 133.00, 75, None))
 
-        # Pop-art Badge 4: Multiplica en Cruz
+        # Pop-art Badge 4: Multiplica en Cruz (En zona segura y=340)
         badge4_png = workdir / "badge_cruz.png"
         cards.create_popart_callout_badge("💥 ¡MULTIPLICA EN CRUZ!", "speed", badge4_png)
-        overlay_inputs.append((badge4_png, 122.50, 128.00, 440, 560))
+        overlay_inputs.append((badge4_png, 122.50, 128.00, 340, 560))
 
         # Etapa 3B (133.0s a 143.0s): Expansión y Distribución
         f3b_png = workdir / "formula_stage3b.png"
@@ -240,6 +242,8 @@ def polish_video(
             step_title="DISTRIBUCIÓN Y AGRUPACIÓN",
             step_latex=r"294 = 210 - 5V_2 + 8V_2",
             out_path=f3b_png,
+            width=900,
+            height=210,
         )
         overlay_inputs.append((f3b_png, 133.00, 143.00, 75, None))
 
@@ -249,6 +253,8 @@ def polish_video(
             step_title="REDUCCIÓN ALGEBRAICA",
             step_latex=r"84 = 3V_2",
             out_path=f3c_png,
+            width=900,
+            height=210,
         )
         overlay_inputs.append((f3c_png, 143.00, 149.00, 75, None))
 
@@ -264,9 +270,11 @@ def polish_video(
         # Etapa 5 (156.0s a 159.2s): Badge GIGANTE de Clave Verificada de Campeonato
         ans_png = workdir / "solution_card.png"
         cards.create_solution_card(
-            result_text="V2 = 28 L",
+            result_text="V2 = 28 LITROS",
             out_path=ans_png,
             result_latex=r"V_2 = 28\text{ Litros}",
+            width=1020,
+            height=320,
         )
         overlay_inputs.append((ans_png, 156.00, 159.20, 75, None))
 
@@ -299,15 +307,15 @@ def polish_video(
         total_samples = len(orig_samples)
         mixed_audio = np.copy(orig_samples)
 
-        # Inyectar música procedural VSL de fondo (bombo y tambor limpios, sin siseos de vinilo)
+        # Inyectar música procedural Electro-Rock / Synthwave motivacional (batería acústica punchy, cero vinilo)
         try:
-            lofi_bg = audio_mix.generate_lofi_background(dur, sr=audio_mix.SR, gain=0.32)
-            if len(lofi_bg) >= total_samples:
-                mixed_audio += lofi_bg[:total_samples]
+            electro_bg = audio_mix.generate_electro_rock_background(dur, sr=audio_mix.SR, gain=0.28)
+            if len(electro_bg) >= total_samples:
+                mixed_audio += electro_bg[:total_samples]
             else:
-                mixed_audio[:len(lofi_bg)] += lofi_bg
-        except Exception as lofi_err:
-            log.warning("No se pudo sintetizar música lofi: %s", lofi_err)
+                mixed_audio[:len(electro_bg)] += electro_bg
+        except Exception as bg_err:
+            log.warning("No se pudo sintetizar música electro-rock: %s", bg_err)
 
         # 4.1 Inyectar Voces Neurales de Co-Host (Hype & Retención)
         try:
@@ -460,10 +468,10 @@ def polish_video(
             "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,split=3[v_cam_wide][v_raw2][v_raw3]"
         )
         filter_chains.append(
-            "[v_raw2]crop=iw/1.16:ih/1.16:iw*0.05:0,scale=1080:1920[v_cam_speaker]"
+            "[v_raw2]crop=iw/1.14:ih/1.14:iw*0.04:0,scale=1080:1920[v_cam_speaker]"
         )
         filter_chains.append(
-            "[v_raw3]crop=iw/1.18:ih/1.18:iw*0.12:0,scale=1080:1920[v_cam_board]"
+            "[v_raw3]crop=iw/1.14:ih/1.14:iw*0.08:0,scale=1080:1920[v_cam_board]"
         )
         filter_chains.append(
             f"[v_cam_wide][v_cam_speaker]overlay=0:0:enable='{sp_enable}'[v_step1]"

@@ -305,6 +305,117 @@ def render_sfx_samples(sfx_id: str, sr: int = SR) -> np.ndarray:
     return synthesize_sfx(sfx_id)
 
 
+def generate_electro_rock_background(
+    duration_seconds: float,
+    sr: int = SR,
+    gain: float = 0.28,
+) -> np.ndarray:
+    """
+    Sintetizador procedural de ritmo Electro-Rock / Synthwave motivacional en NumPy (Sound-as-Code).
+
+    Diseñado para despertar la mente y mantener alta retención:
+    1. Batería potente y definida (Kick punchy en cuatro-al-piso y Snare/Clap electro-rock con snap nítido).
+    2. Línea de bajo sintetizado electro-rock arpegiado en corcheas (estilo Daft Punk / Synthwave).
+    3. Capa de sintetizador melódico sutil y motivacional.
+    4. CERO ruido de vinilo, CERO siseos y auto-ducking limpio bajo la voz.
+    """
+    n = int(sr * duration_seconds)
+    if n <= 0:
+        return np.zeros(0, dtype=np.float32)
+
+    t = np.arange(n, dtype=np.float32) / sr
+    sig = np.zeros(n, dtype=np.float32)
+
+    bpm = 116.0
+    beat_dur = 60.0 / bpm
+    bar_dur = beat_dur * 4.0
+
+    # 1. Batería Electro-Rock con pegada
+    drums = np.zeros(n, dtype=np.float32)
+
+    # Bombo (Kick) electro-rock contundente
+    k_len = int(sr * 0.22)
+    tk = np.arange(k_len, dtype=np.float32) / sr
+    f_k = 150 * np.exp(-tk * 34) + 48
+    k_phase = 2 * np.pi * np.cumsum(f_k) / sr
+    kick_sample = np.sin(k_phase) * np.exp(-tk * 13) * 0.95 + np.sin(2 * np.pi * 1300 * tk) * np.exp(-tk * 95) * 0.22
+
+    # Caja / Snare electro-rock cortante y resonante
+    s_len = int(sr * 0.16)
+    ts = np.arange(s_len, dtype=np.float32) / sr
+    snare_sample = (
+        np.sin(2 * np.pi * 230 * ts) * np.exp(-ts * 22) * 0.65
+        + np.sin(2 * np.pi * 440 * ts) * np.exp(-ts * 28) * 0.40
+        + np.sin(2 * np.pi * 950 * ts) * np.exp(-ts * 50) * 0.35
+    )
+
+    # Hi-Hat electro cerrado y limpio (tick acústico, no ruido de vinilo)
+    h_len = int(sr * 0.04)
+    th = np.arange(h_len, dtype=np.float32) / sr
+    hat_sample = np.sin(2 * np.pi * 4200 * th) * np.exp(-th * 95) * 0.18 + np.sin(2 * np.pi * 6800 * th) * np.exp(-th * 120) * 0.12
+
+    num_bars = int(duration_seconds / bar_dur) + 2
+    for bar in range(num_bars):
+        bar_start = bar * bar_dur
+        # Bombos en tiempos 1, 2, 3, 4 (Driving pulse) y síncopa en 2.5
+        for b_off in [0.0, beat_dur * 1.0, beat_dur * 2.0, beat_dur * 2.5, beat_dur * 3.0]:
+            pos = int((bar_start + b_off) * sr)
+            if 0 <= pos < n:
+                end_p = min(n, pos + k_len)
+                drums[pos:end_p] += kick_sample[: end_p - pos]
+
+        # Snare en tiempos 2 y 4 (Backbeat rockero sólido)
+        for b_off in [beat_dur * 1.0, beat_dur * 3.0]:
+            pos = int((bar_start + b_off) * sr)
+            if 0 <= pos < n:
+                end_p = min(n, pos + s_len)
+                drums[pos:end_p] += snare_sample[: end_p - pos] * 1.15
+
+        # Hi-Hats en corcheas (8 ticks por compás para propulsión)
+        for eighth in range(8):
+            pos = int((bar_start + eighth * (beat_dur / 2.0)) * sr)
+            if 0 <= pos < n:
+                end_p = min(n, pos + h_len)
+                drums[pos:end_p] += hat_sample[: end_p - pos]
+
+    # 2. Bajo Sintetizado Electro-Rock arpegiado (Línea motivacional en Am - F - C - G)
+    bass_notes = [
+        [110.0, 110.0, 110.0, 110.0, 130.81, 130.81, 146.83, 164.81],  # Am
+        [87.31, 87.31, 87.31, 87.31, 110.0, 110.0, 130.81, 146.83],    # F
+        [130.81, 130.81, 130.81, 130.81, 146.83, 146.83, 164.81, 196.0], # C
+        [98.00, 98.00, 98.00, 98.00, 123.47, 123.47, 146.83, 164.81],  # G
+    ]
+    eighth_dur = beat_dur / 2.0
+    synth_bass = np.zeros(n, dtype=np.float32)
+    total_eighths = int(duration_seconds / eighth_dur) + 2
+
+    for e in range(total_eighths):
+        bar_num = int(e / 8) % len(bass_notes)
+        note_in_bar = e % 8
+        freq = bass_notes[bar_num][note_in_bar]
+        pos = int(e * eighth_dur * sr)
+        note_len = int(sr * (eighth_dur * 0.88))
+        if pos + note_len <= n:
+            tb = np.arange(note_len, dtype=np.float32) / sr
+            # Onda combinada con mordida electro
+            saw = (2.0 * ((freq * tb) % 1.0) - 1.0) * 0.35
+            sub = np.sin(2 * np.pi * (freq / 2.0) * tb) * 0.50
+            env = np.exp(-tb * 14)
+            synth_bass[pos:pos + note_len] += (saw + sub) * env
+
+    # 3. Mezcla Electro-Rock limpia
+    full_mix = drums * 0.85 + synth_bass * 0.55
+    mixed = np.tanh(full_mix * 1.25) * gain
+
+    # Fade in / fade out suave de 1.5 segundos
+    fade = min(int(sr * 1.5), n // 4)
+    if fade > 1:
+        mixed[:fade] *= np.linspace(0, 1, fade, dtype=np.float32)
+        mixed[-fade:] *= np.linspace(1, 0, fade, dtype=np.float32)
+
+    return mixed.astype(np.float32)
+
+
 def generate_lofi_background(
     duration_seconds: float,
     sr: int = SR,
