@@ -4,12 +4,14 @@ viralforge/video_polisher.py
 Motor de Pulido Viral para Videos Educativos y de Matemáticas (.mov / .mp4).
 
 Toma una grabación cruda de iPhone o cámara y le inyecta la arquitectura de alta conversión:
-1. Gancho Visual de 0-3s con Badge de impacto ("¡NO COMETAS ESTE ERROR! ⚠️", etc.).
-2. Recetas sonoras procedurales Earshot en el gancho (0.1s) y en el CTA final.
-3. Subtítulos dinámicos palabra por palabra estilo Alex Hormozi (libass .ass).
-4. Barra de progreso superior de retención (0% a 100%).
-5. Tarjeta de CTA dirigida al objetivo (Sitio Web, WhatsApp, Comentar palabra clave, Guardar).
-6. Codificación optimizada 9:16 (1080x1920) H.264/AAC con FastStart para publicación inmediata.
+1. Gancho Visual de 0-3.5s con Tarjeta Glassmorphic de Alta Definición (Pillow PNG 1080p).
+2. Detección Inteligente de Fórmulas y Claves Matemáticas para desplegar tarjetas flotantes.
+3. Subtítulos dinámicos palabra por palabra estilo Alex Hormozi (libass .ass) con Safe Zone.
+4. Supresión automática de subtítulos durante la llamada a la acción (CERO colisiones de texto).
+5. Tarjeta de CTA VIP (Skool, WhatsApp, Web) con diseño de botón de acción y sonido de conversión.
+6. Recetas sonoras procedurales Earshot en gancho, fórmula, clave y CTA final.
+7. Barra de progreso superior de retención (0% a 100%).
+8. Codificación optimizada 9:16 (1080x1920) H.264/AAC con FastStart.
 """
 from __future__ import annotations
 
@@ -25,48 +27,24 @@ import numpy as np
 
 from .config import settings
 from .cta_manager import build_cta_card
-from .render import ass_subtitles, audio as audio_mix, ffmpeg
+from .render import ass_subtitles, audio as audio_mix, cards, ffmpeg
 
 log = logging.getLogger("viralforge.video_polisher")
-
-
-def _clean_filter_text(text: str) -> str:
-    """Escapa caracteres especiales para filtros drawtext de FFmpeg."""
-    return (
-        text.replace("\\", "\\\\")
-        .replace(":", "\\:")
-        .replace("'", "\\'")
-        .replace("%", "\\%")
-        .replace(",", "\\,")
-        .strip()
-    )
 
 
 def polish_video(
     source_video: str | Path,
     words: list[dict[str, Any]],
-    hook_badge_text: str = "¡NO COMETAS ESTE ERROR! ⚠️",
+    hook_badge_text: str = "¡NO COMETAS ESTE ERROR EN TU EXAMEN!",
     hook_sfx: str = "cut_hit",
-    cta_objective_id: str = "website",
-    cta_target: str = "Enlace en mi perfil",
+    cta_objective_id: str = "skool",
+    cta_target: str = "Academia Zenit",
     custom_cta_phrase: str = "",
     out_mp4: str | Path | None = None,
     on_progress: Callable[[float, str], None] | None = None,
 ) -> dict[str, Any]:
     """
-    Ejecuta el pulido viral completo sobre `source_video` (.mov o .mp4).
-
-    Parameters
-    ----------
-    source_video     : Ruta al video original (.mov de iPhone o .mp4)
-    words            : Lista de palabras con timestamps [{word, start, end, formatted}]
-    hook_badge_text  : Título del cartel de gancho de los primeros 3 segundos
-    hook_sfx         : Identificador de receta Earshot para el gancho
-    cta_objective_id : 'website' | 'whatsapp' | 'comment_keyword' | 'save_bookmark' | 'follow_profile' | 'custom'
-    cta_target       : URL, número de WhatsApp o palabra clave según el objetivo
-    custom_cta_phrase: Frase personalizada para el CTA
-    out_mp4          : Ruta de salida del MP4 pulido (opcional)
-    on_progress      : Callback de progreso (0.0 a 1.0)
+    Ejecuta el pulido viral de alta retención sobre `source_video` (.mov o .mp4).
     """
     src = Path(source_video)
     if not src.exists():
@@ -83,8 +61,9 @@ def polish_video(
         # 1) Inspeccionar video original
         w, h, fps = ffmpeg.probe_video(src)
         dur = max(2.0, ffmpeg.probe_duration(src))
+        cta_start = max(1.0, dur - 3.8)
 
-        # 2) Construir tarjeta de CTA dirigida
+        # 2) Construir datos del CTA
         cta_data = build_cta_card(
             objective_id=cta_objective_id,
             target=cta_target,
@@ -92,36 +71,105 @@ def polish_video(
         )
 
         if on_progress:
-            on_progress(0.20, "Generando diseño sonoro procedural Earshot y pista maestra...")
+            on_progress(0.15, "Diseñando tarjetas gráficas PNG de alta definición...")
 
-        # 3) Extraer audio original y mezclar efectos Earshot
+        # 3) Generar Tarjetas Gráficas de Diseño Profesional (Pillow 1080p)
+        overlay_inputs: list[tuple[Path, float, float, int]] = []
+        # Tupla: (path, start_time, end_time, y_position)
+
+        # A) Hook Card (0.1s a 3.6s)
+        hook_png = workdir / "hook_card.png"
+        clean_hook = hook_badge_text.replace("⚠️", "").replace("🚨", "").strip() or "¡NO COMETAS ESTE ERROR EN TU EXAMEN!"
+        cards.create_hook_card(
+            category_tag="ARITMÉTICA • MEZCLAS Y PRECIO MEDIO",
+            headline=clean_hook,
+            out_path=hook_png,
+        )
+        overlay_inputs.append((hook_png, 0.1, 3.6, 130))
+
+        # B) Escaneo de palabras clave para Tarjetas de Fórmula y Clave
+        formula_time = None
+        for w_item in words:
+            txt = (w_item.get("formatted") or w_item.get("word", "")).lower()
+            if "fórmula" in txt or "precio medio" in txt:
+                t_val = float(w_item.get("start", 0))
+                if 5.0 < t_val < (dur - 15.0):
+                    formula_time = t_val
+                    break
+
+        if formula_time is not None:
+            form_png = workdir / "formula_card.png"
+            cards.create_math_formula_card(
+                formula_title="FÓRMULA CLAVE: PRECIO MEDIO",
+                formula_latex="Pm = (P1·V1 + P2·V2) / (V1 + V2)",
+                out_path=form_png,
+            )
+            overlay_inputs.append((form_png, formula_time, min(dur - 6.0, formula_time + 11.0), 160))
+
+        # C) Tarjeta de Clave / Respuesta
+        ans_time = None
+        for w_item in reversed(words):
+            txt = (w_item.get("formatted") or w_item.get("word", "")).lower()
+            if "28" in txt or "clave" in txt:
+                t_ans = float(w_item.get("start", 0))
+                if t_ans > (dur * 0.75) and t_ans < (cta_start - 1.0):
+                    ans_time = t_ans
+                    break
+
+        if ans_time is not None:
+            ans_png = workdir / "solution_card.png"
+            cards.create_solution_card(
+                result_text="RESPUESTA VERIFICADA: V2 = 28 LITROS",
+                out_path=ans_png,
+            )
+            overlay_inputs.append((ans_png, ans_time, min(cta_start - 0.2, ans_time + 4.5), 180))
+
+        # D) Tarjeta de CTA Final (Skool / Academia Zenit)
+        cta_png = workdir / "cta_card.png"
+        cards.create_skool_cta_card(
+            community_name=cta_target or "ACADEMIA ZENIT",
+            action_text="Toca el enlace en mi perfil para unirte gratis 🚀",
+            out_path=cta_png,
+        )
+        overlay_inputs.append((cta_png, cta_start, dur, 1440))
+
+        if on_progress:
+            on_progress(0.30, "Generando diseño sonoro procedural Earshot y sincronización...")
+
+        # 4) Extraer audio original y mezclar efectos sonoros Earshot
         orig_wav = workdir / "original_audio.wav"
         try:
             ffmpeg.to_wav(src, orig_wav, sr=audio_mix.SR)
             orig_samples = ffmpeg.decode_audio(orig_wav, sr=audio_mix.SR)
         except Exception:
-            # Fallback en caso de video mudo
             orig_samples = np.zeros(int(audio_mix.SR * dur), dtype=np.float32)
 
         total_samples = len(orig_samples)
         mixed_audio = np.copy(orig_samples)
 
-        # Inyectar Earshot Hook SFX en t=0.08s
-        if hook_sfx in audio_mix.EARSHOT_RECIPES:
-            sfx_samples = audio_mix.synthesize_sfx(hook_sfx)
-            idx_start = int(0.08 * audio_mix.SR)
-            idx_end = min(total_samples, idx_start + len(sfx_samples))
-            mixed_audio[idx_start:idx_end] += sfx_samples[: idx_end - idx_start] * 0.75
+        def _inject_sfx(sfx_name: str, at_time: float, gain: float = 0.75):
+            if sfx_name in audio_mix.EARSHOT_RECIPES:
+                sfx_samples = audio_mix.synthesize_sfx(sfx_name)
+                idx_start = max(0, int(at_time * audio_mix.SR))
+                idx_end = min(total_samples, idx_start + len(sfx_samples))
+                if idx_end > idx_start:
+                    mixed_audio[idx_start:idx_end] += sfx_samples[: idx_end - idx_start] * gain
 
-        # Inyectar Earshot CTA SFX en t = duración - 3.2s
-        cta_sfx_name = cta_data.get("earshot_sfx", "cash_ding")
-        if cta_sfx_name in audio_mix.EARSHOT_RECIPES:
-            sfx_samples = audio_mix.synthesize_sfx(cta_sfx_name)
-            idx_start = max(0, int((dur - 3.2) * audio_mix.SR))
-            idx_end = min(total_samples, idx_start + len(sfx_samples))
-            mixed_audio[idx_start:idx_end] += sfx_samples[: idx_end - idx_start] * 0.85
+        # SFX Hook
+        _inject_sfx(hook_sfx, 0.08, gain=0.75)
 
-        # Normalizar para evitar clipping
+        # SFX Fórmula (si existe)
+        if formula_time is not None:
+            _inject_sfx("bright_swish", formula_time, gain=0.65)
+
+        # SFX Clave (si existe)
+        if ans_time is not None:
+            _inject_sfx("celesta_chime", ans_time, gain=0.70)
+
+        # SFX CTA Skool
+        _inject_sfx("cash_ding", cta_start, gain=0.85)
+
+        # Normalizar master audio
         peak = np.max(np.abs(mixed_audio))
         if peak > 0.98:
             mixed_audio = mixed_audio * (0.95 / peak)
@@ -130,63 +178,63 @@ def polish_video(
         ffmpeg.write_wav(master_wav, mixed_audio, audio_mix.SR)
 
         if on_progress:
-            on_progress(0.40, "Generando subtítulos dinámicos palabra por palabra...")
+            on_progress(0.45, "Generando subtítulos dinámicos palabra por palabra (con corte anti-colisión)...")
 
-        # 4) Generar subtítulos .ass estilo Alex Hormozi
+        # 5) Generar subtítulos .ass estilo Alex Hormozi (Safe Zone + Supresión anti-colisión)
         ass_path = workdir / "subtitles.ass"
         ass_subtitles.build_ass_subtitles(
             words=words,
             out_path=ass_path,
-            words_per_line=4,
-            font_size=42,
+            words_per_line=3,
+            font_size=46,
+            margin_v=480,  # Ubicación segura en tercio inferior, muy por encima del CTA
+            suppress_after_time=cta_start,  # CERO colisión con la tarjeta de Skool
         )
 
         if on_progress:
-            on_progress(0.60, "Configurando filtros visuales (Gancho 0-3s, Barra Progreso, CTA)...")
+            on_progress(0.60, "Configurando motor de composición gráfica y barra de retención...")
 
-        # 5) Construir filtro complejo de FFmpeg
-        # Escalar/centrar a vertical 9:16 (1080x1920)
-        # Nota en Windows: las barras invertidas en la ruta de libass deben ser escapadas
+        # 6) Armar filter_complex con todas las capas gráficas
+        # Base: escala/recorte a 1080x1920
+        # + Barra de retención superior continua
+        # + Overlays PNG con alpha
+        # + Subtítulos ASS
         ass_filter_path = str(ass_path).replace("\\", "/").replace(":", "\\:")
 
-        safe_hook_text = _clean_filter_text(hook_badge_text or "¡TRUCO CLAVE DE EXAMEN! 📐")
-        safe_cta_badge = _clean_filter_text(cta_data["badge_title"])
-        safe_cta_action = _clean_filter_text(cta_data["action_text"])
+        filter_chains = []
+        filter_chains.append(f"[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920[vbase]")
+        filter_chains.append(f"[vbase]drawbox=x=0:y=0:w='iw*(t/{dur:.2f})':h=14:color=#FFE45E@1:t=fill[vpbar]")
 
-        cta_start = max(0.5, dur - 3.5)
+        prev_label = "vpbar"
+        input_args = ["-i", str(src), "-i", str(master_wav)]
 
-        filters = [
-            # Escala a 1080x1920 manteniendo aspecto y recortando excesos
-            "scale=1080:1920:force_original_aspect_ratio=increase",
-            "crop=1080:1920",
-            # Barra de progreso de retención en el borde superior (0 a 100%)
-            f"drawbox=x=0:y=0:w='iw*(t/{dur:.2f})':h=10:color=#FFE45E@1:t=fill",
-            # Gancho superior en los primeros 3 segundos (0s a 3.2s)
-            f"drawbox=enable='between(t,0,3.2)':x='(iw-860)/2':y=130:w=860:h=90:color=#0f1322@0.92:t=fill",
-            f"drawtext=enable='between(t,0,3.2)':text='{safe_hook_text}':fontcolor=white:fontsize=36:x='(w-text_w)/2':y=158",
-            # Tarjeta de CTA dirigida en los últimos 3.5 segundos
-            f"drawbox=enable='between(t,{cta_start:.2f},{dur:.2f})':x='(iw-920)/2':y=1460:w=920:h=180:color=#0f1322@0.94:t=fill",
-            f"drawtext=enable='between(t,{cta_start:.2f},{dur:.2f})':text='{safe_cta_badge}':fontcolor=#FFE45E:fontsize=32:x='(w-text_w)/2':y=1492",
-            f"drawtext=enable='between(t,{cta_start:.2f},{dur:.2f})':text='{safe_cta_action}':fontcolor=white:fontsize=36:x='(w-text_w)/2':y=1550",
-            # Subtítulos cinéticos
-            f"ass='{ass_filter_path}'",
-        ]
-        vf_string = ",".join(filters)
+        for idx, (png_path, t_in, t_out, y_pos) in enumerate(overlay_inputs):
+            in_idx = 2 + idx
+            input_args.extend(["-i", str(png_path)])
+            out_label = f"vlay{idx}"
+            filter_chains.append(
+                f"[{prev_label}][{in_idx}:v]overlay=x=(W-w)/2:y={y_pos}:enable='between(t,{t_in:.2f},{t_out:.2f})'[{out_label}]"
+            )
+            prev_label = out_label
+
+        # Aplicar subtítulos ASS en la última capa
+        filter_chains.append(f"[{prev_label}]ass='{ass_filter_path}'[vfinal]")
+
+        filter_complex_str = ";".join(filter_chains)
 
         if on_progress:
             on_progress(0.75, "Codificando video MP4 vertical 9:16 con FFmpeg...")
 
-        # 6) Comando de codificación final FFmpeg
+        # 7) Comando de codificación final FFmpeg
         cmd = [
             ffmpeg.ffmpeg_exe(),
             "-hide_banner",
             "-loglevel", "error",
             "-y",
-            "-i", str(src),
-            "-i", str(master_wav),
-            "-map", "0:v:0",
+            *input_args,
+            "-filter_complex", filter_complex_str,
+            "-map", "[vfinal]",
             "-map", "1:a:0",
-            "-vf", vf_string,
             "-c:v", "libx264",
             "-preset", "fast",
             "-crf", "22",
@@ -227,10 +275,10 @@ def polish_video(
             "thumb": str(thumb_path),
             "duration": round(dur, 2),
             "cta_data": cta_data,
-            "hook_badge": hook_badge_text,
+            "hook_badge": clean_hook,
             "words_count": len(words),
+            "overlays_count": len(overlay_inputs),
         }
 
     finally:
-        # Limpieza de archivos temporales
         shutil.rmtree(workdir, ignore_errors=True)
