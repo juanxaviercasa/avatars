@@ -85,6 +85,40 @@ def video(variant_id: str) -> bytes:
     return path.read_bytes()
 
 
+@mcp.tool()
+def math_analyze_copy(transcript: str, video_duration_seconds: float = 60.0) -> dict:
+    """Analiza la transcripción de una clase o ejercicio de matemáticas con el Copiloto Viral.
+
+    Infiere el tema exacto, extrae fórmulas en código LaTeX puro (fracciones, integrales,
+    raíces, derivadas), sugiere ganchos virales de alto impacto y detecta pausas muertas.
+    """
+    from . import math_copilot
+    words = [{"word": w, "start": 0.0, "end": 0.0} for w in transcript.split()]
+    return math_copilot.analyze_transcript(transcript, words, video_duration_seconds)
+
+
+@mcp.tool()
+def math_render_latex(latex_code: str, title: str = "FÓRMULA CLAVE") -> dict:
+    """Renderiza una expresión matemática en LaTeX puro a una tarjeta gráfica transparente PNG.
+
+    Genera tipografía matemática profesional (Computer Modern / KaTeX) con barra de fracción,
+    subíndices y superíndices, sin requerir compiladores externos pesados.
+    """
+    from .render import cards
+    import uuid
+    out_name = f"latex_{uuid.uuid4().hex[:8]}.png"
+    out_p = settings.cache_dir / out_name
+    cards.create_math_formula_card(formula_title=title, formula_latex=latex_code, out_path=out_p)
+    return {"status": "ok", "file": str(out_p), "filename": out_name, "url": f"/media/outputs/{out_name}"}
+
+
+@mcp.tool()
+def math_detect_jump_cuts(words: list[dict], min_pause_seconds: float = 0.5) -> list[dict]:
+    """Detecta silencios y pausas muertas entre palabras en el video para realizar cortes ágiles (Jump Cuts)."""
+    from . import math_copilot
+    return math_copilot.detect_dead_air_pauses(words, min_pause_seconds=min_pause_seconds)
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.WARNING)
     mcp.run(transport="stdio")

@@ -27,6 +27,7 @@ import numpy as np
 
 from .config import settings
 from .cta_manager import build_cta_card
+from .math_copilot import analyze_transcript
 from .render import ass_subtitles, audio as audio_mix, cards, ffmpeg
 
 log = logging.getLogger("viralforge.video_polisher")
@@ -73,62 +74,50 @@ def polish_video(
         if on_progress:
             on_progress(0.15, "Diseñando tarjetas gráficas PNG de alta definición...")
 
-        # 3) Generar Tarjetas Gráficas de Diseño Profesional (Pillow 1080p)
+        # 3) Análisis de Copy y Planificación Matemática con Math Copilot
+        full_transcript = " ".join((w.get("formatted") or w.get("word", "")) for w in words)
+        copilot_plan = analyze_transcript(full_transcript, words, dur)
+
         overlay_inputs: list[tuple[Path, float, float, int]] = []
         # Tupla: (path, start_time, end_time, y_position)
 
         # A) Hook Card (0.1s a 3.6s)
         hook_png = workdir / "hook_card.png"
-        clean_hook = hook_badge_text.replace("⚠️", "").replace("🚨", "").strip() or "¡NO COMETAS ESTE ERROR EN TU EXAMEN!"
+        clean_hook = hook_badge_text.replace("⚠️", "").replace("🚨", "").strip() or copilot_plan["hook_headline"]
+        category_tag = copilot_plan["hook_category"]
         cards.create_hook_card(
-            category_tag="ARITMÉTICA • MEZCLAS Y PRECIO MEDIO",
+            category_tag=category_tag,
             headline=clean_hook,
             out_path=hook_png,
         )
         overlay_inputs.append((hook_png, 0.1, 3.6, 130))
 
-        # B) Escaneo de palabras clave para Tarjetas de Fórmula y Clave
-        formula_time = None
-        for w_item in words:
-            txt = (w_item.get("formatted") or w_item.get("word", "")).lower()
-            if "fórmula" in txt or "precio medio" in txt:
-                t_val = float(w_item.get("start", 0))
-                if 5.0 < t_val < (dur - 15.0):
-                    formula_time = t_val
-                    break
-
-        if formula_time is not None:
-            form_png = workdir / "formula_card.png"
+        # B) Tarjetas de Fórmula Matemática en LaTeX puro
+        for f_idx, f_entry in enumerate(copilot_plan["formulas"]):
+            form_png = workdir / f"formula_card_{f_idx}.png"
             cards.create_math_formula_card(
-                formula_title="FÓRMULA CLAVE: PRECIO MEDIO",
-                formula_latex="Pm = (P1·V1 + P2·V2) / (V1 + V2)",
+                formula_title=f_entry["title"],
+                formula_latex=f_entry["latex"],
                 out_path=form_png,
             )
-            overlay_inputs.append((form_png, formula_time, min(dur - 6.0, formula_time + 11.0), 160))
+            overlay_inputs.append((form_png, f_entry["start"], f_entry["end"], 160))
 
-        # C) Tarjeta de Clave / Respuesta
-        ans_time = None
-        for w_item in reversed(words):
-            txt = (w_item.get("formatted") or w_item.get("word", "")).lower()
-            if "28" in txt or "clave" in txt:
-                t_ans = float(w_item.get("start", 0))
-                if t_ans > (dur * 0.75) and t_ans < (cta_start - 1.0):
-                    ans_time = t_ans
-                    break
-
-        if ans_time is not None:
+        # C) Tarjeta de Clave / Respuesta en LaTeX
+        if copilot_plan.get("answer"):
+            ans_info = copilot_plan["answer"]
             ans_png = workdir / "solution_card.png"
             cards.create_solution_card(
-                result_text="RESPUESTA VERIFICADA: V2 = 28 LITROS",
+                result_text=ans_info["text"],
                 out_path=ans_png,
+                result_latex=ans_info["latex"],
             )
-            overlay_inputs.append((ans_png, ans_time, min(cta_start - 0.2, ans_time + 4.5), 180))
+            overlay_inputs.append((ans_png, ans_info["start"], ans_info["end"], 180))
 
         # D) Tarjeta de CTA Final (Skool / Academia Zenit)
         cta_png = workdir / "cta_card.png"
         cards.create_skool_cta_card(
             community_name=cta_target or "ACADEMIA ZENIT",
-            action_text="Toca el enlace en mi perfil para unirte gratis 🚀",
+            action_text="Toca el enlace en mi perfil para unirte gratis",
             out_path=cta_png,
         )
         overlay_inputs.append((cta_png, cta_start, dur, 1440))
@@ -158,13 +147,13 @@ def polish_video(
         # SFX Hook
         _inject_sfx(hook_sfx, 0.08, gain=0.75)
 
-        # SFX Fórmula (si existe)
-        if formula_time is not None:
-            _inject_sfx("bright_swish", formula_time, gain=0.65)
+        # SFX Fórmulas en LaTeX
+        for f_entry in copilot_plan["formulas"]:
+            _inject_sfx("bright_swish", f_entry["start"], gain=0.65)
 
-        # SFX Clave (si existe)
-        if ans_time is not None:
-            _inject_sfx("celesta_chime", ans_time, gain=0.70)
+        # SFX Clave
+        if copilot_plan.get("answer"):
+            _inject_sfx("celesta_chime", copilot_plan["answer"]["start"], gain=0.70)
 
         # SFX CTA Skool
         _inject_sfx("cash_ding", cta_start, gain=0.85)

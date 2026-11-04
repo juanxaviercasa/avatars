@@ -199,11 +199,12 @@ def create_math_formula_card(
     formula_title: str,
     formula_latex: str,
     out_path: str | Path,
-    width: int = 940,
-    height: int = 170,
+    width: int = 960,
+    height: int = 210,
 ) -> Path:
     """
-    Crea una tarjeta flotante con la fórmula matemática clave del problema.
+    Crea una tarjeta flotante con la fórmula matemática clave renderizada en LaTeX puro.
+    Incluye barra de fracción, subíndices, superíndices y tipografía matemática Computer Modern.
     """
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -211,23 +212,38 @@ def create_math_formula_card(
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    f_sub = _get_font(20, bold=True)
+    f_sub = _get_font(22, bold=True)
     f_math = _get_font(36, bold=True)
 
-    # Fondo azul/cian tecnológico
-    bg_color = (10, 25, 45, 240)
-    cyan_glow = (56, 189, 248, 220)  # #38bdf8
-    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=22, fill=bg_color, outline=cyan_glow, width=2)
+    # Fondo azul/cian tecnológico con esquinas redondeadas y resplandor
+    bg_color = (10, 22, 42, 245)
+    cyan_glow = (56, 189, 248, 230)  # #38bdf8
+    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=24, fill=bg_color, outline=cyan_glow, width=3)
 
-    # Header
-    title_text = formula_title.upper().strip()
-    draw.text((32, 18), title_text, font=f_sub, fill=(56, 189, 248, 255))
+    # Header / Píldora
+    title_text = _clean_text(formula_title).upper().strip()
+    draw.text((36, 18), title_text, font=f_sub, fill=(56, 189, 248, 255))
 
-    # Expresión matemática
-    expr = formula_latex.strip()
-    e_bbox = draw.textbbox((0, 0), expr, font=f_math)
-    e_w = e_bbox[2] - e_bbox[0]
-    draw.text(((width - e_w) // 2, 70), expr, font=f_math, fill=(255, 255, 255, 255))
+    # Renderizado matemático LaTeX / KaTeX de alta definición
+    try:
+        from . import latex_renderer
+        # No limpiar con _clean_text porque LaTeX requiere barras invertidas y llaves {}
+        clean_latex = formula_latex.strip()
+        ltx_img = latex_renderer.render_latex_to_image(clean_latex, color="white", fontsize=52, dpi=240)
+        max_w = width - 70
+        max_h = height - 50
+        if ltx_img.width > max_w or ltx_img.height > max_h:
+            ratio = min(max_w / ltx_img.width, max_h / ltx_img.height)
+            new_size = (int(ltx_img.width * ratio), int(ltx_img.height * ratio))
+            ltx_img = ltx_img.resize(new_size, Image.Resampling.LANCZOS)
+        paste_x = (width - ltx_img.width) // 2
+        paste_y = 48 + (height - 48 - ltx_img.height) // 2
+        img.paste(ltx_img, (paste_x, paste_y), ltx_img)
+    except Exception as err:
+        expr = _clean_text(formula_latex)
+        e_bbox = draw.textbbox((0, 0), expr, font=f_math)
+        e_w = e_bbox[2] - e_bbox[0]
+        draw.text(((width - e_w) // 2, 85), expr, font=f_math, fill=(255, 255, 255, 255))
 
     img.save(out_path, format="PNG")
     return out_path
@@ -236,11 +252,12 @@ def create_math_formula_card(
 def create_solution_card(
     result_text: str,
     out_path: str | Path,
-    width: int = 860,
-    height: int = 140,
+    result_latex: str | None = None,
+    width: int = 880,
+    height: int = 160,
 ) -> Path:
     """
-    Crea una tarjeta verde esmeralda destacando la clave / resultado final encontrado.
+    Crea una tarjeta verde esmeralda destacando la clave / resultado final en LaTeX o texto destacado.
     """
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -252,16 +269,34 @@ def create_solution_card(
     f_res = _get_font(42, bold=True)
 
     # Fondo verde esmeralda oscuro con borde brillante
-    bg_color = (6, 35, 22, 240)
+    bg_color = (6, 35, 22, 245)
     green_glow = (52, 211, 153, 240)  # #34d399
-    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=22, fill=bg_color, outline=green_glow, width=3)
+    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=24, fill=bg_color, outline=green_glow, width=3)
 
-    draw.text((30, 16), "CLAVE VERIFICADA DEL EXAMEN", font=f_lbl, fill=green_glow)
+    draw.text((34, 18), "RESPUESTA VERIFICADA DEL EXAMEN", font=f_lbl, fill=green_glow)
 
-    res_clean = result_text.strip()
+    if result_latex:
+        try:
+            from . import latex_renderer
+            ltx_img = latex_renderer.render_latex_to_image(result_latex, color="#FFE45E", fontsize=38, dpi=220)
+            max_w = width - 80
+            max_h = height - 56
+            if ltx_img.width > max_w or ltx_img.height > max_h:
+                ratio = min(max_w / ltx_img.width, max_h / ltx_img.height)
+                new_size = (int(ltx_img.width * ratio), int(ltx_img.height * ratio))
+                ltx_img = ltx_img.resize(new_size, Image.Resampling.LANCZOS)
+            paste_x = (width - ltx_img.width) // 2
+            paste_y = 52 + (height - 52 - ltx_img.height) // 2
+            img.paste(ltx_img, (paste_x, paste_y), ltx_img)
+            img.save(out_path, format="PNG")
+            return out_path
+        except Exception:
+            pass
+
+    res_clean = _clean_text(result_text)
     r_bbox = draw.textbbox((0, 0), res_clean, font=f_res)
     r_w = r_bbox[2] - r_bbox[0]
-    draw.text(((width - r_w) // 2, 56), res_clean, font=f_res, fill=(255, 255, 255, 255))
+    draw.text(((width - r_w) // 2, 68), res_clean, font=f_res, fill=(255, 255, 255, 255))
 
     img.save(out_path, format="PNG")
     return out_path

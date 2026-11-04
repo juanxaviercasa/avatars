@@ -88,6 +88,28 @@ class TestMathPolish(unittest.TestCase):
         self.assertEqual(r2.status_code, 200)
         self.assertIsInstance(r2.json(), list)
 
+    def test_latex_renderer_and_copilot(self):
+        from viralforge.render import latex_renderer
+        from viralforge import math_copilot
+
+        # 1. Test render LaTeX image
+        img = latex_renderer.render_latex_to_image(r"P_m = \frac{P_1 V_1 + P_2 V_2}{V_1 + V_2}")
+        self.assertGreater(img.width, 50)
+        self.assertGreater(img.height, 20)
+
+        # 2. Test Math Copilot analysis
+        text = "Calculamos el precio medio de la mezcla con la fórmula general, y el volumen 2 es 28."
+        words = [
+            {"word": "precio", "start": 10.0, "end": 10.5},
+            {"word": "medio", "start": 10.6, "end": 11.0},
+            {"word": "28", "start": 40.0, "end": 40.5},
+        ]
+        res = math_copilot.analyze_transcript(text, words, 60.0)
+        self.assertIn("Mezclas", res["subject"])
+        self.assertGreaterEqual(len(res["formulas"]), 1)
+        self.assertIn("frac", res["formulas"][0]["latex"])
+        self.assertEqual(res["answer"]["val"], "28")
+
 
 if __name__ == "__main__":
     unittest.main()

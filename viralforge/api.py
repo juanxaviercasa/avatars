@@ -855,9 +855,29 @@ async def api_polish_transcribe(
         )
         res["video_path"] = str(target_path)
         res["video_name"] = target_path.name
+
+        # Enriquecer con análisis del copiloto matemático (LaTeX, Ganchos, Pausas)
+        from . import math_copilot
+        res["copilot_analysis"] = math_copilot.analyze_transcript(
+            full_text=res.get("corrected_text") or res.get("full_text", ""),
+            words=res.get("words", []),
+            video_duration=res.get("duration_s", 60.0),
+        )
         return res
     except Exception as exc:
         raise HTTPException(500, f"Error transcribiendo video: {exc}") from exc
+
+
+class PolishAnalyzeReq(BaseModel):
+    text: str
+    words: list[dict[str, Any]] = []
+    duration: float = 60.0
+
+
+@app.post("/api/polish/analyze-copy")
+def api_polish_analyze_copy(req: PolishAnalyzeReq) -> dict[str, Any]:
+    from . import math_copilot
+    return math_copilot.analyze_transcript(req.text, req.words, req.duration)
 
 
 class PolishRenderReq(BaseModel):
