@@ -71,11 +71,20 @@ def render_latex_to_image(
 
     import io
     buf = io.BytesIO()
-    fig.savefig(buf, format="png", dpi=dpi, transparent=True, bbox_inches="tight", pad_inches=0.08)
+    fig.savefig(buf, format="png", dpi=dpi, transparent=True, bbox_inches="tight", pad_inches=0.04)
     plt.close(fig)
 
     buf.seek(0)
-    return Image.open(buf).convert("RGBA")
+    raw_img = Image.open(buf).convert("RGBA")
+    bbox = raw_img.getbbox()
+    if bbox:
+        pad = 4
+        x1 = max(0, bbox[0] - pad)
+        y1 = max(0, bbox[1] - pad)
+        x2 = min(raw_img.width, bbox[2] + pad)
+        y2 = min(raw_img.height, bbox[3] + pad)
+        return raw_img.crop((x1, y1, x2, y2))
+    return raw_img
 
 
 def render_latex_to_file(

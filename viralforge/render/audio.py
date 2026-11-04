@@ -311,18 +311,23 @@ def generate_lofi_background(
     gain: float = 0.18,
 ) -> np.ndarray:
     """
-    Sintetizador procedural de música de fondo Lo-Fi / Focus Ambient en NumPy (Sound-as-Code).
+    Sintetizador procedural de ritmo viral Lo-Fi / Boom-Bap Chillhop en NumPy (Sound-as-Code).
 
-    Produce una progresión de acordes cálidos estilo Rhodes Jazz (Fmaj7 - Em7 - Dm7 - Cmaj7),
-    sub-bass armónico y textura sutil de vinilo, masterizada para ducking bajo la voz.
+    Produce una base rítmica viral completa:
+    1. Batería con pegada (Kick punchy en 1 y 3.5, Snare crujiente en 2 y 4, Hi-Hats en semicorcheas swing).
+    2. Progresión armónica de acordes de jazz estilo Rhodes (Fmaj7 - Em7 - Dm7 - Cmaj7).
+    3. Línea de 808 sub-bass cálido y envolvente.
+    4. Textura analógica de vinilo y cinta lo-fi.
+    Masterizado específicamente para ducking suave bajo la voz sin competir con la inteligibilidad.
     """
     n = int(sr * duration_seconds)
     if n <= 0:
         return np.zeros(0, dtype=np.float32)
 
     t = np.arange(n, dtype=np.float32) / sr
+    sig = np.zeros(n, dtype=np.float32)
 
-    # Acordes de estudio Lo-Fi (F3, E3, D3, C3)
+    # 1. Armonía: Acordes Rhodes Lo-Fi (Fmaj7, Em7, Dm7, Cmaj7)
     chords = [
         [174.61, 220.00, 261.63, 329.63],  # Fmaj7
         [164.81, 196.00, 246.94, 293.66],  # Em7
@@ -330,16 +335,15 @@ def generate_lofi_background(
         [130.81, 164.81, 196.00, 246.94],  # Cmaj7
     ]
     roots = [87.31, 82.41, 73.42, 65.41]
-    bpm = 76.0
+    bpm = 78.0
     beat_dur = 60.0 / bpm
     bar_dur = beat_dur * 4.0
 
     bar_idx = (t / bar_dur).astype(int) % len(chords)
     t_in_bar = t % bar_dur
-    env = np.exp(-t_in_bar * 0.72, dtype=np.float32)
+    env = np.exp(-t_in_bar * 0.65, dtype=np.float32)
 
-    sig = np.zeros(n, dtype=np.float32)
-    vibrato = np.sin(2 * np.pi * 4.2 * t, dtype=np.float32) * 1.4
+    vibrato = np.sin(2 * np.pi * 4.5 * t, dtype=np.float32) * 1.5
 
     for b in range(len(chords)):
         mask = (bar_idx == b)
@@ -350,19 +354,69 @@ def generate_lofi_background(
         vib_m = vibrato[mask]
         chord_val = np.zeros(np.sum(mask), dtype=np.float32)
         for f in chords[b]:
-            chord_val += np.sin(2 * np.pi * (f + vib_m) * t_m, dtype=np.float32) * 0.11
-        # Segundo armónico cálido
-        chord_val += np.sin(4 * np.pi * (chords[b][0] + vib_m) * t_m, dtype=np.float32) * 0.035
-        # Sub-bass
-        root_val = np.sin(2 * np.pi * roots[b] * t_m, dtype=np.float32) * 0.18 * np.exp(-(t_in_bar[mask]) * 0.42, dtype=np.float32)
+            chord_val += np.sin(2 * np.pi * (f + vib_m) * t_m, dtype=np.float32) * 0.08
+        chord_val += np.sin(4 * np.pi * (chords[b][0] + vib_m) * t_m, dtype=np.float32) * 0.025
+        # 808 Sub-bass armónico
+        root_val = np.sin(2 * np.pi * roots[b] * t_m, dtype=np.float32) * 0.14 * np.exp(-(t_in_bar[mask]) * 0.35, dtype=np.float32)
         sig[mask] = (chord_val * env_m + root_val)
 
-    # Textura sutil de cinta analógica / vinilo
+    # 2. Generación procedural de batería viral (Boom-Bap / Lo-Fi Drums)
+    drums = np.zeros(n, dtype=np.float32)
     rng = np.random.default_rng(42)
-    vinyl = rng.standard_normal(n).astype(np.float32) * 0.012
 
-    # Saturación analógica suave y escala de ganancia
-    sig = np.tanh((sig + vinyl) * 1.5) * gain
+    # Samples de un solo golpe
+    # Kick
+    k_len = int(sr * 0.22)
+    tk = np.arange(k_len, dtype=np.float32) / sr
+    f_kick = 130 * np.exp(-tk * 30) + 42
+    kick_sample = np.sin(2 * np.pi * np.cumsum(f_kick) / sr) * np.exp(-tk * 12) * 0.55
+
+    # Snare
+    s_len = int(sr * 0.18)
+    ts = np.arange(s_len, dtype=np.float32) / sr
+    snare_tone = np.sin(2 * np.pi * 210 * ts) * np.exp(-ts * 24) * 0.30
+    snare_noise = rng.standard_normal(s_len).astype(np.float32) * np.exp(-ts * 16) * 0.28
+    snare_sample = (snare_tone + snare_noise) * 0.65
+
+    # Hi-Hat
+    h_len = int(sr * 0.05)
+    th = np.arange(h_len, dtype=np.float32) / sr
+    hat_sample = rng.standard_normal(h_len).astype(np.float32) * np.exp(-th * 70) * 0.18
+
+    # Colocar golpes en la cuadrícula de tiempo
+    num_bars = int(duration_seconds / bar_dur) + 2
+    for bar in range(num_bars):
+        bar_start = bar * bar_dur
+        # Kicks en beat 1 y beat 3.5 (sincopado)
+        for beat_offset in [0.0, beat_dur * 2.5]:
+            pos = int((bar_start + beat_offset) * sr)
+            if 0 <= pos < n:
+                end_p = min(n, pos + k_len)
+                drums[pos:end_p] += kick_sample[: end_p - pos]
+
+        # Snares en beat 2 y beat 4
+        for beat_offset in [beat_dur * 1.0, beat_dur * 3.0]:
+            pos = int((bar_start + beat_offset) * sr)
+            if 0 <= pos < n:
+                end_p = min(n, pos + s_len)
+                drums[pos:end_p] += snare_sample[: end_p - pos]
+
+        # Hi-hats en semicorcheas (16th notes con velocity swing)
+        step_16th = beat_dur / 4.0
+        for step in range(16):
+            swing = 0.015 if (step % 2 == 1) else 0.0
+            vel = 1.0 if (step % 4 == 0) else (0.65 if (step % 2 == 0) else 0.45)
+            pos = int((bar_start + step * step_16th + swing) * sr)
+            if 0 <= pos < n:
+                end_p = min(n, pos + h_len)
+                drums[pos:end_p] += (hat_sample * vel)[: end_p - pos]
+
+    # 3. Textura analógica de vinilo
+    vinyl = rng.standard_normal(n).astype(np.float32) * 0.008
+
+    # 4. Mezcla final con saturación analógica suave y escala de ganancia
+    full_mix = sig + drums * 0.65 + vinyl
+    return np.tanh(full_mix * 1.4) * gain
 
     # Fade in / fade out suave de 1.8 segundos
     fade = min(int(sr * 1.8), n // 4)

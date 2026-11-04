@@ -81,7 +81,7 @@ def polish_video(
         overlay_inputs: list[tuple[Path, float, float, int]] = []
         # Tupla: (path, start_time, end_time, y_position)
 
-        # 1. Hook Card (0.1s a 3.6s)
+        # 1. Hook Card de Apertura (0.0s a 3.6s)
         hook_png = workdir / "hook_card.png"
         clean_hook = hook_badge_text.replace("⚠️", "").replace("🚨", "").strip() or copilot_plan["hook_headline"]
         category_tag = copilot_plan["hook_category"]
@@ -90,17 +90,20 @@ def polish_video(
             headline=clean_hook,
             out_path=hook_png,
         )
-        overlay_inputs.append((hook_png, 0.10, 3.60, 110))
+        overlay_inputs.append((hook_png, 0.00, 3.60, 110))
 
-        # Determinar timestamps de transición
-        first_form = copilot_plan["formulas"][0] if copilot_plan["formulas"] else None
-        t_form_start = first_form["start"] if first_form else min(dur - 20.0, 75.5)
-        t_form_end = first_form["end"] if first_form else min(dur - 10.0, 90.5)
+        # 2. B-Roll Hiperrealista 1: Sala de Museo (2.0s a 5.5s)
+        broll_museum_src = settings.root / "assets" / "broll" / "museum_hall.jpg"
+        if broll_museum_src.exists():
+            broll_m_png = workdir / "broll_museum.png"
+            cards.create_broll_card(
+                image_path=broll_museum_src,
+                caption="🏛️ CONTEXTO: MUSEO VISITADO",
+                out_path=broll_m_png,
+            )
+            overlay_inputs.append((broll_m_png, 2.00, 5.50, 120))
 
-        ans_info = copilot_plan.get("answer")
-        t_ans_start = ans_info["start"] if ans_info else max(0.0, cta_start - 3.5)
-
-        # 2. Tarjeta Estratégica del Enunciado (Smart Split-Screen: 3.6s hasta la fórmula)
+        # 3. Tarjeta Estratégica del Enunciado (Split-Screen Compacto y Alto Contraste)
         prob_png = workdir / "problem_statement_card.png"
         cards.create_problem_statement_card(
             subject_tag=category_tag,
@@ -112,43 +115,70 @@ def polish_video(
             data_chips=["Vol. Total = 42 L", "P1 = S/. 5", "P2 = S/. 8", "Pm = S/. 7", "Hallar: V2 = ?"],
             out_path=prob_png,
         )
-        t_prob_end = round(max(4.0, t_form_start - 0.4), 2)
-        if t_prob_end > 3.8:
-            overlay_inputs.append((prob_png, 3.60, t_prob_end, 100))
+        # Mostrar enunciado antes y después del segundo B-roll hasta la fórmula
+        overlay_inputs.append((prob_png, 5.50, 9.50, 100))
 
-        # 3. Tarjetas de Fórmula Matemática en LaTeX puro GIGANTE
-        for f_idx, f_entry in enumerate(copilot_plan["formulas"]):
-            form_png = workdir / f"formula_card_{f_idx}.png"
-            cards.create_math_formula_card(
-                formula_title=f_entry["title"],
-                formula_latex=f_entry["latex"],
-                out_path=form_png,
+        # 4. B-Roll Hiperrealista 2: Mezcla de Productos Químicos (9.5s a 14.5s)
+        broll_chem_src = settings.root / "assets" / "broll" / "chemistry_beakers.jpg"
+        if broll_chem_src.exists():
+            broll_c_png = workdir / "broll_chem.png"
+            cards.create_broll_card(
+                image_path=broll_chem_src,
+                caption="🧪 SITUACIÓN: MEZCLA DE PRODUCTOS (S/. 5 Y S/. 8)",
+                out_path=broll_c_png,
             )
-            overlay_inputs.append((form_png, f_entry["start"], f_entry["end"], 110))
+            overlay_inputs.append((broll_c_png, 9.50, 14.50, 120))
 
-        # 4. Tarjeta de Clarificación Paso a Paso (Desde fin de fórmula hasta la respuesta)
-        if t_ans_start > (t_form_end + 3.0):
-            step_png = workdir / "step_clarification_card.png"
-            cards.create_step_clarification_card(
-                step_title="RESOLUCIÓN PASO A PASO: PRECIO MEDIO",
-                step_latex=r"7 = \frac{5(42 - V_2) + 8V_2}{42} \implies 294 = 210 + 3V_2",
-                out_path=step_png,
-            )
-            t_step_start = round(t_form_end + 0.3, 2)
-            t_step_end = round(max(t_step_start + 1.0, t_ans_start - 0.4), 2)
-            overlay_inputs.append((step_png, t_step_start, t_step_end, 110))
+        # Continuación del Enunciado mientras el docente plantea en la pizarra
+        overlay_inputs.append((prob_png, 14.50, 75.00, 100))
 
-        # 5. Tarjeta de Clave / Respuesta en LaTeX GIGANTE
-        if ans_info:
-            ans_png = workdir / "solution_card.png"
-            cards.create_solution_card(
-                result_text=ans_info["text"],
-                out_path=ans_png,
-                result_latex=ans_info["latex"],
-            )
-            overlay_inputs.append((ans_png, ans_info["start"], ans_info["end"], 120))
+        # 5. Progresión Dinámica e Interactiva de Ecuaciones (Estilo Manim)
+        # Etapa 1 (75.5s a 86.5s): Fórmula Maestra Teórica
+        f1_png = workdir / "formula_stage1.png"
+        cards.create_math_formula_card(
+            formula_title="FÓRMULA CLAVE: PRECIO MEDIO",
+            formula_latex=r"P_m = \frac{P_1 V_1 + P_2 V_2}{V_1 + V_2}",
+            out_path=f1_png,
+        )
+        overlay_inputs.append((f1_png, 75.50, 86.50, 110))
 
-        # 6. Tarjeta de CTA Final (Skool / Academia Zenit)
+        # Etapa 2 (86.5s a 105.0s): Sustitución de Variables en Vivo
+        f2_png = workdir / "formula_stage2.png"
+        cards.create_math_formula_card(
+            formula_title="SUSTITUCIÓN DE VARIABLES",
+            formula_latex=r"7 = \frac{5(42 - V_2) + 8V_2}{42}",
+            out_path=f2_png,
+        )
+        overlay_inputs.append((f2_png, 86.50, 105.00, 110))
+
+        # Etapa 3 (105.0s a 146.0s): Despeje Algebraico Paso a Paso
+        f3_png = workdir / "formula_stage3.png"
+        cards.create_step_clarification_card(
+            step_title="DESPEJE ALGEBRAICO",
+            step_latex=r"294 = 210 + 3V_2 \Rightarrow 84 = 3V_2",
+            out_path=f3_png,
+        )
+        overlay_inputs.append((f3_png, 105.00, 146.00, 110))
+
+        # Etapa 4 (146.0s a 156.0s): Reducción Directa
+        f4_png = workdir / "formula_stage4.png"
+        cards.create_math_formula_card(
+            formula_title="SOLUCIÓN CALCULADA",
+            formula_latex=r"V_2 = \frac{84}{3} = 28\text{ L}",
+            out_path=f4_png,
+        )
+        overlay_inputs.append((f4_png, 146.00, 156.00, 110))
+
+        # Etapa 5 (156.0s a 159.2s): Badge GIGANTE de Clave Verificada en LaTeX
+        ans_png = workdir / "solution_card.png"
+        cards.create_solution_card(
+            result_text="V2 = 28 L",
+            out_path=ans_png,
+            result_latex=r"\mathbf{V_2 = 28\text{ L} \quad (CLAVE)}",
+        )
+        overlay_inputs.append((ans_png, 156.00, 159.20, 110))
+
+        # Etapa 6 (159.2s a Fin): Tarjeta de Conversión VIP Skool
         cta_png = workdir / "cta_card.png"
         cta_action = (
             custom_cta_phrase
@@ -158,10 +188,10 @@ def polish_video(
         cards.create_skool_cta_card(
             community_name=cta_target or "ACADEMIA ZENIT",
             action_text=cta_action,
-            badge_label="MÁS EJERCICIOS Y CURSOS",
+            badge_label="MÁS EJERCICIOS Y CURSOS 🚀",
             out_path=cta_png,
         )
-        overlay_inputs.append((cta_png, cta_start, dur, 1430))
+        overlay_inputs.append((cta_png, 159.20, dur, 1400))
 
         if on_progress:
             on_progress(0.30, "Generando diseño sonoro procedural Lo-Fi + Earshot y sincronización...")
@@ -195,26 +225,26 @@ def polish_video(
                 if idx_end > idx_start:
                     mixed_audio[idx_start:idx_end] += sfx_samples[: idx_end - idx_start] * gain
 
-        # SFX Hook
+        # SFX Hook Apertura
         _inject_sfx(hook_sfx, 0.08, gain=0.75)
-
-        # SFX Planteamiento del Problema
-        _inject_sfx("plastic_tap", 3.65, gain=0.60)
-
-        # SFX Fórmulas en LaTeX
-        for f_entry in copilot_plan["formulas"]:
-            _inject_sfx("bright_swish", f_entry["start"], gain=0.65)
-
-        # SFX Paso a paso
-        if t_ans_start > (t_form_end + 3.0):
-            _inject_sfx("pop", t_form_end + 0.35, gain=0.55)
-
-        # SFX Clave
-        if ans_info:
-            _inject_sfx("celesta_chime", ans_info["start"], gain=0.70)
-
-        # SFX CTA Skool
-        _inject_sfx("cash_ding", cta_start, gain=0.85)
+        # SFX B-roll Museo
+        _inject_sfx("camera_shutter", 2.05, gain=0.65)
+        # SFX Enunciado
+        _inject_sfx("plastic_tap", 5.55, gain=0.60)
+        # SFX B-roll Mezcla Químicos
+        _inject_sfx("bright_swish", 9.55, gain=0.65)
+        # SFX Fórmula Teórica (Etapa 1)
+        _inject_sfx("bright_swish", 75.55, gain=0.70)
+        # SFX Sustitución (Etapa 2)
+        _inject_sfx("plastic_tap", 86.55, gain=0.60)
+        # SFX Despeje (Etapa 3)
+        _inject_sfx("pop", 105.05, gain=0.60)
+        # SFX Solución (Etapa 4)
+        _inject_sfx("cut_hit", 146.05, gain=0.65)
+        # SFX Clave Verificada (Etapa 5)
+        _inject_sfx("celesta_chime", 156.05, gain=0.80)
+        # SFX CTA Skool (Etapa 6)
+        _inject_sfx("cash_ding", 159.25, gain=0.85)
 
         # Normalizar master audio
         peak = np.max(np.abs(mixed_audio))
@@ -227,30 +257,39 @@ def polish_video(
         if on_progress:
             on_progress(0.45, "Generando subtítulos dinámicos palabra por palabra (con corte anti-colisión)...")
 
-        # 5) Generar subtítulos .ass estilo Alex Hormozi (Safe Zone + Supresión anti-colisión)
+        # 5) Generar subtítulos .ass estilo Alex Hormozi (Safe Zone + Supresión anti-colisión estricta)
         ass_path = workdir / "subtitles.ass"
         ass_subtitles.build_ass_subtitles(
             words=words,
             out_path=ass_path,
             words_per_line=3,
             font_size=46,
-            margin_v=480,  # Ubicación segura en tercio inferior, muy por encima del CTA
-            suppress_after_time=cta_start,  # CERO colisión con la tarjeta de Skool
+            margin_v=440,  # Ubicación segura en tercio inferior
+            suppress_after_time=159.0,  # CERO colisión con la tarjeta de Skool que entra en 159.2s
         )
 
         if on_progress:
             on_progress(0.60, "Configurando motor de composición gráfica y barra de retención...")
 
         # 6) Armar filter_complex con todas las capas gráficas
-        # Base: escala/recorte a 1080x1920
-        # + Barra de retención superior continua
-        # + Overlays PNG con alpha
-        # + Subtítulos ASS
+        # Recuadre dinámico cinematográfico (Punch-In Zoom 1.15x) en momentos clave:
+        # 0.0s a 3.6s (Gancho del orador), 75.5s a 84.5s (Presentación de fórmula), 156.0s a 159.2s (Clave final)
+        # Plano general 1.0x nítido durante la explicación y escritura en la pizarra
         ass_filter_path = str(ass_path).replace("\\", "/").replace(":", "\\:")
 
         filter_chains = []
-        filter_chains.append(f"[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920[vbase]")
-        filter_chains.append(f"[vbase]drawbox=x=0:y=0:w='iw*(t/{dur:.2f})':h=14:color=#FFE45E@1:t=fill[vpbar]")
+        filter_chains.append(
+            "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,split=2[v_raw_base][v_crop]"
+        )
+        filter_chains.append(
+            "[v_crop]crop=iw*0.86:ih*0.86:iw*0.07:ih*0.07,scale=1080:1920[v_zoom]"
+        )
+        filter_chains.append(
+            "[v_raw_base][v_zoom]overlay=0:0:enable='between(t,0,3.60)+between(t,75.5,84.5)+between(t,156.0,159.2)'[vbase]"
+        )
+        filter_chains.append(
+            f"[vbase]drawbox=x=0:y=0:w='iw*(t/{dur:.2f})':h=14:color=#FFE45E@1:t=fill[vpbar]"
+        )
 
         prev_label = "vpbar"
         input_args = ["-i", str(src), "-i", str(master_wav)]
@@ -259,11 +298,16 @@ def polish_video(
             in_idx = 2 + idx
             input_args.extend(["-i", str(png_path)])
             out_label = f"vlay{idx}"
-            # Animación de entrada y transición cinematográfica (0.28s)
-            if y_pos >= 1000:
-                y_expr = f"if(lt(t,{t_in:.2f}+0.28), {y_pos} + (1.0 - (t-{t_in:.2f})/0.28)*130, {y_pos})"
+            # Animación de entrada elegante sin recortes fuera de pantalla
+            if t_in < 0.2:
+                # El hook de apertura debe estar perfectamente posicionado desde el fotograma 0 sin corte superior
+                y_expr = f"{y_pos}"
+            elif y_pos >= 1000:
+                # El CTA inferior sube suavemente
+                y_expr = f"if(lt(t,{t_in:.2f}+0.25), {y_pos} + (1.0 - (t-{t_in:.2f})/0.25)*80, {y_pos})"
             else:
-                y_expr = f"if(lt(t,{t_in:.2f}+0.28), {y_pos} - (1.0 - (t-{t_in:.2f})/0.28)*120, {y_pos})"
+                # Las tarjetas superiores descienden suavemente
+                y_expr = f"if(lt(t,{t_in:.2f}+0.25), {y_pos} - (1.0 - (t-{t_in:.2f})/0.25)*40, {y_pos})"
 
             filter_chains.append(
                 f"[{prev_label}][{in_idx}:v]overlay=x=(W-w)/2:y='{y_expr}':enable='between(t,{t_in:.2f},{t_out:.2f})'[{out_label}]"

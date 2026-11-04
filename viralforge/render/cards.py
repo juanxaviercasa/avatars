@@ -200,8 +200,8 @@ def create_math_formula_card(
     formula_title: str,
     formula_latex: str,
     out_path: str | Path,
-    width: int = 1020,
-    height: int = 330,
+    width: int = 1000,
+    height: int = 260,
 ) -> Path:
     """
     Crea una tarjeta flotante GIGANTE con la fórmula matemática clave renderizada en LaTeX puro.
@@ -214,37 +214,37 @@ def create_math_formula_card(
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    f_sub = _get_font(24, bold=True)
-    f_math = _get_font(42, bold=True)
+    f_sub = _get_font(22, bold=True)
+    f_math = _get_font(52, bold=True)
 
     # Fondo azul/cian tecnológico con esquinas redondeadas y resplandor
     bg_color = (8, 18, 38, 248)
     cyan_glow = (56, 189, 248, 240)  # #38bdf8
-    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=26, fill=bg_color, outline=cyan_glow, width=4)
+    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=24, fill=bg_color, outline=cyan_glow, width=3)
 
     # Header / Píldora
     title_text = _clean_text(formula_title).upper().strip()
-    draw.text((36, 18), title_text, font=f_sub, fill=(56, 189, 248, 255))
+    draw.text((32, 16), title_text, font=f_sub, fill=(56, 189, 248, 255))
 
     # Renderizado matemático LaTeX / KaTeX de alta definición (Escalado gigante)
     try:
         from . import latex_renderer
         clean_latex = formula_latex.strip()
         ltx_img = latex_renderer.render_latex_to_image(clean_latex, color="white", fontsize=60, dpi=280)
-        target_w = width - 80
-        target_h = height - 72
+        target_w = width - 60
+        target_h = height - 60
         ratio = min(target_w / ltx_img.width, target_h / ltx_img.height)
         new_w = max(1, int(ltx_img.width * ratio))
         new_h = max(1, int(ltx_img.height * ratio))
         ltx_img = ltx_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
         paste_x = (width - new_w) // 2
-        paste_y = 54 + (height - 54 - new_h) // 2
+        paste_y = 48 + (height - 48 - new_h) // 2
         img.paste(ltx_img, (paste_x, paste_y), ltx_img)
     except Exception as err:
         expr = _clean_text(formula_latex)
         e_bbox = draw.textbbox((0, 0), expr, font=f_math)
         e_w = e_bbox[2] - e_bbox[0]
-        draw.text(((width - e_w) // 2, 95), expr, font=f_math, fill=(255, 255, 255, 255))
+        draw.text(((width - e_w) // 2, 85), expr, font=f_math, fill=(255, 255, 255, 255))
 
     img.save(out_path, format="PNG")
     return out_path
@@ -254,8 +254,8 @@ def create_solution_card(
     result_text: str,
     out_path: str | Path,
     result_latex: str | None = None,
-    width: int = 1020,
-    height: int = 290,
+    width: int = 1000,
+    height: int = 240,
 ) -> Path:
     """
     Crea una tarjeta verde esmeralda destacando la clave / resultado final en LaTeX puro GIGANTE.
@@ -266,28 +266,28 @@ def create_solution_card(
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    f_lbl = _get_font(24, bold=True)
-    f_res = _get_font(56, bold=True)
+    f_lbl = _get_font(22, bold=True)
+    f_res = _get_font(68, bold=True)
 
     # Fondo verde esmeralda oscuro con borde brillante
     bg_color = (6, 35, 22, 248)
     green_glow = (52, 211, 153, 245)  # #34d399
-    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=26, fill=bg_color, outline=green_glow, width=4)
+    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=24, fill=bg_color, outline=green_glow, width=3)
 
-    draw.text((36, 18), "RESPUESTA VERIFICADA DEL EXAMEN", font=f_lbl, fill=green_glow)
+    draw.text((32, 16), "RESPUESTA VERIFICADA DEL EXAMEN", font=f_lbl, fill=green_glow)
 
     if result_latex:
         try:
             from . import latex_renderer
-            ltx_img = latex_renderer.render_latex_to_image(result_latex, color="#FFE45E", fontsize=64, dpi=280)
-            target_w = width - 80
-            target_h = height - 68
+            ltx_img = latex_renderer.render_latex_to_image(result_latex, color="#FFE45E", fontsize=68, dpi=280)
+            target_w = width - 60
+            target_h = height - 58
             ratio = min(target_w / ltx_img.width, target_h / ltx_img.height)
             new_w = max(1, int(ltx_img.width * ratio))
             new_h = max(1, int(ltx_img.height * ratio))
             ltx_img = ltx_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
             paste_x = (width - new_w) // 2
-            paste_y = 52 + (height - 52 - new_h) // 2
+            paste_y = 48 + (height - 48 - new_h) // 2
             img.paste(ltx_img, (paste_x, paste_y), ltx_img)
             img.save(out_path, format="PNG")
             return out_path
@@ -297,7 +297,7 @@ def create_solution_card(
     res_clean = _clean_text(result_text)
     r_bbox = draw.textbbox((0, 0), res_clean, font=f_res)
     r_w = r_bbox[2] - r_bbox[0]
-    draw.text(((width - r_w) // 2, 90), res_clean, font=f_res, fill=(255, 228, 94, 255))
+    draw.text(((width - r_w) // 2, 75), res_clean, font=f_res, fill=(255, 228, 94, 255))
 
     img.save(out_path, format="PNG")
     return out_path
@@ -309,12 +309,12 @@ def create_problem_statement_card(
     problem_lines: list[str],
     data_chips: list[str],
     out_path: str | Path,
-    width: int = 1020,
-    height: int = 340,
+    width: int = 980,
+    height: int = 245,
 ) -> Path:
     """
-    Crea una tarjeta panorámica de planteamiento del problema (Split-screen estratégico).
-    Permite al estudiante leer el enunciado y datos mientras el docente explica en la pizarra.
+    Crea una tarjeta panorámica de planteamiento del problema con auto-ajuste de espacio (Split-screen).
+    Contraste ultra-alto: píldora dorada con texto oscuro y datos clave en chips resaltados sin espacios vacíos.
     """
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -322,44 +322,103 @@ def create_problem_statement_card(
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    f_tag = _get_font(20, bold=True)
+    f_tag = _get_font(21, bold=True)
     f_title = _get_font(24, bold=True)
-    f_text = _get_font(26, bold=False)
-    f_chip = _get_font(21, bold=True)
+    f_text = _get_font(27, bold=True)
+    f_chip = _get_font(22, bold=True)
 
-    # Fondo glassmorphism oscuro con resplandor dorado
-    bg_color = (12, 17, 30, 245)
-    border_color = (255, 228, 94, 220)
-    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=26, fill=bg_color, outline=border_color, width=3)
+    # Fondo glassmorphism oscuro con resplandor dorado intenso
+    bg_color = (10, 15, 28, 250)
+    border_color = (255, 228, 94, 240)  # Oro brillante #FFE45E
+    draw.rounded_rectangle([3, 3, width - 3, height - 3], radius=22, fill=bg_color, outline=border_color, width=3)
 
-    # 1. Píldora superior de materia
+    # 1. Píldora superior de materia: Fondo Oro Sólido + Texto Oscuro para contraste 18:1
     tag_clean = _clean_text(subject_tag).upper()
     tb = draw.textbbox((0, 0), tag_clean, font=f_tag)
     tw = tb[2] - tb[0]
-    draw.rounded_rectangle([32, 16, 32 + tw + 28, 48], radius=14, fill=(255, 228, 94, 35), outline=(255, 228, 94, 180), width=1)
-    draw.text((46, 22), tag_clean, font=f_tag, fill=(255, 228, 94, 255))
+    p_x1 = 28
+    p_y1 = 14
+    p_x2 = p_x1 + tw + 24
+    p_y2 = p_y1 + 32
+    draw.rounded_rectangle([p_x1, p_y1, p_x2, p_y2], radius=16, fill=(255, 228, 94, 255))
+    draw.text((p_x1 + 12, p_y1 + 4), tag_clean, font=f_tag, fill=(11, 15, 25, 255))
 
-    # Título a la derecha
+    # Título a la derecha en blanco nítido
     t_clean = _clean_text(problem_title).upper()
-    draw.text((32 + tw + 45, 22), t_clean, font=f_title, fill=(255, 255, 255, 240))
+    draw.text((p_x2 + 20, p_y1 + 4), t_clean, font=f_title, fill=(255, 255, 255, 255))
 
-    # 2. Líneas del enunciado (Tipografía limpia y legible)
-    y_text = 66
-    for line in problem_lines[:3]:
+    # 2. Líneas del enunciado en blanco puro de alta legibilidad
+    y_text = 58
+    for line in problem_lines[:2]:
         l_clean = _clean_text(line)
-        draw.text((36, y_text), l_clean, font=f_text, fill=(240, 245, 255, 255))
-        y_text += 40
+        draw.text((30, y_text), l_clean, font=f_text, fill=(255, 255, 255, 255))
+        y_text += 36
 
-    # 3. Chips de datos extraídos en la base
-    chip_x = 36
-    chip_y = height - 56
+    # 3. Chips de datos clave en la base: Píldoras compactas azul marino con borde cian neón
+    chip_x = 28
+    chip_y = height - 52
     for chip in data_chips[:5]:
         c_clean = _clean_text(chip)
         cb = draw.textbbox((0, 0), c_clean, font=f_chip)
         cw = cb[2] - cb[0] + 24
-        draw.rounded_rectangle([chip_x, chip_y, chip_x + cw, chip_y + 36], radius=12, fill=(38, 189, 248, 30), outline=(56, 189, 248, 200), width=1)
+        draw.rounded_rectangle([chip_x, chip_y, chip_x + cw, chip_y + 36], radius=12, fill=(14, 30, 56, 255), outline=(56, 189, 248, 240), width=2)
         draw.text((chip_x + 12, chip_y + 6), c_clean, font=f_chip, fill=(56, 189, 248, 255))
-        chip_x += cw + 14
+        chip_x += cw + 12
+
+    img.save(out_path, format="PNG")
+    return out_path
+
+
+def create_broll_card(
+    image_path: str | Path,
+    caption: str,
+    out_path: str | Path,
+    width: int = 720,
+    height: int = 420,
+) -> Path:
+    """
+    Crea una ventana flotante de B-roll cinematográfico hiperrealista con bordes redondeados y pie de contexto.
+    """
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+
+    # Cargar y ajustar imagen B-roll
+    raw_img = Image.open(image_path).convert("RGBA")
+    pad = 8
+    target_img_w = width - (pad * 2)
+    target_img_h = height - (pad * 2)
+
+    # Crop/fit manteniendo aspecto
+    ratio = max(target_img_w / raw_img.width, target_img_h / raw_img.height)
+    resized_w = int(raw_img.width * ratio)
+    resized_h = int(raw_img.height * ratio)
+    resized_img = raw_img.resize((resized_w, resized_h), Image.Resampling.LANCZOS)
+    crop_x = (resized_w - target_img_w) // 2
+    crop_y = (resized_h - target_img_h) // 2
+    cropped = resized_img.crop((crop_x, crop_y, crop_x + target_img_w, crop_y + target_img_h))
+
+    # Máscara con esquinas redondeadas
+    mask = Image.new("L", (target_img_w, target_img_h), 0)
+    mask_draw = ImageDraw.Draw(mask)
+    mask_draw.rounded_rectangle([0, 0, target_img_w, target_img_h], radius=20, fill=255)
+
+    img.paste(cropped, (pad, pad), mask)
+
+    # Borde brillante exterior
+    draw.rounded_rectangle([2, 2, width - 2, height - 2], radius=24, outline=(255, 228, 94, 250), width=4)
+
+    # Píldora inferior de contexto / pie de foto
+    f_cap = _get_font(21, bold=True)
+    cap_clean = _clean_text(caption).upper()
+    cb = draw.textbbox((0, 0), cap_clean, font=f_cap)
+    cw = cb[2] - cb[0] + 32
+    cx1 = (width - cw) // 2
+    cy1 = height - 52
+    draw.rounded_rectangle([cx1, cy1, cx1 + cw, cy1 + 38], radius=14, fill=(11, 15, 25, 240), outline=(255, 228, 94, 220), width=2)
+    draw.text((cx1 + 16, cy1 + 8), cap_clean, font=f_cap, fill=(255, 228, 94, 255))
 
     img.save(out_path, format="PNG")
     return out_path
@@ -369,8 +428,8 @@ def create_step_clarification_card(
     step_title: str,
     step_latex: str,
     out_path: str | Path,
-    width: int = 1020,
-    height: int = 280,
+    width: int = 1000,
+    height: int = 240,
 ) -> Path:
     """
     Tarjeta de clarificación paso a paso para el desarrollo algebraico.
@@ -390,21 +449,21 @@ def create_step_clarification_card(
 
     # Header
     title_text = _clean_text(step_title).upper().strip()
-    draw.text((36, 18), title_text, font=f_sub, fill=(192, 132, 252, 255))
+    draw.text((32, 16), title_text, font=f_sub, fill=(192, 132, 252, 255))
 
     # LaTeX gigante
     try:
         from . import latex_renderer
         clean_latex = step_latex.strip()
         ltx_img = latex_renderer.render_latex_to_image(clean_latex, color="white", fontsize=56, dpi=260)
-        target_w = width - 80
-        target_h = height - 68
+        target_w = width - 60
+        target_h = height - 58
         ratio = min(target_w / ltx_img.width, target_h / ltx_img.height)
         new_w = max(1, int(ltx_img.width * ratio))
         new_h = max(1, int(ltx_img.height * ratio))
         ltx_img = ltx_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
         paste_x = (width - new_w) // 2
-        paste_y = 52 + (height - 52 - new_h) // 2
+        paste_y = 48 + (height - 48 - new_h) // 2
         img.paste(ltx_img, (paste_x, paste_y), ltx_img)
     except Exception:
         pass
