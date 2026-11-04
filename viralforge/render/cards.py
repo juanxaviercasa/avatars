@@ -229,25 +229,27 @@ def create_math_formula_card(
     draw.rounded_rectangle([28, 14, 28 + p_w, 50], radius=14, fill=(255, 255, 255, 255), outline=(56, 189, 248, 255), width=2)
     draw.text((46, 21), title_text, font=f_sub, fill=(2, 132, 199, 255))  # #0284c7
 
-    # Renderizado matemático LaTeX / KaTeX de alta definición (Escalado gigante)
+    # Renderizado matemático LaTeX / KaTeX de alta definición (Escalado equilibrado, ni sobredimensionado ni recortado)
     try:
         from . import latex_renderer
         clean_latex = formula_latex.strip()
-        ltx_img = latex_renderer.render_latex_to_image(clean_latex, color="white", fontsize=64, dpi=280)
-        target_w = width - 50
-        target_h = height - 66
+        ltx_img = latex_renderer.render_latex_to_image(clean_latex, color="white", fontsize=58, dpi=240)
+        target_w = width - 70
+        target_h = height - 70
         ratio = min(target_w / ltx_img.width, target_h / ltx_img.height)
+        # Cap armónico para que fórmulas cortas no se sobredimensionen ni dominen la pantalla
+        ratio = min(ratio, 1.25)
         new_w = max(1, int(ltx_img.width * ratio))
         new_h = max(1, int(ltx_img.height * ratio))
         ltx_img = ltx_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
         paste_x = (width - new_w) // 2
-        paste_y = 52 + (height - 52 - new_h) // 2
+        paste_y = 50 + (height - 50 - new_h) // 2
         img.paste(ltx_img, (paste_x, paste_y), ltx_img)
     except Exception as err:
         expr = _clean_text(formula_latex)
         e_bbox = draw.textbbox((0, 0), expr, font=f_math)
         e_w = e_bbox[2] - e_bbox[0]
-        draw.text(((width - e_w) // 2, 100), expr, font=f_math, fill=(255, 255, 255, 255))
+        draw.text(((width - e_w) // 2, 90), expr, font=f_math, fill=(255, 255, 255, 255))
 
     img.save(out_path, format="PNG")
     return out_path
@@ -257,12 +259,12 @@ def create_solution_card(
     result_text: str,
     out_path: str | Path,
     result_latex: str | None = None,
-    width: int = 1020,
-    height: int = 320,
+    width: int = 980,
+    height: int = 280,
 ) -> Path:
     """
-    Crea una tarjeta verde esmeralda destacando la clave / resultado final en formato GIGANTE.
-    Llena el espacio con un diseño de campeonato: Píldora de validación, fórmula gigante y clave.
+    Crea una tarjeta verde esmeralda destacando la clave / resultado final en formato EQUILIBRADO.
+    Ni excesivamente gigante ni pequeña: diseño armónico con iconos vectoriales (cero glifos '?' rotos).
     """
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -270,39 +272,44 @@ def create_solution_card(
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    f_lbl = _get_font(23, bold=True)
-    f_res = _get_font(84, bold=True)
-    f_tag = _get_font(25, bold=True)
+    f_lbl = _get_font(21, bold=True)
+    f_res = _get_font(72, bold=True)
+    f_tag = _get_font(22, bold=True)
 
     # Fondo verde esmeralda oscuro con borde brillante de oro
     bg_color = (5, 34, 20, 252)
     gold_border = (255, 228, 94, 255)  # Oro puro brillante
-    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=26, fill=bg_color, outline=gold_border, width=4)
+    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=24, fill=bg_color, outline=gold_border, width=3)
 
-    # 1. Header: Píldora superior "RESPUESTA VERIFICADA DEL EXAMEN" en BLANCO SÓLIDO (Contraste 20:1)
-    header_str = "🎯 RESPUESTA VERIFICADA DEL EXAMEN"
+    # 1. Header: Píldora superior en BLANCO SÓLIDO con icono diana vectorial (Cero '?')
+    header_str = "RESPUESTA VERIFICADA DEL EXAMEN"
     hb = draw.textbbox((0, 0), header_str, font=f_lbl)
     hw = hb[2] - hb[0]
-    p_x1 = (width - (hw + 36)) // 2
-    draw.rounded_rectangle([p_x1, 16, p_x1 + hw + 36, 50], radius=15, fill=(255, 255, 255, 255), outline=(52, 211, 153, 255), width=2)
-    draw.text((p_x1 + 18, 22), header_str, font=f_lbl, fill=(4, 120, 87, 255))
+    pill_w = hw + 64
+    p_x1 = (width - pill_w) // 2
+    draw.rounded_rectangle([p_x1, 14, p_x1 + pill_w, 46], radius=14, fill=(255, 255, 255, 255), outline=(52, 211, 153, 255), width=2)
+    # Icono vectorial de diana / target (cero problemas de fuentes)
+    icx, icy, ir = p_x1 + 22, 30, 10
+    draw.ellipse([icx - ir, icy - ir, icx + ir, icy + ir], fill=(239, 68, 68))
+    draw.ellipse([icx - ir * 0.65, icy - ir * 0.65, icx + ir * 0.65, icy + ir * 0.65], fill=(255, 255, 255))
+    draw.ellipse([icx - ir * 0.35, icy - ir * 0.35, icx + ir * 0.35, icy + ir * 0.35], fill=(239, 68, 68))
+    draw.text((p_x1 + 40, 19), header_str, font=f_lbl, fill=(4, 120, 87, 255))
 
-    # 2. Hero: Expresión de respuesta GIGANTE
+    # 2. Hero: Expresión de respuesta EQUILIBRADA (Ni exagerada ni pequeña)
     rendered_latex = False
     if result_latex:
         try:
             from . import latex_renderer
-            ltx_img = latex_renderer.render_latex_to_image(result_latex, color="#FFE45E", fontsize=90, dpi=280)
-            target_w = width - 60
-            target_h = height - 110
+            ltx_img = latex_renderer.render_latex_to_image(result_latex, color="#FFE45E", fontsize=60, dpi=240)
+            target_w = width - 160
+            target_h = height - 125
             ratio = min(target_w / ltx_img.width, target_h / ltx_img.height)
-            # Asegurar que no sea microscópica
-            ratio = max(ratio, 0.55) if ltx_img.height * ratio < 110 and ltx_img.width * 0.55 <= target_w else ratio
+            ratio = min(ratio, 1.15)  # Proporción armónica de campeonato
             new_w = max(1, int(ltx_img.width * ratio))
             new_h = max(1, int(ltx_img.height * ratio))
             ltx_img = ltx_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
             paste_x = (width - new_w) // 2
-            paste_y = 56 + (height - 110 - new_h) // 2
+            paste_y = 52 + (height - 105 - new_h) // 2
             img.paste(ltx_img, (paste_x, paste_y), ltx_img)
             rendered_latex = True
         except Exception:
@@ -310,21 +317,32 @@ def create_solution_card(
 
     if not rendered_latex:
         res_clean = _clean_text(result_text).upper()
-        f_hero = _get_font(92, bold=True)
-        r_bbox = draw.textbbox((0, 0), res_clean, font=f_hero)
+        r_bbox = draw.textbbox((0, 0), res_clean, font=f_res)
         r_w = r_bbox[2] - r_bbox[0]
-        # Glow / sombra dorada
-        draw.text(((width - r_w) // 2 + 3, 93), res_clean, font=f_hero, fill=(180, 120, 20, 255))
-        draw.text(((width - r_w) // 2, 90), res_clean, font=f_hero, fill=(255, 228, 94, 255))
+        draw.text(((width - r_w) // 2 + 2, 80), res_clean, font=f_res, fill=(180, 120, 20, 255))
+        draw.text(((width - r_w) // 2, 78), res_clean, font=f_res, fill=(255, 228, 94, 255))
 
-    # 3. Footer: Píldora inferior "CLAVE CORRECTA" en ORO SÓLIDO
-    footer_str = "✓ CLAVE CORRECTA VERIFICADA: V2 = 28 LITROS"
+    # 3. Footer: Píldora inferior en ORO SÓLIDO con icono check verde vectorial (Cero '?')
+    footer_str = "CLAVE CORRECTA VERIFICADA: V2 = 28 LITROS"
     fb = draw.textbbox((0, 0), footer_str, font=f_tag)
     fw = fb[2] - fb[0]
-    fp_x1 = (width - (fw + 36)) // 2
-    fp_y1 = height - 54
-    draw.rounded_rectangle([fp_x1, fp_y1, fp_x1 + fw + 36, fp_y1 + 38], radius=13, fill=(255, 228, 94, 255), outline=(217, 119, 6, 255), width=2)
-    draw.text((fp_x1 + 18, fp_y1 + 6), footer_str, font=f_tag, fill=(11, 15, 25, 255))
+    fp_w = fw + 64
+    fp_x1 = (width - fp_w) // 2
+    fp_y1 = height - 48
+    draw.rounded_rectangle([fp_x1, fp_y1, fp_x1 + fp_w, fp_y1 + 34], radius=13, fill=(255, 228, 94, 255), outline=(217, 119, 6, 255), width=2)
+    # Icono vectorial de checkmark verde (cero problemas de fuentes)
+    cicx, cicy, cir = fp_x1 + 20, fp_y1 + 17, 10
+    draw.ellipse([cicx - cir, cicy - cir, cicx + cir, cicy + cir], fill=(22, 163, 74))
+    chk_pts = [
+        (cicx - cir * 0.45, cicy + cir * 0.05),
+        (cicx - cir * 0.10, cicy + cir * 0.45),
+        (cicx + cir * 0.50, cicy - cir * 0.35),
+    ]
+    draw.line(chk_pts, fill=(255, 255, 255), width=2, joint="curve")
+    draw.text((fp_x1 + 38, fp_y1 + 6), footer_str, font=f_tag, fill=(11, 15, 25, 255))
+
+    img.save(out_path, format="PNG")
+    return out_path
 
     img.save(out_path, format="PNG")
     return out_path
@@ -351,8 +369,38 @@ def create_problem_statement_card(
 
     f_tag = _get_font(21, bold=True)
     f_title = _get_font(21, bold=True)
-    f_text = _get_font(33, bold=True)
-    f_chip = _get_font(23, bold=True)
+    f_text = _get_font(28, bold=True)
+    f_chip = _get_font(22, bold=True)
+
+    # Word wrapping inteligente para evitar cualquier corte horizontal
+    max_w = width - 64
+    wrapped_lines = []
+    for line in problem_lines:
+        words = _clean_text(line).split()
+        cur = []
+        for w in words:
+            test_line = " ".join(cur + [w])
+            b = draw.textbbox((0, 0), test_line, font=f_text)
+            if b[2] - b[0] <= max_w:
+                cur.append(w)
+            else:
+                if cur:
+                    wrapped_lines.append(" ".join(cur))
+                    cur = [w]
+                else:
+                    wrapped_lines.append(w)
+                    cur = []
+        if cur:
+            wrapped_lines.append(" ".join(cur))
+
+    # Altura dinámica según número de líneas para que nunca se desborde
+    n_lines = max(1, min(len(wrapped_lines), 3))
+    line_spacing = 38
+    req_h = 60 + (n_lines * line_spacing) + 58
+    if req_h > height:
+        height = req_h
+        img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(img)
 
     # Fondo glassmorphism oscuro con resplandor dorado intenso
     bg_color = (10, 16, 30, 252)
@@ -379,16 +427,15 @@ def create_problem_statement_card(
     draw.rounded_rectangle([tp_x1, p_y1, tp_x2, p_y2], radius=16, fill=(255, 255, 255, 255), outline=(56, 189, 248, 255), width=2)
     draw.text((tp_x1 + 14, p_y1 + 6), t_clean, font=f_title, fill=(2, 132, 199, 255))
 
-    # 2. Líneas del enunciado en blanco puro de alta legibilidad
-    y_text = 62
-    for line in problem_lines[:2]:
-        l_clean = _clean_text(line)
-        draw.text((32, y_text), l_clean, font=f_text, fill=(255, 255, 255, 255))
-        y_text += 42
+    # 2. Líneas del enunciado en blanco puro de alta legibilidad (Cero texto cortado)
+    y_text = 60
+    for line in wrapped_lines[:3]:
+        draw.text((32, y_text), line, font=f_text, fill=(255, 255, 255, 255))
+        y_text += line_spacing
 
     # 3. Chips de datos clave en la base: Píldoras en BLANCO SÓLIDO con texto cian oscuro
     chip_x = 28
-    chip_y = height - 54
+    chip_y = height - 52
     for chip in data_chips[:5]:
         c_clean = _clean_text(chip).replace("₁", "1").replace("₂", "2").replace("ₘ", "m")
         cb = draw.textbbox((0, 0), c_clean, font=f_chip)
@@ -511,8 +558,8 @@ def create_step_clarification_card(
 def create_volume_container_card(
     total_volume_liters: int = 42,
     out_path: str | Path = "volume_container.png",
-    width: int = 440,
-    height: int = 400,
+    width: int = 420,
+    height: int = 355,
 ) -> Path:
     """
     Crea un panel gráfico ilustrado compacto del Contenedor de Mezcla Total (42 Litros).
@@ -526,8 +573,8 @@ def create_volume_container_card(
     draw = ImageDraw.Draw(img)
 
     f_tag = _get_font(19, bold=True)
-    f_num = _get_font(40, bold=True)
-    f_mark = _get_font(16, bold=True)
+    f_num = _get_font(38, bold=True)
+    f_mark = _get_font(15, bold=True)
 
     # Fondo glassmorphism tecnológico oscuro
     bg_color = (9, 16, 30, 252)
@@ -539,36 +586,36 @@ def create_volume_container_card(
     tb = draw.textbbox((0, 0), tag_str, font=f_tag)
     tw = tb[2] - tb[0]
     p_w = tw + 28
-    draw.rounded_rectangle([(width - p_w) // 2, 14, (width + p_w) // 2, 44], radius=13, fill=(255, 255, 255, 255), outline=(56, 189, 248, 255), width=2)
-    draw.text(((width - tw) // 2, 19), tag_str, font=f_tag, fill=(2, 132, 199, 255))
+    draw.rounded_rectangle([(width - p_w) // 2, 12, (width + p_w) // 2, 42], radius=13, fill=(255, 255, 255, 255), outline=(56, 189, 248, 255), width=2)
+    draw.text(((width - tw) // 2, 17), tag_str, font=f_tag, fill=(2, 132, 199, 255))
 
     # 2. Gran cifra destacada: "42 LITROS" en Oro Brillante
     val_str = f"{total_volume_liters} LITROS"
     vb = draw.textbbox((0, 0), val_str, font=f_num)
     vw = vb[2] - vb[0]
-    draw.text(((width - vw) // 2, 52), val_str, font=f_num, fill=(255, 228, 94, 255))
+    draw.text(((width - vw) // 2, 48), val_str, font=f_num, fill=(255, 228, 94, 255))
 
     # 3. Ilustración compacta del cilindro con líquido degradado
-    cyl_x1 = 110
-    cyl_y1 = 110
-    cyl_x2 = width - 110
-    cyl_y2 = 290
+    cyl_x1 = 100
+    cyl_y1 = 98
+    cyl_x2 = width - 100
+    cyl_y2 = 265
     draw.rounded_rectangle([cyl_x1, cyl_y1, cyl_x2, cyl_y2], radius=14, fill=(14, 24, 44, 220), outline=(56, 189, 248, 200), width=3)
     # Nivel de líquido al 85%
-    liq_y1 = 145
+    liq_y1 = 130
     draw.rounded_rectangle([cyl_x1 + 4, liq_y1, cyl_x2 - 4, cyl_y2 - 4], radius=10, fill=(14, 165, 233, 230))
     # Marcas de graduación
-    marks = [(150, "42L"), (200, "30L"), (245, "15L")]
+    marks = [(135, "42L"), (175, "30L"), (220, "15L")]
     for my, mlbl in marks:
-        draw.line([cyl_x2 - 20, my, cyl_x2 - 4, my], fill=(255, 255, 255, 220), width=2)
+        draw.line([cyl_x2 - 18, my, cyl_x2 - 4, my], fill=(255, 255, 255, 220), width=2)
         draw.text((cyl_x2 + 8, my - 9), mlbl, font=f_mark, fill=(255, 228, 94, 240))
 
     # 4. Ecuación en Píldora Dorada renderizada con LaTeX Puro (Cero subíndices rotos)
-    pill_w = 260
-    pill_h = 56
+    pill_w = 250
+    pill_h = 52
     px1 = (width - pill_w) // 2
-    py1 = 320
-    draw.rounded_rectangle([px1, py1, px1 + pill_w, py1 + pill_h], radius=16, fill=(255, 228, 94, 255), outline=(255, 255, 255, 220), width=2)
+    py1 = 286
+    draw.rounded_rectangle([px1, py1, px1 + pill_w, py1 + pill_h], radius=15, fill=(255, 228, 94, 255), outline=(255, 255, 255, 220), width=2)
 
     try:
         from . import latex_renderer

@@ -172,30 +172,32 @@ def polish_video(
         overlay_inputs.append((prob_png, 14.50, 74.50, 75, None))
 
         # 5. Capa de Ilustraciones de Cantidades en Espacios Vacíos de la Pizarra
-        # 5.1 Gráfico 1: Contenedor de Mezcla Total (42 Litros) en el espacio inferior libre (y=1040)
+        # 5.1 Gráfico 1: Contenedor de Mezcla Total (42 Litros) en el espacio inferior libre (y=1040, h=355)
         vol_png = workdir / "volume_container.png"
-        cards.create_volume_container_card(total_volume_liters=42, out_path=vol_png)
-        overlay_inputs.append((vol_png, 26.00, 39.00, 1040, 560))
+        cards.create_volume_container_card(total_volume_liters=42, out_path=vol_png, width=420, height=355)
+        overlay_inputs.append((vol_png, 26.00, 39.00, 1040, 580))
 
         # 5.2 Gráfico 2: Comparativa de Precios P1 (S/. 5) vs P2 (S/. 8) y Pm (S/. 7) en el espacio inferior libre (y=1020)
         comp_png = workdir / "product_comparison.png"
-        cards.create_product_comparison_card(p1_price=5, p2_price=8, pm_target=7, out_path=comp_png)
-        overlay_inputs.append((comp_png, 42.00, 68.00, 1020, 550))
+        cards.create_product_comparison_card(p1_price=5, p2_price=8, pm_target=7, out_path=comp_png, width=460, height=430)
+        overlay_inputs.append((comp_png, 42.00, 68.00, 1020, 560))
 
-        # Pop-art Badge 2: Alerta de Fórmula Inminente (En zona segura y=340, sobre el pizarrón)
+        # Pop-art Badge 2: Alerta de Fórmula Inminente (En zona segura y=310, sobre el pizarrón)
         badge2_png = workdir / "badge_formula.png"
-        cards.create_popart_callout_badge("📐 ¡FÓRMULA CLAVE!", "formula", badge2_png)
-        overlay_inputs.append((badge2_png, 72.50, 75.50, 340, 560))
+        cards.create_popart_callout_badge("📐 ¡FÓRMULA CLAVE!", "formula", badge2_png, width=380, height=85)
+        overlay_inputs.append((badge2_png, 72.50, 75.50, 310, 580))
 
         # 6. Progresión Dinámica de Ecuaciones Micro-Sincronizada (8 Etapas sin adelantarse a la tiza)
-        # Etapa 1 (75.5s a 93.0s): Fórmula Maestra Teórica
+        # Etapa 1 (75.5s a 93.0s): Fórmula Maestra Teórica (Equilibrada, 960x230 en y=65)
         f1_png = workdir / "formula_stage1.png"
         cards.create_math_formula_card(
             formula_title="FÓRMULA CLAVE: PRECIO MEDIO",
             formula_latex=r"P_m = \frac{P_1 V_1 + P_2 V_2}{V_1 + V_2}",
             out_path=f1_png,
+            width=960,
+            height=230,
         )
-        overlay_inputs.append((f1_png, 75.50, 93.00, 75, None))
+        overlay_inputs.append((f1_png, 75.50, 93.00, 65, None))
 
         # Etapa 2A (93.0s a 102.0s): Sustitución Inicial de Valores
         f2a_png = workdir / "formula_stage2a.png"
@@ -203,38 +205,42 @@ def polish_video(
             formula_title="REEMPLAZO DE VALORES CONOCIDOS",
             formula_latex=r"7 = \frac{5 V_1 + 8 V_2}{42}",
             out_path=f2a_png,
+            width=940,
+            height=220,
         )
-        overlay_inputs.append((f2a_png, 93.00, 102.00, 75, None))
+        overlay_inputs.append((f2a_png, 93.00, 102.00, 65, None))
 
-        # Etapa 2B (102.0s a 122.0s): Sustitución de la incógnita V1 = 42 - V2
+        # Etapa 2B (102.0s a 122.0s): Sustitución de la incógnita V1 = 42 - V2 (Equilibrada, 940x225 en y=65)
         f2b_png = workdir / "formula_stage2b.png"
         cards.create_math_formula_card(
             formula_title="DESPEJE DE INCÓGNITA: V1 = 42 - V2",
             formula_latex=r"7 = \frac{5(42 - V_2) + 8V_2}{42}",
             out_path=f2b_png,
+            width=940,
+            height=225,
         )
-        overlay_inputs.append((f2b_png, 102.00, 122.00, 75, None))
+        overlay_inputs.append((f2b_png, 102.00, 122.00, 65, None))
 
-        # Pop-art Badge 3: Despeje V1 (En zona segura y=340, libre de escritura y de manos)
+        # Pop-art Badge 3: Despeje V1 (En y=310, dejando 20px de espacio libre bajo la fórmula y 85px sobre la tiza)
         badge3_png = workdir / "badge_despeje.png"
-        cards.create_popart_callout_badge("⚡ ¡V1 = 42 - V2!", "warning", badge3_png)
-        overlay_inputs.append((badge3_png, 103.00, 108.50, 340, 560))
+        cards.create_popart_callout_badge("⚡ ¡V1 = 42 - V2!", "warning", badge3_png, width=380, height=85)
+        overlay_inputs.append((badge3_png, 103.00, 108.50, 310, 580))
 
-        # Etapa 3A (122.0s a 133.0s): Multiplicación en cruz (42 * 7 = 294) - Proporcional no exagerada
+        # Etapa 3A (122.0s a 133.0s): Multiplicación en cruz (42 * 7 = 294) - Compacta y armónica
         f3a_png = workdir / "formula_stage3a.png"
         cards.create_step_clarification_card(
             step_title="MULTIPLICACIÓN EN CRUZ",
             step_latex=r"7 \times 42 = 294",
             out_path=f3a_png,
-            width=900,
-            height=210,
+            width=880,
+            height=190,
         )
-        overlay_inputs.append((f3a_png, 122.00, 133.00, 75, None))
+        overlay_inputs.append((f3a_png, 122.00, 133.00, 65, None))
 
-        # Pop-art Badge 4: Multiplica en Cruz (En zona segura y=340)
+        # Pop-art Badge 4: Multiplica en Cruz (En y=275, con espacio libre bajo la tarjeta de multiplicación)
         badge4_png = workdir / "badge_cruz.png"
-        cards.create_popart_callout_badge("💥 ¡MULTIPLICA EN CRUZ!", "speed", badge4_png)
-        overlay_inputs.append((badge4_png, 122.50, 128.00, 340, 560))
+        cards.create_popart_callout_badge("💥 ¡MULTIPLICA EN CRUZ!", "speed", badge4_png, width=380, height=85)
+        overlay_inputs.append((badge4_png, 122.50, 128.00, 275, 580))
 
         # Etapa 3B (133.0s a 143.0s): Expansión y Distribución
         f3b_png = workdir / "formula_stage3b.png"
@@ -242,10 +248,10 @@ def polish_video(
             step_title="DISTRIBUCIÓN Y AGRUPACIÓN",
             step_latex=r"294 = 210 - 5V_2 + 8V_2",
             out_path=f3b_png,
-            width=900,
-            height=210,
+            width=880,
+            height=190,
         )
-        overlay_inputs.append((f3b_png, 133.00, 143.00, 75, None))
+        overlay_inputs.append((f3b_png, 133.00, 143.00, 65, None))
 
         # Etapa 3C (143.0s a 149.0s): Reducción de términos
         f3c_png = workdir / "formula_stage3c.png"
@@ -253,10 +259,10 @@ def polish_video(
             step_title="REDUCCIÓN ALGEBRAICA",
             step_latex=r"84 = 3V_2",
             out_path=f3c_png,
-            width=900,
-            height=210,
+            width=880,
+            height=190,
         )
-        overlay_inputs.append((f3c_png, 143.00, 149.00, 75, None))
+        overlay_inputs.append((f3c_png, 143.00, 149.00, 65, None))
 
         # Etapa 4 (149.0s a 156.0s): Despeje Final y División
         f4_png = workdir / "formula_stage4.png"
@@ -264,19 +270,21 @@ def polish_video(
             formula_title="DESPEJE FINAL DE V2",
             formula_latex=r"V_2 = \frac{84}{3} = 28\text{ L}",
             out_path=f4_png,
+            width=940,
+            height=220,
         )
-        overlay_inputs.append((f4_png, 149.00, 156.00, 75, None))
+        overlay_inputs.append((f4_png, 149.00, 156.00, 65, None))
 
-        # Etapa 5 (156.0s a 159.2s): Badge GIGANTE de Clave Verificada de Campeonato
+        # Etapa 5 (156.0s a 159.2s): Tarjeta de Clave Verificada EQUILIBRADA (Ni exagerada ni pequeña)
         ans_png = workdir / "solution_card.png"
         cards.create_solution_card(
             result_text="V2 = 28 LITROS",
             out_path=ans_png,
             result_latex=r"V_2 = 28\text{ Litros}",
-            width=1020,
-            height=320,
+            width=980,
+            height=280,
         )
-        overlay_inputs.append((ans_png, 156.00, 159.20, 75, None))
+        overlay_inputs.append((ans_png, 156.00, 159.20, 65, None))
 
         # Etapa 6 (159.2s a Fin): Tarjeta de Conversión VIP Skool
         cta_png = workdir / "cta_card.png"
@@ -305,11 +313,27 @@ def polish_video(
             orig_samples = np.zeros(int(audio_mix.SR * dur), dtype=np.float32)
 
         total_samples = len(orig_samples)
-        mixed_audio = np.copy(orig_samples)
+        # 4.1 Boost de presencia y volumen a la voz original del docente (para sobresalir nítidamente de la música)
+        peak_voice = float(np.abs(orig_samples).max()) if len(orig_samples) > 0 else 1.0
+        voice_gain = 1.35 if peak_voice < 0.72 else 1.18
+        mixed_audio = orig_samples * voice_gain
 
-        # Inyectar música procedural Electro-Rock / Synthwave motivacional (batería acústica punchy, cero vinilo)
+        # 4.2 Inyectar música procedural Electro-Rock / Synthwave motivacional con volumen equilibrado y auto-ducking
         try:
-            electro_bg = audio_mix.generate_electro_rock_background(dur, sr=audio_mix.SR, gain=0.28)
+            electro_bg = audio_mix.generate_electro_rock_background(dur, sr=audio_mix.SR, gain=0.16)
+            # Auto-ducking bajo la voz original del docente (-5dB mientras habla)
+            hop = audio_mix.SR // 10
+            n_blocks = min(len(mixed_audio), len(electro_bg)) // hop
+            if n_blocks > 0:
+                blocks = mixed_audio[: n_blocks * hop].reshape(n_blocks, hop)
+                block_rms = np.sqrt(np.mean(blocks ** 2, axis=1))
+                is_talking = block_rms > 0.022
+                duck_profile = np.ones(len(electro_bg), dtype=np.float32)
+                for b_idx, talking in enumerate(is_talking):
+                    if talking:
+                        duck_profile[b_idx * hop : (b_idx + 1) * hop] = 0.55
+                electro_bg = electro_bg * duck_profile
+
             if len(electro_bg) >= total_samples:
                 mixed_audio += electro_bg[:total_samples]
             else:
@@ -415,8 +439,8 @@ def polish_video(
             words=words,
             out_path=ass_path,
             words_per_line=3,
-            font_size=46,
-            margin_v=440,  # Ubicación segura en tercio inferior
+            font_size=44,
+            margin_v=240,  # Ubicación segura en tercio inferior bajo (CERO colisión con gráficos superiores)
             suppress_after_time=159.0,  # CERO colisión con la tarjeta de Skool que entra en 159.2s
         )
 
