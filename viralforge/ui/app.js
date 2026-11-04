@@ -67,6 +67,10 @@ async function api(path, opts = {}) {
 }
 
 function setupTabs() {
+  const tabsBar = document.getElementById("tabsBar");
+  const quickSelect = document.getElementById("tabQuickSelect");
+
+  // Manejador de clic en pestañas
   document.querySelectorAll(".tab").forEach((btn) => {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".tab").forEach((b) => b.classList.remove("active"));
@@ -74,12 +78,78 @@ function setupTabs() {
       btn.classList.add("active");
       const targetPanel = document.getElementById(`tab-${btn.dataset.tab}`);
       if (targetPanel) targetPanel.classList.add("active");
+
+      // Sincronizar el selector desplegable
+      if (quickSelect && quickSelect.value !== btn.dataset.tab) {
+        quickSelect.value = btn.dataset.tab;
+      }
+
+      // Asegurar que la pestaña activa quede visible en el scroll
+      btn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+
       if (btn.dataset.tab === "poses") loadPosesCatalog();
       if (btn.dataset.tab === "costumes") loadCostumesCatalog();
       if (btn.dataset.tab === "prompts") { loadPromptVault(); loadViralNiches(); }
       if (btn.dataset.tab === "polish") initPolishPanel();
     });
   });
+
+  // Sincronizar selector desplegable (para pantallas divididas y móviles)
+  if (quickSelect) {
+    quickSelect.addEventListener("change", () => {
+      const targetTab = quickSelect.value;
+      const targetBtn = document.querySelector(`.tab[data-tab="${targetTab}"]`);
+      if (targetBtn) {
+        if (targetBtn.classList.contains("tab-hidden")) {
+          document.querySelectorAll(".tab-cat-btn").forEach((cb) => cb.classList.remove("active"));
+          const allBtn = document.querySelector('.tab-cat-btn[data-cat="all"]');
+          if (allBtn) allBtn.classList.add("active");
+          document.querySelectorAll(".tab").forEach((t) => t.classList.remove("tab-hidden"));
+        }
+        targetBtn.click();
+      }
+    });
+  }
+
+  // Filtrado de pestañas por categorías
+  document.querySelectorAll(".tab-cat-btn").forEach((catBtn) => {
+    catBtn.addEventListener("click", () => {
+      document.querySelectorAll(".tab-cat-btn").forEach((cb) => cb.classList.remove("active"));
+      catBtn.classList.add("active");
+      const cat = catBtn.dataset.cat;
+
+      let firstVisible = null;
+      let activeIsVisible = false;
+
+      document.querySelectorAll(".tab").forEach((tab) => {
+        if (cat === "all" || tab.dataset.cat === cat) {
+          tab.classList.remove("tab-hidden");
+          if (!firstVisible) firstVisible = tab;
+          if (tab.classList.contains("active")) activeIsVisible = true;
+        } else {
+          tab.classList.add("tab-hidden");
+        }
+      });
+
+      if (!activeIsVisible && firstVisible) {
+        firstVisible.click();
+      }
+    });
+  });
+
+  // Flechas de desplazamiento lateral
+  const btnLeft = document.getElementById("btnTabScrollLeft");
+  const btnRight = document.getElementById("btnTabScrollRight");
+  if (btnLeft && tabsBar) {
+    btnLeft.addEventListener("click", () => {
+      tabsBar.scrollBy({ left: -240, behavior: "smooth" });
+    });
+  }
+  if (btnRight && tabsBar) {
+    btnRight.addEventListener("click", () => {
+      tabsBar.scrollBy({ left: 240, behavior: "smooth" });
+    });
+  }
 }
 
 async function loadAll() {
