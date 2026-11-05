@@ -660,6 +660,209 @@ def build_overlays_img_2925(
     return overlay_inputs, sfx_timeline
 
 
+
+def build_overlays_img_2926(
+    workdir: Path,
+    dur: float,
+    category_tag: str,
+    clean_hook: str,
+    custom_cta_phrase: str | None,
+    cta_target: str | None,
+) -> tuple[list[tuple[Path, float, float, int, int | None]], list[tuple[str, float, float]]]:
+    """Perfil específico para IMG_2926: Mezcla de 3 tipos de avena (C1=8 kg, C2=4 kg, C3=6 kg)."""
+    overlay_inputs: list[tuple[Path, float, float, int, int | None]] = []
+    sfx_timeline: list[tuple[str, float, float]] = []
+
+    # 1. Hook Card de Apertura (0.0s a 2.5s)
+    hook_png = workdir / "hook_card.png"
+    cards.create_hook_card(
+        category_tag="ARITMÉTICA • MEZCLAS Y PROPORCIONES",
+        headline="¿CUÁNTOS KG DE AVENA SE DEBEN MEZCLAR?",
+        out_path=hook_png,
+    )
+    overlay_inputs.append((hook_png, 0.00, 2.50, 75, None))
+    sfx_timeline.append(("bright_swish", 0.08, 0.75))
+
+    # 2. B-Roll Avena de Grano / Cereal (2.5s a 6.0s)
+    broll_oat_src = settings.root / "assets" / "broll" / "oat_grains.jpg"
+    if broll_oat_src.exists():
+        broll_o_png = workdir / "broll_oats.png"
+        cards.create_broll_card(
+            image_path=broll_oat_src,
+            caption="🌾 CONTEXTO: MEZCLA DE 3 TIPOS DE AVENA (18 KG TOTAL A S/. 6)",
+            out_path=broll_o_png,
+        )
+        overlay_inputs.append((broll_o_png, 2.50, 6.00, 75, None))
+        sfx_timeline.append(("camera_shutter", 2.55, 0.65))
+
+    # 3. Tarjeta Estratégica del Enunciado (6.0s a 20.0s)
+    prob_png = workdir / "problem_statement_card.png"
+    cards.create_problem_statement_card(
+        subject_tag="ARITMÉTICA • EXAMEN DE ADMISIÓN",
+        problem_title="PROBLEMA DE EXAMEN: MEZCLA DE AVENA",
+        problem_lines=[
+            "Roberto mezcla 3 tipos de avena (S/. 5, S/. 6.5 y S/. 7 por kg).",
+            "La relación de cantidades de los dos primeros es de 2 a 1.",
+            "Halla los kg de cada tipo para 18 kg con precio medio S/. 6.",
+        ],
+        data_chips=["Total = 18 kg", "Pm = S/. 6/kg", "P1 = S/. 5", "P2 = S/. 6.5", "P3 = S/. 7", "C1 : C2 = 2 : 1"],
+        out_path=prob_png,
+    )
+    overlay_inputs.append((prob_png, 6.00, 20.00, 65, None))
+    sfx_timeline.append(("plastic_tap", 6.05, 0.60))
+
+    # Badge 1: Objetivo claro (12.0s a 19.0s)
+    badge1_png = workdir / "badge_objetivo.png"
+    cards.create_popart_callout_badge("🎯 ¡HALLAR C1, C2 Y C3!", "warning", badge1_png, width=380, height=85)
+    overlay_inputs.append((badge1_png, 12.00, 19.00, 540, 560))
+    sfx_timeline.append(("pop", 12.05, 0.60))
+
+    # 4. Parametrización de Cantidades (20.0s a 50.0s)
+    f_param_png = workdir / "formula_param.png"
+    cards.create_step_clarification_card(
+        step_title="PARAMETRIZACIÓN DE CANTIDADES EN FUNCIÓN DE 'a'",
+        step_latex=r"C_1 = 2a, \quad C_2 = a, \quad C_3 = 18 - 3a",
+        out_path=f_param_png,
+        width=920,
+        height=195,
+    )
+    overlay_inputs.append((f_param_png, 20.00, 50.00, 65, None))
+    sfx_timeline.append(("bright_swish", 20.05, 0.70))
+
+    badge2_png = workdir / "badge_relacion.png"
+    cards.create_popart_callout_badge("💡 ¡C1=2a, C2=a, C3=18-3a!", "speed", badge2_png, width=440, height=85)
+    overlay_inputs.append((badge2_png, 25.00, 32.00, 295, 580))
+    sfx_timeline.append(("pop", 25.05, 0.60))
+
+    # 5. Fórmula Maestra del Precio Medio Ponderado (50.0s a 85.0s)
+    f_pm_maestra_png = workdir / "formula_pm_maestra.png"
+    cards.create_math_formula_card(
+        formula_title="FÓRMULA CLAVE: PRECIO MEDIO PONDERADO",
+        formula_latex=r"P_m = \frac{P_1 C_1 + P_2 C_2 + P_3 C_3}{C_1 + C_2 + C_3}",
+        out_path=f_pm_maestra_png,
+        width=960,
+        height=230,
+    )
+    overlay_inputs.append((f_pm_maestra_png, 50.00, 85.00, 65, None))
+    sfx_timeline.append(("bright_swish", 50.05, 0.70))
+
+    badge3_png = workdir / "badge_pm_formula.png"
+    cards.create_popart_callout_badge("📐 ¡PRECIO MEDIO PONDERADO!", "formula", badge3_png, width=440, height=85)
+    overlay_inputs.append((badge3_png, 55.00, 62.00, 275, 580))
+    sfx_timeline.append(("wood_knock", 55.05, 0.60))
+
+    # 6. Sustitución con Variables (85.0s a 118.0s)
+    f_sust_png = workdir / "formula_sustitucion.png"
+    cards.create_math_formula_card(
+        formula_title="SUSTITUCIÓN DE VALORES Y CANTIDADES",
+        formula_latex=r"6 = \frac{5(2a) + 6.5(a) + 7(18 - 3a)}{18}",
+        out_path=f_sust_png,
+        width=940,
+        height=220,
+    )
+    overlay_inputs.append((f_sust_png, 85.00, 118.00, 65, None))
+    sfx_timeline.append(("plastic_tap", 85.05, 0.60))
+
+    badge4_png = workdir / "badge_sust_comp.png"
+    cards.create_popart_callout_badge("⚡ ¡SUSTITUCIÓN COMPLETA!", "warning", badge4_png, width=380, height=85)
+    overlay_inputs.append((badge4_png, 90.00, 98.00, 295, 580))
+    sfx_timeline.append(("pop", 90.05, 0.60))
+
+    # 7. Multiplicación en Cruz y Distribución (118.0s a 150.0s)
+    f_dist_png = workdir / "formula_distribucion.png"
+    cards.create_math_formula_card(
+        formula_title="DISTRIBUCIÓN Y MULTIPLICACIÓN EN CRUZ",
+        formula_latex=r"6(18) = 10a + 6.5a + 7(18) - 21a",
+        out_path=f_dist_png,
+        width=940,
+        height=220,
+    )
+    overlay_inputs.append((f_dist_png, 118.00, 150.00, 65, None))
+    sfx_timeline.append(("cut_hit", 118.05, 0.70))
+
+    badge5_png = workdir / "badge_cruz.png"
+    cards.create_popart_callout_badge("💥 ¡MULTIPLICA EN CRUZ!", "speed", badge5_png, width=380, height=85)
+    overlay_inputs.append((badge5_png, 122.00, 130.00, 275, 580))
+    sfx_timeline.append(("pop", 122.05, 0.60))
+
+    # 8. Agrupación y Factorización de 18 (150.0s a 185.0s)
+    f_agrup_png = workdir / "formula_agrupacion.png"
+    cards.create_math_formula_card(
+        formula_title="AGRUPACIÓN: FACTORIZANDO 18 Y TÉRMINOS CON 'a'",
+        formula_latex=r"6(18) - 7(18) = 16.5a - 21a \implies -1(18) = -4.5a \implies 18 = 4.5a",
+        out_path=f_agrup_png,
+        width=960,
+        height=220,
+    )
+    overlay_inputs.append((f_agrup_png, 150.00, 185.00, 65, None))
+    sfx_timeline.append(("bright_swish", 150.05, 0.70))
+
+    badge6_png = workdir / "badge_factoriza18.png"
+    cards.create_popart_callout_badge("💡 ¡-18 = -4.5 a!", "speed", badge6_png, width=380, height=85)
+    overlay_inputs.append((badge6_png, 155.00, 163.00, 295, 580))
+    sfx_timeline.append(("bell_chime", 155.05, 0.85))
+
+    # 9. Despeje de la Constante 'a' (185.0s a 215.0s)
+    f_desp_png = workdir / "formula_despeje_a.png"
+    cards.create_step_clarification_card(
+        step_title="DESPEJE DE LA CONSTANTE: a = 18 / 4.5",
+        step_latex=r"a = \frac{18}{4.5} = \frac{180}{45} = 4",
+        out_path=f_desp_png,
+        width=880,
+        height=190,
+    )
+    overlay_inputs.append((f_desp_png, 185.00, 215.00, 65, None))
+    sfx_timeline.append(("plastic_tap", 185.05, 0.60))
+
+    badge7_png = workdir / "badge_a4.png"
+    cards.create_popart_callout_badge("✅ ¡a = 4 CONSTANTE!", "warning", badge7_png, width=380, height=85)
+    overlay_inputs.append((badge7_png, 190.00, 198.00, 275, 580))
+    sfx_timeline.append(("pop", 190.05, 0.60))
+
+    # 10. Deducción de las 3 Cantidades (215.0s a 236.0s)
+    f_cants_png = workdir / "formula_cantidades.png"
+    cards.create_step_clarification_card(
+        step_title="DEDUCCIÓN DE LAS TRES CANTIDADES (C1, C2, C3)",
+        step_latex=r"C_1 = 2(4)=8\text{ kg}, \quad C_2 = 4\text{ kg}, \quad C_3 = 18 - 12 = 6\text{ kg}",
+        out_path=f_cants_png,
+        width=920,
+        height=190,
+    )
+    overlay_inputs.append((f_cants_png, 215.00, 236.00, 65, None))
+    sfx_timeline.append(("bright_swish", 215.05, 0.70))
+
+    # 11. Solución Verificada Final (236.0s a 241.0s)
+    sol_png = workdir / "solution_card.png"
+    cards.create_solution_card(
+        result_text="C1 = 8 KG | C2 = 4 KG | C3 = 6 KG",
+        out_path=sol_png,
+        result_latex=r"C_1 = 8\text{ kg}, \quad C_2 = 4\text{ kg}, \quad C_3 = 6\text{ kg}",
+        footer_badge_text="CLAVE CORRECTA: C1 = 8 KG, C2 = 4 KG Y C3 = 6 KG",
+        width=980,
+        height=280,
+    )
+    overlay_inputs.append((sol_png, 236.00, 241.00, 65, None))
+    sfx_timeline.append(("celesta_chime", 236.05, 0.85))
+
+    # 12. Tarjeta de Conversión VIP Skool (241.0s a Fin)
+    cta_png = workdir / "cta_card.png"
+    cta_action = (
+        custom_cta_phrase
+        if custom_cta_phrase and ("skool" in custom_cta_phrase.lower() or "enlace" in custom_cta_phrase.lower())
+        else "Enlace en mi perfil: www.skool.sistemazenit.com"
+    )
+    cards.create_skool_cta_card(
+        community_name=cta_target or "ACADEMIA ZENIT",
+        action_text=cta_action,
+        badge_label="MÁS EJERCICIOS Y CURSOS 🚀",
+        out_path=cta_png,
+    )
+    overlay_inputs.append((cta_png, 241.00, dur, 1400, None))
+    sfx_timeline.append(("cash_ding", 241.05, 0.85))
+
+    return overlay_inputs, sfx_timeline
+
+
 def build_overlays_dynamic(
     workdir: Path,
     dur: float,
@@ -757,7 +960,9 @@ def build_overlays_for_video(
     category_tag = copilot_plan["hook_category"]
 
     stem_upper = src_stem.upper()
-    if "2925" in stem_upper:
+    if "2926" in stem_upper:
+        return build_overlays_img_2926(workdir, dur, category_tag, clean_hook, custom_cta_phrase, cta_target)
+    elif "2925" in stem_upper:
         return build_overlays_img_2925(workdir, dur, category_tag, clean_hook, custom_cta_phrase, cta_target)
     elif "2922" in stem_upper:
         return build_overlays_img_2922(workdir, dur, category_tag, clean_hook, custom_cta_phrase, cta_target)

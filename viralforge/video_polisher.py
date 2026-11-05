@@ -178,7 +178,11 @@ def polish_video(
                 voice_name = "es-PE-AlexNeural"
                 voice_cues = []
                 stem_upper = src.stem.upper()
-                if "2925" in stem_upper:
+                if "2926" in stem_upper:
+                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de mezclas de tres tipos de avena!", 0.20))
+                    voice_cues.append((workdir / "voice_formula.mp3", "¡Aplica la fórmula del precio medio ponderado!", 50.20))
+                    voice_cues.append((workdir / "voice_answer.mp3", "¡Ocho, cuatro y seis kilogramos, respuesta correcta!", 236.20))
+                elif "2925" in stem_upper:
                     voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de mezclas de harinas!", 0.20))
                     voice_cues.append((workdir / "voice_formula.mp3", "¡Aplica la fórmula del precio medio ponderado!", 72.20))
                     voice_cues.append((workdir / "voice_answer.mp3", "¡Sesenta y seis y veintidós kilogramos!", 236.20))
