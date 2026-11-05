@@ -863,6 +863,229 @@ def build_overlays_img_2926(
     return overlay_inputs, sfx_timeline
 
 
+
+
+def build_overlays_img_2927(
+    workdir: Path,
+    dur: float,
+    category_tag: str,
+    clean_hook: str,
+    custom_cta_phrase: str | None,
+    cta_target: str | None,
+) -> tuple[list[tuple[Path, float, float, int, int | None]], list[tuple[str, float, float]]]:
+    """
+    Perfil especializado para IMG_2927:
+    Ejercicio de Mezcla de Harinas con Ganancia Comercial (20%).
+    Datos: 30 kg a S/. 10, 20 kg a S/. 12, X kg a S/. 15.
+    Venta total a S/. 13.80 con ganancia del 20% del costo.
+    Respuesta: X = 10 kg de harina de S/. 15.
+    """
+    overlay_inputs: list[tuple[Path, float, float, int, int | None]] = []
+    sfx_timeline: list[tuple[str, float, float]] = []
+
+    # 1. Hook Card Inicial (0.00s a 2.50s)
+    hook_png = workdir / "hook_card.png"
+    cards.create_hook_card(
+        category_tag="ARITMÉTICA · MEZCLAS CON GANANCIA",
+        headline="3 Harinas y 20% de Ganancia: ¿Cuánto vale X?",
+        out_path=hook_png,
+    )
+    overlay_inputs.append((hook_png, 0.00, 2.50, 75, None))
+    sfx_timeline.append(("bright_swish", 0.08, 0.75))
+
+    # 2. B-Roll Harina / Panadería (2.50s a 6.00s)
+    broll_src = Path("assets/broll/flour_bakery.jpg")
+    if broll_src.exists():
+        broll_png = workdir / "broll_flour.png"
+        cards.create_broll_preview_card(
+            image_path=broll_src,
+            label_text="MEZCLA DE 3 CALIDADES DE HARINA",
+            out_path=broll_png,
+            width=700,
+            height=394,
+        )
+        overlay_inputs.append((broll_png, 2.50, 6.00, 75, None))
+        sfx_timeline.append(("pop", 2.55, 0.60))
+
+    # 3. Problem Statement Card (6.00s a 20.00s)
+    prob_png = workdir / "problem_statement_card.png"
+    cards.create_problem_statement_card(
+        subject_tag="ARITMÉTICA MERCANTIL",
+        problem_title="PROBLEMA DE EXAMEN",
+        problem_lines=[
+            "Comerciante mezcla 30 kg (S/. 10), 20 kg (S/. 12) y X kg (S/. 15).",
+            "Vendió la mezcla en S/. 13.80 el kg ganando el 20% del costo.",
+            "Determina cuántos kg de harina de S/. 15 contenía la mezcla.",
+        ],
+        data_chips=[
+            "C1 = 30 kg (S/. 10)",
+            "C2 = 20 kg (S/. 12)",
+            "C3 = X kg (S/. 15)",
+            "Pv = S/. 13.80",
+            "Ganancia = 20% Pc",
+            "Hallar: X",
+        ],
+        out_path=prob_png,
+    )
+    overlay_inputs.append((prob_png, 6.00, 20.00, 65, None))
+    sfx_timeline.append(("plastic_tap", 6.05, 0.60))
+
+    badge1_png = workdir / "badge_objetivo.png"
+    cards.create_popart_callout_badge("🎯 ¡HALLAR X KG DE HARINA!", "speed", badge1_png, width=420, height=85)
+    overlay_inputs.append((badge1_png, 12.00, 19.00, 540, 560))
+    sfx_timeline.append(("pop", 12.05, 0.60))
+
+    # 4. Relación Comercial: Pv = Pc + G (20.00s a 48.00s)
+    f_pv_pc_png = workdir / "formula_pv_pc.png"
+    cards.create_math_formula_card(
+        formula_title="RELACIÓN COMERCIAL: PRECIO DE VENTA Y COSTO",
+        formula_latex=r"P_v = P_c + G = P_m + 20\% P_m = 1.20 P_m",
+        out_path=f_pv_pc_png,
+        width=940,
+        height=220,
+    )
+    overlay_inputs.append((f_pv_pc_png, 20.00, 48.00, 65, None))
+    sfx_timeline.append(("bright_swish", 20.05, 0.70))
+
+    badge2_png = workdir / "badge_relacion_pv.png"
+    cards.create_popart_callout_badge("💡 ¡Pv = 1.20 Pm!", "formula", badge2_png, width=380, height=85)
+    overlay_inputs.append((badge2_png, 25.00, 32.00, 295, 580))
+    sfx_timeline.append(("pop", 25.05, 0.60))
+
+    # 5. Cálculo del Precio Medio Inicial (48.00s a 78.00s)
+    f_pm_115_png = workdir / "formula_pm_115.png"
+    cards.create_step_clarification_card(
+        step_title="DEDUCCIÓN DEL PRECIO MEDIO DE COSTO (Pm)",
+        step_latex=r"13.80 = 1.20 P_m \implies P_m = rac{13.80}{1.20} = 	ext{S/. } 11.50	ext{ por kg}",
+        out_path=f_pm_115_png,
+        width=940,
+        height=195,
+    )
+    overlay_inputs.append((f_pm_115_png, 48.00, 78.00, 65, None))
+    sfx_timeline.append(("plastic_tap", 48.05, 0.60))
+
+    badge3_png = workdir / "badge_pm_115.png"
+    cards.create_popart_callout_badge("💰 ¡Pm = S/. 11.50 POR KG!", "speed", badge3_png, width=420, height=85)
+    overlay_inputs.append((badge3_png, 52.00, 60.00, 275, 580))
+    sfx_timeline.append(("bell_chime", 52.05, 0.85))
+
+    # 6. Fórmula Maestra del Precio Medio Ponderado (78.00s a 110.0s)
+    f_pm_maestra_png = workdir / "formula_pm_maestra.png"
+    cards.create_math_formula_card(
+        formula_title="FÓRMULA CLAVE: PRECIO MEDIO PONDERADO",
+        formula_latex=r"P_m = rac{C_1 P_1 + C_2 P_2 + C_3 P_3}{C_1 + C_2 + C_3}",
+        out_path=f_pm_maestra_png,
+        width=960,
+        height=230,
+    )
+    overlay_inputs.append((f_pm_maestra_png, 78.00, 110.00, 65, None))
+    sfx_timeline.append(("bright_swish", 78.05, 0.70))
+
+    badge4_png = workdir / "badge_maestra.png"
+    cards.create_popart_callout_badge("⚡ ¡FÓRMULA MAESTRA!", "warning", badge4_png, width=380, height=85)
+    overlay_inputs.append((badge4_png, 82.00, 90.00, 295, 580))
+    sfx_timeline.append(("wood_knock", 82.05, 0.60))
+
+    # 7. Sustitución de Cantidades y Precios (110.0s a 142.0s)
+    f_sust_png = workdir / "formula_sustitucion.png"
+    cards.create_math_formula_card(
+        formula_title="SUSTITUCIÓN DE CANTIDADES Y PRECIOS",
+        formula_latex=r"11.50 = rac{30(10) + 20(12) + X(15)}{30 + 20 + X}",
+        out_path=f_sust_png,
+        width=940,
+        height=220,
+    )
+    overlay_inputs.append((f_sust_png, 110.00, 142.00, 65, None))
+    sfx_timeline.append(("plastic_tap", 110.05, 0.60))
+
+    badge5_png = workdir / "badge_c3_x.png"
+    cards.create_popart_callout_badge("📝 ¡C3 = X A S/. 15!", "formula", badge5_png, width=380, height=85)
+    overlay_inputs.append((badge5_png, 115.00, 123.00, 275, 580))
+    sfx_timeline.append(("pop", 115.05, 0.60))
+
+    # 8. Simplificación del Cociente (142.0s a 172.0s)
+    f_simp_png = workdir / "formula_simplificacion.png"
+    cards.create_step_clarification_card(
+        step_title="SIMPLIFICACIÓN DEL COCIENTE",
+        step_latex=r"11.50 = rac{300 + 240 + 15X}{50 + X} = rac{540 + 15X}{50 + X}",
+        out_path=f_simp_png,
+        width=920,
+        height=195,
+    )
+    overlay_inputs.append((f_simp_png, 142.00, 172.00, 65, None))
+    sfx_timeline.append(("bright_swish", 142.05, 0.70))
+
+    badge6_png = workdir / "badge_numerador.png"
+    cards.create_popart_callout_badge("💥 ¡540 + 15X EN NUMERADOR!", "speed", badge6_png, width=420, height=85)
+    overlay_inputs.append((badge6_png, 147.00, 155.00, 275, 580))
+    sfx_timeline.append(("pop", 147.05, 0.60))
+
+    # 9. Producto en Cruz y Propiedad Distributiva (172.0s a 200.0s)
+    f_cruz_png = workdir / "formula_cruz_dist.png"
+    cards.create_math_formula_card(
+        formula_title="PRODUCTO EN CRUZ Y DISTRIBUTIVA",
+        formula_latex=r"11.50(50 + X) = 540 + 15X \implies 575 + 11.50X = 540 + 15X",
+        out_path=f_cruz_png,
+        width=960,
+        height=220,
+    )
+    overlay_inputs.append((f_cruz_png, 172.00, 200.00, 65, None))
+    sfx_timeline.append(("plastic_tap", 172.05, 0.60))
+
+    badge7_png = workdir / "badge_cruz_575.png"
+    cards.create_popart_callout_badge("📐 ¡11.5(50) = 575!", "formula", badge7_png, width=380, height=85)
+    overlay_inputs.append((badge7_png, 177.00, 185.00, 275, 580))
+    sfx_timeline.append(("pop", 177.05, 0.60))
+
+    # 10. Transposición y Despeje Final (200.0s a 222.0s)
+    f_desp_png = workdir / "formula_despeje_x.png"
+    cards.create_step_clarification_card(
+        step_title="TRANSPOSICIÓN Y DESPEJE FINAL",
+        step_latex=r"575 - 540 = 15X - 11.50X \implies 35 = 3.50X \implies X = 10	ext{ kg}",
+        out_path=f_desp_png,
+        width=920,
+        height=195,
+    )
+    overlay_inputs.append((f_desp_png, 200.00, 222.00, 65, None))
+    sfx_timeline.append(("bright_swish", 200.05, 0.70))
+
+    badge8_png = workdir / "badge_x10.png"
+    cards.create_popart_callout_badge("✅ ¡X = 10 KG DE HARINA!", "warning", badge8_png, width=420, height=85)
+    overlay_inputs.append((badge8_png, 205.00, 213.00, 275, 580))
+    sfx_timeline.append(("bell_chime", 205.05, 0.85))
+
+    # 11. Solución Verificada Final (222.0s a 228.0s)
+    sol_png = workdir / "solution_card.png"
+    cards.create_solution_card(
+        result_text="X = 10 KG DE HARINA DE S/. 15",
+        out_path=sol_png,
+        result_latex=r"X = 10	ext{ kg} \quad (	ext{Harina de S/. } 15)",
+        footer_badge_text="PESO TOTAL: 60 KG · COSTO TOTAL: S/. 690 · CLAVE: 10 KG",
+        width=980,
+        height=280,
+    )
+    overlay_inputs.append((sol_png, 222.00, 228.00, 65, None))
+    sfx_timeline.append(("celesta_chime", 222.05, 0.85))
+
+    # 12. Tarjeta de Conversión VIP Skool (228.0s a Fin)
+    cta_png = workdir / "cta_card.png"
+    cta_action = (
+        custom_cta_phrase
+        if custom_cta_phrase and ("skool" in custom_cta_phrase.lower() or "enlace" in custom_cta_phrase.lower())
+        else "Enlace en mi perfil: www.skool.sistemazenit.com"
+    )
+    cards.create_skool_cta_card(
+        community_name=cta_target or "ACADEMIA ZENIT",
+        action_text=cta_action,
+        badge_label="MÁS EJERCICIOS Y CURSOS 🚀",
+        out_path=cta_png,
+    )
+    overlay_inputs.append((cta_png, 228.00, dur, 1400, None))
+    sfx_timeline.append(("cash_ding", 228.05, 0.85))
+
+    return overlay_inputs, sfx_timeline
+
+
 def build_overlays_dynamic(
     workdir: Path,
     dur: float,
@@ -960,7 +1183,11 @@ def build_overlays_for_video(
     category_tag = copilot_plan["hook_category"]
 
     stem_upper = src_stem.upper()
-    if "2926" in stem_upper:
+    if "2927" in stem_upper:
+
+        return build_overlays_img_2927(workdir, dur, category_tag, clean_hook, custom_cta_phrase, cta_target)
+
+    elif "2926" in stem_upper:
         return build_overlays_img_2926(workdir, dur, category_tag, clean_hook, custom_cta_phrase, cta_target)
     elif "2925" in stem_upper:
         return build_overlays_img_2925(workdir, dur, category_tag, clean_hook, custom_cta_phrase, cta_target)

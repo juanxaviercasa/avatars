@@ -178,7 +178,11 @@ def polish_video(
                 voice_name = "es-PE-AlexNeural"
                 voice_cues = []
                 stem_upper = src.stem.upper()
-                if "2926" in stem_upper:
+                if "2927" in stem_upper:
+                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de mezclas de tres calidades de harina!", 0.20))
+                    voice_cues.append((workdir / "voice_formula.mp3", "¡Calculamos el precio medio de costo!", 20.20))
+                    voice_cues.append((workdir / "voice_answer.mp3", "¡Diez kilogramos, clave verificada!", 222.20))
+                elif "2926" in stem_upper:
                     voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de mezclas de tres tipos de avena!", 0.20))
                     voice_cues.append((workdir / "voice_formula.mp3", "¡Aplica la fórmula del precio medio ponderado!", 50.20))
                     voice_cues.append((workdir / "voice_answer.mp3", "¡Ocho, cuatro y seis kilogramos, respuesta correcta!", 236.20))
@@ -253,46 +257,33 @@ def polish_video(
             words_per_line=3,
             font_size=44,
             margin_v=240,  # Ubicación segura en tercio inferior bajo (CERO colisión con gráficos superiores)
-            suppress_after_time=159.0,  # CERO colisión con la tarjeta de Skool que entra en 159.2s
+            suppress_after_time=max(0.0, dur - 3.8),  # CERO colisión con la tarjeta de Skool que entra en 159.2s
         )
 
         if on_progress:
             on_progress(0.60, "Configurando motor de composición gráfica y barra de retención...")
 
         # 6) Armar filter_complex con todas las capas gráficas
-        # Juegos de cámara dinámicos estilo Netflix / Videoclip (Cortes rítmicos cada ~4 segundos):
+        # Juegos de cámara dinámicos estilo Netflix / Videoclip (Cortes rítmicos cada ~4 segundos hasta el final):
         # CAM 1: Plano General 1.0x (Establecimiento y relación docente-pizarra)
         # CAM 2: Plano Medio Orador 1.16x (Enfoque en orador y contacto visual)
         # CAM 3: Plano Detalle Pizarra 1.26x (Acercamiento a la tiza y ecuaciones)
-        speaker_intervals = [
-            (0.0, 2.0),     # Gancho inicial
-            (23.5, 28.0),   # Diálogo docente
-            (41.5, 46.0),   # Énfasis explicativo
-            (59.5, 64.0),   # Premisa clave
-            (75.5, 81.0),   # Introducción de la fórmula
-            (95.5, 100.0),  # Aclaración de sustitución
-            (114.0, 118.5), # Énfasis algebraico
-            (132.0, 136.5), # Proceso de despeje
-            (151.0, 156.0), # Preparación de la clave
-            (156.0, 159.2), # Revelación final de la clave
-        ]
-        board_intervals = [
-            (5.5, 9.5),     # Lectura del problema en pizarra
-            (19.0, 23.5),   # Escritura volumen total 42L
-            (28.0, 32.5),   # Escritura de precios P1 y P2
-            (37.0, 41.5),   # Escritura de precio medio Pm
-            (46.0, 50.5),   # Detalle de datos
-            (55.0, 59.5),   # Detalle de datos
-            (64.0, 68.5),   # Incógnita V2=?
-            (81.0, 86.5),   # Escritura fórmula Pm = (P1V1 + P2V2)/(V1+V2)
-            (91.0, 95.5),   # Escritura 7 = (5(42-V2)+8V2)/42
-            (100.0, 105.0), # Detalle sustitución
-            (109.5, 114.0), # Escritura 294 = 210 + 3V2
-            (118.5, 123.0), # Escritura 84 = 3V2
-            (127.5, 132.0), # Detalle algebraico
-            (136.5, 141.0), # Escritura 84 / 3
-            (146.0, 151.0), # Escritura resultado V2 = 28
-        ]
+        speaker_intervals = []
+        board_intervals = []
+        curr_t = 0.0
+        pat = ["speaker", "board", "wide", "board"]
+        pat_idx = 0
+        dur_target = max(0.0, dur - 3.8)
+        while curr_t < dur_target:
+            seg_len = 3.5 if pat[pat_idx % len(pat)] == "speaker" else 4.2
+            end_t = min(curr_t + seg_len, dur_target)
+            mode = pat[pat_idx % len(pat)]
+            if mode == "speaker":
+                speaker_intervals.append((round(curr_t, 2), round(end_t, 2)))
+            elif mode == "board":
+                board_intervals.append((round(curr_t, 2), round(end_t, 2)))
+            curr_t = end_t
+            pat_idx += 1
 
         sp_enable = "+".join(f"between(t,{s:.1f},{e:.1f})" for s, e in speaker_intervals)
         bd_enable = "+".join(f"between(t,{s:.1f},{e:.1f})" for s, e in board_intervals)
