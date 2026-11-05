@@ -1271,6 +1271,207 @@ def build_overlays_img_2928(
     return overlay_inputs, sfx_timeline
 
 
+
+
+def build_overlays_img_2931(
+    workdir: Path,
+    dur: float,
+    category_tag: str,
+    clean_hook: str,
+    custom_cta_phrase: str | None,
+    cta_target: str | None,
+) -> tuple[list[tuple[Path, float, float, int, int | None]], list[tuple[str, float, float]]]:
+    """
+    Perfil especializado para IMG_2931:
+    Aleación de Oro y Cobre (50g con ley L + 50g oro puro -> L' = 4 Lg' -> L = 0.60).
+    Cálculo de masa de cobre X a agregar para duplicar su liga (Lg'' = 0.80 -> L'' = 0.20).
+    Respuesta: X = 100 g de cobre.
+    """
+    overlay_inputs: list[tuple[Path, float, float, int, int | None]] = []
+    sfx_timeline: list[tuple[str, float, float]] = []
+
+    # 1. Hook Card Inicial (0.00s a 2.50s)
+    hook_png = workdir / "hook_card.png"
+    cards.create_hook_card(
+        category_tag="ARITMÉTICA · LEY Y LIGA EN ALEACIONES",
+        headline="Oro y Cobre: ¿Cuántos Gramos de Cobre para Duplicar la Liga?",
+        out_path=hook_png,
+    )
+    overlay_inputs.append((hook_png, 0.00, 2.50, 75, None))
+    sfx_timeline.append(("bright_swish", 0.08, 0.75))
+
+    # 2. B-Roll Cobre y Oro (2.50s a 6.00s)
+    broll_cg = settings.root / "assets" / "broll" / "copper_gold.jpg"
+    if broll_cg.exists():
+        broll_png = workdir / "broll_copper_gold.png"
+        cards.create_broll_card(
+            image_path=broll_cg,
+            caption="🪙 CONTEXTO: ALEACIÓN DE ORO (LEY) Y COBRE (LIGA)",
+            out_path=broll_png,
+        )
+        overlay_inputs.append((broll_png, 2.50, 6.00, 75, None))
+        sfx_timeline.append(("camera_shutter", 2.55, 0.65))
+
+    # 3. Problem Statement Card (6.00s a 20.00s)
+    prob_png = workdir / "problem_statement_card.png"
+    cards.create_problem_statement_card(
+        subject_tag="ALEACIONES DE ORO Y COBRE",
+        problem_title="PROBLEMA DE EXAMEN",
+        problem_lines=[
+            "A 50 g de oro y cobre se le agregan 50 g de oro puro.",
+            "Su nueva ley resulta ser el cuádruple de su liga (L' = 4 Lg').",
+            "¿Cuántos g de cobre agregar a la inicial para duplicar su liga?",
+        ],
+        data_chips=[
+            "M1 = 50 g",
+            "+50 g Oro Puro",
+            "L' = 4 Lg'",
+            "Hallar: Cobre = X g",
+        ],
+        out_path=prob_png,
+    )
+    overlay_inputs.append((prob_png, 6.00, 20.00, 65, None))
+    sfx_timeline.append(("plastic_tap", 6.05, 0.60))
+
+    badge1_png = workdir / "badge_objetivo.png"
+    cards.create_popart_callout_badge("🎯 ¡HALLAR GRAMOS DE COBRE X!", "speed", badge1_png, width=420, height=85)
+    overlay_inputs.append((badge1_png, 12.00, 19.00, 540, 560))
+    sfx_timeline.append(("pop", 12.05, 0.60))
+
+    # 4. Relación Fundamental Ley + Liga = 1 (20.00s a 55.00s)
+    f_fund_png = workdir / "formula_fund_ley_liga.png"
+    cards.create_math_formula_card(
+        formula_title="RELACIÓN FUNDAMENTAL: LEY Y LIGA",
+        formula_latex=r"\text{Ley} + \text{Liga} = 1 \implies L' + L_g' = 1 \implies 5 L_g' = 1",
+        out_path=f_fund_png,
+        width=960,
+        height=220,
+    )
+    overlay_inputs.append((f_fund_png, 20.00, 55.00, 65, None))
+    sfx_timeline.append(("bright_swish", 20.05, 0.70))
+
+    badge2_png = workdir / "badge_lg_020.png"
+    cards.create_popart_callout_badge("💡 ¡Lg' = 0.20 Y L' = 0.80!", "formula", badge2_png, width=420, height=85)
+    overlay_inputs.append((badge2_png, 25.00, 33.00, 295, 580))
+    sfx_timeline.append(("pop", 25.05, 0.60))
+
+    # 5. Deducción de Ley Inicial L = 0.60 (55.00s a 95.00s)
+    f_linicial_png = workdir / "formula_ley_inicial.png"
+    cards.create_step_clarification_card(
+        step_title="DEDUCCIÓN DE LA LEY INICIAL (L)",
+        step_latex=r"0.80 = \frac{50 L + 50(1)}{100} \implies 80 = 50 L + 50 \implies L = \frac{3}{5} = 0.60",
+        out_path=f_linicial_png,
+        width=960,
+        height=195,
+    )
+    overlay_inputs.append((f_linicial_png, 55.00, 95.00, 65, None))
+    sfx_timeline.append(("plastic_tap", 55.05, 0.60))
+
+    badge3_png = workdir / "badge_l060.png"
+    cards.create_popart_callout_badge("💰 ¡LEY INICIAL L = 0.60 (60% ORO)!", "speed", badge3_png, width=440, height=85)
+    overlay_inputs.append((badge3_png, 60.00, 68.00, 275, 580))
+    sfx_timeline.append(("bell_chime", 60.05, 0.85))
+
+    # 6. Condición 2: Duplicar la Liga Inicial (95.00s a 135.0s)
+    f_duplica_png = workdir / "formula_duplica_liga.png"
+    cards.create_step_clarification_card(
+        step_title="CONDICIÓN: DUPLICAR LA LIGA INICIAL",
+        step_latex=r"L_g = 1 - 0.60 = 0.40 \implies L_g'' = 2(0.40) = 0.80 \implies L'' = 0.20",
+        out_path=f_duplica_png,
+        width=960,
+        height=195,
+    )
+    overlay_inputs.append((f_duplica_png, 95.00, 135.00, 65, None))
+    sfx_timeline.append(("bright_swish", 95.05, 0.70))
+
+    badge4_png = workdir / "badge_l2_020.png"
+    cards.create_popart_callout_badge("⚡ ¡NUEVA LEY OBJETIVO: L'' = 0.20!", "warning", badge4_png, width=440, height=85)
+    overlay_inputs.append((badge4_png, 100.00, 108.00, 275, 580))
+    sfx_timeline.append(("wood_knock", 100.05, 0.60))
+
+    # 7. Planteo con Agregado de Cobre X (135.0s a 185.0s)
+    f_cobre_png = workdir / "formula_agrega_cobre.png"
+    cards.create_math_formula_card(
+        formula_title="AGREGADO DE COBRE (LEY DEL COBRE = 0)",
+        formula_latex=r"L'' = \frac{50(0.60) + X(0)}{50 + X} \implies 0.20 = \frac{30}{50 + X}",
+        out_path=f_cobre_png,
+        width=940,
+        height=220,
+    )
+    overlay_inputs.append((f_cobre_png, 135.00, 185.00, 65, None))
+    sfx_timeline.append(("plastic_tap", 135.05, 0.60))
+
+    badge5_png = workdir / "badge_ley_cobre0.png"
+    cards.create_popart_callout_badge("📝 ¡LEY DEL COBRE = 0 (ORDINARIO)!", "formula", badge5_png, width=440, height=85)
+    overlay_inputs.append((badge5_png, 140.00, 148.00, 275, 580))
+    sfx_timeline.append(("pop", 140.05, 0.60))
+
+    # 8. Multiplicación en Cruz y Despeje (185.0s a 235.0s)
+    f_cruz_x_png = workdir / "formula_cruz_x.png"
+    cards.create_math_formula_card(
+        formula_title="MULTIPLICACIÓN EN CRUZ Y DESPEJE",
+        formula_latex=r"0.20(50 + X) = 30 \implies 10 + 0.20 X = 30 \implies 0.20 X = 20",
+        out_path=f_cruz_x_png,
+        width=960,
+        height=220,
+    )
+    overlay_inputs.append((f_cruz_x_png, 185.00, 235.00, 65, None))
+    sfx_timeline.append(("bright_swish", 185.05, 0.70))
+
+    badge6_png = workdir / "badge_despeje_20.png"
+    cards.create_popart_callout_badge("💥 ¡0.20 X = 20 \implies X = 20 / 0.20!", "speed", badge6_png, width=440, height=85)
+    overlay_inputs.append((badge6_png, 190.00, 198.00, 275, 580))
+    sfx_timeline.append(("pop", 190.05, 0.60))
+
+    # 9. Deducción Final de la Masa de Cobre (235.0s a 275.0s)
+    f_x100_png = workdir / "formula_x100.png"
+    cards.create_step_clarification_card(
+        step_title="DEDUCCIÓN FINAL DE LA MASA DE COBRE",
+        step_latex=r"X = \frac{20}{0.20} = \frac{200}{2} = 100\text{ gramos de cobre}",
+        out_path=f_x100_png,
+        width=920,
+        height=195,
+    )
+    overlay_inputs.append((f_x100_png, 235.00, 275.00, 65, None))
+    sfx_timeline.append(("plastic_tap", 235.05, 0.60))
+
+    badge7_png = workdir / "badge_x100g.png"
+    cards.create_popart_callout_badge("✅ ¡SE DEBEN AGREGAR 100 G DE COBRE!", "warning", badge7_png, width=440, height=85)
+    overlay_inputs.append((badge7_png, 240.00, 248.00, 275, 580))
+    sfx_timeline.append(("bell_chime", 240.05, 0.85))
+
+    # 10. Solución Verificada Final (275.0s a 287.0s)
+    sol_png = workdir / "solution_card.png"
+    cards.create_solution_card(
+        result_text="SE DEBEN AGREGAR 100 G DE COBRE",
+        out_path=sol_png,
+        result_latex=r"X = 100\text{ g de cobre} \quad (L_g'' = 0.80)",
+        footer_badge_text="ALEACIÓN INICIAL: 50 G (L = 0.60) · CLAVE: 100 G DE COBRE",
+        width=980,
+        height=280,
+    )
+    overlay_inputs.append((sol_png, 275.00, 287.00, 65, None))
+    sfx_timeline.append(("celesta_chime", 275.05, 0.85))
+
+    # 11. Tarjeta de Conversión VIP Skool (287.0s a Fin)
+    cta_png = workdir / "cta_card.png"
+    cta_action = (
+        custom_cta_phrase
+        if custom_cta_phrase and ("skool" in custom_cta_phrase.lower() or "enlace" in custom_cta_phrase.lower())
+        else "Enlace en mi perfil: www.skool.sistemazenit.com"
+    )
+    cards.create_skool_cta_card(
+        community_name=cta_target or "ACADEMIA ZENIT",
+        action_text=cta_action,
+        badge_label="MÁS EJERCICIOS Y CURSOS 🚀",
+        out_path=cta_png,
+    )
+    overlay_inputs.append((cta_png, 287.00, dur, 1400, None))
+    sfx_timeline.append(("cash_ding", 287.05, 0.85))
+
+    return overlay_inputs, sfx_timeline
+
+
 def build_overlays_dynamic(
     workdir: Path,
     dur: float,
@@ -1368,7 +1569,11 @@ def build_overlays_for_video(
     category_tag = copilot_plan["hook_category"]
 
     stem_upper = src_stem.upper()
-    if "2928" in stem_upper:
+    if "2931" in stem_upper:
+
+        return build_overlays_img_2931(workdir, dur, category_tag, clean_hook, custom_cta_phrase, cta_target)
+
+    elif "2928" in stem_upper:
 
         return build_overlays_img_2928(workdir, dur, category_tag, clean_hook, custom_cta_phrase, cta_target)
 

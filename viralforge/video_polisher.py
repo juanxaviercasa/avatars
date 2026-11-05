@@ -178,7 +178,11 @@ def polish_video(
                 voice_name = "es-PE-AlexNeural"
                 voice_cues = []
                 stem_upper = src.stem.upper()
-                if "2928" in stem_upper:
+                if "2931" in stem_upper:
+                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de examen sobre ley y liga de oro y cobre!", 0.20))
+                    voice_cues.append((workdir / "voice_formula.mp3", "¡Recuerda que la ley más la liga siempre suman uno!", 20.20))
+                    voice_cues.append((workdir / "voice_answer.mp3", "¡Cien gramos de cobre, respuesta correcta!", 275.20))
+                elif "2928" in stem_upper:
                     voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de fundición y aleaciones de oro!", 0.20))
                     voice_cues.append((workdir / "voice_formula.mp3", "¡Aplica la fórmula de la ley media ponderada!", 45.20))
                     voice_cues.append((workdir / "voice_answer.mp3", "¡Cero coma setecientos ochenta de ley, clave correcta!", 155.20))
