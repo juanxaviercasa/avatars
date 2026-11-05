@@ -433,16 +433,41 @@ def create_problem_statement_card(
         draw.text((32, y_text), line, font=f_text, fill=(255, 255, 255, 255))
         y_text += line_spacing
 
-    # 3. Chips de datos clave en la base: Píldoras en BLANCO SÓLIDO con texto cian oscuro
+    # 3. Chips de datos clave en la base: Píldoras agrandadas con subíndices reales renderizados (P1, P2, Pm, V2)
+    f_chip = _get_font(24, bold=True)
+    f_chip_sub = _get_font(17, bold=True)
     chip_x = 28
-    chip_y = height - 52
+    chip_y = height - 54
     for chip in data_chips[:5]:
-        c_clean = _clean_text(chip).replace("₁", "1").replace("₂", "2").replace("ₘ", "m")
-        cb = draw.textbbox((0, 0), c_clean, font=f_chip)
-        cw = cb[2] - cb[0] + 28
-        draw.rounded_rectangle([chip_x, chip_y, chip_x + cw, chip_y + 38], radius=13, fill=(255, 255, 255, 255), outline=(56, 189, 248, 255), width=2)
-        draw.text((chip_x + 14, chip_y + 6), c_clean, font=f_chip, fill=(2, 132, 199, 255))
-        chip_x += cw + 14
+        clean_c = _clean_text(chip).replace("₁", "1").replace("₂", "2").replace("ₘ", "m")
+        parts = []
+        if "P1" in clean_c:
+            p0, p1 = clean_c.split("P1", 1)
+            parts = [(p0 + "P", f_chip, 0), ("1", f_chip_sub, 6), (p1, f_chip, 0)]
+        elif "P2" in clean_c:
+            p0, p1 = clean_c.split("P2", 1)
+            parts = [(p0 + "P", f_chip, 0), ("2", f_chip_sub, 6), (p1, f_chip, 0)]
+        elif "Pm" in clean_c:
+            p0, p1 = clean_c.split("Pm", 1)
+            parts = [(p0 + "P", f_chip, 0), ("m", f_chip_sub, 6), (p1, f_chip, 0)]
+        elif "V2" in clean_c:
+            p0, p1 = clean_c.split("V2", 1)
+            parts = [(p0 + "V", f_chip, 0), ("2", f_chip_sub, 6), (p1, f_chip, 0)]
+        elif "V1" in clean_c:
+            p0, p1 = clean_c.split("V1", 1)
+            parts = [(p0 + "V", f_chip, 0), ("1", f_chip_sub, 6), (p1, f_chip, 0)]
+        else:
+            parts = [(clean_c, f_chip, 0)]
+
+        total_w = sum((draw.textbbox((0, 0), txt, font=fnt)[2] - draw.textbbox((0, 0), txt, font=fnt)[0]) for txt, fnt, _ in parts)
+        cw = total_w + 26
+        draw.rounded_rectangle([chip_x, chip_y, chip_x + cw, chip_y + 42], radius=14, fill=(255, 255, 255, 255), outline=(56, 189, 248, 255), width=2)
+        cur_x = chip_x + 13
+        for txt, fnt, dy in parts:
+            draw.text((cur_x, chip_y + 8 + dy), txt, font=fnt, fill=(2, 132, 199, 255))
+            tb_part = draw.textbbox((0, 0), txt, font=fnt)
+            cur_x += (tb_part[2] - tb_part[0])
+        chip_x += cw + 12
 
     img.save(out_path, format="PNG")
     return out_path
@@ -644,12 +669,12 @@ def create_product_comparison_card(
     p2_price: int = 8,
     pm_target: int = 7,
     out_path: str | Path = "product_comparison.png",
-    width: int = 460,
-    height: int = 430,
+    width: int = 520,
+    height: int = 530,
 ) -> Path:
     """
-    Crea un panel comparativo de productos compacto para el cuadrante inferior derecho.
-    Tipografía limpia sin caracteres Unicode rotos (P1, P2, Pm) y alto contraste visual.
+    Crea un panel comparativo de productos ampliado y de máxima legibilidad móvil.
+    Tipografía de gran tamaño, subíndices reales renderizados (P1, P2, Pm, V1, V2) y alto contraste.
     """
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -657,41 +682,74 @@ def create_product_comparison_card(
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    f_tag = _get_font(19, bold=True)
-    f_h2 = _get_font(19, bold=True)
-    f_price = _get_font(28, bold=True)
-    f_desc = _get_font(16, bold=False)
+    f_tag = _get_font(21, bold=True)
+    f_h2 = _get_font(23, bold=True)
+    f_price = _get_font(36, bold=True)
+    f_sub = _get_font(24, bold=True)
+    f_desc = _get_font(22, bold=False)
+    f_desc_sub = _get_font(16, bold=True)
 
     # Fondo glassmorphism oscuro con borde dorado
     bg_color = (9, 16, 30, 252)
     border_color = (255, 228, 94, 230)
-    draw.rounded_rectangle([3, 3, width - 3, height - 3], radius=22, fill=bg_color, outline=border_color, width=3)
+    draw.rounded_rectangle([3, 3, width - 3, height - 3], radius=24, fill=bg_color, outline=border_color, width=3)
 
     # Header Pill: FONDO BLANCO SÓLIDO + TEXTO DORADO (Alto Contraste)
     tag_str = "PRECIOS POR LITRO"
     tb = draw.textbbox((0, 0), tag_str, font=f_tag)
     tw = tb[2] - tb[0]
-    p_w = tw + 28
-    draw.rounded_rectangle([(width - p_w) // 2, 12, (width + p_w) // 2, 42], radius=13, fill=(255, 255, 255, 255), outline=(255, 228, 94, 255), width=2)
+    p_w = tw + 32
+    draw.rounded_rectangle([(width - p_w) // 2, 12, (width + p_w) // 2, 44], radius=14, fill=(255, 255, 255, 255), outline=(255, 228, 94, 255), width=2)
     draw.text(((width - tw) // 2, 17), tag_str, font=f_tag, fill=(180, 83, 9, 255))
 
     # Fila 1: Producto 1 (Económico)
-    draw.rounded_rectangle([18, 54, width - 18, 165], radius=15, fill=(35, 24, 12, 230), outline=(245, 158, 11, 220), width=2)
+    draw.rounded_rectangle([18, 54, width - 18, 200], radius=16, fill=(35, 24, 12, 235), outline=(245, 158, 11, 230), width=2)
     draw.text((32, 64), "PRODUCTO 1 (Económico)", font=f_h2, fill=(251, 191, 36, 255))
-    draw.text((32, 92), f"P1 = S/. {p1_price} / Litro", font=f_price, fill=(255, 255, 255, 255))
-    draw.text((32, 134), "Volumen correspondiente: V1", font=f_desc, fill=(214, 211, 209, 255))
+    # Renderizar P_1 = S/. 5 / Litro con subíndice real
+    p1_x = 32
+    p1_y = 96
+    draw.text((p1_x, p1_y), "P", font=f_price, fill=(255, 255, 255, 255))
+    w_p = draw.textbbox((0, 0), "P", font=f_price)[2]
+    draw.text((p1_x + w_p, p1_y + 9), "1", font=f_sub, fill=(255, 255, 255, 255))
+    w_1 = draw.textbbox((0, 0), "1", font=f_sub)[2]
+    draw.text((p1_x + w_p + w_1 + 4, p1_y), f" = S/. {p1_price} / Litro", font=f_price, fill=(255, 255, 255, 255))
+    # Volumen correspondiente: V_1 con subíndice
+    v1_y = 152
+    draw.text((32, v1_y), "Volumen correspondiente: V", font=f_desc, fill=(214, 211, 209, 255))
+    w_vc = draw.textbbox((0, 0), "Volumen correspondiente: V", font=f_desc)[2]
+    draw.text((32 + w_vc, v1_y + 5), "1", font=f_desc_sub, fill=(214, 211, 209, 255))
 
     # Fila 2: Producto 2 (Más Caro - Objetivo)
-    draw.rounded_rectangle([18, 178, width - 18, 295], radius=15, fill=(12, 28, 48, 230), outline=(56, 189, 248, 230), width=2)
-    draw.text((32, 188), "PRODUCTO 2 (Más Caro) [OBJETIVO]", font=f_h2, fill=(56, 189, 248, 255))
-    draw.text((32, 216), f"P2 = S/. {p2_price} / Litro", font=f_price, fill=(255, 228, 94, 255))
-    draw.text((32, 260), "¡Debemos calcular su volumen V2!", font=f_desc, fill=(186, 230, 253, 255))
+    draw.rounded_rectangle([18, 212, width - 18, 358], radius=16, fill=(12, 28, 48, 235), outline=(56, 189, 248, 230), width=2)
+    draw.text((32, 222), "PRODUCTO 2 (Más Caro) [OBJETIVO]", font=f_h2, fill=(56, 189, 248, 255))
+    # Renderizar P_2 = S/. 8 / Litro con subíndice real
+    p2_x = 32
+    p2_y = 254
+    draw.text((p2_x, p2_y), "P", font=f_price, fill=(255, 228, 94, 255))
+    w_p2 = draw.textbbox((0, 0), "P", font=f_price)[2]
+    draw.text((p2_x + w_p2, p2_y + 9), "2", font=f_sub, fill=(255, 228, 94, 255))
+    w_2 = draw.textbbox((0, 0), "2", font=f_sub)[2]
+    draw.text((p2_x + w_p2 + w_2 + 4, p2_y), f" = S/. {p2_price} / Litro", font=f_price, fill=(255, 228, 94, 255))
+    # ¡Debemos calcular su volumen V_2! con subíndice
+    v2_y = 310
+    draw.text((32, v2_y), "¡Debemos calcular su volumen V", font=f_desc, fill=(186, 230, 253, 255))
+    w_v2 = draw.textbbox((0, 0), "¡Debemos calcular su volumen V", font=f_desc)[2]
+    draw.text((32 + w_v2, v2_y + 5), "2", font=f_desc_sub, fill=(186, 230, 253, 255))
+    w_s2 = draw.textbbox((0, 0), "2", font=f_desc_sub)[2]
+    draw.text((32 + w_v2 + w_s2, v2_y), "!", font=f_desc, fill=(186, 230, 253, 255))
 
     # Fila 3: Precio Medio Objetivo (Resultante)
-    draw.rounded_rectangle([18, 308, width - 18, 415], radius=15, fill=(6, 34, 20, 230), outline=(52, 211, 153, 230), width=2)
-    draw.text((32, 318), "PRECIO MEDIO DE LA MEZCLA", font=f_h2, fill=(52, 211, 153, 255))
-    draw.text((32, 346), f"Pm = S/. {pm_target} / Litro", font=f_price, fill=(255, 255, 255, 255))
-    draw.text((32, 388), "Equilibrio ponderado de la mezcla", font=f_desc, fill=(167, 243, 208, 255))
+    draw.rounded_rectangle([18, 370, width - 18, 516], radius=16, fill=(6, 34, 20, 235), outline=(52, 211, 153, 230), width=2)
+    draw.text((32, 380), "PRECIO MEDIO DE LA MEZCLA", font=f_h2, fill=(52, 211, 153, 255))
+    # Renderizar P_m = S/. 7 / Litro con subíndice real
+    pm_x = 32
+    pm_y = 412
+    draw.text((pm_x, pm_y), "P", font=f_price, fill=(255, 255, 255, 255))
+    w_pm = draw.textbbox((0, 0), "P", font=f_price)[2]
+    draw.text((pm_x + w_pm, pm_y + 9), "m", font=f_sub, fill=(255, 255, 255, 255))
+    w_m = draw.textbbox((0, 0), "m", font=f_sub)[2]
+    draw.text((pm_x + w_pm + w_m + 4, pm_y), f" = S/. {pm_target} / Litro", font=f_price, fill=(255, 255, 255, 255))
+    draw.text((32, 468), "Equilibrio ponderado de la mezcla", font=f_desc, fill=(167, 243, 208, 255))
 
     img.save(out_path, format="PNG")
     return out_path
@@ -701,11 +759,11 @@ def create_popart_callout_badge(
     text: str,
     badge_type: str = "warning",  # "warning", "formula", "success", "speed"
     out_path: str | Path = "callout_badge.png",
-    width: int = 420,
-    height: int = 100,
+    width: int = 460,
+    height: int = 95,
 ) -> Path:
     """
-    Crea un sticker / badge pop-art animado con tipografía limpia (sin caracteres Unicode rotos).
+    Crea un sticker / badge pop-art animado con tipografía limpia (sin caracteres rotos ni signos extraños).
     Fondo cómic de alto contraste con sombra 3D dura y borde negro grueso.
     """
     out_path = Path(out_path)
@@ -714,7 +772,7 @@ def create_popart_callout_badge(
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    f_txt = _get_font(26, bold=True)
+    f_txt = _get_font(29, bold=True)
 
     # Configuración de paletas pop-art
     themes = {
@@ -730,8 +788,8 @@ def create_popart_callout_badge(
     # Cuerpo principal con borde grueso cómic
     draw.rounded_rectangle([3, 3, width - 6, height - 6], radius=16, fill=th["bg"] + (255,), outline=th["border"] + (255,), width=4)
 
-    # Texto centrado de impacto (limpiando caracteres problemáticos)
-    clean = _clean_text(text).upper().replace("₁", "1").replace("₂", "2")
+    # Texto centrado de impacto (limpiando símbolos extraños como ¡ o ¿ que causan confusión visual)
+    clean = _clean_text(text).upper().replace("₁", "1").replace("₂", "2").replace("¡", "").replace("¿", "").strip()
     tb = draw.textbbox((0, 0), clean, font=f_txt)
     tw = tb[2] - tb[0]
     th_h = tb[3] - tb[1]

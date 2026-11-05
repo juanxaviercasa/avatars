@@ -168,8 +168,8 @@ def polish_video(
         cards.create_popart_callout_badge("💡 ¡OJO AL ENUNCIADO!", "warning", badge1_png)
         overlay_inputs.append((badge1_png, 11.50, 15.00, 540, 560))
 
-        # Continuación del Enunciado mientras el docente plantea en la pizarra
-        overlay_inputs.append((prob_png, 14.50, 74.50, 75, None))
+        # Continuación del Enunciado (Se retira a 71.5s antes del badge de fórmula para cero solapamiento)
+        overlay_inputs.append((prob_png, 14.50, 71.50, 65, None))
 
         # 5. Capa de Ilustraciones de Cantidades en Espacios Vacíos de la Pizarra
         # 5.1 Gráfico 1: Contenedor de Mezcla Total (42 Litros) en el espacio inferior libre (y=1040, h=355)
@@ -177,15 +177,15 @@ def polish_video(
         cards.create_volume_container_card(total_volume_liters=42, out_path=vol_png, width=420, height=355)
         overlay_inputs.append((vol_png, 26.00, 39.00, 1040, 580))
 
-        # 5.2 Gráfico 2: Comparativa de Precios P1 (S/. 5) vs P2 (S/. 8) y Pm (S/. 7) en el espacio inferior libre (y=1020)
+        # 5.2 Gráfico 2: Comparativa de Precios Ampliada (520x530) con subíndices reales P1, P2, Pm en y=960
         comp_png = workdir / "product_comparison.png"
-        cards.create_product_comparison_card(p1_price=5, p2_price=8, pm_target=7, out_path=comp_png, width=460, height=430)
-        overlay_inputs.append((comp_png, 42.00, 68.00, 1020, 560))
+        cards.create_product_comparison_card(p1_price=5, p2_price=8, pm_target=7, out_path=comp_png, width=520, height=530)
+        overlay_inputs.append((comp_png, 42.00, 68.00, 960, 530))
 
-        # Pop-art Badge 2: Alerta de Fórmula Inminente (En zona segura y=310, sobre el pizarrón)
+        # Pop-art Badge 2: Alerta de Fórmula Inminente (En zona limpia y=290 tras la retirada del enunciado)
         badge2_png = workdir / "badge_formula.png"
         cards.create_popart_callout_badge("📐 ¡FÓRMULA CLAVE!", "formula", badge2_png, width=380, height=85)
-        overlay_inputs.append((badge2_png, 72.50, 75.50, 310, 580))
+        overlay_inputs.append((badge2_png, 72.00, 75.50, 290, 580))
 
         # 6. Progresión Dinámica de Ecuaciones Micro-Sincronizada (8 Etapas sin adelantarse a la tiza)
         # Etapa 1 (75.5s a 93.0s): Fórmula Maestra Teórica (Equilibrada, 960x230 en y=65)
@@ -210,21 +210,21 @@ def polish_video(
         )
         overlay_inputs.append((f2a_png, 93.00, 102.00, 65, None))
 
-        # Etapa 2B (102.0s a 122.0s): Sustitución de la incógnita V1 = 42 - V2 (Equilibrada, 940x225 en y=65)
+        # Etapa 2B (102.0s a 122.0s): Sustitución de la incógnita V1 = 42 - V2 (Compacta 860x195 en y=65)
         f2b_png = workdir / "formula_stage2b.png"
         cards.create_math_formula_card(
             formula_title="DESPEJE DE INCÓGNITA: V1 = 42 - V2",
             formula_latex=r"7 = \frac{5(42 - V_2) + 8V_2}{42}",
             out_path=f2b_png,
-            width=940,
-            height=225,
+            width=860,
+            height=195,
         )
         overlay_inputs.append((f2b_png, 102.00, 122.00, 65, None))
 
-        # Pop-art Badge 3: Despeje V1 (En y=310, dejando 20px de espacio libre bajo la fórmula y 85px sobre la tiza)
+        # Pop-art Badge 3: Despeje V1 (Ampliado 460x95 en y=295, con 35px libres bajo la fórmula y 90px sobre la tiza)
         badge3_png = workdir / "badge_despeje.png"
-        cards.create_popart_callout_badge("⚡ ¡V1 = 42 - V2!", "warning", badge3_png, width=380, height=85)
-        overlay_inputs.append((badge3_png, 103.00, 108.50, 310, 580))
+        cards.create_popart_callout_badge("V1 = 42 - V2", "warning", badge3_png, width=460, height=95)
+        overlay_inputs.append((badge3_png, 103.00, 108.50, 295, 580))
 
         # Etapa 3A (122.0s a 133.0s): Multiplicación en cruz (42 * 7 = 294) - Compacta y armónica
         f3a_png = workdir / "formula_stage3a.png"
@@ -313,25 +313,25 @@ def polish_video(
             orig_samples = np.zeros(int(audio_mix.SR * dur), dtype=np.float32)
 
         total_samples = len(orig_samples)
-        # 4.1 Boost de presencia y volumen a la voz original del docente (para sobresalir nítidamente de la música)
-        peak_voice = float(np.abs(orig_samples).max()) if len(orig_samples) > 0 else 1.0
-        voice_gain = 1.35 if peak_voice < 0.72 else 1.18
-        mixed_audio = orig_samples * voice_gain
+        # 4.1 Boost potente de presencia y volumen a la voz original del docente (1.75x con soft-limiting)
+        voice_gain = 1.75
+        boosted_voice = np.tanh(orig_samples * voice_gain * 1.05) * 0.95
+        mixed_audio = np.copy(boosted_voice)
 
-        # 4.2 Inyectar música procedural Electro-Rock / Synthwave motivacional con volumen equilibrado y auto-ducking
+        # 4.2 Inyectar música procedural Electro-Rock / Synthwave motivacional sutil (gain=0.11) con auto-ducking agresivo
         try:
-            electro_bg = audio_mix.generate_electro_rock_background(dur, sr=audio_mix.SR, gain=0.16)
-            # Auto-ducking bajo la voz original del docente (-5dB mientras habla)
+            electro_bg = audio_mix.generate_electro_rock_background(dur, sr=audio_mix.SR, gain=0.11)
+            # Auto-ducking bajo la voz original del docente (-9dB mientras habla)
             hop = audio_mix.SR // 10
             n_blocks = min(len(mixed_audio), len(electro_bg)) // hop
             if n_blocks > 0:
-                blocks = mixed_audio[: n_blocks * hop].reshape(n_blocks, hop)
+                blocks = boosted_voice[: n_blocks * hop].reshape(n_blocks, hop)
                 block_rms = np.sqrt(np.mean(blocks ** 2, axis=1))
-                is_talking = block_rms > 0.022
+                is_talking = block_rms > 0.020
                 duck_profile = np.ones(len(electro_bg), dtype=np.float32)
                 for b_idx, talking in enumerate(is_talking):
                     if talking:
-                        duck_profile[b_idx * hop : (b_idx + 1) * hop] = 0.55
+                        duck_profile[b_idx * hop : (b_idx + 1) * hop] = 0.35
                 electro_bg = electro_bg * duck_profile
 
             if len(electro_bg) >= total_samples:
