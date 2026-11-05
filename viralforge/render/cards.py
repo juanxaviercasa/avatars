@@ -259,6 +259,7 @@ def create_solution_card(
     result_text: str,
     out_path: str | Path,
     result_latex: str | None = None,
+    footer_badge_text: str | None = None,
     width: int = 980,
     height: int = 280,
 ) -> Path:
@@ -323,7 +324,7 @@ def create_solution_card(
         draw.text(((width - r_w) // 2, 78), res_clean, font=f_res, fill=(255, 228, 94, 255))
 
     # 3. Footer: Píldora inferior en ORO SÓLIDO con icono check verde vectorial (Cero '?')
-    footer_str = "CLAVE CORRECTA VERIFICADA: V2 = 28 LITROS"
+    footer_str = footer_badge_text or f"CLAVE CORRECTA VERIFICADA: {_clean_text(result_text).upper()}"
     fb = draw.textbbox((0, 0), footer_str, font=f_tag)
     fw = fb[2] - fb[0]
     fp_w = fw + 64

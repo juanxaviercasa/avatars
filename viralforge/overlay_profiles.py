@@ -191,6 +191,7 @@ def build_overlays_img_2916(
         result_text="V2 = 28 LITROS",
         out_path=ans_png,
         result_latex=r"V_2 = 28\text{ Litros}",
+        footer_badge_text="CLAVE CORRECTA VERIFICADA: V2 = 28 LITROS",
         width=980,
         height=280,
     )
@@ -413,6 +414,7 @@ def build_overlays_img_2922(
         result_text="Pv = S/. 72 POR KG",
         out_path=sol_png,
         result_latex=r"P_v = \text{S/. } 72\text{ por kg}",
+        footer_badge_text="CLAVE CORRECTA: Pv = S/. 72 POR KG",
         width=980,
         height=280,
     )
