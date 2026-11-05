@@ -28,6 +28,7 @@ import numpy as np
 from .config import settings
 from .cta_manager import build_cta_card
 from .math_copilot import analyze_transcript
+from .overlay_profiles import build_overlays_for_video
 from .render import ass_subtitles, audio as audio_mix, cards, ffmpeg
 
 log = logging.getLogger("viralforge.video_polisher")
@@ -112,194 +113,17 @@ def polish_video(
         full_transcript = " ".join((w.get("formatted") or w.get("word", "") if isinstance(w, dict) else str(w)) for w in words)
         copilot_plan = analyze_transcript(full_transcript, words, dur)
 
-        overlay_inputs: list[tuple[Path, float, float, int, int | None]] = []
-        # Tupla: (path, start_time, end_time, y_position, x_position)
-
-        # 1. Hook Card de Apertura (0.0s a 2.0s, dando paso al B-roll del museo sin sobremontarse)
-        hook_png = workdir / "hook_card.png"
+        # 3.1) Generar overlays gráficos y timeline de SFX (perfil especializado o dinámico)
         clean_hook = hook_badge_text.replace("⚠️", "").replace("🚨", "").strip() or copilot_plan["hook_headline"]
-        category_tag = copilot_plan["hook_category"]
-        cards.create_hook_card(
-            category_tag=category_tag,
-            headline=clean_hook,
-            out_path=hook_png,
+        overlay_inputs, sfx_timeline = build_overlays_for_video(
+            src_stem=src.stem,
+            workdir=workdir,
+            dur=dur,
+            copilot_plan=copilot_plan,
+            hook_badge_text=clean_hook,
+            custom_cta_phrase=custom_cta_phrase,
+            cta_target=cta_target,
         )
-        overlay_inputs.append((hook_png, 0.00, 2.00, 75, None))
-
-        # 2. B-Roll Hiperrealista 1: Sala de Museo (2.0s a 5.5s)
-        broll_museum_src = settings.root / "assets" / "broll" / "museum_hall.jpg"
-        if broll_museum_src.exists():
-            broll_m_png = workdir / "broll_museum.png"
-            cards.create_broll_card(
-                image_path=broll_museum_src,
-                caption="🏛️ CONTEXTO: MUSEO VISITADO",
-                out_path=broll_m_png,
-            )
-            overlay_inputs.append((broll_m_png, 2.00, 5.50, 75, None))
-
-        # 3. Tarjeta Estratégica del Enunciado (Split-Screen Compacto y Alto Contraste 18:1)
-        prob_png = workdir / "problem_statement_card.png"
-        cards.create_problem_statement_card(
-            subject_tag=category_tag,
-            problem_title="PROBLEMA DE EXAMEN",
-            problem_lines=[
-                "José compró 42 L de mezcla de dos productos (S/. 5 y S/. 8).",
-                "Si el precio medio fue S/. 7, calcula los litros del más caro (V2).",
-            ],
-            data_chips=["Vol. Total = 42 L", "P1 = S/. 5", "P2 = S/. 8", "Pm = S/. 7", "Hallar: V2 = ?"],
-            out_path=prob_png,
-        )
-        # Mostrar enunciado antes y después del segundo B-roll
-        overlay_inputs.append((prob_png, 5.50, 9.50, 75, None))
-
-        # 4. B-Roll Hiperrealista 2: Mezcla de Productos Químicos (9.5s a 14.5s)
-        broll_chem_src = settings.root / "assets" / "broll" / "chemistry_beakers.jpg"
-        if broll_chem_src.exists():
-            broll_c_png = workdir / "broll_chem.png"
-            cards.create_broll_card(
-                image_path=broll_chem_src,
-                caption="🧪 SITUACIÓN: MEZCLA DE PRODUCTOS (S/. 5 Y S/. 8)",
-                out_path=broll_c_png,
-            )
-            overlay_inputs.append((broll_c_png, 9.50, 14.50, 75, None))
-
-        # Pop-art Badge 1: Ojo al enunciado (Aparece junto al B-Roll de químicos)
-        badge1_png = workdir / "badge_ojo.png"
-        cards.create_popart_callout_badge("💡 ¡OJO AL ENUNCIADO!", "warning", badge1_png)
-        overlay_inputs.append((badge1_png, 11.50, 15.00, 540, 560))
-
-        # Continuación del Enunciado (Se retira a 71.5s antes del badge de fórmula para cero solapamiento)
-        overlay_inputs.append((prob_png, 14.50, 71.50, 65, None))
-
-        # 5. Capa de Ilustraciones de Cantidades en Espacios Vacíos de la Pizarra
-        # 5.1 Gráfico 1: Contenedor de Mezcla Total (42 Litros) en el espacio inferior libre (y=1040, h=355)
-        vol_png = workdir / "volume_container.png"
-        cards.create_volume_container_card(total_volume_liters=42, out_path=vol_png, width=420, height=355)
-        overlay_inputs.append((vol_png, 26.00, 39.00, 1040, 580))
-
-        # 5.2 Gráfico 2: Comparativa de Precios Ampliada (520x530) con subíndices reales P1, P2, Pm en y=960
-        comp_png = workdir / "product_comparison.png"
-        cards.create_product_comparison_card(p1_price=5, p2_price=8, pm_target=7, out_path=comp_png, width=520, height=530)
-        overlay_inputs.append((comp_png, 42.00, 68.00, 960, 530))
-
-        # Pop-art Badge 2: Alerta de Fórmula Inminente (En zona limpia y=290 tras la retirada del enunciado)
-        badge2_png = workdir / "badge_formula.png"
-        cards.create_popart_callout_badge("📐 ¡FÓRMULA CLAVE!", "formula", badge2_png, width=380, height=85)
-        overlay_inputs.append((badge2_png, 72.00, 75.50, 290, 580))
-
-        # 6. Progresión Dinámica de Ecuaciones Micro-Sincronizada (8 Etapas sin adelantarse a la tiza)
-        # Etapa 1 (75.5s a 93.0s): Fórmula Maestra Teórica (Equilibrada, 960x230 en y=65)
-        f1_png = workdir / "formula_stage1.png"
-        cards.create_math_formula_card(
-            formula_title="FÓRMULA CLAVE: PRECIO MEDIO",
-            formula_latex=r"P_m = \frac{P_1 V_1 + P_2 V_2}{V_1 + V_2}",
-            out_path=f1_png,
-            width=960,
-            height=230,
-        )
-        overlay_inputs.append((f1_png, 75.50, 93.00, 65, None))
-
-        # Etapa 2A (93.0s a 102.0s): Sustitución Inicial de Valores
-        f2a_png = workdir / "formula_stage2a.png"
-        cards.create_math_formula_card(
-            formula_title="REEMPLAZO DE VALORES CONOCIDOS",
-            formula_latex=r"7 = \frac{5 V_1 + 8 V_2}{42}",
-            out_path=f2a_png,
-            width=940,
-            height=220,
-        )
-        overlay_inputs.append((f2a_png, 93.00, 102.00, 65, None))
-
-        # Etapa 2B (102.0s a 122.0s): Sustitución de la incógnita V1 = 42 - V2 (Compacta 860x195 en y=65)
-        f2b_png = workdir / "formula_stage2b.png"
-        cards.create_math_formula_card(
-            formula_title="DESPEJE DE INCÓGNITA: V1 = 42 - V2",
-            formula_latex=r"7 = \frac{5(42 - V_2) + 8V_2}{42}",
-            out_path=f2b_png,
-            width=860,
-            height=195,
-        )
-        overlay_inputs.append((f2b_png, 102.00, 122.00, 65, None))
-
-        # Pop-art Badge 3: Despeje V1 (Ampliado 460x95 en y=295, con 35px libres bajo la fórmula y 90px sobre la tiza)
-        badge3_png = workdir / "badge_despeje.png"
-        cards.create_popart_callout_badge("V1 = 42 - V2", "warning", badge3_png, width=460, height=95)
-        overlay_inputs.append((badge3_png, 103.00, 108.50, 295, 580))
-
-        # Etapa 3A (122.0s a 133.0s): Multiplicación en cruz (42 * 7 = 294) - Compacta y armónica
-        f3a_png = workdir / "formula_stage3a.png"
-        cards.create_step_clarification_card(
-            step_title="MULTIPLICACIÓN EN CRUZ",
-            step_latex=r"7 \times 42 = 294",
-            out_path=f3a_png,
-            width=880,
-            height=190,
-        )
-        overlay_inputs.append((f3a_png, 122.00, 133.00, 65, None))
-
-        # Pop-art Badge 4: Multiplica en Cruz (En y=275, con espacio libre bajo la tarjeta de multiplicación)
-        badge4_png = workdir / "badge_cruz.png"
-        cards.create_popart_callout_badge("💥 ¡MULTIPLICA EN CRUZ!", "speed", badge4_png, width=380, height=85)
-        overlay_inputs.append((badge4_png, 122.50, 128.00, 275, 580))
-
-        # Etapa 3B (133.0s a 143.0s): Expansión y Distribución
-        f3b_png = workdir / "formula_stage3b.png"
-        cards.create_step_clarification_card(
-            step_title="DISTRIBUCIÓN Y AGRUPACIÓN",
-            step_latex=r"294 = 210 - 5V_2 + 8V_2",
-            out_path=f3b_png,
-            width=880,
-            height=190,
-        )
-        overlay_inputs.append((f3b_png, 133.00, 143.00, 65, None))
-
-        # Etapa 3C (143.0s a 149.0s): Reducción de términos
-        f3c_png = workdir / "formula_stage3c.png"
-        cards.create_step_clarification_card(
-            step_title="REDUCCIÓN ALGEBRAICA",
-            step_latex=r"84 = 3V_2",
-            out_path=f3c_png,
-            width=880,
-            height=190,
-        )
-        overlay_inputs.append((f3c_png, 143.00, 149.00, 65, None))
-
-        # Etapa 4 (149.0s a 156.0s): Despeje Final y División
-        f4_png = workdir / "formula_stage4.png"
-        cards.create_math_formula_card(
-            formula_title="DESPEJE FINAL DE V2",
-            formula_latex=r"V_2 = \frac{84}{3} = 28\text{ L}",
-            out_path=f4_png,
-            width=940,
-            height=220,
-        )
-        overlay_inputs.append((f4_png, 149.00, 156.00, 65, None))
-
-        # Etapa 5 (156.0s a 159.2s): Tarjeta de Clave Verificada EQUILIBRADA (Ni exagerada ni pequeña)
-        ans_png = workdir / "solution_card.png"
-        cards.create_solution_card(
-            result_text="V2 = 28 LITROS",
-            out_path=ans_png,
-            result_latex=r"V_2 = 28\text{ Litros}",
-            width=980,
-            height=280,
-        )
-        overlay_inputs.append((ans_png, 156.00, 159.20, 65, None))
-
-        # Etapa 6 (159.2s a Fin): Tarjeta de Conversión VIP Skool
-        cta_png = workdir / "cta_card.png"
-        cta_action = (
-            custom_cta_phrase
-            if custom_cta_phrase and ("skool" in custom_cta_phrase.lower() or "enlace" in custom_cta_phrase.lower())
-            else "Enlace en mi perfil: www.skool.sistemazenit.com"
-        )
-        cards.create_skool_cta_card(
-            community_name=cta_target or "ACADEMIA ZENIT",
-            action_text=cta_action,
-            badge_label="MÁS EJERCICIOS Y CURSOS 🚀",
-            out_path=cta_png,
-        )
-        overlay_inputs.append((cta_png, 159.20, dur, 1400, None))
 
         if on_progress:
             on_progress(0.30, "Generando diseño sonoro procedural VSL + Voces Neurales y SFX...")
@@ -352,12 +176,19 @@ def polish_video(
 
             async def _synthesize_neural_voices():
                 voice_name = "es-PE-AlexNeural"
-                voice_cues = [
-                    (workdir / "voice_hook.mp3", "¡Atento a este truco de examen de mezclas!", 0.40),
-                    (workdir / "voice_formula.mp3", "¡Aplica la fórmula del precio medio!", 75.80),
-                    (workdir / "voice_cross.mp3", "¡Multiplicamos en cruz: 7 por 42!", 122.20),
-                    (workdir / "voice_answer.mp3", "¡Excelente! 28 litros, respuesta correcta.", 156.20),
-                ]
+                voice_cues = []
+                stem_upper = src.stem.upper()
+                if "2922" in stem_upper:
+                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de examen!", 0.20))
+                    voice_cues.append((workdir / "voice_formula.mp3", "¡Aplica la fórmula de mezclas!", 58.20))
+                    voice_cues.append((workdir / "voice_answer.mp3", "¡Setenta y dos soles el kilogramo!", 208.20))
+                elif "2916" in stem_upper:
+                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este truco de examen de mezclas!", 0.40))
+                    voice_cues.append((workdir / "voice_formula.mp3", "¡Aplica la fórmula del precio medio!", 75.80))
+                    voice_cues.append((workdir / "voice_cross.mp3", "¡Multiplicamos en cruz: 7 por 42!", 122.20))
+                    voice_cues.append((workdir / "voice_answer.mp3", "¡Excelente! 28 litros, respuesta correcta.", 156.20))
+                else:
+                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de examen!", 0.20))
                 results = []
                 for vpath, vtext, vtime in voice_cues:
                     try:
@@ -391,40 +222,9 @@ def polish_video(
                 if idx_end > idx_start:
                     mixed_audio[idx_start:idx_end] += sfx_samples[: idx_end - idx_start] * gain
 
-        # SFX Hook Apertura
-        _inject_sfx(hook_sfx, 0.08, gain=0.75)
-        # SFX B-roll Museo
-        _inject_sfx("camera_shutter", 2.05, gain=0.65)
-        # SFX Enunciado
-        _inject_sfx("plastic_tap", 5.55, gain=0.60)
-        # SFX B-roll Mezcla Químicos
-        _inject_sfx("bright_swish", 9.55, gain=0.65)
-        # SFX Badge Ojo
-        _inject_sfx("pop", 11.55, gain=0.60)
-        # SFX Contenedor 42L
-        _inject_sfx("subtle_pop", 26.05, gain=0.65)
-        # SFX Comparativa de Precios
-        _inject_sfx("bright_swish", 42.05, gain=0.65)
-        # SFX Badge Fórmula Inminente
-        _inject_sfx("wood_knock", 72.55, gain=0.60)
-        # SFX Fórmula Teórica (Etapa 1)
-        _inject_sfx("bright_swish", 75.55, gain=0.70)
-        # SFX Sustitución Inicial (Etapa 2A)
-        _inject_sfx("plastic_tap", 93.05, gain=0.60)
-        # SFX Sustitución V1 (Etapa 2B)
-        _inject_sfx("pop", 102.05, gain=0.60)
-        # SFX Multiplicación en Cruz (Etapa 3A)
-        _inject_sfx("cut_hit", 122.05, gain=0.70)
-        # SFX Expansión Algebraica (Etapa 3B)
-        _inject_sfx("plastic_tap", 133.05, gain=0.60)
-        # SFX Reducción (Etapa 3C)
-        _inject_sfx("pop", 143.05, gain=0.60)
-        # SFX Despeje Final (Etapa 4)
-        _inject_sfx("cut_hit", 149.05, gain=0.65)
-        # SFX Clave Verificada (Etapa 5)
-        _inject_sfx("celesta_chime", 156.05, gain=0.85)
-        # SFX CTA Skool (Etapa 6)
-        _inject_sfx("cash_ding", 159.25, gain=0.85)
+        # Inyectar efectos de sonido programados en el timeline del ejercicio
+        for s_name, s_time, s_gain in sfx_timeline:
+            _inject_sfx(s_name, s_time, gain=s_gain)
 
         # Normalizar master audio
         peak = np.max(np.abs(mixed_audio))
