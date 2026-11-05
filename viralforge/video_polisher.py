@@ -304,18 +304,22 @@ def polish_video(
         if on_progress:
             on_progress(0.30, "Generando diseño sonoro procedural VSL + Voces Neurales y SFX...")
 
-        # 4) Extraer audio original y mezclar música VSL + Voces Neurales + SFX Earshot
+        # 4) Extraer audio original con mastering vocal profesional EBU R128 (-14 LUFS) y mezclar música VSL + SFX
         orig_wav = workdir / "original_audio.wav"
         try:
-            ffmpeg.to_wav(src, orig_wav, sr=audio_mix.SR)
+            ffmpeg.extract_mastered_voice(src, orig_wav, sr=audio_mix.SR)
             orig_samples = ffmpeg.decode_audio(orig_wav, sr=audio_mix.SR)
-        except Exception:
-            orig_samples = np.zeros(int(audio_mix.SR * dur), dtype=np.float32)
+        except Exception as exc:
+            log.warning("Fallo en extract_mastered_voice (%s), fallback a to_wav...", exc)
+            try:
+                ffmpeg.to_wav(src, orig_wav, sr=audio_mix.SR)
+                orig_samples = ffmpeg.decode_audio(orig_wav, sr=audio_mix.SR)
+            except Exception:
+                orig_samples = np.zeros(int(audio_mix.SR * dur), dtype=np.float32)
 
         total_samples = len(orig_samples)
-        # 4.1 Boost potente de presencia y volumen a la voz original del docente (1.75x con soft-limiting)
-        voice_gain = 1.75
-        boosted_voice = np.tanh(orig_samples * voice_gain * 1.05) * 0.95
+        # 4.1 La voz ya viene con mastering broadcast (ecualización 3.2kHz + Loudnorm -14 LUFS, TP -1.0dBFS)
+        boosted_voice = orig_samples
         mixed_audio = np.copy(boosted_voice)
 
         # 4.2 Inyectar música procedural Electro-Rock / Synthwave motivacional sutil (gain=0.11) con auto-ducking agresivo
@@ -327,7 +331,7 @@ def polish_video(
             if n_blocks > 0:
                 blocks = boosted_voice[: n_blocks * hop].reshape(n_blocks, hop)
                 block_rms = np.sqrt(np.mean(blocks ** 2, axis=1))
-                is_talking = block_rms > 0.020
+                is_talking = block_rms > 0.025
                 duck_profile = np.ones(len(electro_bg), dtype=np.float32)
                 for b_idx, talking in enumerate(is_talking):
                     if talking:

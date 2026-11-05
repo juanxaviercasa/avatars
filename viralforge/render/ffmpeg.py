@@ -56,6 +56,17 @@ def to_wav(src: str | Path, dst: str | Path, sr: int = 44100) -> Path:
     return Path(dst)
 
 
+def extract_mastered_voice(src: str | Path, dst: str | Path, sr: int = 44100) -> Path:
+    """Extrae la voz del vídeo aplicando la cadena de mastering broadcast:
+    1. highpass=85: elimina retumbos graves de sala y vibraciones mecánicas.
+    2. equalizer=3200Hz (+3.5dB): curva de inteligibilidad de formantes vocales para máxima claridad.
+    3. loudnorm=-14 LUFS (TP -1.0dBFS, LRA 7): estándar de loudness broadcast para TikTok / Reels / Shorts.
+    Garantiza que la voz del docente sea potente, cristalina y siempre esté por encima de la música."""
+    af = "highpass=f=85,equalizer=f=3200:width_type=o:width=1.2:g=3.5,loudnorm=I=-14:TP=-1.0:LRA=7"
+    run(["-i", str(src), "-af", af, "-ac", "1", "-ar", str(sr), "-c:a", "pcm_s16le", str(dst)])
+    return Path(dst)
+
+
 def decode_audio(path: str | Path, sr: int = 44100) -> np.ndarray:
     """Devuelve audio mono float32 [-1, 1]."""
     cmd = [ffmpeg_exe(), "-hide_banner", "-loglevel", "error", "-i", str(path), "-f", "s16le", "-ac", "1",
