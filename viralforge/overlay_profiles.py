@@ -894,18 +894,16 @@ def build_overlays_img_2927(
     sfx_timeline.append(("bright_swish", 0.08, 0.75))
 
     # 2. B-Roll Harina / Panadería (2.50s a 6.00s)
-    broll_src = Path("assets/broll/flour_bakery.jpg")
+    broll_src = settings.root / "assets" / "broll" / "flour_bakery.jpg"
     if broll_src.exists():
         broll_png = workdir / "broll_flour.png"
-        cards.create_broll_preview_card(
+        cards.create_broll_card(
             image_path=broll_src,
-            label_text="MEZCLA DE 3 CALIDADES DE HARINA",
+            caption="🌾 CONTEXTO: MEZCLA DE 3 HARINAS (S/. 10, S/. 12 Y S/. 15)",
             out_path=broll_png,
-            width=700,
-            height=394,
         )
         overlay_inputs.append((broll_png, 2.50, 6.00, 75, None))
-        sfx_timeline.append(("pop", 2.55, 0.60))
+        sfx_timeline.append(("camera_shutter", 2.55, 0.65))
 
     # 3. Problem Statement Card (6.00s a 20.00s)
     prob_png = workdir / "problem_statement_card.png"
