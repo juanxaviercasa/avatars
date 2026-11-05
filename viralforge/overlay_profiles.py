@@ -954,7 +954,7 @@ def build_overlays_img_2927(
     f_pm_115_png = workdir / "formula_pm_115.png"
     cards.create_step_clarification_card(
         step_title="DEDUCCIÓN DEL PRECIO MEDIO DE COSTO (Pm)",
-        step_latex=r"13.80 = 1.20 P_m \implies P_m = rac{13.80}{1.20} = 	ext{S/. } 11.50	ext{ por kg}",
+        step_latex=r"13.80 = 1.20 P_m \implies P_m = \frac{13.80}{1.20} = \text{S/. } 11.50\text{ por kg}",
         out_path=f_pm_115_png,
         width=940,
         height=195,
@@ -971,7 +971,7 @@ def build_overlays_img_2927(
     f_pm_maestra_png = workdir / "formula_pm_maestra.png"
     cards.create_math_formula_card(
         formula_title="FÓRMULA CLAVE: PRECIO MEDIO PONDERADO",
-        formula_latex=r"P_m = rac{C_1 P_1 + C_2 P_2 + C_3 P_3}{C_1 + C_2 + C_3}",
+        formula_latex=r"P_m = \frac{C_1 P_1 + C_2 P_2 + C_3 P_3}{C_1 + C_2 + C_3}",
         out_path=f_pm_maestra_png,
         width=960,
         height=230,
@@ -988,7 +988,7 @@ def build_overlays_img_2927(
     f_sust_png = workdir / "formula_sustitucion.png"
     cards.create_math_formula_card(
         formula_title="SUSTITUCIÓN DE CANTIDADES Y PRECIOS",
-        formula_latex=r"11.50 = rac{30(10) + 20(12) + X(15)}{30 + 20 + X}",
+        formula_latex=r"11.50 = \frac{30(10) + 20(12) + X(15)}{30 + 20 + X}",
         out_path=f_sust_png,
         width=940,
         height=220,
@@ -1005,7 +1005,7 @@ def build_overlays_img_2927(
     f_simp_png = workdir / "formula_simplificacion.png"
     cards.create_step_clarification_card(
         step_title="SIMPLIFICACIÓN DEL COCIENTE",
-        step_latex=r"11.50 = rac{300 + 240 + 15X}{50 + X} = rac{540 + 15X}{50 + X}",
+        step_latex=r"11.50 = \frac{300 + 240 + 15X}{50 + X} = \frac{540 + 15X}{50 + X}",
         out_path=f_simp_png,
         width=920,
         height=195,
@@ -1039,7 +1039,7 @@ def build_overlays_img_2927(
     f_desp_png = workdir / "formula_despeje_x.png"
     cards.create_step_clarification_card(
         step_title="TRANSPOSICIÓN Y DESPEJE FINAL",
-        step_latex=r"575 - 540 = 15X - 11.50X \implies 35 = 3.50X \implies X = 10	ext{ kg}",
+        step_latex=r"575 - 540 = 15X - 11.50X \implies 35 = 3.50X \implies X = 10\text{ kg}",
         out_path=f_desp_png,
         width=920,
         height=195,
@@ -1057,7 +1057,7 @@ def build_overlays_img_2927(
     cards.create_solution_card(
         result_text="X = 10 KG DE HARINA DE S/. 15",
         out_path=sol_png,
-        result_latex=r"X = 10	ext{ kg} \quad (	ext{Harina de S/. } 15)",
+        result_latex=r"X = 10\text{ kg} \quad (\text{Harina de S/. } 15)",
         footer_badge_text="PESO TOTAL: 60 KG · COSTO TOTAL: S/. 690 · CLAVE: 10 KG",
         width=980,
         height=280,
@@ -1158,7 +1158,7 @@ def build_overlays_img_2928(
     f_def_png = workdir / "formula_def_lm.png"
     cards.create_math_formula_card(
         formula_title="CONCEPTO CLAVE: LEY MEDIA DE ALEACIÓN",
-        formula_latex=r"L_m = rac{	ext{Peso de Oro Puro}}{	ext{Peso Total}} = rac{L_1 W_1 + L_2 W_2}{W_1 + W_2}",
+        formula_latex=r"L_m = \frac{\text{Peso de Oro Puro}}{\text{Peso Total}} = \frac{L_1 W_1 + L_2 W_2}{W_1 + W_2}",
         out_path=f_def_png,
         width=960,
         height=220,
@@ -1175,7 +1175,7 @@ def build_overlays_img_2928(
     f_sust_png = workdir / "formula_sust_lm.png"
     cards.create_math_formula_card(
         formula_title="SUSTITUCIÓN DE VALORES EN LA FÓRMULA",
-        formula_latex=r"L_m = rac{0.750(20) + 0.800(32)}{20 + 32}",
+        formula_latex=r"L_m = \frac{0.750(20) + 0.800(32)}{20 + 32}",
         out_path=f_sust_png,
         width=940,
         height=220,
@@ -1192,7 +1192,7 @@ def build_overlays_img_2928(
     f_puro_png = workdir / "formula_oro_puro.png"
     cards.create_step_clarification_card(
         step_title="CÁLCULO DEL ORO PURO EN CADA LINGOTE",
-        step_latex=r"rac{3}{4}(20) = 15	ext{ kg}, \quad 0.8(32) = 25.6	ext{ kg}",
+        step_latex=r"\frac{3}{4}(20) = 15\text{ kg}, \quad 0.8(32) = 25.6\text{ kg}",
         out_path=f_puro_png,
         width=920,
         height=195,
@@ -1209,7 +1209,7 @@ def build_overlays_img_2928(
     f_coc_png = workdir / "formula_cociente.png"
     cards.create_step_clarification_card(
         step_title="COCIENTE DE LA ALEACIÓN TOTAL",
-        step_latex=r"L_m = rac{15 + 25.6}{52} = rac{40.6}{52}",
+        step_latex=r"L_m = \frac{15 + 25.6}{52} = \frac{40.6}{52}",
         out_path=f_coc_png,
         width=920,
         height=195,
@@ -1226,7 +1226,7 @@ def build_overlays_img_2928(
     f_res_png = workdir / "formula_resultado.png"
     cards.create_math_formula_card(
         formula_title="CÁLCULO DE LA LEY RESULTANTE",
-        formula_latex=r"L_m = rac{40.6}{52} pprox 0.780	ext{ de ley} \quad (18.72	ext{ Quilates})",
+        formula_latex=r"L_m = \frac{40.6}{52} \approx 0.780\text{ de ley} \quad (18.72\text{ Quilates})",
         out_path=f_res_png,
         width=960,
         height=220,
@@ -1244,7 +1244,7 @@ def build_overlays_img_2928(
     cards.create_solution_card(
         result_text="LEY RESULTANTE: 0.780 (18.72 QUILATES)",
         out_path=sol_png,
-        result_latex=r"L_m = 0.780 \quad (18.72	ext{ Quilates})",
+        result_latex=r"L_m = 0.780 \quad (18.72\text{ Quilates})",
         footer_badge_text="PESO TOTAL: 52 KG · ORO FINO: 40.6 KG · CLAVE: 0.780",
         width=980,
         height=280,
