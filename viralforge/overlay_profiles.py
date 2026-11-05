@@ -1084,6 +1084,193 @@ def build_overlays_img_2927(
     return overlay_inputs, sfx_timeline
 
 
+
+
+def build_overlays_img_2928(
+    workdir: Path,
+    dur: float,
+    category_tag: str,
+    clean_hook: str,
+    custom_cta_phrase: str | None,
+    cta_target: str | None,
+) -> tuple[list[tuple[Path, float, float, int, int | None]], list[tuple[str, float, float]]]:
+    """
+    Perfil especializado para IMG_2928:
+    Fundición de 2 lingotes de oro para hallar la Ley Media (Lm).
+    Datos: W1 = 20 kg (L1 = 0.750), W2 = 32 kg (L2 = 0.800).
+    Oro puro: 0.750(20) = 15 kg; 0.800(32) = 25.6 kg.
+    Total oro: 40.6 kg; Peso total: 52 kg.
+    Respuesta: Lm = 40.6 / 52 = 0.780 de ley.
+    """
+    overlay_inputs: list[tuple[Path, float, float, int, int | None]] = []
+    sfx_timeline: list[tuple[str, float, float]] = []
+
+    # 1. Hook Card Inicial (0.00s a 2.50s)
+    hook_png = workdir / "hook_card.png"
+    cards.create_hook_card(
+        category_tag="ARITMÉTICA · ALEACIONES Y LEY DE METALES",
+        headline="Fundición de 2 Lingotes de Oro: ¿Cuál es la Ley Resultante?",
+        out_path=hook_png,
+    )
+    overlay_inputs.append((hook_png, 0.00, 2.50, 75, None))
+    sfx_timeline.append(("bright_swish", 0.08, 0.75))
+
+    # 2. B-Roll Lingotes de Oro / Fundición (2.50s a 6.00s)
+    broll_gold = settings.root / "assets" / "broll" / "gold_ingots.jpg"
+    if broll_gold.exists():
+        broll_png = workdir / "broll_gold.png"
+        cards.create_broll_card(
+            image_path=broll_gold,
+            caption="🪙 CONTEXTO: FUNDICIÓN DE 20 KG Y 32 KG DE ORO",
+            out_path=broll_png,
+        )
+        overlay_inputs.append((broll_png, 2.50, 6.00, 75, None))
+        sfx_timeline.append(("camera_shutter", 2.55, 0.65))
+
+    # 3. Problem Statement Card (6.00s a 20.00s)
+    prob_png = workdir / "problem_statement_card.png"
+    cards.create_problem_statement_card(
+        subject_tag="ALEACIONES DE METALES PRECIOSOS",
+        problem_title="PROBLEMA DE EXAMEN",
+        problem_lines=[
+            "Se funde un lingote de oro de 20 kg con ley 0.750",
+            "con otro lingote de 32 kg que tiene ley 0.800.",
+            "Determina la ley del lingote de oro resultante.",
+        ],
+        data_chips=[
+            "W1 = 20 kg",
+            "L1 = 0.750",
+            "W2 = 32 kg",
+            "L2 = 0.800",
+            "Hallar: Lm = ?",
+        ],
+        out_path=prob_png,
+    )
+    overlay_inputs.append((prob_png, 6.00, 20.00, 65, None))
+    sfx_timeline.append(("plastic_tap", 6.05, 0.60))
+
+    badge1_png = workdir / "badge_objetivo.png"
+    cards.create_popart_callout_badge("🎯 ¡HALLAR LEY MEDIA (Lm)!", "speed", badge1_png, width=420, height=85)
+    overlay_inputs.append((badge1_png, 12.00, 19.00, 540, 560))
+    sfx_timeline.append(("pop", 12.05, 0.60))
+
+    # 4. Definición de Ley Media (20.00s a 45.00s)
+    f_def_png = workdir / "formula_def_lm.png"
+    cards.create_math_formula_card(
+        formula_title="CONCEPTO CLAVE: LEY MEDIA DE ALEACIÓN",
+        formula_latex=r"L_m = rac{	ext{Peso de Oro Puro}}{	ext{Peso Total}} = rac{L_1 W_1 + L_2 W_2}{W_1 + W_2}",
+        out_path=f_def_png,
+        width=960,
+        height=220,
+    )
+    overlay_inputs.append((f_def_png, 20.00, 45.00, 65, None))
+    sfx_timeline.append(("bright_swish", 20.05, 0.70))
+
+    badge2_png = workdir / "badge_ponderado.png"
+    cards.create_popart_callout_badge("💡 ¡PROMEDIO PONDERADO DE LEYES!", "formula", badge2_png, width=420, height=85)
+    overlay_inputs.append((badge2_png, 25.00, 32.00, 295, 580))
+    sfx_timeline.append(("pop", 25.05, 0.60))
+
+    # 5. Sustitución de Datos (45.00s a 75.00s)
+    f_sust_png = workdir / "formula_sust_lm.png"
+    cards.create_math_formula_card(
+        formula_title="SUSTITUCIÓN DE VALORES EN LA FÓRMULA",
+        formula_latex=r"L_m = rac{0.750(20) + 0.800(32)}{20 + 32}",
+        out_path=f_sust_png,
+        width=940,
+        height=220,
+    )
+    overlay_inputs.append((f_sust_png, 45.00, 75.00, 65, None))
+    sfx_timeline.append(("plastic_tap", 45.05, 0.60))
+
+    badge3_png = workdir / "badge_fracciones.png"
+    cards.create_popart_callout_badge("⚡ ¡0.750 = 3/4 Y 0.800 = 4/5!", "warning", badge3_png, width=420, height=85)
+    overlay_inputs.append((badge3_png, 50.00, 58.00, 275, 580))
+    sfx_timeline.append(("wood_knock", 50.05, 0.60))
+
+    # 6. Cálculo de Oro Puro (75.00s a 105.0s)
+    f_puro_png = workdir / "formula_oro_puro.png"
+    cards.create_step_clarification_card(
+        step_title="CÁLCULO DEL ORO PURO EN CADA LINGOTE",
+        step_latex=r"rac{3}{4}(20) = 15	ext{ kg}, \quad 0.8(32) = 25.6	ext{ kg}",
+        out_path=f_puro_png,
+        width=920,
+        height=195,
+    )
+    overlay_inputs.append((f_puro_png, 75.00, 105.00, 65, None))
+    sfx_timeline.append(("bright_swish", 75.05, 0.70))
+
+    badge4_png = workdir / "badge_oro_puro.png"
+    cards.create_popart_callout_badge("💰 ¡ORO FINO: 15 KG + 25.6 KG!", "speed", badge4_png, width=420, height=85)
+    overlay_inputs.append((badge4_png, 80.00, 88.00, 275, 580))
+    sfx_timeline.append(("bell_chime", 80.05, 0.85))
+
+    # 7. Suma y Cociente Final (105.0s a 135.0s)
+    f_coc_png = workdir / "formula_cociente.png"
+    cards.create_step_clarification_card(
+        step_title="COCIENTE DE LA ALEACIÓN TOTAL",
+        step_latex=r"L_m = rac{15 + 25.6}{52} = rac{40.6}{52}",
+        out_path=f_coc_png,
+        width=920,
+        height=195,
+    )
+    overlay_inputs.append((f_coc_png, 105.00, 135.00, 65, None))
+    sfx_timeline.append(("plastic_tap", 105.05, 0.60))
+
+    badge5_png = workdir / "badge_cociente.png"
+    cards.create_popart_callout_badge("⚖️ ¡40.6 KG DE ORO EN 52 KG TOTALES!", "formula", badge5_png, width=440, height=85)
+    overlay_inputs.append((badge5_png, 110.00, 118.00, 275, 580))
+    sfx_timeline.append(("pop", 110.05, 0.60))
+
+    # 8. División y Ley Resultante (135.0s a 155.0s)
+    f_res_png = workdir / "formula_resultado.png"
+    cards.create_math_formula_card(
+        formula_title="CÁLCULO DE LA LEY RESULTANTE",
+        formula_latex=r"L_m = rac{40.6}{52} pprox 0.780	ext{ de ley} \quad (18.72	ext{ Quilates})",
+        out_path=f_res_png,
+        width=960,
+        height=220,
+    )
+    overlay_inputs.append((f_res_png, 135.00, 155.00, 65, None))
+    sfx_timeline.append(("bright_swish", 135.05, 0.70))
+
+    badge6_png = workdir / "badge_0780.png"
+    cards.create_popart_callout_badge("✅ ¡LEY MEDIA = 0.780!", "warning", badge6_png, width=380, height=85)
+    overlay_inputs.append((badge6_png, 140.00, 148.00, 275, 580))
+    sfx_timeline.append(("bell_chime", 140.05, 0.85))
+
+    # 9. Solución Verificada Final (155.0s a 162.0s)
+    sol_png = workdir / "solution_card.png"
+    cards.create_solution_card(
+        result_text="LEY RESULTANTE: 0.780 (18.72 QUILATES)",
+        out_path=sol_png,
+        result_latex=r"L_m = 0.780 \quad (18.72	ext{ Quilates})",
+        footer_badge_text="PESO TOTAL: 52 KG · ORO FINO: 40.6 KG · CLAVE: 0.780",
+        width=980,
+        height=280,
+    )
+    overlay_inputs.append((sol_png, 155.00, 162.00, 65, None))
+    sfx_timeline.append(("celesta_chime", 155.05, 0.85))
+
+    # 10. Tarjeta de Conversión VIP Skool (162.0s a Fin)
+    cta_png = workdir / "cta_card.png"
+    cta_action = (
+        custom_cta_phrase
+        if custom_cta_phrase and ("skool" in custom_cta_phrase.lower() or "enlace" in custom_cta_phrase.lower())
+        else "Enlace en mi perfil: www.skool.sistemazenit.com"
+    )
+    cards.create_skool_cta_card(
+        community_name=cta_target or "ACADEMIA ZENIT",
+        action_text=cta_action,
+        badge_label="MÁS EJERCICIOS Y CURSOS 🚀",
+        out_path=cta_png,
+    )
+    overlay_inputs.append((cta_png, 162.00, dur, 1400, None))
+    sfx_timeline.append(("cash_ding", 162.05, 0.85))
+
+    return overlay_inputs, sfx_timeline
+
+
 def build_overlays_dynamic(
     workdir: Path,
     dur: float,
@@ -1181,7 +1368,11 @@ def build_overlays_for_video(
     category_tag = copilot_plan["hook_category"]
 
     stem_upper = src_stem.upper()
-    if "2927" in stem_upper:
+    if "2928" in stem_upper:
+
+        return build_overlays_img_2928(workdir, dur, category_tag, clean_hook, custom_cta_phrase, cta_target)
+
+    elif "2927" in stem_upper:
 
         return build_overlays_img_2927(workdir, dur, category_tag, clean_hook, custom_cta_phrase, cta_target)
 
