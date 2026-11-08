@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "jobs": [
+    {
+      "job_id": "quimica_reactivo_0001",
+      "manifest": "quimica_reactivo_0001.job.json"
+    },
+    {
+      "job_id": "quimica_reactivo_0002",
+      "manifest": "quimica_reactivo_0002.job.json"
+    }
+  ]
+}
