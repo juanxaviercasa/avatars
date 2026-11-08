@@ -1871,6 +1871,7 @@ function initPolishPanel() {
       const ctaObj = document.getElementById("polishCtaObjective")?.value || "website";
       const ctaTarget = document.getElementById("polishCtaTarget")?.value || "www.skool.sistemazenit.com";
       const customPhrase = document.getElementById("polishCtaCustomPhrase")?.value || "";
+      const preserveSourceSubtitles = Boolean(document.getElementById("polishKeepOriginalCaptions")?.checked);
 
       btnRender.disabled = true;
       btnRender.textContent = "⚡ Renderizando video 9:16 (Subtítulos, Earshot & CTA)...";
@@ -1888,18 +1889,26 @@ function initPolishPanel() {
             cta_objective_id: ctaObj,
             cta_target: ctaTarget,
             custom_cta_phrase: customPhrase,
+            preserve_source_subtitles: preserveSourceSubtitles,
           }),
         });
 
-        if (statusEl) statusEl.innerHTML = `<span style="color:#34d399">🎉 ¡Video pulido con éxito! Listo para publicar en TikTok, Reels o Shorts.</span>`;
+        if (statusEl) {
+          const skipped = Number(res.overlays_skipped || 0);
+          statusEl.textContent = skipped
+            ? `Video renderizado: ${skipped} capas omitidas para no tapar la explicación. Revisa el informe visual antes de publicar.`
+            : "Video renderizado. No se omitieron capas por falta de espacio; revisa el resultado antes de publicar.";
+        }
 
         if (resultBox) {
           resultBox.classList.remove("hidden");
           const vid = document.getElementById("polishResultVideo");
           const dl = document.getElementById("polishDownloadBtn");
+          const report = document.getElementById("polishLayoutReportBtn");
           const fullVideoUrl = resolveUrl(res.download_url);
           if (vid) vid.src = fullVideoUrl;
           if (dl) dl.href = fullVideoUrl;
+          if (report && res.layout_report_url) report.href = resolveUrl(res.layout_report_url);
         }
       } catch (err) {
         if (statusEl) statusEl.innerHTML = `<span style="color:#ef4444">❌ Error al renderizar: ${escapeHtml(err.message)}</span>`;
