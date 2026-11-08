@@ -76,90 +76,71 @@ def create_hook_card(
     headline: str,
     out_path: str | Path,
     width: int = 980,
-    accent_color: tuple[int, int, int] = (255, 228, 94),  # Amarillo oro #FFE45E
+    accent_color: tuple[int, int, int] = (255, 228, 94),
 ) -> Path:
-    """
-    Crea el cartel de gancho visual de 0-3s en formato PNG transparente.
-
-    Estructura:
-      [ 📐 ÁLGEBRA • MEZCLAS Y PRECIO MEDIO ]  <- Píldora de materia
-      ¡NO COMETAS ESTE ERROR EN TU EXAMEN!     <- Titular de impacto
-    """
+    """Hook autoajustable sin cortar palabras ni desbordar su marco."""
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
+    title = _clean_text(headline).upper()
+    tag = _clean_text(category_tag).upper()
+    probe = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+    max_width = width - 72
 
-    f_tag = _fit_font(_clean_text(category_tag).upper(), width - 90, 24)
-    f_title = _get_font(38, bold=True)
-
-    # Calcular alto dinámico según el texto
-    height = 210
-    img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
-
-    # 1. Fondo Glassmorphism oscuro con esquinas redondeadas
-    bg_color = (11, 15, 25, 240)  # Dark Navy con 94% opacidad
-    draw.rounded_rectangle([4, 4, width - 4, height - 4], radius=26, fill=bg_color, outline=accent_color + (230,), width=3)
-
-    # 2. Píldora de categoría / materia superior (Fondo Oro Sólido + Texto Oscuro para contraste 18:1)
-    tag_clean = _clean_text(category_tag).upper()
-    tag_bbox = draw.textbbox((0, 0), tag_clean, font=f_tag)
-    tag_w = tag_bbox[2] - tag_bbox[0]
-    pill_w = tag_w + 36
-    pill_x1 = (width - pill_w) // 2
-    pill_y1 = 20
-    pill_x2 = pill_x1 + pill_w
-    pill_y2 = pill_y1 + 36
-    draw.rounded_rectangle([pill_x1, pill_y1, pill_x2, pill_y2], radius=16, fill=(255, 228, 94, 255))
-    draw.text((pill_x1 + 18, pill_y1 + 5), tag_clean, font=f_tag, fill=(11, 15, 25, 255))
-
-    # 3. Titular de impacto centrado (máx 2 líneas si es largo)
-    title_clean = _clean_text(headline).upper()
-    # Word wrap si supera 880px
-    words = title_clean.split()
-    lines = []
-    curr = []
-    for w in words:
-        curr.append(w)
-        test_line = " ".join(curr)
-        bbox = draw.textbbox((0, 0), test_line, font=f_title)
-        if (bbox[2] - bbox[0]) > 860 and len(curr) > 1:
-            curr.pop()
-            lines.append(" ".join(curr))
-            curr = [w]
-    if curr:
-        lines.append(" ".join(curr))
-
-    # Evitar pérdida de texto cuando un titular ocupa más de dos líneas.
-    if len(lines) > 2:
-        f_title = _fit_font(title_clean, width - 80, 30, min_size=14)
+    def wrap(font):
         lines = []
-        curr = []
-        for word in words:
-            trial = " ".join(curr + [word])
-            if curr and draw.textbbox((0, 0), trial, font=f_title)[2] > width - 80:
-                lines.append(" ".join(curr))
-                curr = [word]
+        current = ""
+        for word in title.split():
+            candidate = (current + " " + word).strip()
+            if current and probe.textbbox((0, 0), candidate, font=font)[2] > max_width:
+                lines.append(current)
+                current = word
             else:
-                curr.append(word)
-        if curr:
-            lines.append(" ".join(curr))
-    if len(lines) > 2:
-        new_height = max(height, 90 + len(lines) * 42)
-        canvas = Image.new("RGBA", (width, new_height), (0, 0, 0, 0))
-        canvas.paste(img, (0, 0))
-        img = canvas
-        draw = ImageDraw.Draw(img)
-    start_y = 80 if len(lines) == 1 else 74
-    line_spacing = 46
-    for i, line in enumerate(lines):
-        l_bbox = draw.textbbox((0, 0), line, font=f_title)
-        l_w = l_bbox[2] - l_bbox[0]
-        l_x = (width - l_w) // 2
-        l_y = start_y + (i * line_spacing)
-        draw.text((l_x, l_y), line, font=f_title, fill=(255, 255, 255, 255))
+                current = candidate
+        if current:
+            lines.append(current)
+        return lines
 
-    img.save(out_path, format="PNG")
+    # Prioridad: letras grandes, hasta tres líneas; luego altura variable.
+    font_title = _get_font(38, bold=True)
+    lines = wrap(font_title)
+    for font_size in range(37, 17, -1):
+        if len(lines) <= 3:
+            break
+        font_title = _get_font(font_size, bold=True)
+        lines = wrap(font_title)
+    if not lines:
+        lines = [" "]
+    line_step = max(30, int(getattr(font_title, "size", 28) * 1.24))
+    height = max(210, 90 + len(lines) * line_step + 24)
+
+    image = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(image)
+    draw.rounded_rectangle(
+        [4, 4, width - 4, height - 4], radius=26,
+        fill=(11, 15, 25, 240), outline=accent_color + (230,), width=3,
+    )
+    font_tag = _fit_font(tag, width - 88, 24)
+    tag_bounds = draw.textbbox((0, 0), tag, font=font_tag)
+    tag_width = min(width - 60, tag_bounds[2] - tag_bounds[0] + 36)
+    px = (width - tag_width) // 2
+    draw.rounded_rectangle(
+        [px, 20, px + tag_width, 56], radius=16,
+        fill=(255, 228, 94, 255),
+    )
+    draw.text((px + 18, 25), tag, font=font_tag, fill=(11, 15, 25, 255))
+
+    y = 78
+    for line in lines:
+        line_font = _fit_font(line, max_width, getattr(font_title, "size", 28))
+        b = draw.textbbox((0, 0), line, font=line_font)
+        draw.text(
+            ((width - (b[2] - b[0])) // 2, y), line,
+            font=line_font, fill=(255, 255, 255, 255),
+        )
+        y += line_step
+    image.save(out_path, format="PNG")
     return out_path
+
 
 
 def create_skool_cta_card(
