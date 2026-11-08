@@ -30,6 +30,7 @@ from .cta_manager import build_cta_card
 from .math_copilot import analyze_transcript
 from .overlay_profiles import build_overlays_for_video
 from .render import ass_subtitles, audio as audio_mix, cards, ffmpeg
+from .render.overlay_safety import prepare_overlay, entrance_y
 
 log = logging.getLogger("viralforge.video_polisher")
 
@@ -336,25 +337,31 @@ def polish_video(
                 png_path, t_in, t_out, y_pos = item
                 x_pos = None
 
+            # Preflight: las coordenadas manuales nunca pueden recortar una tarjeta.
+            # CTA entra en la franja inferior (subtítulos ocultos en ese tramo).
+            is_cta = y_pos >= 1000
+            placement = prepare_overlay(
+                png_path, workdir, y_pos, x_pos, is_cta=is_cta
+            )
             in_idx = 2 + idx
-            input_args.extend(["-i", str(png_path)])
+            input_args.extend(["-i", str(placement.path)])
             out_label = f"vlay{idx}"
 
-            x_expr = "(W-w)/2" if x_pos is None else str(x_pos)
-
-            # Animación de entrada elegante sin recortes fuera de pantalla
-            if t_in < 0.2:
-                # El hook de apertura debe estar perfectamente posicionado desde el fotograma 0 sin corte superior
-                y_expr = f"{y_pos}"
-            elif y_pos >= 1000:
-                # El CTA inferior sube suavemente
-                y_expr = f"if(lt(t,{t_in:.2f}+0.25), {y_pos} + (1.0 - (t-{t_in:.2f})/0.25)*80, {y_pos})"
+            x_expr = str(placement.x)
+            target_y = placement.y
+            start_y = target_y if t_in < 0.2 else entrance_y(placement, is_cta=is_cta)
+            if start_y == target_y:
+                y_expr = str(target_y)
             else:
-                # Las tarjetas descienden suavemente
-                y_expr = f"if(lt(t,{t_in:.2f}+0.25), {y_pos} - (1.0 - (t-{t_in:.2f})/0.25)*40, {y_pos})"
+                y_expr = (
+                    f"if(lt(t,{t_in:.2f}+0.25),"
+                    f"{start_y}+({target_y}-{start_y})"
+                    f"*max(0,min(1,(t-{t_in:.2f})/0.25)),{target_y})"
+                )
 
             filter_chains.append(
-                f"[{prev_label}][{in_idx}:v]overlay=x='{x_expr}':y='{y_expr}':enable='between(t,{t_in:.2f},{t_out:.2f})'[{out_label}]"
+                f"[{prev_label}][{in_idx}:v]overlay=x='{x_expr}':y='{y_expr}':"
+                f"enable='between(t,{t_in:.2f},{t_out:.2f})'[{out_label}]"
             )
             prev_label = out_label
 
