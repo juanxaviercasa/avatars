@@ -43,6 +43,41 @@ class TestSceneLayout(unittest.TestCase):
             # Las bandas superiores reservadas para hooks están despejadas.
             self.assertEqual(index.frames[0][:140, 50:210].sum(), 0)
 
+    def test_latex_normalizer_handles_math_and_chemistry(self):
+        from viralforge.render.latex_renderer import (
+            normalize_mathtext, render_latex_to_image,
+        )
+        chemistry = normalize_mathtext(r"\\ce{CO + 2H2 -> CH3OH}")
+        self.assertIn(r"\\rightarrow", chemistry)
+        self.assertIn("H_{2}", chemistry)
+        chemistry_img = render_latex_to_image(chemistry, fontsize=32)
+        self.assertGreater(chemistry_img.width, 20)
+        math_img = render_latex_to_image(
+            r"\\text{Ley} + \\text{Liga} = 1 \\implies 5 L_g = 1",
+            fontsize=32,
+        )
+        self.assertGreater(math_img.width, 20)
+
+    def test_invalid_formula_is_omitted_not_shown_as_raw_latex(self):
+        from viralforge.render.cards import create_math_formula_card
+        idx = SceneIndex(
+            [np.zeros((ANALYSIS_H, ANALYSIS_W), dtype=bool)], 1.0, [],
+        )
+        with tempfile.TemporaryDirectory() as folder:
+            folder = Path(folder)
+            broken = folder / "broken_formula.png"
+            create_math_formula_card(
+                "ERROR", r"\\nonexistentlatexcommand{2}", broken,
+            )
+            with Image.open(broken) as im:
+                self.assertIsNone(im.getbbox())
+            with patch.object(SceneIndex, "from_video", return_value=idx):
+                result, report = plan_overlays(
+                    "unused.mp4", [(broken, 0, 3, 65, None)], folder, 10,
+                )
+            self.assertEqual(result, [])
+            self.assertEqual(report["skipped"][0]["reason"], "invalid_or_empty_graphic")
+
     def test_collision_boxes_touching_do_not_overlap(self):
         self.assertTrue(intersects((0, 0, 100, 100), (20, 20, 20, 20)))
         self.assertFalse(intersects((0, 0, 100, 100), (100, 0, 40, 40)))
