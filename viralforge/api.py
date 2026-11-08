@@ -1045,6 +1045,8 @@ class PolishRenderReq(BaseModel):
     cta_objective_id: str = "website"
     cta_target: str = "Enlace en mi perfil"
     custom_cta_phrase: str = ""
+    preserve_source_subtitles: bool = False
+    protected_regions: list[dict[str, Any]] = []
 
 
 @app.post("/api/polish/render")
@@ -1066,11 +1068,14 @@ def api_polish_render(req: PolishRenderReq) -> dict[str, Any]:
         cta_objective_id=req.cta_objective_id,
         cta_target=req.cta_target,
         custom_cta_phrase=req.custom_cta_phrase,
+        preserve_source_subtitles=req.preserve_source_subtitles,
+        protected_regions=req.protected_regions,
     )
     out_file = Path(res["out_video"])
     thumb_file = Path(res["thumb"])
     res["download_url"] = f"/media/outputs/{out_file.name}"
     res["thumb_url"] = f"/media/outputs/{thumb_file.name}"
+    res["layout_report_url"] = f"/media/outputs/{Path(res['layout_report']).name}"
     return res
 
 
