@@ -284,6 +284,17 @@ def evaluate(
 
     for idx, (item, box) in enumerate(overlays_valid):
         kind = item.get("kind")
+        # El video ya narra la explicación: evitar duplicar párrafos sobre la imagen.
+        if kind in {"hook", "broll", "illustration", "card"}:
+            copy = str(item.get("text", "")).strip()
+            if copy and len(copy.split()) > int(profile["visual"]["max_overlay_words"]):
+                issues.append(Issue("TEXT_TOO_DENSE",
+                                    f"{item.get('id', idx)} repite demasiado texto sobre la clase"))
+            if copy and float(item.get("font_size_px", 0)) < float(
+                profile["visual"]["min_legible_font_px"]
+            ):
+                issues.append(Issue("TEXT_TOO_SMALL",
+                                    f"{item.get('id', idx)} no declara un tamaño de letra legible"))
         if kind not in {"progress", "cta", "caption"} and intersects(box, caption_zone) and float(item["start"]) < cta_start:
             issues.append(Issue("CAPTIONS_OCCLUDED", f"Overlay {idx} invade subtítulos"))
         if kind == "progress":
@@ -310,6 +321,14 @@ def evaluate(
                         seen.append((str(slot.get("role", "unknown")), sb))
                     except (KeyError, ValueError) as err:
                         issues.append(Issue("CARD_SLOT_COLLISION", f"{item.get('id', idx)}: {err}"))
+                images = [b for role, b in seen if role == "image"]
+                texts = [b for role, b in seen if role == "text"]
+                if images and texts:
+                    largest_image = max(w*h for _, _, w, h in images)
+                    total_text = sum(w*h for _, _, w, h in texts)
+                    if total_text >= largest_image:
+                        issues.append(Issue("IMAGE_PRIORITY",
+                                            f"{item.get('id', idx)}: la fotografía debe dominar visualmente"))
         for protected_item, pb in protected_valid:
             if when_overlap(item, protected_item) and intersects(box, pb):
                 issues.append(Issue("PEDAGOGY_OCCLUDED", f"Overlay {item.get('id', idx)} tapa {protected_item.get('label', 'pizarra')}"))
