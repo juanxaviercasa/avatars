@@ -106,6 +106,41 @@ class QualityGateTests(unittest.TestCase):
             result = self.evaluate_stubbed(m)
             self.assertIn("CARD_SLOT_COLLISION", [i["code"] for i in result["issues"]])
 
+    def test_rejects_redundant_text_and_tiny_fonts(self):
+        with tempfile.TemporaryDirectory() as folder:
+            m = good_manifest(Path(folder))
+            m["overlays"].append({
+                "id": "too_much_copy", "kind": "broll",
+                "start": 1.2, "end": 1.9,
+                "rect": [300, 760, 600, 410],
+                "text": "Esta tarjeta está repitiendo demasiadas explicaciones y demasiadas palabras sobre lo que el narrador ya explicó cuidadosamente durante toda la sección de química del reactivo limitante.",
+                "font_size_px": 12,
+                "slots": [
+                    {"role": "image", "rect": [10, 10, 580, 290]},
+                    {"role": "text", "rect": [10, 315, 580, 80]},
+                ],
+            })
+            report = self.evaluate_stubbed(m)
+            codes = [i["code"] for i in report["issues"]]
+            self.assertIn("TEXT_TOO_DENSE", codes)
+            self.assertIn("TEXT_TOO_SMALL", codes)
+            self.assertEqual(report["status"], "REJECTED")
+
+    def test_picture_must_be_larger_than_caption_area(self):
+        with tempfile.TemporaryDirectory() as folder:
+            m = good_manifest(Path(folder))
+            m["overlays"].append({
+                "id": "inverted_card", "kind": "card",
+                "start": 1.2, "end": 2,
+                "rect": [220, 760, 650, 430],
+                "slots": [
+                    {"role": "image", "rect": [10, 10, 630, 90]},
+                    {"role": "text", "rect": [10, 110, 630, 310]},
+                ],
+            })
+            report = self.evaluate_stubbed(m)
+            self.assertIn("IMAGE_PRIORITY", [i["code"] for i in report["issues"]])
+
     def test_rejects_progress_bar_above_subtitles(self):
         with tempfile.TemporaryDirectory() as folder:
             m = good_manifest(Path(folder))
