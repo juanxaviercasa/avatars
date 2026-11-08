@@ -218,6 +218,22 @@ def plan_overlays(
         if t_out <= t_in:
             report["skipped"].append({"index": i, "reason": "invalid_time"})
             continue
+        # PNG vacío = fórmula inválida; no exponer texto LaTeX crudo.
+        try:
+            with Image.open(png_path) as candidate:
+                invisible = candidate.getbbox() is None
+        except (OSError, ValueError) as err:
+            report["skipped"].append({
+                "index": i, "reason": "unreadable_overlay",
+                "source": Path(png_path).name, "detail": str(err)[:120],
+            })
+            continue
+        if invisible:
+            report["skipped"].append({
+                "index": i, "reason": "invalid_or_empty_graphic",
+                "source": Path(png_path).name,
+            })
+            continue
         is_cta = int(y_pref) >= 1000 and (
             "cta" in Path(png_path).stem.lower()
             or t_in >= duration - 4.5
