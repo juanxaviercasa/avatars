@@ -135,6 +135,201 @@ def math_plan_jumpcut_segments(words: list[dict], video_duration: float, min_pau
     }
 
 
+# ===========================================================================
+# HERRAMIENTAS AUTOCAPPUT & AI VIDEO AUTO-EDITOR
+# ===========================================================================
+
+@mcp.tool()
+def autocapcut_diagnose(video_name_or_path: str, subject: str = "general", watermark_box: str = "none") -> dict:
+    """Auto-diagnostica un video con IA estilo CapCut.
+    
+    Evalúa la presencia y fuerza del gancho inicial (0-3.5s), cuantifica el tiempo muerto y
+    pausas innecesarias para jump-cuts, detecta conceptos clave para superponer tarjetas/B-roll,
+    revisa la presencia de CTA y calcula el Viral Readiness Score (0-100).
+    Decide qué partes dejar intactas y qué partes deben mejorarse.
+    """
+    from . import autocapcut
+    return autocapcut.diagnose_video(video_path=video_name_or_path, subject=subject, watermark_box=watermark_box)
+
+
+@mcp.tool()
+def autocapcut_auto_edit(
+    video_name_or_path: str,
+    hook_badge_text: str = "",
+    watermark_box: str = "none",
+    cta_target: str = "Academia Zenit",
+    cta_objective_id: str = "skool",
+    custom_cta_phrase: str = "",
+    apply_cuts: bool = True,
+    generate_draft: bool = True,
+    render_mp4: bool = True,
+) -> dict:
+    """Auto-edita un video de forma inteligente y genera un Borrador de CapCut (.draft/.zip) y/o Video MP4.
+    
+    1. Si el video ya está bien estructurado, preserva el ritmo y no sobre-edita.
+    2. Recorta pausas muertas y tiempos muertos (jump-cuts con padding de respiración natural).
+    3. Inyecta gancho visual en 0-3.5s con tarjeta glassmorphic y efecto Cut Hit si falta.
+    4. Genera subtítulos dinámicos estilo Hormozi.
+    5. Inyecta tarjeta final de conversión VIP (CTA) si falta.
+    6. Genera un borrador multipista nativo para CapCut (.zip descargable) y renderiza el MP4 final en 9:16.
+    """
+    from . import autocapcut
+    return autocapcut.auto_edit_video(
+        video_path=video_name_or_path,
+        hook_badge_text=hook_badge_text,
+        watermark_box=watermark_box,
+        cta_target=cta_target,
+        cta_objective_id=cta_objective_id,
+        custom_cta_phrase=custom_cta_phrase,
+        apply_cuts=apply_cuts,
+        generate_draft=generate_draft,
+        render_mp4=render_mp4,
+    )
+
+
+@mcp.tool()
+def autocapcut_list_local_videos() -> list[dict]:
+    """Lista todos los videos disponibles localmente en el servidor para auto-edición."""
+    results = []
+    seen = set()
+    scan_dirs = [
+        settings.data_dir / "local_videos" / "reels",
+        settings.data_dir / "local_videos",
+        settings.data_dir / "uploads" / "openjutsu_refs",
+    ]
+    for d in scan_dirs:
+        if not d.exists():
+            continue
+        for ext in ("*.mp4", "*.mov", "*.m4v", "*.webm"):
+            for f in d.glob(ext):
+                if f.name in seen or f.name.startswith("delogo_") or f.name.startswith("autocapcut_"):
+                    continue
+                seen.add(f.name)
+                words_file = f.with_suffix(".words.json")
+                if not words_file.exists():
+                    words_file = settings.cache_dir / f"{f.stem}.words.json"
+                results.append({
+                    "name": f.name,
+                    "path": str(f.resolve()),
+                    "size_mb": round(f.stat().st_size / (1024 * 1024), 2),
+                    "has_cached_words": words_file.exists(),
+                })
+    return results
+
+
+# ===========================================================================
+# HERRAMIENTAS SKY CINEMA & DIRECTOR 3D (MCP EXTENSION)
+# ===========================================================================
+
+@mcp.tool()
+def sky_list_models() -> dict:
+    """Lista los modelos cinematográficos disponibles en el motor Sky (Doubao Seedance 2.5, Kling 4.0, Hailuo H3, Vidu Q4, etc.)
+
+    Incluye opciones de generación de video, consistencia de personajes (hojas de 3 vistas, cuadrículas de 9 ángulos)
+    y presets de cámara y poses del Director 3D.
+    """
+    from .engines.sky_engine import sky_engine
+    return sky_engine.list_curated_models()
+
+
+@mcp.tool()
+def sky_generate_video(
+    prompt: str,
+    model_id: str = "doubao-seedance-2-5-260628",
+    aspect_ratio: str = "9:16",
+    duration: int = 5,
+    persona_id: str = "",
+    pose_id: str = "",
+    reference_image_url: str = "",
+) -> dict:
+    """Genera un video cinematográfico de alta fidelidad con IA.
+
+    Permite usar modelos de frontera como Doubao Seedance 2.5 (Flagship), Kling 4.0 o Hailuo H3.
+    Se interconecta de forma automática con los datasets de ViralForge:
+    - Si se especifica `persona_id`, extrae la identidad y rostro de la Persona local para no perder consistencia.
+    - Si se especifica `pose_id`, inyecta el encuadre y ángulo de cámara de las 1,439 poses de ViralForge.
+    """
+    from .engines.sky_engine import sky_engine
+    return sky_engine.submit_video_generation(
+        prompt=prompt,
+        model_id=model_id,
+        aspect_ratio=aspect_ratio,
+        duration=duration,
+        persona_id=persona_id or None,
+        pose_id=pose_id or None,
+        reference_image_url=reference_image_url or None,
+    )
+
+
+@mcp.tool()
+def sky_job_status(
+    job_id: str,
+    canvas_id: int,
+    project_id: int,
+    episode_id: int,
+    download_if_done: bool = True,
+) -> dict:
+    """Consulta el estado de generación de un video en la GPU de SkyProduction.
+
+    Si el trabajo ha concluido con éxito ('success') y `download_if_done` es True,
+    descarga automáticamente el archivo MP4 a la biblioteca local de ViralForge (`data/outputs/sky_cinema/`).
+    """
+    from .engines.sky_engine import sky_engine
+    res = sky_engine.get_run_status(
+        canvas_id=canvas_id,
+        project_id=project_id,
+        episode_id=episode_id,
+        node_run_id=job_id,
+    )
+    if download_if_done and res.get("status") == "success" and res.get("media_url"):
+        try:
+            local_path = sky_engine.download_asset(res["media_url"])
+            res["local_file_path"] = str(local_path)
+            res["relative_url"] = f"/media/outputs/sky_cinema/{local_path.name}"
+        except Exception as e:
+            res["download_error"] = str(e)
+    return res
+
+
+@mcp.tool()
+def sky_character_consistency_sheet(
+    avatar_id_or_name: str,
+    mode: str = "image_three_view",
+    extra_prompt: str = "",
+) -> dict:
+    """Genera una hoja de consistencia para un avatar (hoja de 3 vistas, primer plano facial o 9 ángulos).
+
+    Modos soportados:
+    - `image_three_view`: Frontal, Perfil y Espalda para coherencia total.
+    - `image_face_three_view`: Primer plano facial triple para calibración de facciones.
+    - `image_multi_angle`: Cuadrícula 4K de 9 ángulos cinematográficos.
+    """
+    from .engines.sky_engine import sky_engine
+    from .db import store
+    from .models import Persona
+
+    persona = None
+    for p in store().list("personas", Persona):
+        if p.id == avatar_id_or_name or p.name.lower() == avatar_id_or_name.lower():
+            persona = p
+            break
+
+    if not persona:
+        raise ValueError(f"No se encontró el avatar con ID o nombre '{avatar_id_or_name}' en la base de datos.")
+
+    prompt = f"Character sheet: {persona.name}, {persona.gender}, {persona.appearance_prompt or persona.niche}."
+    if extra_prompt:
+        prompt += f" {extra_prompt}"
+
+    ref_img = persona.face_images[0] if persona.face_images else ""
+    return sky_engine.submit_video_generation(
+        prompt=prompt,
+        model_id="flux-3",
+        aspect_ratio="16:9" if mode == "image_three_view" else "1:1",
+        reference_image_url=ref_img,
+    )
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.WARNING)
     mcp.run(transport="stdio")

@@ -200,7 +200,7 @@ def create_math_formula_card(
     formula_title: str,
     formula_latex: str,
     out_path: str | Path,
-    width: int = 1020,
+    width: int = 980,
     height: int = 300,
 ) -> Path:
     """
@@ -324,7 +324,8 @@ def create_solution_card(
         draw.text(((width - r_w) // 2, 78), res_clean, font=f_res, fill=(255, 228, 94, 255))
 
     # 3. Footer: Píldora inferior en ORO SÓLIDO con icono check verde vectorial (Cero '?')
-    footer_str = footer_badge_text or f"CLAVE CORRECTA VERIFICADA: {_clean_text(result_text).upper()}"
+    raw_footer = footer_badge_text or f"CLAVE CORRECTA VERIFICADA: {_clean_text(result_text).upper()}"
+    footer_str = _clean_text(raw_footer).replace("₁", "1").replace("₂", "2").replace("ₘ", "m")
     fb = draw.textbbox((0, 0), footer_str, font=f_tag)
     fw = fb[2] - fb[0]
     fp_w = fw + 64
@@ -355,7 +356,7 @@ def create_problem_statement_card(
     problem_lines: list[str],
     data_chips: list[str],
     out_path: str | Path,
-    width: int = 1020,
+    width: int = 980,
     height: int = 250,
 ) -> Path:
     """
@@ -791,11 +792,18 @@ def create_popart_callout_badge(
 
     # Texto centrado de impacto (limpiando símbolos extraños como ¡ o ¿ que causan confusión visual)
     clean = _clean_text(text).upper().replace("₁", "1").replace("₂", "2").replace("¡", "").replace("¿", "").strip()
+    font_size = 29
+    f_txt = _get_font(font_size, bold=True)
     tb = draw.textbbox((0, 0), clean, font=f_txt)
     tw = tb[2] - tb[0]
+    while tw > (width - 36) and font_size > 16:
+        font_size -= 1
+        f_txt = _get_font(font_size, bold=True)
+        tb = draw.textbbox((0, 0), clean, font=f_txt)
+        tw = tb[2] - tb[0]
     th_h = tb[3] - tb[1]
-    tx = (width - 10 - tw) // 2
-    ty = (height - 10 - th_h) // 2
+    tx = max(16, (width - 10 - tw) // 2)
+    ty = max(8, (height - 10 - th_h) // 2)
     draw.text((tx, ty), clean, font=f_txt, fill=th["txt"] + (255,))
 
     img.save(out_path, format="PNG")

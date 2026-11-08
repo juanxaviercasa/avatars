@@ -1,0 +1,63 @@
+{
+  "_meta": {
+    "title": "ViralForge Shisei Depth Director — Direct Depth Map + FLUX.1 ControlNet Union Pro 2.0 + PuLID Identity",
+    "source_gallery": "wquguru/shisei (CC0 1.0 Universal - 280 Poses x 5 Angles)",
+    "preprocessor_required": false,
+    "map_type": "depth (Depth Anything V2 Small)",
+    "camera_angles": ["front", "diag", "side", "above", "below"],
+    "kaggle_datasets": [
+      "juanxaviercasa/flux1-controlnet-union-pro2",
+      "juanxaviercasa/flux1-schnell-pack",
+      "juanxaviercasa/ai-influencer-loras-vault"
+    ]
+  },
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "shisei_depth_map_900x1200.png"
+    }
+  },
+  "2": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "influencer_face_ref.png"
+    }
+  },
+  "3": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "FLUX.1-dev-ControlNet-Union-Pro-2.0.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "ApplyFluxControlNetUnion",
+    "inputs": {
+      "control_net": ["3", 0],
+      "image": ["1", 0],
+      "control_mode": "depth",
+      "strength": 0.85,
+      "start_percent": 0.0,
+      "end_percent": 0.85
+    }
+  },
+  "5": {
+    "class_type": "FluxPulidSampler",
+    "inputs": {
+      "unet_name": "flux1-schnell-fp8.safetensors",
+      "face_image": ["2", 0],
+      "controlnet_cond": ["4", 0],
+      "prompt": "Photorealistic commercial studio lookbook shot, AI influencer wearing product, 8k UHD, natural skin texture, clean studio lighting, __SHISEI_POSE_PROMPT__",
+      "width": 1080,
+      "height": 1920,
+      "steps": 6,
+      "cfg": 1.5
+    }
+  },
+  "6": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": ["5", 0],
+      "filename_prefix": "viralforge_shisei_depth_render"
+    }
+  }
+}

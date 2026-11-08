@@ -356,6 +356,7 @@ def enqueue_pose_lookbook(
     script_text: str = "",
     costume_id: str = "auto",
     kit_name: str = "hype",
+    map_type: str = "line",
 ) -> tuple[Variant, Job]:
     """Crea una variante Lookbook Multi-Ángulo (5 ángulos ControlNet + Outfit 1,407 + Earshot) y la encola."""
     from . import costumes as costumes_mod, poses as poses_mod
@@ -393,12 +394,12 @@ def enqueue_pose_lookbook(
         kind="pose_lookbook",
         variant_id=variant.id,
         stage="queued",
-        params={"group_id": resolved_group, "costume_id": cid, "kit_name": kit_name, "persona_id": persona_id, "product_id": product_id},
+        params={"group_id": resolved_group, "costume_id": cid, "kit_name": kit_name, "map_type": map_type, "persona_id": persona_id, "product_id": product_id},
     )
     variant.job_id = job.id
     st.put("variants", variant)
     st.put("jobs", job)
-    _executor.submit(_safe_run_pose_lookbook, variant.id, job.id, resolved_group, script_text, cid, kit_name)
+    _executor.submit(_safe_run_pose_lookbook, variant.id, job.id, resolved_group, script_text, cid, kit_name, map_type)
     return variant, job
 
 
@@ -409,6 +410,7 @@ def _safe_run_pose_lookbook(
     script_text: str,
     costume_id: str = "auto",
     kit_name: str = "hype",
+    map_type: str = "line",
 ) -> None:
     from . import poses as poses_mod
     st = store()
@@ -423,7 +425,7 @@ def _safe_run_pose_lookbook(
         return
     v.status = "rendering"
     st.put("variants", v)
-    _update_job(j, status="running", progress=0.05, stage="pose_director", msg=f"Iniciando Orquestador 5 Ángulos ({group_id}) + Outfit ({costume_id})...")
+    _update_job(j, status="running", progress=0.05, stage="pose_director", msg=f"Iniciando Orquestador 5 Ángulos ({group_id}) [{map_type}] + Outfit ({costume_id})...")
     try:
         out_dir = settings.outputs_dir / v.id
         res = poses_mod.render_multi_angle_pose_reel(
@@ -434,6 +436,7 @@ def _safe_run_pose_lookbook(
             custom_script=script_text,
             costume_id=costume_id,
             kit_name=kit_name,
+            map_type=map_type,
             progress_cb=lambda stg, p, m: _update_job(j, progress=p, stage=stg, msg=m),
         )
         v.status = "done"

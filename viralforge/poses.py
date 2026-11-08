@@ -368,16 +368,35 @@ def auto_select_pose_group(persona: Persona | None = None, product: Product | No
     return random.choice(groups[:25]) if groups else "full_std_P001"
 
 
-def fetch_pose_reference_image(pose: dict[str, Any], cache_dir: Path) -> Image.Image:
-    """Descarga y cachea la lámina PNG 900×1200 de la pose (con fallback a GitHub Raw o silueta sintética)."""
+def fetch_pose_reference_image(pose: dict[str, Any], cache_dir: Path, map_type: str = "line") -> Image.Image:
+    """Descarga y cachea la lámina PNG/WebP 900×1200 de la pose (con soporte Shisei para Depth/Normal/Line/Clay)."""
     cache_dir.mkdir(parents=True, exist_ok=True)
-    cached_file = cache_dir / f"{pose['id']}.png"
+    pose_num = pose.get("pose_num") or pose.get("id", "")
+    angle = pose.get("angle", "front")
+    cached_file = cache_dir / f"{pose.get('id', pose_num)}_{map_type}.png"
     if cached_file.exists():
         try:
             return Image.open(cached_file).convert("RGBA")
         except Exception:
             pass
 
+    # 1. Si se solicita un mapa específico de Shisei (depth, normal, clay, photo o line de Shisei)
+    if map_type in ("depth", "normal", "clay", "photo") or "shisei" in str(pose.get("source", "")).lower():
+        try:
+            from . import shisei as shisei_mod
+            pid = pose_num.split("_")[-1] if "_" in pose_num else pose_num
+            p_file = shisei_mod.download_shisei_image(pid, angle=angle, map_type=map_type, cache_dir=cache_dir)
+            if p_file and p_file.exists():
+                im = Image.open(p_file).convert("RGBA")
+                try:
+                    im.save(cached_file)
+                except Exception:
+                    pass
+                return im
+        except Exception:
+            pass
+
+    # 2. Descarga estándar de galería anterior (línea de referencia)
     for url in (pose.get("image_url"), pose.get("fallback_image_url"), pose.get("thumb_url"), pose.get("fallback_thumb_url")):
         if not url:
             continue
@@ -399,6 +418,16 @@ def fetch_pose_reference_image(pose: dict[str, Any], cache_dir: Path) -> Image.I
     dr.line((450, 720, 340, 1080), fill=(244, 63, 94, 255), width=10)
     dr.line((450, 720, 560, 1080), fill=(244, 63, 94, 255), width=10)
     return im
+
+
+def get_pose_prompt(pose_id_or_num: str, prefix: str = "", suffix: str = "") -> str:
+    """Devuelve la descripción anatómica en inglés (desc_en) proveniente de Shisei lista para el prompt."""
+    try:
+        from . import shisei as shisei_mod
+        pid = pose_id_or_num.split("_")[-1] if "_" in pose_id_or_num else pose_id_or_num
+        return shisei_mod.get_pose_prompt(pid, prefix=prefix, suffix=suffix)
+    except Exception:
+        return ""
 
 
 def _compose_angle_frame(
@@ -487,6 +516,7 @@ def render_multi_angle_pose_reel(
     custom_script: str = "",
     costume_id: str = "auto",
     kit_name: str = "hype",
+    map_type: str = "line",
     progress_cb=None,
 ) -> dict[str, Any]:
     """Renderiza un Reel Lookbook 9:16 (`1080×1920@30fps`) recorriendo los 5 ángulos de una pose + Outfit 1,407."""
@@ -518,7 +548,7 @@ def render_multi_angle_pose_reel(
             costume_im = None
 
     if progress_cb:
-        progress_cb("pose_blueprint", 0.15, f"Descargando {len(poses)} ángulos ControlNet ({group_id}) + Outfit ({costume_meta['id'] if costume_meta else 'base'})...")
+        progress_cb("pose_blueprint", 0.15, f"Descargando {len(poses)} ángulos ControlNet ({group_id}) [{map_type}] + Outfit ({costume_meta['id'] if costume_meta else 'base'})...")
 
     # 1. Locución con marcas de tiempo
     default_text = (
@@ -552,7 +582,7 @@ def render_multi_angle_pose_reel(
     pose_cache = settings.cache_dir / "poses"
     angle_frames: list[np.ndarray] = []
     for p in poses:
-        p_im = fetch_pose_reference_image(p, pose_cache)
+        p_im = fetch_pose_reference_image(p, pose_cache, map_type=map_type)
         frame_im = _compose_angle_frame(
             avatar_im, prod_im, p_im, p, persona, product, w, h,
             costume_im=costume_im, costume_meta=costume_meta,

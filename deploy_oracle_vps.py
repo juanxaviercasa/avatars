@@ -68,7 +68,7 @@ if [ ! -f ".venv/bin/pip" ]; then
     python3 -m venv .venv
 fi
 ./.venv/bin/pip install --upgrade pip -q
-./.venv/bin/pip install fastapi "uvicorn[standard]" pydantic python-multipart httpx pillow numpy imageio-ffmpeg edge-tts python-dotenv pyyaml matplotlib "av<14" -q
+./.venv/bin/pip install fastapi "uvicorn[standard]" pydantic python-multipart httpx pillow numpy imageio-ffmpeg edge-tts python-dotenv pyyaml matplotlib "av<14" pycapcut "mcp>=1.12,<2" -q
 
 cat << 'EOF' | sudo tee /etc/systemd/system/viralforge.service >/dev/null
 [Unit]

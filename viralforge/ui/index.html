@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/static/styles.css?v=2.1" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
   <!-- Ambient Studio Lighting & Architectural Grid -->
@@ -117,8 +118,8 @@
     <div class="tabs-control-bar">
       <!-- Filtro rápido por categorías -->
       <div class="tabs-categories" role="tablist" aria-label="Categorías de herramientas">
-        <button type="button" class="tab-cat-btn active" data-cat="all">✨ Todas las Herramientas (10)</button>
-        <button type="button" class="tab-cat-btn" data-cat="prod">🎬 Producción (4)</button>
+        <button type="button" class="tab-cat-btn active" data-cat="all">✨ Todas las Herramientas (11)</button>
+        <button type="button" class="tab-cat-btn" data-cat="prod">🎬 Producción (5)</button>
         <button type="button" class="tab-cat-btn" data-cat="assets">👤 Assets &amp; Moda (4)</button>
         <button type="button" class="tab-cat-btn" data-cat="intel">⚡ Sistema &amp; Vault (2)</button>
       </div>
@@ -131,6 +132,7 @@
             <option value="campaigns">🏭 02. Fábrica Masiva A/B</option>
             <option value="reels">📊 03. Galería Reels &amp; Bandit</option>
             <option value="polish">🎬 10. Pulidor Viral (.MOV / MP4)</option>
+            <option value="sky">🎥 11. Sky Cinema &amp; Director 3D</option>
           </optgroup>
           <optgroup label="👤 Identidad, Influencers &amp; Outfits">
             <option value="personas">👤 04. AI Influencers</option>
@@ -1080,6 +1082,200 @@
             <video id="polishResultVideo" controls preload="metadata" style="width:100%;border-radius:12px;aspect-ratio:9/16;background:#000;margin:12px 0"></video>
             <div class="btn-row" style="justify-content:center">
               <a id="polishDownloadBtn" class="btn btn-primary" href="#" download="video_pulido.mp4">⬇️ Descargar MP4 para Redes</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- TAB 11: SKY CINEMA & 3D DIRECTOR STUDIO -->
+    <section class="tab-panel" id="tab-sky">
+      <div class="panel-header mb">
+        <div>
+          <h2>🎥 Sky Cinema &amp; 3D Director Studio</h2>
+          <p class="subtitle">
+            Síntesis Cinematográfica Multimodelo (Doubao Seedance 2.5, Kling 4.0, MiniMax Hailuo H3) con Escenario 3D en Three.js y Consistencia de Avatares.
+          </p>
+        </div>
+        <div class="header-badges">
+          <span class="live-chip" style="background:rgba(0,255,136,0.12);border-color:#00ff88;color:#00ff88;">
+            <span class="pulse-dot" style="background:#00ff88;"></span> MOTOR ACTIVO • api-v6.skyproduction.ai
+          </span>
+          <span class="tag">50 Operaciones GPU</span>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- COLUMNA 1: CONTROLES DEL DIRECTOR -->
+        <div class="col">
+          <!-- CARD 1: MODELO & ASPECT RATIO -->
+          <div class="item-card mb">
+            <h3 class="card-title">1. Motor de Video y Formato</h3>
+            <div class="form-group mb">
+              <label for="skyModelSelect">Modelo Cinematográfico:</label>
+              <select id="skyModelSelect" class="form-control">
+                <option value="doubao-seedance-2-5-260628" selected>ByteDance Doubao Seedance 2.5 (Flagship Omni-Video)</option>
+                <option value="kling-4.0">Kuaishou Kling 4.0 Cinema (Fidelidad Extrema &amp; VFX)</option>
+                <option value="kling-v3-omni">Kling v3 Omni (Guía Estricta por Referencia)</option>
+                <option value="MiniMax-Hailuo-H3">MiniMax Hailuo H3 (Dinamismo Corporal &amp; Rostros)</option>
+                <option value="viduq4">Shengshu Vidu Q4 (Consistencia Multitoma)</option>
+                <option value="sky-reels-v4-std">SkyReels v4 Pro (Optimizado para Reels Verticales)</option>
+                <option value="doubao-seedance-2-0">Doubao Seedance 2.0 Standard</option>
+              </select>
+            </div>
+
+            <div class="row-between">
+              <div class="form-group" style="flex:1;margin-right:10px;">
+                <label for="skyAspectRatioSelect">Relación de Aspecto:</label>
+                <select id="skyAspectRatioSelect" class="form-control">
+                  <option value="9:16" selected>📱 9:16 Vertical (TikTok / Reels / Shorts)</option>
+                  <option value="16:9">🎬 16:9 Cinemático (YouTube / Película)</option>
+                  <option value="1:1">⬛ 1:1 Cuadrado (Instagram Feed)</option>
+                </select>
+              </div>
+              <div class="form-group" style="flex:1;">
+                <label for="skyDurationSelect">Duración de la Toma:</label>
+                <select id="skyDurationSelect" class="form-control">
+                  <option value="5" selected>⏱️ 5 Segundos (Toma Estándar)</option>
+                  <option value="10">⏱️ 10 Segundos (Toma Continua)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 2: INTERCONEXIÓN CON DATASETS LOCALES -->
+          <div class="item-card mb">
+            <h3 class="card-title">2. Identidad del Avatar &amp; Pose de ViralForge</h3>
+            <div class="form-group mb">
+              <label for="skyPersonaSelect">Vincular AI Influencer (Pestaña 04):</label>
+              <select id="skyPersonaSelect" class="form-control">
+                <option value="">-- Sin avatar específico (Generación Libre) --</option>
+              </select>
+              <small class="muted">Inyecta automáticamente la descripción y el banco de rostros de tu avatar para consistencia.</small>
+            </div>
+
+            <div class="form-group mb">
+              <label for="skyPoseSelect">Vincular Pose Esquematizada (1,439 Poses):</label>
+              <select id="skyPoseSelect" class="form-control">
+                <option value="">-- Selección manual en el visor 3D --</option>
+              </select>
+              <small class="muted">Acondiciona el ángulo de cámara y el encuadre con el catálogo de DWPose.</small>
+            </div>
+
+            <div class="btn-row">
+              <button type="button" id="skyBtnCharacterSheet" class="btn btn-glass btn-sm" style="width:100%;border-color:#ff4d88;color:#ff8fb5;">
+                👤 Generar Hoja de 3 Vistas del Avatar (Three-View Sheet)
+              </button>
+            </div>
+          </div>
+
+          <!-- CARD 3: PROMPT & DIRECCIÓN DE CÁMARA -->
+          <div class="item-card">
+            <h3 class="card-title">3. Guión Técnico y Movimientos de Cámara</h3>
+            <div class="form-group mb">
+              <label for="skyPromptInput">Prompt Cinematográfico:</label>
+              <textarea id="skyPromptInput" class="form-control" rows="3" placeholder="Ej: Cyberpunk detective walking through neon-lit street, light rain reflection on trenchcoat, cinematic shallow depth of field, dramatic moody lighting..."></textarea>
+            </div>
+
+            <div class="chips-wrap mb">
+              <span class="muted" style="font-size:0.8rem;margin-right:6px;">Inyectores de cámara:</span>
+              <button type="button" class="btn-chip" onclick="injectSkyCamera('Cinematic Dolly In zoom shot')">🎥 Dolly In</button>
+              <button type="button" class="btn-chip" onclick="injectSkyCamera('Dynamic tracking shot following subject')">🏃 Tracking</button>
+              <button type="button" class="btn-chip" onclick="injectSkyCamera('Smooth 360 orbit camera rotation')">🔄 Órbita 360</button>
+              <button type="button" class="btn-chip" onclick="injectSkyCamera('Dramatic low-angle hero perspective')">📐 Contrapicado Hero</button>
+              <button type="button" class="btn-chip" onclick="injectSkyCamera('Cinematic volumetric studio lighting with teal and orange rim')">💡 Iluminación Estudio</button>
+              <button type="button" class="btn-chip" onclick="injectSkyCamera('Hyper-detailed 4K macro shot')">🔍 Macro 4K</button>
+            </div>
+
+            <button type="button" id="skyBtnGenerateVideo" class="btn btn-primary" style="width:100%;padding:14px;font-size:1.05rem;background:linear-gradient(135deg,#ff3d6e,#8a2be2);box-shadow:0 8px 24px rgba(255,61,110,0.35);">
+              🚀 Renderizar Escena Cinematográfica con Sky
+            </button>
+          </div>
+        </div>
+
+        <!-- COLUMNA 2: DIRECTOR 3D & REPRODUCTOR -->
+        <div class="col">
+          <!-- CARD 1: VIEWPORT 3D THREE.JS -->
+          <div class="item-card mb">
+            <div class="row-between mb">
+              <h3 class="card-title" style="margin:0;">Escenario 3D de Dirección (Director Stage)</h3>
+              <span class="tag" id="skyCameraCoordsTag">Cámara: FOV 50° | Órbita 0°</span>
+            </div>
+            
+            <div style="position:relative;width:100%;height:320px;border-radius:12px;overflow:hidden;background:#060608;border:1px solid rgba(255,255,255,0.08);">
+              <canvas id="skyThreeCanvas" style="width:100%;height:100%;display:block;"></canvas>
+              <div style="position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,0.65);padding:4px 8px;border-radius:6px;font-size:0.75rem;color:#888;">
+                Arrastra para orbitar cámara • Scroll para Zoom
+              </div>
+            </div>
+
+            <div class="row-between mt" style="gap:10px;">
+              <div class="form-group" style="flex:1;">
+                <label for="skyMannequinPoseSelect">Postura del Maniquí:</label>
+                <select id="skyMannequinPoseSelect" class="form-control" onchange="updateSkyMannequinPose(this.value)">
+                  <option value="stand" selected>🧍 De Pie (Stand)</option>
+                  <option value="walk">🚶 Caminando (Walk)</option>
+                  <option value="run">🏃 Corriendo (Run)</option>
+                  <option value="fight">🥊 Posición de Combate (Fight)</option>
+                  <option value="lean">🕶️ Apoyado / Confiado (Lean)</option>
+                  <option value="sit">🪑 Sentado (Sit)</option>
+                  <option value="squat">🏋️ En Cuclillas (Squat)</option>
+                  <option value="think">🤔 Pensativo (Think)</option>
+                  <option value="cross_arms">🙅 Brazos Cruzados (Cross Arms)</option>
+                  <option value="phone">📱 Con Teléfono (Phone)</option>
+                  <option value="wave">👋 Saludando (Wave)</option>
+                  <option value="bow">🙇 Inclinación de Respeto (Bow)</option>
+                  <option value="t_pose">➕ T-Pose (Calibración)</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="flex:1;">
+                <label for="skyBodyVariantSelect">Arquetipo de Cuerpo:</label>
+                <select id="skyBodyVariantSelect" class="form-control" onchange="updateSkyBodyVariant(this.value)">
+                  <option value="female_low_poly" selected>👩 Femenino Estilizado</option>
+                  <option value="male_basic">👨 Masculino Básico</option>
+                  <option value="slender">💃 Silueta Esbelta</option>
+                  <option value="robust">💪 Físico Atlético / Robusto</option>
+                  <option value="young">🧑 Joven / Adolescente</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 2: MONITOR DE PROGRESO Y REPRODUCTOR FINAL -->
+          <div class="item-card">
+            <h3 class="card-title">Monitor de Renderizado &amp; Entrega</h3>
+
+            <!-- Barra de progreso -->
+            <div id="skyProgressBox" class="hidden mb">
+              <div class="row-between mb" style="font-size:0.85rem;">
+                <span id="skyJobStatusLabel" class="live-chip"><span class="pulse-dot"></span> Despachando a GPU...</span>
+                <span id="skyJobPercentLabel">0%</span>
+              </div>
+              <div style="width:100%;height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;">
+                <div id="skyProgressBar" style="width:5%;height:100%;background:linear-gradient(90deg,#ff3d6e,#8a2be2);transition:width 0.3s ease;"></div>
+              </div>
+            </div>
+
+            <!-- Reproductor de video final -->
+            <div id="skyVideoPlayerWrap" class="hidden" style="text-align:center;">
+              <div style="position:relative;border-radius:12px;overflow:hidden;background:#000;margin-bottom:12px;border:1px solid rgba(255,255,255,0.12);">
+                <video id="skyResultVideo" controls preload="metadata" style="width:100%;max-height:460px;display:block;margin:0 auto;background:#000;"></video>
+              </div>
+              <div class="btn-row" style="justify-content:center;">
+                <a id="skyDownloadBtn" class="btn btn-primary" href="#" download="sky_cinema_scene.mp4">
+                  ⬇️ Descargar MP4 Alta Definición
+                </a>
+                <button type="button" class="btn btn-glass" onclick="sendSkyVideoToAutoCapCut()">
+                  ✂️ Enviar a Auto-CapCut (Subtítulos &amp; Gancho)
+                </button>
+              </div>
+            </div>
+
+            <!-- Estado idle vacío -->
+            <div id="skyIdleStateBox" style="text-align:center;padding:40px 20px;" class="muted">
+              <div style="font-size:2.8rem;margin-bottom:8px;">🎬</div>
+              <p>Configura tu escena cinematográfica o avatar a la izquierda y presiona <strong>Renderizar Escena</strong>.</p>
+              <small>El video se sintetizará en la GPU y se almacenará automáticamente en tu biblioteca de salidas.</small>
             </div>
           </div>
         </div>

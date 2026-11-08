@@ -31,23 +31,26 @@ def _format_ass_time(seconds: float) -> str:
 def build_ass_subtitles(
     words: list[dict[str, Any]],
     out_path: str | Path,
-    words_per_line: int = 4,
+    words_per_line: int = 3,
     font_name: str = "Arial Black",
-    font_size: int = 44,
+    font_size: int = 68,
     highlight_color_bgr: str = "&H005EE4FF&",  # Amarillo #FFE45E en BGR
     normal_color_bgr: str = "&H00FFFFFF&",     # Blanco puro
     outline_color_bgr: str = "&H00000000&",    # Negro puro
-    margin_v: int = 480,                       # Margen vertical seguro (evita colisiones con CTA y UI)
+    margin_v: int = 460,                       # Margen vertical seguro (evita colisiones con CTA y UI)
     suppress_after_time: float | None = None,  # Tiempo a partir del cual ocultar subtítulos (ej. inicio de CTA)
 ) -> Path:
     """
-    Genera un archivo .ass con sincronización palabra por palabra.
+    Genera un archivo .ass con subtítulos dinámicos de alto impacto estilo Alex Hormozi
+    (tipografía grande 68pt, borde negro grueso 7px, resaltado amarillo oro y grupos ágiles de 2 a 3 palabras).
 
     Parameters
     ----------
     words : Lista de dicts con keys: 'word', 'start', 'end', 'formatted' (opcional)
     out_path : Archivo .ass de destino
-    margin_v : Margen inferior en píxeles (default 480 para zona segura)
+    words_per_line : Cantidad de palabras por grupo dinámico (default 3 para lectura rápida)
+    font_size : Tamaño de fuente en canvas 1080x1920 (default 68 para impacto visual móvil)
+    margin_v : Margen inferior en píxeles (default 460 para zona segura)
     suppress_after_time : Si se define, corta los subtítulos para no tapar la tarjeta de CTA final
     """
     out_path = Path(out_path)
@@ -62,7 +65,7 @@ ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Hormozi,{font_name},{font_size},{normal_color_bgr},&H000000FF&,{outline_color_bgr},&H80000000&,-1,0,0,0,100,100,1,0,1,6.0,2.5,2,60,60,{margin_v},1
+Style: Hormozi,{font_name},{font_size},{normal_color_bgr},&H000000FF&,{outline_color_bgr},&H80000000&,-1,0,0,0,100,100,1,0,1,7.0,3.0,2,60,60,{margin_v},1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text

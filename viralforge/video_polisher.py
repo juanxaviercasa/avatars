@@ -178,7 +178,15 @@ def polish_video(
                 voice_name = "es-PE-AlexNeural"
                 voice_cues = []
                 stem_upper = src.stem.upper()
-                if "2931" in stem_upper:
+                if "2935" in stem_upper:
+                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de dominio con radicales y valor absoluto!", 0.20))
+                    voice_cues.append((workdir / "voice_formula.mp3", "¡Recuerda que al multiplicar por un negativo la desigualdad se invierte!", 55.20))
+                    voice_cues.append((workdir / "voice_answer.mp3", "¡Siete, clave y respuesta correcta!", 135.20))
+                elif "2933" in stem_upper:
+                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio sobre funciones y pares ordenados!", 0.20))
+                    voice_cues.append((workdir / "voice_formula.mp3", "¡Recuerda que cada elemento del dominio tiene una única imagen!", 24.20))
+                    voice_cues.append((workdir / "voice_answer.mp3", "¡Doce, clave y respuesta correcta!", 200.20))
+                elif "2931" in stem_upper:
                     voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de examen sobre ley y liga de oro y cobre!", 0.20))
                     voice_cues.append((workdir / "voice_formula.mp3", "¡Recuerda que la ley más la liga siempre suman uno!", 20.20))
                     voice_cues.append((workdir / "voice_answer.mp3", "¡Cien gramos de cobre, respuesta correcta!", 275.20))
@@ -369,7 +377,7 @@ def polish_video(
             "-map", "[vfinal]",
             "-map", "1:a:0",
             "-c:v", "libx264",
-            "-preset", "fast",
+            "-preset", "veryfast",
             "-crf", "22",
             "-pix_fmt", "yuv420p",
             "-c:a", "aac",
@@ -383,7 +391,7 @@ def polish_video(
             cmd,
             capture_output=True,
             creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
-            timeout=1200,
+            timeout=max(3600, int(dur * 8)),
         )
         if proc.returncode != 0:
             err = proc.stderr.decode("utf-8", "ignore")[-1200:]

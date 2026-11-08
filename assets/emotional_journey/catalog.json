@@ -1,0 +1,747 @@
+{
+  "total_images": 100,
+  "blocks": {
+    "01_dolor_bloqueo": {
+      "title": "Dolor, Bloqueo y Madrugadas",
+      "count": 20,
+      "sample_size": "768x1376",
+      "images": [
+        {
+          "filename": "Defeated_student_lying_on_desk_e06a143c.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Defeated_student_lying_on_desk_e06a143c.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Female_student_looking_at_photo_44efa0cd.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Female_student_looking_at_photo_44efa0cd.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Hands_rubbing_eraser_on_paper_dfc6d367.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Hands_rubbing_eraser_on_paper_dfc6d367.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Male_student_resting_on_notebook_629a372e.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Male_student_resting_on_notebook_629a372e.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Man_experiencing_mental_exhaustion_119d42ea.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Man_experiencing_mental_exhaustion_119d42ea.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_biting_fingernail_studyi\u2026_4052d252.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Student_biting_fingernail_studyi\u2026_4052d252.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_crushing_test_paper_20cb4b99.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Student_crushing_test_paper_20cb4b99.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_crying_over_chemistry_wo\u2026_13ee65c9.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Student_crying_over_chemistry_wo\u2026_13ee65c9.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_holding_admission_exam_b\u2026_119ef973.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Student_holding_admission_exam_b\u2026_119ef973.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_holding_head_in_despair_3b7c31b0.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Student_holding_head_in_despair_3b7c31b0.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_holding_ice_pack_a21a2727.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Student_holding_ice_pack_a21a2727.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_looking_at_laptop_screen_55dd38de.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Student_looking_at_laptop_screen_55dd38de.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_looking_out_window_c6ba2ac5.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Student_looking_out_window_c6ba2ac5.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_pulling_hair_in_frustration_04499e2d.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Student_pulling_hair_in_frustration_04499e2d.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_sitting_among_study_guides_d3cb4a63.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Student_sitting_among_study_guides_d3cb4a63.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_splashing_water_on_face_98c535fc.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Student_splashing_water_on_face_98c535fc.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_staring_at_chemistry_pro\u2026_a5a7ec38.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Student_staring_at_chemistry_pro\u2026_a5a7ec38.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_staring_at_physics_sheet_124cc597.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Student_staring_at_physics_sheet_124cc597.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_trapped_in_study_nook_cdc4d5f5.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Student_trapped_in_study_nook_cdc4d5f5.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_waiting_for_exam_countdown_65883162.jpg",
+          "rel_path": "assets/emotional_journey/01_dolor_bloqueo/Student_waiting_for_exam_countdown_65883162.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        }
+      ]
+    },
+    "02_panico_reloj": {
+      "title": "P\u00e1nico del Examen y Presi\u00f3n",
+      "count": 20,
+      "sample_size": "768x1376",
+      "images": [
+        {
+          "filename": "Applicants_taking_exam_in_audito\u2026_140e5fc3.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Applicants_taking_exam_in_audito\u2026_140e5fc3.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Hand_filling_test_bubble_with_96eb1d70.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Hand_filling_test_bubble_with_96eb1d70.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Invigilator_ending_exam_with_stu\u2026_49f81fde.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Invigilator_ending_exam_with_stu\u2026_49f81fde.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Nervous_student_wiping_forehead_\u2026_1fb94c70.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Nervous_student_wiping_forehead_\u2026_1fb94c70.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Pencil_question_mark_on_test_70ae544d.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Pencil_question_mark_on_test_70ae544d.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_biting_pencil_during_exam_4db9e194.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Student_biting_pencil_during_exam_4db9e194.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_clutches_head_over_test_90d9aa17.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Student_clutches_head_over_test_90d9aa17.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_experiencing_anxiety_dur\u2026_ced65bf3.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Student_experiencing_anxiety_dur\u2026_ced65bf3.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_experiencing_exam_panic_\u2026_57831704.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Student_experiencing_exam_panic_\u2026_57831704.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_hesitating_during_exam_0bfa6e4c.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Student_hesitating_during_exam_0bfa6e4c.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_holding_pencil_over_test\u2026_92075759.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Student_holding_pencil_over_test\u2026_92075759.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_looking_at_clock_43b5ae4e.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Student_looking_at_clock_43b5ae4e.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_panicking_during_timed_test_7aa6fbb8.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Student_panicking_during_timed_test_7aa6fbb8.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_panics_during_test_7f3ba64e.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Student_panics_during_test_7f3ba64e.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_sitting_on_curb_5c712d3f.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Student_sitting_on_curb_5c712d3f.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_standing_before_universi\u2026_8ed2e05f.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Student_standing_before_universi\u2026_8ed2e05f.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_staring_at_failed_test_a14ba918.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Student_staring_at_failed_test_a14ba918.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_tapping_pencil_on_desk_3ac762ea.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Student_tapping_pencil_on_desk_3ac762ea.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_walking_from_university_\u2026_78aaa6e6.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Student_walking_from_university_\u2026_78aaa6e6.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Sweat_dripping_on_test_paper_a050aefd.jpg",
+          "rel_path": "assets/emotional_journey/02_panico_reloj/Sweat_dripping_on_test_paper_a050aefd.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        }
+      ]
+    },
+    "03_chispa_epifania": {
+      "title": "Chispa, Revelaci\u00f3n y Epifan\u00eda",
+      "count": 20,
+      "sample_size": "768x1376",
+      "images": [
+        {
+          "filename": "Chalkboard_igniting_with_glowing\u2026_ff19ba6f.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Chalkboard_igniting_with_glowing\u2026_ff19ba6f.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Chemistry_textbook_emitting_gold\u2026_3e47f6e5.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Chemistry_textbook_emitting_gold\u2026_3e47f6e5.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Holographic_HUD_showing_algebrai\u2026_3ff5e765.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Holographic_HUD_showing_algebrai\u2026_3ff5e765.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Holographic_math_curves_aligning\u2026_e57a8047.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Holographic_math_curves_aligning\u2026_e57a8047.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Pencil_writing_mathematical_dedu\u2026_3ed04b7c.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Pencil_writing_mathematical_dedu\u2026_3ed04b7c.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Puzzle_pieces_forming_formula_5ca5b4c0.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Puzzle_pieces_forming_formula_5ca5b4c0.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_cupping_glowing_orb_889965ca.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Student_cupping_glowing_orb_889965ca.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_eye_reflecting_mathemati\u2026_3cae5d3b.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Student_eye_reflecting_mathemati\u2026_3cae5d3b.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_looking_up_in_library_37750481.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Student_looking_up_in_library_37750481.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_smiling_at_tablet_screen_8cacc77d.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Student_smiling_at_tablet_screen_8cacc77d.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_snapping_fingers_in_sunl\u2026_2a8b9f04.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Student_snapping_fingers_in_sunl\u2026_2a8b9f04.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_solving_math_problems_2b798e77.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Student_solving_math_problems_2b798e77.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_transforming_through_mat\u2026_6a871e97.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Student_transforming_through_mat\u2026_6a871e97.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_underlining_answer_on_ch\u2026_ccf822a1.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Student_underlining_answer_on_ch\u2026_ccf822a1.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_viewing_holographic_mole\u2026_2c18e638.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Student_viewing_holographic_mole\u2026_2c18e638.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_watching_glowing_periodi\u2026_853cd811.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Student_watching_glowing_periodi\u2026_853cd811.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_writing_on_blackboard_6d350a42.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Student_writing_on_blackboard_6d350a42.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Teacher_and_student_at_blackboard_2c03b489.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Teacher_and_student_at_blackboard_2c03b489.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Teacher_placing_pen_on_workbook_c6d07615.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Teacher_placing_pen_on_workbook_c6d07615.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Teacher_pointing_at_chalkboard_f\u2026_bdb67db9.jpg",
+          "rel_path": "assets/emotional_journey/03_chispa_epifania/Teacher_pointing_at_chalkboard_f\u2026_bdb67db9.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        }
+      ]
+    },
+    "04_paz_maestria": {
+      "title": "Paz Mental, Calma y Maestr\u00eda",
+      "count": 20,
+      "sample_size": "768x1376",
+      "images": [
+        {
+          "filename": "Hands_holding_exam_test_booklet_71bfd415.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Hands_holding_exam_test_booklet_71bfd415.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Notebook_with_organized_handwriting_1adb96d7.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Notebook_with_organized_handwriting_1adb96d7.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Open_notebook_on_desk_b9859560.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Open_notebook_on_desk_b9859560.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_breathing_calmly_before_\u2026_fb4ec138.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Student_breathing_calmly_before_\u2026_fb4ec138.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_closing_calculus_book_e646ae46.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Student_closing_calculus_book_e646ae46.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_drinking_water_during_exam_7ff3ce22.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Student_drinking_water_during_exam_7ff3ce22.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_explaining_shortcut_to_c\u2026_e55c9999.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Student_explaining_shortcut_to_c\u2026_e55c9999.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_giving_thumbs-up_to_refl\u2026_43d8118b.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Student_giving_thumbs-up_to_refl\u2026_43d8118b.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_holding_tea_watching_sun\u2026_e221194e.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Student_holding_tea_watching_sun\u2026_e221194e.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_laughing_after_finishing\u2026_8e75a8dd.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Student_laughing_after_finishing\u2026_8e75a8dd.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_meditating_before_exam_6ca0e6f4.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Student_meditating_before_exam_6ca0e6f4.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_packing_exam_pouch_d6770a67.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Student_packing_exam_pouch_d6770a67.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_reviewing_flashcards_in_\u2026_aeb1a758.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Student_reviewing_flashcards_in_\u2026_aeb1a758.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_sleeping_in_bed_00cf4644.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Student_sleeping_in_bed_00cf4644.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_smiling_in_study_chair_a88b4c9e.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Student_smiling_in_study_chair_a88b4c9e.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_solving_admission_problem_4e0f3203.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Student_solving_admission_problem_4e0f3203.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_stretching_arms_high_a11bc015.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Student_stretching_arms_high_a11bc015.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_walking_toward_universit\u2026_03e9b075.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Student_walking_toward_universit\u2026_03e9b075.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Study_desk_with_coffee_and_587ae80e.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Study_desk_with_coffee_and_587ae80e.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Vertical_portrait._Student_looking_down_4f5dc75f.jpg",
+          "rel_path": "assets/emotional_journey/04_paz_maestria/Vertical_portrait._Student_looking_down_4f5dc75f.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        }
+      ]
+    },
+    "05_victoria_admision": {
+      "title": "Victoria, Triunfo y Admisi\u00f3n",
+      "count": 20,
+      "sample_size": "768x1376",
+      "images": [
+        {
+          "filename": "Cinematic_slow-motion_still,_vertical._A_69a590ef.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Cinematic_slow-motion_still,_vertical._A_69a590ef.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Cinematic_vertical._Student_sitting_in_134a7677.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Cinematic_vertical._Student_sitting_in_134a7677.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Cinematic_vertical._Triumphant_student_standing_dfdbe742.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Cinematic_vertical._Triumphant_student_standing_dfdbe742.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Documentary_style_vertical._A_tearful_5531b2cd.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Documentary_style_vertical._A_tearful_5531b2cd.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Documentary_vertical._Tearful_student_running_a8119321.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Documentary_vertical._Tearful_student_running_a8119321.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Emotional_vertical_still._A_loving_b725f71e.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Emotional_vertical_still._A_loving_b725f71e.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Epic_wide_cinematic_shot,_vertical._26ba23d3.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Epic_wide_cinematic_shot,_vertical._26ba23d3.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Father_lifting_son_celebrating_a\u2026_fc163a4a.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Father_lifting_son_celebrating_a\u2026_fc163a4a.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Friends_jumping_on_university_lawn_5ba15823.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Friends_jumping_on_university_lawn_5ba15823.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Heartwarming_vertical._Newly_admitted_student_855d8d9b.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Heartwarming_vertical._Newly_admitted_student_855d8d9b.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Inspiring_vertical_portrait._A_newly_c4202f05.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Inspiring_vertical_portrait._A_newly_c4202f05.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Person_viewing_admission_status_\u2026_f3228380.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Person_viewing_admission_status_\u2026_f3228380.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_celebrating_university_a\u2026_13b03de5.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Student_celebrating_university_a\u2026_13b03de5.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_holding_admission_certif\u2026_1c11465d.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Student_holding_admission_certif\u2026_1c11465d.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_holding_admission_letter_bf29ea60.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Student_holding_admission_letter_bf29ea60.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_holding_university_ID_card_8dc6cba2.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Student_holding_university_ID_card_8dc6cba2.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_smiling_with_eyes_closed_86b9e22b.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Student_smiling_with_eyes_closed_86b9e22b.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_sprinting_toward_waiting\u2026_0a0bbb79.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Student_sprinting_toward_waiting\u2026_0a0bbb79.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Student_weeping_of_euphoria_9d5f3804.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Student_weeping_of_euphoria_9d5f3804.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        },
+        {
+          "filename": "Traditional_admission_celebration,_vertical._A_905cd379.jpg",
+          "rel_path": "assets/emotional_journey/05_victoria_admision/Traditional_admission_celebration,_vertical._A_905cd379.jpg",
+          "width": 768,
+          "height": 1376,
+          "aspect_ratio": "768:1376"
+        }
+      ]
+    }
+  },
+  "02_panico_reloj": [
+    {
+      "name": "Student_experiencing_anxiety_fixed.png",
+      "path": "assets\\emotional_journey\\02_panico_reloj\\Student_experiencing_anxiety_fixed.png",
+      "prompt": "Vertical 9:16 cinematic film still. Realistic young male student sitting at a wooden desk in an admission exam hall, experiencing anxiety during a timed test. Exactly TWO natural arms, realistic hands."
+    }
+  ]
+}

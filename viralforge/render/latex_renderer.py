@@ -1,104 +1,58 @@
 """
 viralforge/render/latex_renderer.py
 ===================================
-Motor de renderizado matemático LaTeX / KaTeX de alta definición (Vector & High-DPI PNG).
-
-Renderiza expresiones matemáticas en LaTeX puro con tipografía Computer Modern / STIX,
-fracciones con barras horizontales, subíndices, superíndices, raíces y matrices,
-sin requerir una instalación pesada de TeX en el sistema.
-
-Genera imágenes transparentes listas para ser superpuestas sobre tarjetas glassmorphic
-o directamente sobre el lienzo de video 1080x1920.
+Renderizador de Fórmulas Químicas y Expresiones Matemáticas en formato LaTeX / KaTeX
+de alta definición (PNG con canal alfa transparente) para Reels y videos educativos.
 """
-from __future__ import annotations
-
-import os
 from pathlib import Path
-from typing import Any
-
+import io
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from PIL import Image
 
 
-def render_latex_to_image(
-    latex_expr: str,
-    color: str = "white",
-    fontsize: int = 34,
-    dpi: int = 220,
+def render_latex_formula(
+    latex_str: str,
+    fontsize: int = 32,
+    color: str = "#ffffff",
+    dpi: int = 200,
+    pad_inches: float = 0.05,
 ) -> Image.Image:
     """
-    Renderiza una expresión LaTeX a un objeto PIL Image (RGBA) transparente.
-
-    Parameters
-    ----------
-    latex_expr : Código LaTeX (ej: r"P_m = \frac{P_1 V_1 + P_2 V_2}{V_1 + V_2}")
-    color      : Color del texto ('white', '#FFE45E', '#38BDF8', '#34D399')
-    fontsize   : Tamaño relativo de la fuente matemática
-    dpi        : Densidad de píxeles (default 220 para nitidez 1080p/4K)
+    Renderiza una expresión LaTeX / KaTeX a una imagen PIL RGBA transparente.
+    Soporta subíndices (_2, _3), superíndices, fracciones (\\frac{}{}),
+    espacios (\\;, \\quad) y negrita (\\mathbf{}).
     """
-    clean_expr = latex_expr.strip()
-    # Si el usuario ya colocó los signos de dólar, los removemos para estandarizar
-    if clean_expr.startswith("$") and clean_expr.endswith("$"):
-        clean_expr = clean_expr[1:-1].strip()
-
-    # Normalizar macros incompatibles con el parser mathtext
-    clean_expr = clean_expr.replace(r"\displaystyle", "")
-    clean_expr = clean_expr.replace(r"\implies", r"\Rightarrow")
-    clean_expr = clean_expr.replace(r"\iff", r"\Leftrightarrow")
-    clean_expr = clean_expr.replace(r"\bold", r"\mathbf")
-    clean_expr = clean_expr.replace(r"\quad", "  ")
-    clean_expr = clean_expr.replace(r"\qquad", "    ")
-
-    # Formato de visualización matemática LaTeX (mathtext)
-    math_str = f"${clean_expr}$"
-
-    fig = plt.figure(figsize=(8, 2.5))
-    fig.patch.set_alpha(0)
-    ax = fig.add_axes([0, 0, 1, 1])
-    ax.axis("off")
-    ax.patch.set_alpha(0)
-
-    # Renderizar con motor mathtext
-    ax.text(
-        0.5,
-        0.5,
-        math_str,
+    fig = plt.figure(figsize=(0.01, 0.01))
+    fig.patch.set_alpha(0.0)
+    
+    # Mathtext de matplotlib usa formato $...$
+    text_to_draw = latex_str if latex_str.startswith("$") else f"${latex_str}$"
+    
+    plt.text(
+        0, 0, text_to_draw,
         fontsize=fontsize,
         color=color,
-        ha="center",
-        va="center",
+        va="bottom",
+        ha="left",
+        usetex=False
     )
-
-    import io
+    plt.axis("off")
+    
     buf = io.BytesIO()
-    fig.savefig(buf, format="png", dpi=dpi, transparent=True, bbox_inches="tight", pad_inches=0.04)
+    plt.savefig(
+        buf,
+        format="png",
+        dpi=dpi,
+        transparent=True,
+        bbox_inches="tight",
+        pad_inches=pad_inches
+    )
     plt.close(fig)
-
     buf.seek(0)
-    raw_img = Image.open(buf).convert("RGBA")
-    bbox = raw_img.getbbox()
-    if bbox:
-        pad = 4
-        x1 = max(0, bbox[0] - pad)
-        y1 = max(0, bbox[1] - pad)
-        x2 = min(raw_img.width, bbox[2] + pad)
-        y2 = min(raw_img.height, bbox[3] + pad)
-        return raw_img.crop((x1, y1, x2, y2))
-    return raw_img
+    return Image.open(buf).convert("RGBA")
 
 
-def render_latex_to_file(
-    latex_expr: str,
-    out_path: str | Path,
-    color: str = "white",
-    fontsize: int = 34,
-    dpi: int = 220,
-) -> Path:
-    """Renderiza LaTeX y lo guarda directamente en un archivo PNG."""
-    out_p = Path(out_path)
-    out_p.parent.mkdir(parents=True, exist_ok=True)
-    img = render_latex_to_image(latex_expr, color=color, fontsize=fontsize, dpi=dpi)
-    img.save(out_p, format="PNG")
-    return out_p
+# Alias para compatibilidad total con cards.py y otros módulos
+render_latex_to_image = render_latex_formula

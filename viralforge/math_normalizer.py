@@ -54,6 +54,12 @@ MATH_SUBJECT_GLOSSARIES: dict[str, list[str]] = {
         "razón aritmética", "proporción", "porcentaje", "tanto por ciento", "regla de tres simple",
         "regla de tres compuesta", "magnitudes proporcionales", "interés simple",
     ],
+    "quimica": [
+        "química", "reactivo limitante", "reactivo en exceso", "estequiometría", "moles",
+        "masa molar", "gramos", "rendimiento teórico", "rendimiento porcentual", "reacción química",
+        "balanceo de ecuaciones", "coeficiente estequiométrico", "peso molecular", "átomos",
+        "moléculas", "reactivos", "productos", "ley de conservación de la masa", "Avogadro",
+    ],
 }
 
 

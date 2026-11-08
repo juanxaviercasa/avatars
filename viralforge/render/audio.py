@@ -416,6 +416,9 @@ def generate_electro_rock_background(
     return mixed.astype(np.float32)
 
 
+synthesize_motivational_electro_rock_bed = generate_electro_rock_background
+
+
 def generate_lofi_background(
     duration_seconds: float,
     sr: int = SR,

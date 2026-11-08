@@ -5,6 +5,9 @@ import sys
 import time
 from pathlib import Path
 from typing import Any
+import logging
+
+log = logging.getLogger("viralforge.api")
 
 # En Windows, los navegadores cierran sockets abruptamente durante Range requests (video streaming).
 # Se silencia ConnectionResetError en _call_connection_lost para evitar trazas espurias en consola.
@@ -541,6 +544,7 @@ class PoseLookbookReq(BaseModel):
     script_text: str = ""
     costume_id: str = "auto"
     kit_name: str = "hype"
+    map_type: str = "line"
 
 
 @app.post("/api/poses/lookbook-reel")
@@ -552,8 +556,161 @@ def api_poses_lookbook_reel(req: PoseLookbookReq) -> dict[str, Any]:
         script_text=req.script_text,
         costume_id=req.costume_id,
         kit_name=req.kit_name,
+        map_type=req.map_type,
     )
     return {"variant": variant, "job": job}
+
+
+# ---------------------------------------------------------------------- Shisei CC0 Pose & Depth Director (wquguru/shisei)
+@app.get("/api/shisei/catalog")
+def api_shisei_catalog(
+    series: str = "",
+    category: str = "",
+    q: str = "",
+    has_depth_only: bool = False,
+    limit: int = 50,
+    offset: int = 0,
+) -> dict[str, Any]:
+    from . import shisei as shisei_mod
+    return shisei_mod.search_shisei_poses(
+        series=series,
+        category=category,
+        q=q,
+        has_depth_only=has_depth_only,
+        limit=min(200, max(1, limit)),
+        offset=max(0, offset),
+    )
+
+
+@app.get("/api/shisei/pose/{pose_id}")
+def api_shisei_pose(pose_id: str) -> dict[str, Any]:
+    from . import shisei as shisei_mod
+    p = shisei_mod.get_shisei_pose(pose_id)
+    if not p:
+        raise HTTPException(status_code=404, detail=f"Pose {pose_id} no encontrada en catálogo Shisei")
+    return p
+
+
+@app.get("/api/shisei/angles/{pose_id}")
+def api_shisei_angles(pose_id: str, map_type: str = "line", size: str = "w900") -> dict[str, Any]:
+    from . import shisei as shisei_mod
+    angles = shisei_mod.get_shisei_angles(pose_id, map_type=map_type, size=size)
+    prompt = shisei_mod.get_pose_prompt(pose_id)
+    return {
+        "pose_id": pose_id,
+        "map_type": map_type,
+        "size": size,
+        "angles": angles,
+        "prompt_en": prompt,
+    }
+
+
+@app.get("/api/shisei/prompt/{pose_id}")
+def api_shisei_prompt(pose_id: str, prefix: str = "", suffix: str = "") -> dict[str, Any]:
+    from . import shisei as shisei_mod
+    prompt = shisei_mod.get_pose_prompt(pose_id, prefix=prefix, suffix=suffix)
+    return {"pose_id": pose_id, "prompt_en": prompt}
+
+
+# ---------------------------------------------------------------------- Motor de Animaciones por Código (341 Estilos XiaoyeCodes)
+class CodeAnimRenderReq(BaseModel):
+    style_id: str = "A3"
+    title_or_text: str = "DETÉN EL SCROLL"
+    secondary_text: str = ""
+    duration: float = 3.0
+    width: int = 1080
+    height: int = 1920
+    fps: int = 30
+    transparent: bool = False
+    custom_html: str = ""
+
+
+@app.get("/api/animations/catalog")
+def api_animations_catalog(
+    q: str = "",
+    series: str = "",
+    beat: str = "",
+    limit: int = 50,
+    offset: int = 0,
+) -> dict[str, Any]:
+    from .render import code_anim as anim_mod
+    return anim_mod.search_code_animations(
+        query=q,
+        series=series,
+        beat=beat,
+        limit=min(200, max(1, limit)),
+        offset=max(0, offset),
+    )
+
+
+@app.get("/api/animations/style/{style_id}")
+def api_animations_style(style_id: str) -> dict[str, Any]:
+    from .render import code_anim as anim_mod
+    st = anim_mod.get_animation_style(style_id)
+    if not st:
+        raise HTTPException(status_code=404, detail=f"Estilo de animación {style_id} no encontrado")
+    prompt = anim_mod.get_style_prompt_template(style_id)
+    return {"style": st, "prompt_template": prompt}
+
+
+@app.post("/api/animations/render")
+def api_animations_render(req: CodeAnimRenderReq) -> dict[str, Any]:
+    import uuid
+    from .render import code_anim as anim_mod
+
+    sid = req.style_id.upper()
+    html = req.custom_html.strip()
+    if not html:
+        if sid == "B3":
+            html = anim_mod.generate_particle_gather_html(
+                target_text=req.title_or_text or "VIRALFORGE",
+                duration=req.duration,
+                transparent=req.transparent,
+            )
+        elif sid == "M1":
+            steps = []
+            if req.secondary_text:
+                for line in req.secondary_text.split(";"):
+                    if ":" in line:
+                        p1, p2 = line.split(":", 1)
+                        steps.append((p1.strip(), p2.strip()))
+            html = anim_mod.generate_whiteboard_explainer_html(
+                title=req.title_or_text or "¿CÓMO FUNCIONA?",
+                steps=steps if steps else None,
+                duration=req.duration,
+                transparent=req.transparent,
+            )
+        else:
+            words = [w.strip() for w in req.title_or_text.split("|") if w.strip()] or [req.title_or_text]
+            html = anim_mod.generate_text_slam_html(
+                words=words,
+                duration=req.duration,
+                transparent=req.transparent,
+            )
+
+    clip_id = f"anim_{uuid.uuid4().hex[:10]}"
+    out_dir = settings.outputs_dir / "animations"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_mp4 = out_dir / f"{clip_id}.mp4"
+
+    res_path = anim_mod.render_html_to_mp4(
+        html_content=html,
+        output_mp4=out_mp4,
+        width=req.width,
+        height=req.height,
+        fps=req.fps,
+        duration=req.duration,
+    )
+    return {
+        "id": clip_id,
+        "style_id": sid,
+        "video_path": str(res_path),
+        "video_url": f"/media/outputs/animations/{res_path.name}",
+        "width": req.width,
+        "height": req.height,
+        "fps": req.fps,
+        "duration": req.duration,
+    }
 
 
 # ---------------------------------------------------------------------- Armario Virtual IA (1,407 Outfits) & Auto-Estilista
@@ -917,6 +1074,75 @@ def api_polish_render(req: PolishRenderReq) -> dict[str, Any]:
     return res
 
 
+# ---------------------------------------------------------------------- AutoCapCut & AI Video Auto-Editor Endpoints
+class AutoCapCutDiagnoseReq(BaseModel):
+    video_path: str
+    subject: str = "general"
+    watermark_box: str = "none"
+
+
+@app.post("/api/autocapcut/diagnose")
+def api_autocapcut_diagnose(req: AutoCapCutDiagnoseReq) -> dict[str, Any]:
+    from . import autocapcut
+    try:
+        return autocapcut.diagnose_video(
+            video_path=req.video_path,
+            subject=req.subject,
+            watermark_box=req.watermark_box,
+        )
+    except Exception as e:
+        log.exception("Error en diagnóstico AutoCapCut")
+        raise HTTPException(500, f"Error diagnosticando video: {e}")
+
+
+class AutoCapCutEditReq(BaseModel):
+    video_path: str
+    hook_badge_text: str = ""
+    watermark_box: str = "none"
+    cta_target: str = "Academia Zenit"
+    cta_objective_id: str = "skool"
+    custom_cta_phrase: str = ""
+    apply_cuts: bool = True
+    generate_draft: bool = True
+    render_mp4: bool = True
+
+
+@app.post("/api/autocapcut/edit")
+def api_autocapcut_edit(req: AutoCapCutEditReq) -> dict[str, Any]:
+    from . import autocapcut
+    try:
+        res = autocapcut.auto_edit_video(
+            video_path=req.video_path,
+            hook_badge_text=req.hook_badge_text,
+            watermark_box=req.watermark_box,
+            cta_target=req.cta_target,
+            cta_objective_id=req.cta_objective_id,
+            custom_cta_phrase=req.custom_cta_phrase,
+            apply_cuts=req.apply_cuts,
+            generate_draft=req.generate_draft,
+            render_mp4=req.render_mp4,
+        )
+        if res.get("rendered_mp4"):
+            mp4_p = Path(res["rendered_mp4"])
+            res["download_mp4_url"] = f"/media/outputs/{mp4_p.name}"
+        if res.get("capcut_draft"):
+            zip_name = res["capcut_draft"]["zip_name"]
+            res["download_draft_url"] = f"/api/autocapcut/download-draft/{zip_name}"
+        return res
+    except Exception as e:
+        log.exception("Error en auto-edición AutoCapCut")
+        raise HTTPException(500, f"Error en auto-edición: {e}")
+
+
+@app.get("/api/autocapcut/download-draft/{filename}")
+def api_autocapcut_download_draft(filename: str) -> FileResponse:
+    drafts_dir = (settings.data_dir / "capcut_drafts").resolve()
+    target = (drafts_dir / filename).resolve()
+    if not target.is_relative_to(drafts_dir) or not target.is_file():
+        raise HTTPException(404, "Borrador CapCut no encontrado")
+    return FileResponse(target, media_type="application/zip", filename=target.name)
+
+
 @app.get("/media/outputs/{filename}")
 def media_output_download(filename: str) -> FileResponse:
     target = (settings.outputs_dir / filename).resolve()
@@ -928,6 +1154,170 @@ def media_output_download(filename: str) -> FileResponse:
             raise HTTPException(404, "Archivo de salida no encontrado")
     media_type = "video/mp4" if target.suffix.lower() in (".mp4", ".mov") else "image/jpeg"
     return FileResponse(target, media_type=media_type, filename=target.name)
+
+
+# ---------------------------------------------------------------------- AI Reel Enhancer (Rol 2: Videos Educativos Creados con IA)
+class AIReelEnhanceReq(BaseModel):
+    video_path: str
+    music_gain: float = 0.13
+    subject: str = "quimica"
+
+
+@app.get("/api/ai-reels/local-videos")
+def api_ai_reels_local_videos() -> list[dict[str, Any]]:
+    """Lista los videos y reels generados por IA disponibles para potenciar."""
+    base_dirs = [
+        Path(r"C:\Users\cabel\Videos\reels-quimica"),
+        settings.data_dir / "local_videos" / "ai_reels",
+        settings.data_dir / "local_videos" / "reels",
+    ]
+    videos = []
+    seen = set()
+    for b in base_dirs:
+        if not b.exists():
+            continue
+        for ext in ("*.mp4", "*.mov", "*.mkv"):
+            for p in b.glob(ext):
+                name = p.name
+                # Excluir grabaciones humanas crudas (IMG_, EELY, FAML, FXAD) y ya procesados
+                if name.startswith(("IMG_", "EELY", "FAML", "FXAD", "polished_")):
+                    continue
+                if name in seen or "ENHANCED" in name or "autocapcut" in name:
+                    continue
+                seen.add(name)
+                videos.append({
+                    "filename": name,
+                    "path": str(p.resolve()),
+                    "size_mb": round(p.stat().st_size / (1024 * 1024), 2),
+                    "dir": str(b),
+                })
+    return videos
+
+
+@app.post("/api/ai-reels/enhance")
+def api_ai_reels_enhance(req: AIReelEnhanceReq) -> dict[str, Any]:
+    """
+    Potencia reels y videos educativos generados por IA (Rol 2):
+    - CERO choque de voces (voz original sagrada, sin sobremontado TTS)
+    - CERO subtítulos duplicados (conserva subtítulos nativos)
+    - Gráficos 3D moleculares fotorrealistas en zonas libres
+    - Música de fondo electro-rock motivacional con auto-ducking limpio (-18dB)
+    """
+    from . import ai_reel_enhancer
+    try:
+        src = Path(req.video_path)
+        out_name = f"{src.stem}_ENHANCED.mp4"
+        out_mp4 = settings.outputs_dir / out_name
+        res = ai_reel_enhancer.enhance_ai_reel(
+            source_video=src,
+            out_mp4=out_mp4,
+            music_gain=req.music_gain,
+        )
+        reels_dir = Path(r"C:\Users\cabel\Videos\reels-quimica")
+        if reels_dir.exists():
+            import shutil
+            shutil.copy2(out_mp4, reels_dir / out_name)
+        res["download_url"] = f"/media/outputs/{out_name}"
+        return res
+    except Exception as e:
+        log.exception("Error al potenciar reel de IA")
+        raise HTTPException(500, f"Error al potenciar reel: {e}")
+
+
+# ---------------------------------------------------------------------- Sky Cinema & Director 3D Endpoints
+class SkyGenerateVideoRequest(BaseModel):
+    prompt: str
+    model_id: str = "doubao-seedance-2-5-260628"
+    aspect_ratio: str = "9:16"
+    duration: int = 5
+    persona_id: str | None = None
+    pose_id: str | None = None
+    reference_image_url: str | None = None
+
+
+class SkyCharacterSheetRequest(BaseModel):
+    persona_id: str
+    mode: str = "image_three_view"
+    extra_prompt: str = ""
+
+
+@app.get("/api/sky/models")
+def get_sky_models():
+    """Retorna el catálogo clasificado de modelos cinematográficos y 3D."""
+    from .engines.sky_engine import sky_engine
+    return sky_engine.list_curated_models()
+
+
+@app.get("/api/sky/capabilities")
+def get_sky_capabilities():
+    """Comprueba el estado del backend de inferencia Sky."""
+    from .engines.sky_engine import sky_engine
+    try:
+        return sky_engine.get_capabilities()
+    except Exception as e:
+        raise HTTPException(500, f"Error al consultar capacidades: {e}")
+
+
+@app.post("/api/sky/generate-video")
+def generate_sky_video(req: SkyGenerateVideoRequest):
+    """Dispara una generación de video cinematográfica vinculada a Personas y Poses."""
+    from .engines.sky_engine import sky_engine
+    try:
+        return sky_engine.submit_video_generation(
+            prompt=req.prompt,
+            model_id=req.model_id,
+            aspect_ratio=req.aspect_ratio,
+            duration=req.duration,
+            persona_id=req.persona_id,
+            pose_id=req.pose_id,
+            reference_image_url=req.reference_image_url,
+        )
+    except Exception as e:
+        log.exception("Error al generar video en Sky Engine")
+        raise HTTPException(500, f"Error al generar video: {e}")
+
+
+@app.post("/api/sky/character-views")
+def generate_sky_character_views(req: SkyCharacterSheetRequest):
+    """Genera una hoja de 3 vistas o cuadrícula para consistencia del avatar."""
+    from .engines.sky_engine import sky_engine
+    from .models import Persona
+
+    persona = store().get("personas", req.persona_id, Persona)
+    if not persona:
+        raise HTTPException(404, "Persona no encontrada")
+
+    prompt = f"Character sheet: {persona.name}, {persona.gender}, {persona.appearance_prompt or persona.niche}. {req.extra_prompt}".strip()
+    ref_img = persona.face_images[0] if persona.face_images else None
+    try:
+        return sky_engine.submit_video_generation(
+            prompt=prompt,
+            model_id="flux-3",
+            aspect_ratio="16:9" if req.mode == "image_three_view" else "1:1",
+            reference_image_url=ref_img,
+        )
+    except Exception as e:
+        raise HTTPException(500, f"Error generando hoja de consistencia: {e}")
+
+
+@app.get("/api/sky/status/{job_id}")
+def get_sky_job_status(job_id: str, canvas_id: int, project_id: int, episode_id: int, download: bool = True):
+    """Consulta el estado del trabajo en la GPU y descarga el MP4 final si terminó."""
+    from .engines.sky_engine import sky_engine
+    try:
+        res = sky_engine.get_run_status(
+            canvas_id=canvas_id,
+            project_id=project_id,
+            episode_id=episode_id,
+            node_run_id=job_id,
+        )
+        if download and res.get("status") == "success" and res.get("media_url"):
+            local_path = sky_engine.download_asset(res["media_url"])
+            res["local_file_path"] = str(local_path)
+            res["download_url"] = f"/media/outputs/sky_cinema/{local_path.name}"
+        return res
+    except Exception as e:
+        raise HTTPException(500, f"Error consultando estado: {e}")
 
 
 # ---------------------------------------------------------------------- UI Estática

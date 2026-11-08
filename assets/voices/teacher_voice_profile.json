@@ -1,0 +1,17 @@
+{
+  "speaker": "Profesor_Zenit",
+  "reference_wav": "C:\\Users\\cabel\\Music\\avatars-realistas\\assets\\voices\\IMG_2916_voice_reference.wav",
+  "sample_rate": 24000,
+  "duration_s": 20.0,
+  "target_models": [
+    "XTTS-v2",
+    "CosyVoice",
+    "MuseTalk"
+  ],
+  "languages": [
+    "en",
+    "es",
+    "pt",
+    "fr"
+  ]
+}

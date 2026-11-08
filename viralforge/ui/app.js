@@ -91,6 +91,7 @@ function setupTabs() {
       if (btn.dataset.tab === "costumes") loadCostumesCatalog();
       if (btn.dataset.tab === "prompts") { loadPromptVault(); loadViralNiches(); }
       if (btn.dataset.tab === "polish") initPolishPanel();
+      if (btn.dataset.tab === "sky") initSkyCinemaPanel();
     });
   });
 
@@ -1765,6 +1766,8 @@ async function loadPolishLocalVideos() {
 function initPolishPanel() {
   loadPolishLocalVideos();
   updateCtaPreview();
+  initAutoCapCutPanel();
+  initAiReelPanel();
 
   const ctaSel = document.getElementById("polishCtaObjective");
   if (ctaSel) {
@@ -1909,4 +1912,805 @@ function initPolishPanel() {
 }
 
 
+// ---------------------------------------------------------------------- Módulo Auto-CapCut AI Studio
+let autoCapCutState = {
+  currentVideo: "",
+  diagnosis: null,
+};
 
+async function loadAutoCapCutVideos() {
+  const sel = document.getElementById("autoCapCutVideoSel");
+  if (!sel) return;
+  try {
+    const list = await api("/api/polish/local-videos");
+    if (!list || list.length === 0) {
+      sel.innerHTML = '<option value="">No hay videos en el servidor</option>';
+      return;
+    }
+    sel.innerHTML = '<option value="">-- Selecciona un video para Auto-CapCut --</option>' +
+      list.map(v => `<option value="${escapeHtml(v.path)}">${escapeHtml(v.name)} (${v.size_mb} MB${v.has_words ? ' · Con Transcripción' : ''})</option>`).join("");
+  } catch (err) {
+    sel.innerHTML = `<option value="">Error cargando videos: ${escapeHtml(err.message)}</option>`;
+  }
+}
+
+function initAutoCapCutPanel() {
+  loadAutoCapCutVideos();
+
+  const btnRefresh = document.getElementById("btnAutoCapCutRefreshVideos");
+  if (btnRefresh) {
+    btnRefresh.addEventListener("click", () => loadAutoCapCutVideos());
+  }
+
+  const btnDiagnose = document.getElementById("btnAutoCapCutDiagnose");
+  if (btnDiagnose) {
+    btnDiagnose.addEventListener("click", async () => {
+      const vidSel = document.getElementById("autoCapCutVideoSel");
+      const wmSel = document.getElementById("autoCapCutWatermarkSel");
+      const videoPath = vidSel?.value;
+      if (!videoPath) {
+        alert("Por favor selecciona un video para que la IA lo analice.");
+        return;
+      }
+
+      btnDiagnose.disabled = true;
+      btnDiagnose.textContent = "🔍 Analizando gancho, silencios y retención...";
+
+      const diagBox = document.getElementById("autoCapCutDiagBox");
+      const badge = document.getElementById("diagScoreBadge");
+      const listStrengths = document.getElementById("diagStrengthsList");
+      const listActions = document.getElementById("diagActionsList");
+
+      try {
+        const res = await api("/api/autocapcut/diagnose", {
+          method: "POST",
+          body: JSON.stringify({
+            video_path: videoPath,
+            watermark_box: wmSel?.value || "none",
+          }),
+        });
+
+        autoCapCutState.currentVideo = videoPath;
+        autoCapCutState.diagnosis = res;
+
+        if (badge) {
+          badge.textContent = `${res.viral_score}/100`;
+          if (res.viral_score >= 80) {
+            badge.style.background = "#34d399";
+            badge.style.color = "#000";
+          } else if (res.viral_score >= 60) {
+            badge.style.background = "#fbbf24";
+            badge.style.color = "#000";
+          } else {
+            badge.style.background = "#f87171";
+            badge.style.color = "#fff";
+          }
+        }
+
+        if (listStrengths) {
+          listStrengths.innerHTML = (res.strengths_to_keep || []).map(s => `<li>${escapeHtml(s)}</li>`).join("") ||
+            "<li>El video tiene un tema claro y buena presencia en pantalla.</li>";
+        }
+
+        if (listActions) {
+          listActions.innerHTML = (res.actions_to_take || []).map(a => `
+            <li style="margin-bottom:8px">
+              <strong>${escapeHtml(a.title)}</strong>
+              <div class="muted" style="font-size:12px">${escapeHtml(a.description)}</div>
+            </li>
+          `).join("");
+        }
+
+        if (diagBox) {
+          diagBox.classList.remove("hidden");
+          diagBox.scrollIntoView({ behavior: "smooth" });
+        }
+      } catch (err) {
+        alert("Error en el diagnóstico: " + err.message);
+      } finally {
+        btnDiagnose.disabled = false;
+        btnDiagnose.textContent = "🔍 Auto-Diagnosticar Video con IA";
+      }
+    });
+  }
+
+  const btnExecute = document.getElementById("btnAutoCapCutExecute");
+  if (btnExecute) {
+    btnExecute.addEventListener("click", async () => {
+      const vidSel = document.getElementById("autoCapCutVideoSel");
+      const wmSel = document.getElementById("autoCapCutWatermarkSel");
+      const ctaSel = document.getElementById("autoCapCutCtaSel");
+      const statusEl = document.getElementById("autoCapCutExecuteStatus");
+      const resultBox = document.getElementById("autoCapCutResultBox");
+      const videoPath = autoCapCutState.currentVideo || vidSel?.value;
+
+      if (!videoPath) {
+        alert("Por favor selecciona y diagnostica un video primero.");
+        return;
+      }
+
+      btnExecute.disabled = true;
+      btnExecute.textContent = "⚡ Auto-Editando Video (Cortes, Subtítulos, SFX & CapCut)...";
+      if (statusEl) statusEl.innerHTML = '<span style="color:#38bdf8">⏳ Ejecutando pipeline inteligente: aplicando jump-cuts, generando borrador nativo CapCut (.zip) y renderizando MP4 9:16...</span>';
+      if (resultBox) resultBox.classList.add("hidden");
+
+      try {
+        const res = await api("/api/autocapcut/edit", {
+          method: "POST",
+          body: JSON.stringify({
+            video_path: videoPath,
+            watermark_box: wmSel?.value || "none",
+            cta_objective_id: ctaSel?.value || "skool",
+            cta_target: "Academia Zenit",
+            apply_cuts: true,
+            generate_draft: true,
+            render_mp4: true,
+          }),
+        });
+
+        if (statusEl) statusEl.innerHTML = '<span style="color:#34d399">✅ ¡Auto-edición completada con éxito!</span>';
+
+        if (resultBox) {
+          resultBox.classList.remove("hidden");
+          const vid = document.getElementById("autoCapCutResultVid");
+          const dlMp4 = document.getElementById("btnAutoCapCutDownloadMp4");
+          const dlDraft = document.getElementById("btnAutoCapCutDownloadDraft");
+
+          if (res.download_mp4_url) {
+            const mp4Url = resolveUrl(res.download_mp4_url);
+            if (vid) vid.src = mp4Url;
+            if (dlMp4) dlMp4.href = mp4Url;
+          }
+          if (res.download_draft_url) {
+            const draftUrl = resolveUrl(res.download_draft_url);
+            if (dlDraft) dlDraft.href = draftUrl;
+          }
+
+          resultBox.scrollIntoView({ behavior: "smooth" });
+        }
+      } catch (err) {
+        if (statusEl) statusEl.innerHTML = `<span style="color:#ef4444">❌ Error al auto-editar: ${escapeHtml(err.message)}</span>`;
+      } finally {
+        btnExecute.disabled = false;
+        btnExecute.textContent = "🚀 Ejecutar Auto-Edición Inteligente (CapCut Draft + Render MP4)";
+      }
+    });
+  }
+}
+
+async function loadAiReelVideos() {
+  const sel = document.getElementById("aiReelVideoSel");
+  if (!sel) return;
+  sel.innerHTML = '<option value="">Cargando reels de IA...</option>';
+  try {
+    const list = await api("/api/ai-reels/local-videos");
+    if (!list || list.length === 0) {
+      sel.innerHTML = '<option value="">No se encontraron reels en C:\\Users\\cabel\\Videos\\reels-quimica ni en data/local_videos</option>';
+      return;
+    }
+    sel.innerHTML = list.map(v => `<option value="${escapeHtml(v.path)}">${escapeHtml(v.filename)} (${v.size_mb} MB)</option>`).join("");
+  } catch (err) {
+    sel.innerHTML = `<option value="">Error cargando reels: ${escapeHtml(err.message)}</option>`;
+  }
+}
+
+function initAiReelPanel() {
+  const btnRole1 = document.getElementById("btnRole1Select");
+  const btnRole2 = document.getElementById("btnRole2Select");
+  const role1Card = document.getElementById("role1AutoCapCutCard");
+  const role2Card = document.getElementById("role2ModuleCard");
+  const polishStep2 = document.getElementById("polishStep2Card");
+
+  if (btnRole1 && btnRole2) {
+    btnRole1.addEventListener("click", () => {
+      btnRole1.className = "btn btn-primary";
+      btnRole2.className = "btn btn-glass";
+      btnRole2.style.borderColor = "#38bdf8";
+      if (role1Card) role1Card.style.display = "block";
+      if (role2Card) role2Card.style.display = "none";
+      if (polishStep2) polishStep2.style.display = "block";
+    });
+
+    btnRole2.addEventListener("click", () => {
+      btnRole2.className = "btn btn-primary";
+      btnRole1.className = "btn btn-glass";
+      btnRole1.style.borderColor = "";
+      if (role1Card) role1Card.style.display = "none";
+      if (role2Card) role2Card.style.display = "block";
+      if (polishStep2) polishStep2.style.display = "none";
+      loadAiReelVideos();
+    });
+  }
+
+  const btnRefresh = document.getElementById("btnAiReelRefreshVideos");
+  if (btnRefresh) {
+    btnRefresh.addEventListener("click", () => loadAiReelVideos());
+  }
+
+  const btnEnhance = document.getElementById("btnAiReelEnhance");
+  if (btnEnhance) {
+    btnEnhance.addEventListener("click", async () => {
+      const vidSel = document.getElementById("aiReelVideoSel");
+      const gainSel = document.getElementById("aiReelMusicGainSel");
+      const statusEl = document.getElementById("aiReelStatus");
+      const resultBox = document.getElementById("aiReelResultBox");
+      const videoPath = vidSel?.value;
+
+      if (!videoPath) {
+        alert("Por favor selecciona un reel de IA para potenciar.");
+        return;
+      }
+
+      btnEnhance.disabled = true;
+      btnEnhance.textContent = "⚡ Potenciando Reel (Moléculas 3D + Música Motivacional)...";
+      if (statusEl) statusEl.innerHTML = '<span style="color:#38bdf8">⏳ Mezclando música motivacional electro-rock con auto-ducking e inyectando moléculas 3D en zonas libres de la pizarra...</span>';
+      if (resultBox) resultBox.classList.add("hidden");
+
+      try {
+        const res = await api("/api/ai-reels/enhance", {
+          method: "POST",
+          body: JSON.stringify({
+            video_path: videoPath,
+            music_gain: parseFloat(gainSel?.value || "0.13"),
+            subject: "quimica"
+          })
+        });
+
+        if (statusEl) statusEl.innerHTML = '<span style="color:#34d399">✅ ¡Reel potenciado con éxito! Cero colisión de voz, cero subtítulos duplicados.</span>';
+
+        if (resultBox) {
+          resultBox.classList.remove("hidden");
+          const vid = document.getElementById("aiReelResultVid");
+          const dlMp4 = document.getElementById("btnAiReelDownloadMp4");
+
+          if (res.download_url) {
+            const mp4Url = resolveUrl(res.download_url);
+            if (vid) vid.src = mp4Url;
+            if (dlMp4) {
+              dlMp4.href = mp4Url;
+              dlMp4.download = res.video_path ? res.video_path.split(/[\\/]/).pop() : "reel_potenciado.mp4";
+            }
+          }
+          resultBox.scrollIntoView({ behavior: "smooth" });
+        }
+      } catch (err) {
+        if (statusEl) statusEl.innerHTML = `<span style="color:#ef4444">❌ Error al potenciar reel: ${escapeHtml(err.message)}</span>`;
+      } finally {
+        btnEnhance.disabled = false;
+        btnEnhance.textContent = "✨ Potenciar Reel con Moléculas 3D y Música";
+      }
+    });
+  }
+}
+
+
+
+
+
+
+// ===========================================================================
+// PESTAÑA 11: SKY CINEMA & 3D DIRECTOR STUDIO
+// ===========================================================================
+
+let skyThreeInitialized = false;
+let skyScene, skyCamera, skyRenderer, skyMannequinGroup;
+let skyLimbNodes = {};
+let skyOrbitYaw = 0, skyOrbitPitch = 15, skyOrbitDistance = 4.2;
+let skyIsDragging = false, skyPrevMouseX = 0, skyPrevMouseY = 0;
+let skyActiveJobPollTimer = null;
+
+// Poses cinemáticas extraídas del Director Stage
+const SKY_POSES = {
+  stand: { l_arm: [0, 0, 10], r_arm: [0, 0, -10], l_leg: [0, 0, 0], r_leg: [0, 0, 0], torso: [0, 0, 0] },
+  walk: { l_arm: [35, 0, 8], r_arm: [-25, 0, -8], l_leg: [-25, 0, 0], r_leg: [30, 0, 0], torso: [4, 5, 0] },
+  run: { l_arm: [60, 0, 15], r_arm: [-50, 0, -15], l_leg: [-45, 0, 0], r_leg: [55, 0, 0], torso: [10, 5, 0] },
+  fight: { l_arm: [75, 20, 30], r_arm: [50, -20, -30], l_leg: [15, 10, 0], r_leg: [-15, -10, 0], torso: [8, 15, 0] },
+  lean: { l_arm: [5, 0, 15], r_arm: [-10, 0, -20], l_leg: [0, 5, 0], r_leg: [20, 0, 10], torso: [-5, 5, -5] },
+  sit: { l_arm: [0, 0, 10], r_arm: [0, 0, -10], l_leg: [90, 0, 0], r_leg: [90, 0, 0], torso: [0, 0, 0] },
+  squat: { l_arm: [40, 0, 20], r_arm: [40, 0, -20], l_leg: [80, 15, 0], r_leg: [80, -15, 0], torso: [25, 0, 0] },
+  think: { l_arm: [10, 0, 10], r_arm: [95, -10, -50], l_leg: [0, 0, 0], r_leg: [0, 0, 0], torso: [5, -5, 0] },
+  cross_arms: { l_arm: [45, 25, 30], r_arm: [45, -25, -30], l_leg: [0, 5, 0], r_leg: [0, -5, 0], torso: [0, 0, 0] },
+  phone: { l_arm: [10, 0, 10], r_arm: [110, -15, -45], l_leg: [0, 0, 0], r_leg: [0, 0, 0], torso: [4, 0, 0] },
+  wave: { l_arm: [0, 0, 10], r_arm: [120, 0, -30], l_leg: [0, 0, 0], r_leg: [0, 0, 0], torso: [0, 10, 0] },
+  bow: { l_arm: [15, 0, 5], r_arm: [15, 0, -5], l_leg: [0, 0, 0], r_leg: [0, 0, 0], torso: [40, 0, 0] },
+  t_pose: { l_arm: [0, 0, 90], r_arm: [0, 0, -90], l_leg: [0, 0, 0], r_leg: [0, 0, 0], torso: [0, 0, 0] }
+};
+
+function initSkyCinemaPanel() {
+  loadSkyPersonas();
+  loadSkyPoses();
+
+  if (!skyThreeInitialized) {
+    // Retrasar brevemente para asegurar que el canvas tenga dimensiones visibles
+    setTimeout(() => {
+      initSkyThreeDirectorStage();
+    }, 100);
+  }
+
+  const btnGen = document.getElementById("skyBtnGenerateVideo");
+  if (btnGen && !btnGen.dataset.bound) {
+    btnGen.dataset.bound = "true";
+    btnGen.addEventListener("click", handleSkyVideoGeneration);
+  }
+
+  const btnSheet = document.getElementById("skyBtnCharacterSheet");
+  if (btnSheet && !btnSheet.dataset.bound) {
+    btnSheet.dataset.bound = "true";
+    btnSheet.addEventListener("click", handleSkyCharacterSheet);
+  }
+}
+
+async function loadSkyPersonas() {
+  const sel = document.getElementById("skyPersonaSelect");
+  if (!sel) return;
+  try {
+    const res = await apiGet("/api/personas");
+    const personas = res.personas || res || [];
+    const currentVal = sel.value;
+    sel.innerHTML = '<option value="">-- Sin avatar específico (Generación Libre) --</option>';
+    personas.forEach(p => {
+      const opt = document.createElement("option");
+      opt.value = p.id;
+      opt.textContent = `${p.gender === "female" ? "👩" : "👨"} ${p.name} (${p.niche || "Lifestyle"})`;
+      sel.appendChild(opt);
+    });
+    if (currentVal) sel.value = currentVal;
+  } catch (err) {
+    console.warn("No se pudieron cargar personas en Sky Studio:", err);
+  }
+}
+
+async function loadSkyPoses() {
+  const sel = document.getElementById("skyPoseSelect");
+  if (!sel) return;
+  try {
+    const res = await fetch("/static/poses_1439.json");
+    if (!res.ok) return;
+    const poses = await res.json();
+    sel.innerHTML = '<option value="">-- Selección manual en el visor 3D --</option>';
+    // Añadir una muestra representativa categorizada
+    poses.slice(0, 150).forEach(p => {
+      const opt = document.createElement("option");
+      opt.value = p.id;
+      opt.textContent = `Pose ${p.id}: ${p.name_es || p.name_orig} [${p.angle_es || p.angle || "Cámara"}]`;
+      sel.appendChild(opt);
+    });
+  } catch (err) {
+    console.warn("No se pudieron cargar poses en Sky Studio:", err);
+  }
+}
+
+function injectSkyCamera(snippet) {
+  const ta = document.getElementById("skyPromptInput");
+  if (!ta) return;
+  const current = ta.value.trim();
+  if (current) {
+    ta.value = `${current}, ${snippet}`;
+  } else {
+    ta.value = snippet;
+  }
+  ta.focus();
+}
+
+// ---------------------------------------------------------------------------
+// VIEWPORT 3D EN THREE.JS (DIRECTOR STAGE)
+// ---------------------------------------------------------------------------
+
+function initSkyThreeDirectorStage() {
+  const canvas = document.getElementById("skyThreeCanvas");
+  if (!canvas || typeof THREE === "undefined") return;
+
+  const width = canvas.parentElement.clientWidth || 400;
+  const height = canvas.parentElement.clientHeight || 320;
+
+  skyScene = new THREE.Scene();
+  skyScene.background = new THREE.Color(0x07080b);
+
+  skyCamera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
+  updateSkyCameraPosition();
+
+  skyRenderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+  skyRenderer.setSize(width, height);
+  skyRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // Luces de estudio cinematográfico
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
+  skyScene.add(ambientLight);
+
+  const keyLight = new THREE.DirectionalLight(0xff4d88, 1.2);
+  keyLight.position.set(3, 5, 4);
+  skyScene.add(keyLight);
+
+  const fillLight = new THREE.DirectionalLight(0x40a9ff, 0.8);
+  fillLight.position.set(-4, 3, -3);
+  skyScene.add(fillLight);
+
+  // Cuadrícula de suelo de estudio
+  const gridHelper = new THREE.GridHelper(8, 16, 0x334155, 0x1e293b);
+  gridHelper.position.y = -1.2;
+  skyScene.add(gridHelper);
+
+  // Construir maniquí articulado estilizado
+  buildSkyMannequin("female_low_poly");
+
+  // Eventos de interacción con el ratón
+  canvas.addEventListener("mousedown", (e) => {
+    skyIsDragging = true;
+    skyPrevMouseX = e.clientX;
+    skyPrevMouseY = e.clientY;
+  });
+
+  window.addEventListener("mouseup", () => {
+    skyIsDragging = false;
+  });
+
+  window.addEventListener("mousemove", (e) => {
+    if (!skyIsDragging) return;
+    const deltaX = e.clientX - skyPrevMouseX;
+    const deltaY = e.clientY - skyPrevMouseY;
+    skyPrevMouseX = e.clientX;
+    skyPrevMouseY = e.clientY;
+
+    skyOrbitYaw -= deltaX * 0.7;
+    skyOrbitPitch = Math.max(-10, Math.min(85, skyOrbitPitch + deltaY * 0.5));
+    updateSkyCameraPosition();
+  });
+
+  canvas.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    skyOrbitDistance = Math.max(1.8, Math.min(8.0, skyOrbitDistance + e.deltaY * 0.005));
+    updateSkyCameraPosition();
+  });
+
+  window.addEventListener("resize", () => {
+    if (!skyRenderer || !canvas.parentElement) return;
+    const w = canvas.parentElement.clientWidth;
+    const h = canvas.parentElement.clientHeight || 320;
+    skyCamera.aspect = w / h;
+    skyCamera.updateProjectionMatrix();
+    skyRenderer.setSize(w, h);
+  });
+
+  function animate() {
+    requestAnimationFrame(animate);
+    if (skyRenderer && skyScene && skyCamera) {
+      skyRenderer.render(skyScene, skyCamera);
+    }
+  }
+  animate();
+
+  skyThreeInitialized = true;
+}
+
+function updateSkyCameraPosition() {
+  if (!skyCamera) return;
+  const radYaw = (skyOrbitYaw * Math.PI) / 180;
+  const radPitch = (skyOrbitPitch * Math.PI) / 180;
+
+  const x = skyOrbitDistance * Math.cos(radPitch) * Math.sin(radYaw);
+  const y = skyOrbitDistance * Math.sin(radPitch);
+  const z = skyOrbitDistance * Math.cos(radPitch) * Math.cos(radYaw);
+
+  skyCamera.position.set(x, y, z);
+  skyCamera.lookAt(0, 0, 0);
+
+  const tag = document.getElementById("skyCameraCoordsTag");
+  if (tag) {
+    tag.textContent = `Cámara: FOV ${skyCamera.fov}° | Órbita ${Math.round(skyOrbitYaw)}° | Pitch ${Math.round(skyOrbitPitch)}°`;
+  }
+}
+
+function buildSkyMannequin(variant) {
+  if (skyMannequinGroup) {
+    skyScene.remove(skyMannequinGroup);
+  }
+
+  skyMannequinGroup = new THREE.Group();
+  skyLimbNodes = {};
+
+  const color = variant === "female_low_poly" ? 0xff8fb5 : 0x7fb2ff;
+  const mat = new THREE.MeshStandardMaterial({
+    color: color,
+    roughness: 0.35,
+    metalness: 0.15
+  });
+  const jointMat = new THREE.MeshStandardMaterial({
+    color: 0x38bdf8,
+    roughness: 0.2
+  });
+
+  // Torso / Columna
+  const torsoGeo = new THREE.CylinderGeometry(0.24, 0.18, 0.65, 8);
+  const torsoMesh = new THREE.Mesh(torsoGeo, mat);
+  torsoMesh.position.y = 0.2;
+  skyMannequinGroup.add(torsoMesh);
+  skyLimbNodes.torso = torsoMesh;
+
+  // Cabeza
+  const headGeo = new THREE.SphereGeometry(0.18, 12, 10);
+  const headMesh = new THREE.Mesh(headGeo, mat);
+  headMesh.position.y = 0.72;
+  skyMannequinGroup.add(headMesh);
+
+  // Visor / Ojos
+  const visorGeo = new THREE.BoxGeometry(0.22, 0.05, 0.14);
+  const visorMat = new THREE.MeshBasicMaterial({ color: 0x00ffcc });
+  const visorMesh = new THREE.Mesh(visorGeo, visorMat);
+  visorMesh.position.set(0, 0.73, 0.11);
+  skyMannequinGroup.add(visorMesh);
+
+  // Caderas
+  const hipGeo = new THREE.SphereGeometry(0.20, 8, 8);
+  const hipMesh = new THREE.Mesh(hipGeo, jointMat);
+  hipMesh.position.y = -0.18;
+  skyMannequinGroup.add(hipMesh);
+
+  // Brazo Izquierdo
+  const lArmGroup = new THREE.Group();
+  lArmGroup.position.set(0.32, 0.45, 0);
+  const lArmGeo = new THREE.CylinderGeometry(0.06, 0.05, 0.5, 6);
+  const lArmMesh = new THREE.Mesh(lArmGeo, mat);
+  lArmMesh.position.y = -0.25;
+  lArmGroup.add(lArmMesh);
+  skyMannequinGroup.add(lArmGroup);
+  skyLimbNodes.l_arm = lArmGroup;
+
+  // Brazo Derecho
+  const rArmGroup = new THREE.Group();
+  rArmGroup.position.set(-0.32, 0.45, 0);
+  const rArmGeo = new THREE.CylinderGeometry(0.06, 0.05, 0.5, 6);
+  const rArmMesh = new THREE.Mesh(rArmGeo, mat);
+  rArmMesh.position.y = -0.25;
+  rArmGroup.add(rArmMesh);
+  skyMannequinGroup.add(rArmGroup);
+  skyLimbNodes.r_arm = rArmGroup;
+
+  // Pierna Izquierda
+  const lLegGroup = new THREE.Group();
+  lLegGroup.position.set(0.14, -0.22, 0);
+  const lLegGeo = new THREE.CylinderGeometry(0.08, 0.06, 0.7, 6);
+  const lLegMesh = new THREE.Mesh(lLegGeo, mat);
+  lLegMesh.position.y = -0.35;
+  lLegGroup.add(lLegMesh);
+  skyMannequinGroup.add(lLegGroup);
+  skyLimbNodes.l_leg = lLegGroup;
+
+  // Pierna Derecha
+  const rLegGroup = new THREE.Group();
+  rLegGroup.position.set(-0.14, -0.22, 0);
+  const rLegGeo = new THREE.CylinderGeometry(0.08, 0.06, 0.7, 6);
+  const rLegMesh = new THREE.Mesh(rLegGeo, mat);
+  rLegMesh.position.y = -0.35;
+  rLegGroup.add(rLegMesh);
+  skyMannequinGroup.add(rLegGroup);
+  skyLimbNodes.r_leg = rLegGroup;
+
+  skyScene.add(skyMannequinGroup);
+}
+
+function updateSkyMannequinPose(poseKey) {
+  const pose = SKY_POSES[poseKey] || SKY_POSES.stand;
+  const toRad = Math.PI / 180;
+
+  if (skyLimbNodes.l_arm) {
+    skyLimbNodes.l_arm.rotation.set(
+      pose.l_arm[0] * toRad,
+      pose.l_arm[1] * toRad,
+      pose.l_arm[2] * toRad
+    );
+  }
+  if (skyLimbNodes.r_arm) {
+    skyLimbNodes.r_arm.rotation.set(
+      pose.r_arm[0] * toRad,
+      pose.r_arm[1] * toRad,
+      pose.r_arm[2] * toRad
+    );
+  }
+  if (skyLimbNodes.l_leg) {
+    skyLimbNodes.l_leg.rotation.set(
+      pose.l_leg[0] * toRad,
+      pose.l_leg[1] * toRad,
+      pose.l_leg[2] * toRad
+    );
+  }
+  if (skyLimbNodes.r_leg) {
+    skyLimbNodes.r_leg.rotation.set(
+      pose.r_leg[0] * toRad,
+      pose.r_leg[1] * toRad,
+      pose.r_leg[2] * toRad
+    );
+  }
+  if (skyLimbNodes.torso) {
+    skyLimbNodes.torso.rotation.set(
+      pose.torso[0] * toRad,
+      pose.torso[1] * toRad,
+      pose.torso[2] * toRad
+    );
+  }
+}
+
+function updateSkyBodyVariant(variantKey) {
+  buildSkyMannequin(variantKey);
+  const currentPose = document.getElementById("skyMannequinPoseSelect")?.value || "stand";
+  updateSkyMannequinPose(currentPose);
+}
+
+// ---------------------------------------------------------------------------
+// DESPACHO Y MONITOREO DE GENERACIÓN DE VIDEO
+// ---------------------------------------------------------------------------
+
+async function handleSkyVideoGeneration() {
+  const promptInput = document.getElementById("skyPromptInput");
+  const modelSelect = document.getElementById("skyModelSelect");
+  const ratioSelect = document.getElementById("skyAspectRatioSelect");
+  const durSelect = document.getElementById("skyDurationSelect");
+  const personaSelect = document.getElementById("skyPersonaSelect");
+  const poseSelect = document.getElementById("skyPoseSelect");
+
+  const prompt = promptInput?.value.trim();
+  if (!prompt) {
+    alert("Por favor escribe un prompt cinematográfico antes de renderizar.");
+    promptInput?.focus();
+    return;
+  }
+
+  const btn = document.getElementById("skyBtnGenerateVideo");
+  const progressBox = document.getElementById("skyProgressBox");
+  const idleBox = document.getElementById("skyIdleStateBox");
+  const playerWrap = document.getElementById("skyVideoPlayerWrap");
+  const statusLabel = document.getElementById("skyJobStatusLabel");
+  const percentLabel = document.getElementById("skyJobPercentLabel");
+  const progressBar = document.getElementById("skyProgressBar");
+
+  try {
+    btn.disabled = true;
+    btn.textContent = "⏳ Conectando con API Gateway Sky...";
+    if (idleBox) idleBox.classList.add("hidden");
+    if (playerWrap) playerWrap.classList.add("hidden");
+    if (progressBox) progressBox.classList.remove("hidden");
+
+    if (statusLabel) statusLabel.innerHTML = '<span class="pulse-dot"></span> Despachando tarea a la GPU...';
+    if (percentLabel) percentLabel.textContent = "5%";
+    if (progressBar) progressBar.style.width = "5%";
+
+    const payload = {
+      prompt: prompt,
+      model_id: modelSelect?.value || "doubao-seedance-2-5-260628",
+      aspect_ratio: ratioSelect?.value || "9:16",
+      duration: parseInt(durSelect?.value || "5"),
+      persona_id: personaSelect?.value || null,
+      pose_id: poseSelect?.value || null
+    };
+
+    const res = await apiPost("/api/sky/generate-video", payload);
+    const jobId = res.job_id;
+    const canvasId = res.canvas_id;
+    const projectId = res.project_id;
+    const episodeId = res.episode_id;
+
+    if (statusLabel) statusLabel.innerHTML = `<span class="pulse-dot"></span> Inferencia iniciada (Job: ${jobId})`;
+
+    // Iniciar sondeo
+    startSkyJobPolling(jobId, canvasId, projectId, episodeId);
+
+  } catch (err) {
+    alert("Error al despachar trabajo a Sky Engine: " + err.message);
+    btn.disabled = false;
+    btn.textContent = "🚀 Renderizar Escena Cinematográfica con Sky";
+    if (progressBox) progressBox.classList.add("hidden");
+    if (idleBox) idleBox.classList.remove("hidden");
+  }
+}
+
+function startSkyJobPolling(jobId, canvasId, projectId, episodeId) {
+  if (skyActiveJobPollTimer) clearInterval(skyActiveJobPollTimer);
+
+  const statusLabel = document.getElementById("skyJobStatusLabel");
+  const percentLabel = document.getElementById("skyJobPercentLabel");
+  const progressBar = document.getElementById("skyProgressBar");
+  const progressBox = document.getElementById("skyProgressBox");
+  const playerWrap = document.getElementById("skyVideoPlayerWrap");
+  const videoEl = document.getElementById("skyResultVideo");
+  const dlBtn = document.getElementById("skyDownloadBtn");
+  const btn = document.getElementById("skyBtnGenerateVideo");
+
+  let simulatedProgress = 15;
+
+  skyActiveJobPollTimer = setInterval(async () => {
+    try {
+      const url = `/api/sky/status/${jobId}?canvas_id=${canvasId}&project_id=${projectId}&episode_id=${episodeId}&download=true`;
+      const res = await apiGet(url);
+
+      const status = res.status;
+      const serverProgress = res.progress || 0;
+
+      if (serverProgress > simulatedProgress) {
+        simulatedProgress = serverProgress;
+      } else if (simulatedProgress < 90) {
+        simulatedProgress += 4;
+      }
+
+      if (progressBar) progressBar.style.width = `${simulatedProgress}%`;
+      if (percentLabel) percentLabel.textContent = `${simulatedProgress}%`;
+
+      if (status === "queued") {
+        if (statusLabel) statusLabel.innerHTML = '<span class="pulse-dot"></span> En cola GPU en clúster ByteDance/Kling...';
+      } else if (status === "running") {
+        if (statusLabel) statusLabel.innerHTML = '<span class="pulse-dot" style="background:#38bdf8;"></span> Generando frames y dinámica de movimiento...';
+      } else if (status === "success") {
+        clearInterval(skyActiveJobPollTimer);
+        skyActiveJobPollTimer = null;
+
+        if (progressBar) progressBar.style.width = "100%";
+        if (percentLabel) percentLabel.textContent = "100%";
+        if (statusLabel) statusLabel.innerHTML = '<span style="color:#00ff88;">✅ ¡Video renderizado exitosamente!</span>';
+
+        const finalUrl = res.download_url || res.media_url;
+        if (videoEl && finalUrl) {
+          videoEl.src = finalUrl;
+          videoEl.load();
+        }
+        if (dlBtn && finalUrl) {
+          dlBtn.href = finalUrl;
+        }
+
+        setTimeout(() => {
+          if (progressBox) progressBox.classList.add("hidden");
+          if (playerWrap) playerWrap.classList.remove("hidden");
+          btn.disabled = false;
+          btn.textContent = "🚀 Renderizar Otra Escena";
+        }, 800);
+
+      } else if (status === "failed" || status === "canceled") {
+        clearInterval(skyActiveJobPollTimer);
+        skyActiveJobPollTimer = null;
+        alert(`La generación terminó con estado: ${status}. Mensaje: ${res.error_msg || "Sin detalles"}`);
+        btn.disabled = false;
+        btn.textContent = "🚀 Reintentar Renderizado";
+        if (progressBox) progressBox.classList.add("hidden");
+      }
+    } catch (err) {
+      console.warn("Error en sondeo de estado Sky:", err);
+    }
+  }, 3000);
+}
+
+async function handleSkyCharacterSheet() {
+  const personaSelect = document.getElementById("skyPersonaSelect");
+  const personaId = personaSelect?.value;
+  if (!personaId) {
+    alert("Por favor selecciona un AI Influencer en el desplegable para generar su hoja de 3 vistas.");
+    personaSelect?.focus();
+    return;
+  }
+
+  const btn = document.getElementById("skyBtnCharacterSheet");
+  try {
+    btn.disabled = true;
+    btn.textContent = "⏳ Generando Hoja de 3 Vistas...";
+    const res = await apiPost("/api/sky/character-views", {
+      persona_id: personaId,
+      mode: "image_three_view"
+    });
+    alert(`Hoja de 3 vistas despachada con éxito en nodo ${res.node_key}. Trabajo GPU: ${res.job_id}`);
+  } catch (err) {
+    alert("Error al generar hoja de 3 vistas: " + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "👤 Generar Hoja de 3 Vistas del Avatar (Three-View Sheet)";
+  }
+}
+
+function sendSkyVideoToAutoCapCut() {
+  const videoEl = document.getElementById("skyResultVideo");
+  if (!videoEl || !videoEl.src) {
+    alert("Aún no hay ningún video generado.");
+    return;
+  }
+  // Cambiar a la pestaña Auto-CapCut (10)
+  const tabPolishBtn = document.querySelector('[data-tab="polish"]');
+  if (tabPolishBtn) {
+    tabPolishBtn.click();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}

@@ -1,0 +1,224 @@
+# PROMPTS PARA GOOGLE FLOW — 100 PROMPTS EN 5 BLOQUES DE 20
+
+> **FORMATO GOOGLE FLOW:** Cada prompt está separado por un espacio vacío (salto de línea doble).
+> Selecciona y copia exactamente el bloque que necesites y pégalo directo en Flow.
+
+## BLOQUE 1: EL DOLOR, BLOQUEO Y MADRUGADAS (PROMPTS 01 AL 20)
+
+```text
+Cinematic 35mm film still, vertical 9:16 portrait. An exhausted 18-year-old Latin American male student holding his head tightly in both hands in deep despair and mental exhaustion at a cluttered study desk at 3:00 AM. Piles of thick prep-academy calculus and science books, crumpled draft papers, dramatic low-key lighting from a single warm desk lamp casting long dark shadows, volumetric dust, dark eye circles, raw emotional vulnerability, photorealistic, 8k --ar 9:16 --style raw
+
+Cinematic vertical 9:16 portrait. A tearful 18-year-old female student staring in hopeless defeat at a crumpled physics formula sheet in her dark bedroom. Rain hitting the window glass outside, cool desaturated blue tones contrasted with a dim table lamp, messy hair, authentic exhaustion, Kodak Portra 800 tone, hyperrealistic film still --ar 9:16
+
+Close-up cinematic shot, vertical 9:16. A frustrated pre-university student staring blankly at an impossible chemistry stoichiometry problem marked with red ink check failures. Biting lip in anxiety, rubbing tired red eyes, shadows cast by desk lamp, depth of field, David Fincher lighting style, photorealistic --ar 9:16
+
+Cinematic vertical 9:16. An overwhelmed student sitting on the floor surrounded by tall unstable stacks of thick Lumbreras admission guides and mock exams. Head tilted back against the bedroom wall in total surrender, dark room, single harsh shaft of light, deep sense of inadequacy and isolation, 8k resolution --ar 9:16
+
+Extreme close-up, vertical 9:16. Anxious student biting their fingernail down to the quick while staring at complex algebraic equation drafts. Desk scattered with eraser shavings, broken graphite pencil leads, and highlighters. Heavy emotional tension, moody atmospheric lighting, cinematic realism --ar 9:16
+
+Cinematic vertical 9:16 film still. A male student resting his forehead directly flat onto an open math notebook in defeat. An empty cold coffee mug beside him, digital alarm clock glowing 04:15 AM in red numbers in the blurred background. Moody chiaroscuro lighting, gritty emotional truth, 8k --ar 9:16
+
+Vertical 9:16 portrait. A young female student burying her face in an open pre-university chemistry workbook, shoulders slumped in crying posture. Desk lamp casting warm rim light on her messy ponytail, room completely dark around her, authentic vulnerability, cinematic documentary aesthetic --ar 9:16
+
+Cinematic vertical 9:16 shot. Silhouette of a teenage student sitting on the bedroom floor in pitch blackness, knees pulled to chest, illuminated only by the faint light of a smartphone showing a countdown timer to the admission exam. Somber atmosphere, deep psychological weight --ar 9:16
+
+Moody vertical 9:16 portrait. Young student in an oversized dark hoodie staring helplessly at a laptop screen with confusing 3D molecular structures. Blue screen reflection in his anxious wide eyes, dark bedroom background, cinematic isolation, high contrast, photorealistic --ar 9:16
+
+Dynamic close-up, vertical 9:16. Shaking hands aggressively rubbing an eraser over a grid notebook until the paper almost tears from frustration. Desk covered in white eraser residue, harsh lateral spotlight, high tension, cinematic grit --ar 9:16
+
+Cinematic vertical 9:16 portrait. An 18-year-old student looking out the dark window at night, glass reflecting his weary face and tired eyes while outside the city is asleep. An open admission textbook sits abandoned on the window sill. Melancholic atmosphere, cinematic color grading --ar 9:16
+
+Authentic vertical 9:16 film photograph. A student sitting with an ice pack held against his forehead, suffering a painful tension headache after studying 10 straight hours. Stacks of organic chemistry flashcards spread around, soft dim lighting, raw reality of pre-university life --ar 9:16
+
+Close-up shot, vertical 9:16. Student's fist crushing a failed admission practice test paper into a tight wrinkled ball on top of a wooden study table. Harsh desk lamp overhead, dramatic shadows, palpable anger and frustration, cinematic depth of field --ar 9:16
+
+Vertical 9:16 cinematic portrait. Young man leaning back in his desk chair with closed eyes, pinching the bridge of his nose in severe mental exhaustion. Open notebooks filled with crossed-out arithmetic formulas, low contrast dark moody tones, photorealistic --ar 9:16
+
+Cinematic vertical 9:16. Female student with her cheek resting on her desk, looking sideways with guilt and sorrow at a small framed photo of her smiling parents. Sense of family pressure and fear of failing them, warm candle-like desk light, emotional depth --ar 9:16
+
+Claustrophobic vertical 9:16 shot. A student trapped in a tiny study nook with walls completely covered from ceiling to floor with hundreds of chaotic sticky notes containing formulas and diagrams. The student looks trapped in his own study prison, cinematic realism --ar 9:16
+
+Overhead flat-lay shot, vertical 9:16. A defeated student face-down on a desk covered in colored pens, open geometry problem sets, coffee cup rings, and scattered scrap paper. Symmetrical composition, dramatic dark vignette edges, cinematic art direction --ar 9:16
+
+Cinematic vertical 9:16 film still. A student in a dimly lit bathroom splashing cold water on his exhausted face at 3:30 AM to stay awake. Water droplets on his face, bloodshot eyes looking in mirror, fluorescent flickering light, psychological drama --ar 9:16
+
+Vertical 9:16 portrait. Desperate Latin student pulling at his hair with both hands, mouth slightly open in an inaudible scream of frustration over an unsolved trigonometry equation. Hard rim light, dark room, raw authentic acting, 8k --ar 9:16
+
+Somber vertical 9:16 photograph. A lonely student sitting on a wooden chair in the corner of a dimly lit room, holding an open admission exam brochure on his lap with a look of complete loss and uncertainty. Moody shadow play, 35mm film grain --ar 9:16
+```
+
+## BLOQUE 2: EL PÁNICO DEL EXAMEN Y EL RELOJ (PROMPTS 21 AL 40)
+
+```text
+Extreme close-up cinematic shot, vertical 9:16. Trembling student fingers holding a 2B graphite pencil hovering anxiously over a multiple-choice optical answer sheet with bubbles A B C D E. Hesitation, tension, cold desaturated color grade, hyper-detailed skin texture and pencil tip, 8k --ar 9:16
+
+Cinematic vertical 9:16. A young student in a crowded university admission test hall staring wide-eyed in absolute panic at the test booklet. In the blurred background, a large institutional wall clock shows only 5 minutes remaining. Cold fluorescent lighting, intense dread --ar 9:16
+
+Macro cinematic shot, vertical 9:16. A single bead of sweat rolling down a student's temple and dripping onto the printed page of an admission test paper with complex math fractions. Blurred invigilator in background, high contrast thriller aesthetic, photorealistic --ar 9:16
+
+Vertical 9:16 portrait. Female student in an official exam classroom nervously biting the eraser of her wooden pencil, eyes darting in panic between a difficult geometry problem and the timer projected on the wall. Sweaty forehead, shallow depth of field, cinematic --ar 9:16
+
+Dramatic vertical 9:16 portrait. Male student during the official entrance exam, biting his lower lip until white, furrowed brow, looking up at the classroom wall clock in sheer terror as time expires. Authentic Latin American youth, realistic tension, 8k --ar 9:16
+
+Cinematic vertical 9:16 focus pull. Sharp focus on an old school clock hand ticking mercilessly to 11:58 AM. In the foreground, out of focus, a student clutches his head in despair over his unfinished test sheet. High tension thriller cinematography --ar 9:16
+
+Vertical 9:16 film still. Realistic young male student sitting at a wooden desk in a university admission test auditorium, experiencing intense panic and anxiety as the clock ticks. Exactly TWO natural arms, left hand flat on desk next to exam paper, right hand gripping forehead in distress. Natural human anatomy, exactly two arms, realistic hands and fingers, no extra limbs, no phantom hands. Soft-focus background students writing under cold fluorescent lights, muted green walls, shallow depth of field, 8k photorealistic. David Fincher tone --ar 9:16
+
+Extreme close-up, vertical 9:16. Sweaty, trembling thumb and index finger struggling to fill in a bubble with a 2B pencil, accidentally smudging graphite outside the circle as hand shakes. Intense psychological pressure, hyper-detailed, 8k --ar 9:16
+
+Cinematic vertical 9:16. Nervous student hastily wiping forehead sweat with his jacket sleeve while staring at an incomprehensible physics mechanics question. Harsh top-down fluorescent lighting casting deep eye hollows, authentic pre-exam nightmare --ar 9:16
+
+Wide perspective shot, vertical 9:16. Looking down a massive university auditorium filled with hundreds of admission applicants bent over identical wooden desks under cold industrial lights. Overwhelming sense of competition and suffocating pressure --ar 9:16
+
+Psychological cinematic vertical 9:16. Student staring at his exam paper experiencing a mental blackout with letters and math equations visibly blurring and spinning out of focus. Visual representation of cognitive freezing under panic, surreal yet grounded, 8k --ar 9:16
+
+Close-up vertical 9:16. A student's nervous hand rhythmically tapping a mechanical pencil on the desk next to their laminated applicant identification card. Blurred invigilator walking menacingly in the background, suspense atmosphere --ar 9:16
+
+Vertical 9:16 portrait. A student in a mock exam auditorium staring in utter shock and grief at his returned test paper covered in red score deductions, slumping in his chair as his peers celebrate nearby. Gut-wrenching disappointment, realism --ar 9:16
+
+Extreme macro shot of a student's dilated pupils reflecting multiple-choice bubbles on the exam page. Extreme hesitation, palpable terror of making the wrong choice and losing marks, cinematic lighting --ar 9:16
+
+Cinematic vertical 9:16. The strict exam invigilator standing at the front of the hall with arm raised, holding a bell shouting that time is up. Foreground student frozen in horror with half the bubbles left completely blank. Dramatic tension --ar 9:16
+
+Vertical 9:16 documentary shot. A student walking out of the iron gates of the national university with eyes downcast and shoulders hunched, surrounded by crowds of confident laughing peers. The devastating feeling of having bombed the test, 35mm film --ar 9:16
+
+Emotional vertical 9:16 shot. A student sitting alone on the curb outside the massive university testing campus, head buried between his knees, with his crumpled admission application brochure dropped on the dirty asphalt beside him. Raw heartbreak --ar 9:16
+
+Close-up vertical 9:16. Admission exam test page with a huge jagged question mark drawn aggressively in pencil beside an impossible chemical equilibrium equation. Desk texture, graphite sheen, high contrast cinematic still --ar 9:16
+
+Vertical 9:16 portrait. A student practicing at home with a digital timer beeping loudly, showing zero seconds remaining, while 15 arithmetic questions remain unanswered. Panic expression, grabbing his hair, warm lamp light, realistic drama --ar 9:16
+
+Low angle vertical 9:16 shot. Looking up from behind a small solitary student standing before the monumental, imposing concrete entrance gates of the university on exam morning. Looming monolithic architecture, feeling small and intimidated --ar 9:16
+```
+
+## BLOQUE 3: LA CHISPA, EPIFANÍA Y EL MÉTODO (PROMPTS 41 AL 60)
+
+```text
+Cinematic magical realism, vertical 9:16. An antique dark green chalkboard in a dimly lit classroom suddenly igniting with glowing golden and electric-cyan chalk equations. Luminous chalk dust floating in beams of light, breakthrough atmosphere, 8k --ar 9:16
+
+Vertical 9:16 portrait. A young student's eyes widening in pure amazement and sudden clarity as a glowing 3D holographic molecular formula floats gracefully right above his open notebook. High-tech educational fantasy, cyan glow on face, photorealistic --ar 9:16
+
+Warm cinematic shot, vertical 9:16. A charismatic, wise mentor teacher pointing a piece of chalk directly at a key formula on the green chalkboard, while the student looks up from his desk with an expression of sudden, eye-opening epiphany. Golden rim light --ar 9:16
+
+Overhead top-down vertical 9:16. A math notebook where solving steps magically light up with glowing neon-cyan ink across the grid paper, illuminating the amazed face of the student leaning over it. The moment everything finally makes sense --ar 9:16
+
+Extreme close-up of a student's eye, vertical 9:16. The pupil clearly reflects a glowing golden mathematical fraction and a green checkmark. Pure realization, spark of genius, high contrast, cinematic lighting, 8k --ar 9:16
+
+Conceptual vertical 9:16. Student cupping his hands around a floating glowing orb of bright golden light that represents the secret mathematical shortcut. Floating chalkboard chalk dust in the dark background, dramatic sci-fi educational style --ar 9:16
+
+Cinematic vertical 9:16. Teacher and student standing side-by-side at the blackboard. The teacher draws a bright golden glowing circle around a simple 2-step formula. The student is smiling with sheer relief and awe at how easy it was, warm grading --ar 9:16
+
+Cinematic vertical 9:16. A thick pre-university chemistry textbook bursting open on a wooden desk, emitting radiant volumetric rays of golden light into the dark room. Floating glowing chemical bond vectors swirling into the air, magical enlightenment --ar 9:16
+
+Dynamic vertical 9:16 portrait. Student snapping his fingers with an ecstatic expression of pure breakthrough. The gloomy room suddenly gets flooded with warm, radiant golden morning sunlight. The exact psychological shift from confusion to mastery --ar 9:16
+
+Metaphorical cinematic shot, vertical 9:16. Complex glowing geometric 3D puzzle pieces smoothly locking together in mid-air above the student's notebook to form one simple, elegant formula. Clean tech aesthetic, dark moody background --ar 9:16
+
+Vertical 9:16 portrait. Confident student holding a piece of chalk and writing smoothly on the blackboard with a proud smile, the white chalk leaving a faint trail of golden light behind each equation. Posture of burgeoning mastery, cinematic depth --ar 9:16
+
+Aesthetic vertical 9:16 shot. A dark study scene where floating cyan holographic Cartesian coordinate planes and function curves effortlessly snap into perfect alignment before the student's eyes. Futuristic edtech visual, photorealistic --ar 9:16
+
+Split composition, vertical 9:16. Left half shows student in dark shadows struggling with 10 lines of algebra, while right half shows same student bathed in warm golden light applying a 2-second shortcut with a triumphant smile. Visual story of transformation --ar 9:16
+
+Macro shot, vertical 9:16. A 2B pencil smoothly gliding across clean grid paper writing an elegant mathematical deduction with a clean final answer. The graphite line glints with a subtle golden sheen, pure aesthetic satisfaction of solving a problem --ar 9:16
+
+Cinematic vertical 9:16 tracking shot. Student in a quiet library looking up from a book as the surrounding book stacks gently illuminate with warm ambient glows. A mystical sensation of unlocking the secrets of the admission exam, 8k --ar 9:16
+
+Vertical 9:16 portrait. Student wearing modern headphones looking at a glowing tablet screen where an animated teacher explains a trick. The student's face lights up with a wide, genuine smile of breakthrough comprehension, modern prep aesthetic --ar 9:16
+
+Atmospheric vertical 9:16. A glowing periodic table on a dark classroom wall casting emerald and amber light onto a student's fascinated face, watching chemical reaction formulas finally make complete sense. Christopher Nolan color palette --ar 9:16
+
+Futuristic vertical 9:16 still. Transparent holographic HUD diagrams floating over a student's desk showing step-by-step simplification of algebraic roots into single integers. Clean, high-tech, deeply inspiring educational visual --ar 9:16
+
+Dynamic vertical 9:16. Student drawing a confident, bold double-underline under a final answer on a green chalkboard. A burst of chalk dust catches a dramatic spotlight beam, freezing the triumphant moment in time, cinematic sports-like intensity --ar 9:16
+
+Cinematic vertical 9:16. The teacher's hand placing a sleek golden fountain pen onto the student's open workbook, symbolizing the passing of secret knowledge and academic power. Dramatic side lighting, warm tones, high prestige feel --ar 9:16
+```
+
+## BLOQUE 4: LA PAZ MENTAL Y LA MAESTRÍA (PROMPTS 61 AL 80)
+
+```text
+Cinematic vertical 9:16 portrait. An 18-year-old Latin American student leaning comfortably back in his wooden study chair, hands clasped behind his head with a serene, deeply confident smile. Warm morning sunlight streams across the desk, total peace of mind --ar 9:16
+
+Aesthetic vertical 9:16 still. A clean, organized study desk with a steaming ceramic mug of coffee and a neatly solved exam guide with all answers checked in green ink. Peaceful early morning ambiance, soft breeze moving sheer curtains, tranquil mastery --ar 9:16
+
+Vertical 9:16 portrait. A young female student calmly closing a thick calculus book with a soft thud, exhaling with deep relief and unshakeable self-assurance. Natural golden hour lighting, organic beauty, complete freedom from pre-exam anxiety --ar 9:16
+
+Zen-like vertical 9:16 shot. A student sitting at his desk at dawn, eyes closed in calm meditation, completely centered and serene, radiating quiet confidence before the big exam day. Soft pastel morning sky through window, serene atmosphere --ar 9:16
+
+Cinematic vertical 9:16. A confident student walking calmly with backpack through the morning mist toward the university entrance gate, relaxed while other applicants around him look anxious. Cinematic slow-motion feel, peaceful mastery --ar 9:16
+
+Close-up vertical 9:16 portrait. Smiling student effortlessly solving a notoriously difficult admission problem in just three neat lines of pencil on grid paper. Posture relaxed, breathing steady, absolute intellectual control, 8k --ar 9:16
+
+Warm vertical 9:16 portrait. Student sitting on the edge of his study desk, gazing out at the golden sunrise over the city skyline, holding a cup of tea with a serene smile, knowing he is 100% prepared to win his admission spot --ar 9:16
+
+High-angle vertical 9:16 photograph. A student's pristine study notebook with impeccable, organized handwriting, clean colored boxes around answers, a small green succulent plant on the wooden desk, harmonious and stress-free study aesthetic --ar 9:16
+
+Vertical 9:16 film still. A young male student giving a confident thumbs-up to his own reflection in the bathroom mirror on exam morning, wearing his favorite lucky hoodie. Relaxed posture, quiet determination, crisp morning light --ar 9:16
+
+Candid vertical 9:16 shot. A female student laughing softly in disbelief and relief as she finishes a 3-hour practice admission test with 30 minutes left on the clock. Peaceful, joyful, total mastery of pacing and time --ar 9:16
+
+Cinematic vertical 9:16. A student packing his transparent exam pouch the night before the test with calm, deliberate precision with 2B pencils, eraser, ID card, wrist watch. Zero panic, only cool preparation, soft bedroom lighting --ar 9:16
+
+Side profile vertical 9:16 portrait. Student sitting in his assigned university exam seat just before the exam begins, taking a slow deep breath with closed eyes, surrounded by nervous peers, but completely inside an aura of calm and certainty --ar 9:16
+
+Warm vertical 9:16 portrait. A confident student sitting in a sunny library, warmly explaining the shortcut to a struggling classmate with patience and kindness. True mastery reflected through teaching others, warm Kodachrome colors --ar 9:16
+
+Aesthetic vertical 9:16 still. Cozy study room in the late afternoon, golden light filling the space. Student reviewing flashcards with a relaxed, happy smile, knowing every single concept by heart without hesitation, pure peace of mind --ar 9:16
+
+Cinematic vertical 9:16. Student drinking water calmly during a mock exam break, looking completely relaxed and unbothered, while others scramble through last-minute notes. Unshakeable psychological composure --ar 9:16
+
+Extreme close-up vertical 9:16. Steady, calm hands holding an exam test booklet. In the blurred background the clock is ticking, but the student's heartbeat is steady and slow. Visual feeling of being in the zone of peak performance --ar 9:16
+
+Dynamic vertical 9:16 portrait. Student stretching his arms high in the air with an energetic, happy grin at dawn, feeling mentally sharp, recharged, and unstoppable for the upcoming admission battle --ar 9:16
+
+Minimalist vertical 9:16. A single open notebook on a bright oak desk showing one clean, breathtakingly simple mathematical proof, bathed in morning sun next to an open window. Visual metaphor for elegance and mental clarity --ar 9:16
+
+Vertical 9:16 portrait. Student looking down at an official mock exam score ranking paper showing his name at the very top. A subtle, proud smirk of self-affirmation, no longer doubting his intelligence, soft lighting --ar 9:16
+
+Peaceful vertical 9:16 shot. A student sleeping soundly and deeply in bed the night before the admission exam, blankets pulled up, alarm clock set, a peaceful relaxed facial expression free from anxiety nightmares, tranquil blue night tones --ar 9:16
+```
+
+## BLOQUE 5: LA VICTORIA Y LA ADMISIÓN REAL (PROMPTS 81 AL 100)
+
+```text
+Raw emotional vertical 9:16 portrait. An 18-year-old Peruvian student weeping tears of pure euphoria and disbelief, clutching a smartphone that clearly displays the official website message: RESULTADO: ALCANZO VACANTE - INGENIERIA. Unposed human triumph, 8k --ar 9:16
+
+Documentary style vertical 9:16. A tearful mother and her student son locked in a tight, weeping embrace on the pavement outside the historic university gates. Years of family sacrifice and hard work redeemed in one single moment, cinematic realism --ar 9:16
+
+Candid vertical 9:16 photograph. A proud father lifting his teenage son completely off the ground in celebration inside their humble living room, after looking at the admission results on a computer monitor. Real family tears, Kodak film grain --ar 9:16
+
+Cinematic vertical 9:16. Triumphant student standing at the top of the university grand stone staircase, raising both fists to the sky in victory as golden sunset flares behind him. Epic silhouette, glorious feeling of overcoming all odds --ar 9:16
+
+Traditional admission celebration, vertical 9:16. A student with freshly shaved head covered in colorful celebratory paint, grinning ear to ear with immense pride, holding up the official admission certificate, joyful chaos --ar 9:16
+
+Vertical 9:16 candid shot. Newly admitted student in his modest dining room surrounded by cheering younger siblings and parents blowing party horns and throwing confetti. Pure, unfiltered celebration of a new university life --ar 9:16
+
+Sharp focus vertical 9:16 portrait. A proud student holding up his brand-new official university applicant ID card toward the camera with a beaming smile, with the iconic brick facade of the university softly blurred in the background --ar 9:16
+
+Documentary vertical 9:16. Tearful student running his finger down a huge public printed bulletin board of accepted candidates, his finger stopping on his own name with tears streaming down his face, crowd celebrating around him --ar 9:16
+
+Extreme close-up vertical 9:16. A smartphone held in trembling, joyful hands showing the official admission portal: ESTADO: ADMITIDO - 1ER PUESTO GENERAL. Tears of relief falling and splashing softly on the phone screen glass --ar 9:16
+
+Dynamic vertical 9:16 shot. A group of four newly admitted pre-university friends in matching academy jackets jumping together in mid-air in sheer exhilaration on the university lawn, textbooks tossed aside, glorious sunny day --ar 9:16
+
+Emotional vertical 9:16 still. A loving mother tenderly wiping tears of pride from her teenage son's cheeks outside the exam center gates as they realize he officially secured the career of his dreams, deep familial love --ar 9:16
+
+Golden hour vertical 9:16 portrait. An empowered young female student holding her official letter of admission against her chest with both hands, looking toward the horizon with a proud, tearful smile of redemption, university behind her --ar 9:16
+
+Intimate vertical 9:16 photograph. A student standing before his parents' portrait in the living room holding the printed admission certificate, paying quiet, reverent tribute with tears in his eyes knowing he made them proud, cinematic warm lighting --ar 9:16
+
+Cinematic tracking shot, vertical 9:16. Student bursting through the exit gates after receiving results, sprinting full speed with arms wide open toward his waiting family, screaming with joy that he was admitted. Unstoppable kinetic happiness --ar 9:16
+
+Inspiring vertical 9:16 portrait. A newly admitted first-year student walking through the grand gates of the university on the first day of classes, notebook in hand, sunlight reflecting off modern glass faculty buildings, bright future ahead --ar 9:16
+
+Cinematic vertical 9:16. Student sitting in a magnificent historic university lecture amphitheater on orientation day, looking up at the high wooden ceilings and chalkboard with deep reverence and awe, knowing he belongs here --ar 9:16
+
+Close-up vertical 9:16 portrait. A young student looking straight up at the clear blue sky with closed eyes, smiling softly with profound gratitude and inner triumph after a year of struggle, warm sunlight bathing his face --ar 9:16
+
+Heartwarming vertical 9:16. Newly admitted student holding both of his parents by the hand as they walk proudly together down the central university boulevard, walking away from hardship and toward a new destiny, cinematic framing --ar 9:16
+
+Cinematic slow-motion still, vertical 9:16. A student joyfully tossing hundreds of old prep-academy scrap notes and scratch formulas high into the air against the sunset, papers fluttering like confetti, the ultimate moment of liberation --ar 9:16
+
+Epic wide cinematic shot, vertical 9:16. Victorious student standing alone at a high campus viewpoint overlooking the sprawling city at sunrise, wearing his university hoodie, arms outstretched. The hero's journey is complete, 8k, photorealistic --ar 9:16
+```
