@@ -47,13 +47,13 @@ class TestSceneLayout(unittest.TestCase):
         from viralforge.render.latex_renderer import (
             normalize_mathtext, render_latex_to_image,
         )
-        chemistry = normalize_mathtext(r"\\ce{CO + 2H2 -> CH3OH}")
-        self.assertIn(r"\\rightarrow", chemistry)
+        chemistry = normalize_mathtext(r"\ce{CO + 2H2 -> CH3OH}")
+        self.assertIn(r"\rightarrow", chemistry)
         self.assertIn("H_{2}", chemistry)
         chemistry_img = render_latex_to_image(chemistry, fontsize=32)
         self.assertGreater(chemistry_img.width, 20)
         math_img = render_latex_to_image(
-            r"\\text{Ley} + \\text{Liga} = 1 \\implies 5 L_g = 1",
+            r"\text{Ley} + \text{Liga} = 1 \implies 5 L_g = 1",
             fontsize=32,
         )
         self.assertGreater(math_img.width, 20)
@@ -67,7 +67,7 @@ class TestSceneLayout(unittest.TestCase):
             folder = Path(folder)
             broken = folder / "broken_formula.png"
             create_math_formula_card(
-                "ERROR", r"\\nonexistentlatexcommand{2}", broken,
+                "ERROR", r"\nonexistentlatexcommand{2}", broken,
             )
             with Image.open(broken) as im:
                 self.assertIsNone(im.getbbox())
