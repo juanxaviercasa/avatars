@@ -15,6 +15,7 @@ Toma una grabación cruda de iPhone o cámara y le inyecta la arquitectura de al
 """
 from __future__ import annotations
 
+import json
 import logging
 import math
 import shutil
@@ -31,6 +32,7 @@ from .math_copilot import analyze_transcript
 from .overlay_profiles import build_overlays_for_video
 from .render import ass_subtitles, audio as audio_mix, cards, ffmpeg
 from .render.overlay_safety import prepare_overlay, entrance_y
+from .render.scene_layout import plan_overlays
 
 log = logging.getLogger("viralforge.video_polisher")
 
@@ -45,6 +47,7 @@ def polish_video(
     custom_cta_phrase: str = "",
     out_mp4: str | Path | None = None,
     on_progress: Callable[[float, str], None] | None = None,
+    protected_regions: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """
     Ejecuta el pulido viral de alta retención sobre `source_video` (.mov o .mp4).
@@ -125,6 +128,19 @@ def polish_video(
             custom_cta_phrase=custom_cta_phrase,
             cta_target=cta_target,
         )
+
+        # NotebookLM ya compuso la lección: analizar la ocupación del fondo
+        # original ANTES de añadir gráficos o decidir posiciones.
+        overlay_inputs, layout_report = plan_overlays(
+            source_video=src,
+            overlays=overlay_inputs,
+            workdir=workdir,
+            duration=dur,
+            protected=protected_regions,
+        )
+        if on_progress:
+            on_progress(0.24, "Verificando zonas libres, fórmulas y superposiciones...")
+
 
         if on_progress:
             on_progress(0.30, "Generando diseño sonoro procedural VSL + Voces Neurales y SFX...")
@@ -339,7 +355,10 @@ def polish_video(
 
             # Preflight: las coordenadas manuales nunca pueden recortar una tarjeta.
             # CTA entra en la franja inferior (subtítulos ocultos en ese tramo).
-            is_cta = y_pos >= 1000
+            is_cta = y_pos >= 1000 and (
+                "cta" in Path(png_path).stem.lower()
+                or t_in >= dur - 4.5
+            )
             placement = prepare_overlay(
                 png_path, workdir, y_pos, x_pos, is_cta=is_cta
             )
@@ -404,6 +423,13 @@ def polish_video(
             err = proc.stderr.decode("utf-8", "ignore")[-1200:]
             raise RuntimeError(f"Fallo al codificar video pulido: {err}")
 
+        # Persistir el informe de decisiones visuales para auditoría humana.
+        layout_report_path = out_path.with_suffix(".layout.json")
+        layout_report_path.write_text(
+            json.dumps(layout_report, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+
         # Generar miniatura
         thumb_path = out_path.with_suffix(".jpg")
         ffmpeg.run([
@@ -426,6 +452,8 @@ def polish_video(
             "hook_badge": clean_hook,
             "words_count": len(words),
             "overlays_count": len(overlay_inputs),
+            "layout_report": str(layout_report_path),
+            "overlays_skipped": layout_report["skipped_count"],
         }
 
     finally:
