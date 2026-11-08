@@ -68,7 +68,8 @@ class SceneIndex:
         masks: list[np.ndarray] = []
         previous_gray = None
         for frame in rgb:
-            colors = frame.astype(np.int16)
+            # Multiplicar RGB por 299/587/114 supera int16: usar int32.
+            colors = frame.astype(np.int32)
             gray = (
                 colors[:, :, 0] * 299
                 + colors[:, :, 1] * 587
