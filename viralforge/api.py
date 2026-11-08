@@ -40,7 +40,7 @@ from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from . import kaggle_cluster, pipeline, seed
 from .commerce import shopify
@@ -1046,7 +1046,7 @@ class PolishRenderReq(BaseModel):
     cta_target: str = "Enlace en mi perfil"
     custom_cta_phrase: str = ""
     preserve_source_subtitles: bool = False
-    protected_regions: list[dict[str, Any]] = []
+    protected_regions: list[dict[str, Any]] = Field(default_factory=list)
 
 
 @app.post("/api/polish/render")
