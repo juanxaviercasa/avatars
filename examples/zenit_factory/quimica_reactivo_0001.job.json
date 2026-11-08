@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "job_id": "quimica_reactivo_0001",
+  "candidate_video": "/RUTA/Quimica_Zenit_REACTIVO_LIMITANTE_MASTER_V2_1080p.mp4",
+  "audio_reference": "/RUTA/Quimica_Zenit_REACTIVO_LIMITANTE_MASTER_V1.mp4",
+  "source_video": "/RUTA/El_método_exprés_para_el_reactivo_limitante_reel-1.mp4",
+  "segments": [
+    {
+      "kind": "intro",
+      "start": 0,
+      "end": 13.666667
+    },
+    {
+      "kind": "lesson",
+      "start": 13.666667,
+      "end": 67.933333
+    },
+    {
+      "kind": "cta",
+      "start": 67.933333,
+      "end": 74.066667
+    }
+  ],
+  "protected_regions": [
+    {
+      "label": "Pizarra y ecuaciones químicas",
+      "start": 14,
+      "end": 67.9,
+      "rect": [
+        100,
+        340,
+        860,
+        280
+      ],
+      "source_offset_s": 6.81,
+      "max_mae": 16
+    }
+  ],
+  "overlays": [
+    {
+      "id": "progress_v2",
+      "kind": "progress",
+      "start": 0,
+      "end": 67.933333,
+      "rect": [
+        90,
+        1803,
+        900,
+        24
+      ]
+    },
+    {
+      "id": "cta_zenit",
+      "kind": "cta",
+      "start": 67.933333,
+      "end": 74.066667,
+      "rect": [
+        0,
+        0,
+        1080,
+        1920
+      ]
+    }
+  ]
+}
