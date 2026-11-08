@@ -22,6 +22,8 @@ from typing import Any
 
 from PIL import Image, ImageChops, ImageStat
 
+from .audio_alignment import align_files
+
 PROFILE_PATH = Path(__file__).parent / "approved_reels" / "zenit_v2_quality_profile.json"
 
 
@@ -335,15 +337,26 @@ def evaluate(
         except (OSError, ValueError, RuntimeError) as error:
             issues.append(Issue("PROGRESS_VISUAL_CHECK", str(error)[:300]))
 
-    # Prueba visual en regiones protegidas: compara solo la zona de pizarra
-    # con el NotebookLM original, en tiempos correspondientes.
+    # La voz sirve como reloj de referencia: offset detectado a partir de
+    # tres fragmentos de NotebookLM (y verificación contra valores manuales).
+    alignment = None
     if check_pixels and candidate and source and protected_valid:
+        try:
+            alignment = align_files(source, candidate)
+            checks["voice_alignment"] = alignment
+        except (ValueError, RuntimeError, OSError) as error:
+            issues.append(Issue("VOICE_ALIGNMENT_UNCERTAIN", str(error)[:300]))
+
+    # Auditoría física sobre el pixel real, no solo las coordenadas declaradas.
+    if check_pixels and candidate and source and protected_valid and alignment:
         comparisons = []
+        detected_offset = float(alignment["source_to_reel_offset_s"])
         for item, box in protected_valid:
-            if "source_offset_s" not in item:
-                issues.append(Issue("SOURCE_ALIGNMENT_MISSING", f"{item.get('label', '?')}: falta source_offset_s"))
+            offset = float(item.get("source_offset_s", detected_offset))
+            if abs(offset - detected_offset) > .10:
+                issues.append(Issue("SOURCE_ALIGNMENT_MISMATCH",
+                                    f"{item.get('label', '?')}: offset manual {offset:.3f}, voz {detected_offset:.3f}"))
                 continue
-            offset = float(item["source_offset_s"])
             for part in (.22, .55, .82):
                 t = float(item["start"]) + (float(item["end"]) - float(item["start"])) * part
                 if t-offset < 0:
