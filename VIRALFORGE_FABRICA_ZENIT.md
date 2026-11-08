@@ -62,6 +62,33 @@ python -m viralforge.render.audio_alignment --original "clase_notebooklm.mp4" --
 Si el audio fue cortado/reordenado internamente, un offset global no
 basta; debe dividirse por segmentos y validarse individualmente.
 
+### Preanálisis de escena de cada clase (sin copiar coordenadas V2)
+
+`viralforge/render/scene_intake.py` crea un **borrador temporal** antes
+de ejecutar el control de calidad. Usa la narración que ya tiene NotebookLM
+para estimar el offset real y muestrea la ocupación visual de la pizarra,
+proponiendo regiones protegidas por intervalos.
+
+```bash
+python -m viralforge.render.scene_intake \
+  --source "clase_002_notebooklm.mp4" \
+  --audio-reference "clase_002_audio_aprobado.mp4" \
+  --candidate "outputs/clase_002_viral.mp4" \
+  --job-id "clase_002" \
+  --intro-end 5.2 --cta-start 55.3 --end 61.0 \
+  --windows 6 \
+  --out "jobs/clase_002.job.json"
+```
+
+Los tres tiempos de montaje deben provenir del guion/EDL **de esa clase**.
+El detector no pretende deducir autónomamente el instante pedagógicamente
+óptimo del hook o el CTA: eso sigue siendo una decisión editorial.
+
+Este borrador lleva `planning_status: DRAFT_REQUIRES_REVIEW`. No supone
+que bordes y movimiento sean sinónimo de fórmulas: la IA editora debe
+revisar/enriquecer las regiones protegidas y añadir los overlays reales
+antes del render. Una región poco fiable se protege conservadoramente.
+
 ### Control de calidad
 
 `viralforge/render/quality_gate.py` comprueba:
@@ -181,10 +208,12 @@ El audio AAC puede preservarse exactamente, pero el sistema no puede
 afirmar que *todo* el contenido narrativo es correcto únicamente por
 coincidencia de paquetes.
 
-Aún falta conectar un productor/planificador que genere automáticamente
-la EDL y las regiones semánticas específicas de cada lección. Hasta esa
-integración, proporcionar una EDL explícita por video es requisito del
-control de calidad estricto. Esto evita repetir el error de imponer un
+El módulo `scene_intake.py` ya propone un mapa inicial por fotogramas y
+voz, pero **todavía no extrae automáticamente un guion viral pedagógicamente
+seguro ni reconoce todas las fórmulas por semántica**. Un planificador
+editorial (humano o IA con revisión) debe completar el EDL de cada video
+antes de pasar a producción. Sin ello, el gate debe rechazar o requerir
+revisión en lugar de suponer la distribución. Esto evita repetir el error de imponer un
 layout y tiempos de un video sobre miles de videos distintos.
 
 ## 6. Política de cambios y recuperación
