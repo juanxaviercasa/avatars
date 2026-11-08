@@ -15,6 +15,34 @@ from viralforge.render.scene_layout import (
 
 
 class TestSceneLayout(unittest.TestCase):
+    def test_ffmpeg_scene_sampling_preserves_full_landscape(self):
+        """Regresión: un NotebookLM horizontal no pierde las fórmulas laterales."""
+        import subprocess
+        from viralforge.render.ffmpeg import ffmpeg_exe
+        with tempfile.TemporaryDirectory() as folder:
+            folder = Path(folder)
+            src = folder / "original.png"
+            video = folder / "original.mp4"
+            img = Image.new("RGB", (640, 360), (17, 24, 39))
+            from PIL import ImageDraw
+            d = ImageDraw.Draw(img)
+            d.rectangle((0, 130, 60, 225), fill=(250, 250, 250))
+            d.rectangle((575, 130, 639, 225), fill=(250, 250, 250))
+            img.save(src)
+            subprocess.run(
+                [ffmpeg_exe(), "-hide_banner", "-loglevel", "error", "-y",
+                 "-loop", "1", "-i", str(src), "-t", "2",
+                 "-r", "5", "-pix_fmt", "yuv420p", str(video)],
+                check=True, capture_output=True, timeout=30,
+            )
+            index = SceneIndex.from_video(video, 2.0)
+            self.assertGreaterEqual(len(index.frames), 1)
+            # Los extremos de la imagen original sobreviven en el centro.
+            self.assertGreater(index.frames[0][185:270, :30].sum(), 10)
+            self.assertGreater(index.frames[0][185:270, -30:].sum(), 10)
+            # Las bandas superiores reservadas para hooks están despejadas.
+            self.assertEqual(index.frames[0][:140, 50:210].sum(), 0)
+
     def test_collision_boxes_touching_do_not_overlap(self):
         self.assertTrue(intersects((0, 0, 100, 100), (20, 20, 20, 20)))
         self.assertFalse(intersects((0, 0, 100, 100), (100, 0, 40, 40)))
