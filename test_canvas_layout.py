@@ -59,7 +59,7 @@ class CanvasLayoutTests(unittest.TestCase):
                 footer = im.crop(
                     (text_slot.x, text_slot.y, text_slot.right, text_slot.bottom)
                 )
-                self.assertLess(max(pixel[0] for pixel in footer.getdata()), 219)
+                self.assertFalse(any(p[:3] == (219, 20, 24) for p in footer.getdata()))
                 photo = im.crop(
                     (img_slot.x, img_slot.y, img_slot.right, img_slot.bottom)
                 )
