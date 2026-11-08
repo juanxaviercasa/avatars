@@ -1,0 +1,39 @@
+{
+  "version": "reactivo_limitante_v2_reference_canvas",
+  "sources": {
+    "master_sha256": "00e3172e178cb99dbfae7dc7dc57274aa8cc9cf4df00a1703e597cf6e73442ea",
+    "reference_sha256": "9cf503a7f1ce627698f51eed41da41f0b770c5f65619e61ff10575ea4f825c16"
+  },
+  "timeline": {
+    "intro_end": 13.666667,
+    "outro_start": 67.933333,
+    "duration": 74.066667,
+    "body_offset": 6.81
+  },
+  "preserved": {
+    "intro": "master_v1",
+    "body": "reel-1 NotebookLM original, not enlarged ES_ENHANCED cards",
+    "outro": "master_v1 full-screen Zenit",
+    "audio": "AAC packets copied verbatim"
+  },
+  "protected_zones_720": {
+    "captions": [
+      0,
+      1065,
+      720,
+      129
+    ],
+    "progress": [
+      60,
+      1202,
+      600,
+      16
+    ]
+  },
+  "layout_rules": {
+    "image_first": true,
+    "do_not_cover_chemistry": true,
+    "no_redundant_text": true,
+    "progress_bar": "visible lower band below captions, ease-out visual indicator"
+  }
+}
