@@ -112,7 +112,8 @@ def find_offset(
         "confidence_min": round(min(x["correlation"] for x in trusted), 4),
         "max_temporal_disagreement_s": round(spread, 4),
         "anchors": anchors,
-        "voice_changed": False,
+        "original_voice_detected": True,
+        "voice_identity_verified": False,
         "method": "normalized_fft_consensus_3anchors",
     }
 
