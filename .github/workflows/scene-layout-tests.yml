@@ -8,6 +8,8 @@ on:
       - 'test_scene_layout.py'
       - 'test_overlay_safety.py'
       - 'test_golden_master.py'
+      - 'test_reference_master.py'
+      - 'test_canvas_layout.py'
       - '.github/workflows/scene-layout-tests.yml'
   pull_request:
     paths:
@@ -16,6 +18,8 @@ on:
       - 'test_scene_layout.py'
       - 'test_overlay_safety.py'
       - 'test_golden_master.py'
+      - 'test_reference_master.py'
+      - 'test_canvas_layout.py'
 jobs:
   layout-safety:
     runs-on: ubuntu-latest
@@ -30,4 +34,4 @@ jobs:
       - run: sudo apt-get update -qq && sudo apt-get install -y ffmpeg
       - run: ffmpeg -version && ffprobe -version
       - run: python -m compileall -q viralforge/render viralforge/video_polisher.py
-      - run: python -m unittest -v test_scene_layout test_overlay_safety test_golden_master
+      - run: python -m unittest -v test_scene_layout test_overlay_safety test_golden_master test_canvas_layout test_reference_master
