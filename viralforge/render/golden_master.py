@@ -39,6 +39,13 @@ def _adts_hash(path: Path) -> str:
 
 
 def _validate(recipe: dict[str, Any], enhanced: Path, original: Path) -> None:
+    # Evitar confundir el video aprobado con una exportación posterior.
+    for kind, source in (("approved_enhanced_sha256", enhanced), ("pristine_original_sha256", original)):
+        expected = recipe.get(kind)
+        if expected:
+            actual = hashlib.sha256(source.read_bytes()).hexdigest()
+            if actual != expected:
+                raise ValueError(f"Archivo no coincide con la referencia congelada: {kind}")
     info_e = _video_info(_probe(enhanced))
     info_o = _video_info(_probe(original))
     width = int(recipe["frame_width"])
