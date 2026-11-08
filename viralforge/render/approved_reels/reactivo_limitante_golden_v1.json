@@ -1,0 +1,21 @@
+{
+  "version": "reactivo_limitante_golden_v1",
+  "approved_enhanced_sha256": "4c493b6ff26afa26a9e9d1b387848a709783f48fa51cb0fd05c6b708f5419ae7",
+  "pristine_original_sha256": "9cf503a7f1ce627698f51eed41da41f0b770c5f65619e61ff10575ea4f825c16",
+  "enhanced_duration_s": 74.066667,
+  "time_offset_enhanced_minus_original_s": 6.81,
+  "original_visible_from_s": 13.666667,
+  "original_visible_until_s": 67.9,
+  "full_frame_cta_cut_s": 67.933333,
+  "frame_width": 720,
+  "frame_height": 1280,
+  "repair_band_y": 1065,
+  "repair_band_height": 145,
+  "old_progress_y": 1178,
+  "old_progress_height": 24,
+  "top_progress_height": 8,
+  "audio_strategy": "copy_unchanged",
+  "approved_introduction": "ES_ENHANCED 0..13.6667s",
+  "approved_outro": "ES_ENHANCED 67.9333..74.0667s",
+  "design_intent": "Keep approved intro, original chemistry writing + subtitle band, and Zenit full-screen outro. No EBAU/NotebookLM ending."
+}
