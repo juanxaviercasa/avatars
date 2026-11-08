@@ -49,6 +49,7 @@ def polish_video(
     on_progress: Callable[[float, str], None] | None = None,
     protected_regions: list[dict[str, Any]] | None = None,
     preserve_source_subtitles: bool = False,
+    add_cohost_voice: bool = False,
 ) -> dict[str, Any]:
     """
     Ejecuta el pulido viral de alta retención sobre `source_video` (.mov o .mp4).
@@ -159,7 +160,7 @@ def polish_video(
 
 
         if on_progress:
-            on_progress(0.30, "Generando diseño sonoro procedural VSL + Voces Neurales y SFX...")
+            on_progress(0.30, "Preparando música y efectos sin reemplazar la voz original...")
 
         # 4) Extraer audio original con mastering vocal profesional EBU R128 (-14 LUFS) y mezclar música VSL + SFX
         orig_wav = workdir / "original_audio.wav"
@@ -202,78 +203,81 @@ def polish_video(
         except Exception as bg_err:
             log.warning("No se pudo sintetizar música electro-rock: %s", bg_err)
 
-        # 4.1 Inyectar Voces Neurales de Co-Host (Hype & Retención)
-        try:
-            import asyncio
-            import edge_tts
+        # NotebookLM ya entrega la narración terminada. No solapar otra voz
+        # a menos que se haya activado explícitamente el co-host.
+        if add_cohost_voice:
+            # 4.1 Inyectar Voces Neurales de Co-Host (Hype & Retención)
+            try:
+                import asyncio
+                import edge_tts
 
-            async def _synthesize_neural_voices():
-                voice_name = "es-PE-AlexNeural"
-                voice_cues = []
-                stem_upper = src.stem.upper()
-                if "2935" in stem_upper:
-                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de dominio con radicales y valor absoluto!", 0.20))
-                    voice_cues.append((workdir / "voice_formula.mp3", "¡Recuerda que al multiplicar por un negativo la desigualdad se invierte!", 55.20))
-                    voice_cues.append((workdir / "voice_answer.mp3", "¡Siete, clave y respuesta correcta!", 135.20))
-                elif "2933" in stem_upper:
-                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio sobre funciones y pares ordenados!", 0.20))
-                    voice_cues.append((workdir / "voice_formula.mp3", "¡Recuerda que cada elemento del dominio tiene una única imagen!", 24.20))
-                    voice_cues.append((workdir / "voice_answer.mp3", "¡Doce, clave y respuesta correcta!", 200.20))
-                elif "2931" in stem_upper:
-                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de examen sobre ley y liga de oro y cobre!", 0.20))
-                    voice_cues.append((workdir / "voice_formula.mp3", "¡Recuerda que la ley más la liga siempre suman uno!", 20.20))
-                    voice_cues.append((workdir / "voice_answer.mp3", "¡Cien gramos de cobre, respuesta correcta!", 275.20))
-                elif "2928" in stem_upper:
-                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de fundición y aleaciones de oro!", 0.20))
-                    voice_cues.append((workdir / "voice_formula.mp3", "¡Aplica la fórmula de la ley media ponderada!", 45.20))
-                    voice_cues.append((workdir / "voice_answer.mp3", "¡Cero coma setecientos ochenta de ley, clave correcta!", 155.20))
-                elif "2927" in stem_upper:
-                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de mezclas de tres calidades de harina!", 0.20))
-                    voice_cues.append((workdir / "voice_formula.mp3", "¡Calculamos el precio medio de costo!", 20.20))
-                    voice_cues.append((workdir / "voice_answer.mp3", "¡Diez kilogramos, clave verificada!", 222.20))
-                elif "2926" in stem_upper:
-                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de mezclas de tres tipos de avena!", 0.20))
-                    voice_cues.append((workdir / "voice_formula.mp3", "¡Aplica la fórmula del precio medio ponderado!", 50.20))
-                    voice_cues.append((workdir / "voice_answer.mp3", "¡Ocho, cuatro y seis kilogramos, respuesta correcta!", 236.20))
-                elif "2925" in stem_upper:
-                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de mezclas de harinas!", 0.20))
-                    voice_cues.append((workdir / "voice_formula.mp3", "¡Aplica la fórmula del precio medio ponderado!", 72.20))
-                    voice_cues.append((workdir / "voice_answer.mp3", "¡Sesenta y seis y veintidós kilogramos!", 236.20))
-                elif "2922" in stem_upper:
-                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de examen!", 0.20))
-                    voice_cues.append((workdir / "voice_formula.mp3", "¡Aplica la fórmula de mezclas!", 58.20))
-                    voice_cues.append((workdir / "voice_answer.mp3", "¡Setenta y dos soles el kilogramo!", 208.20))
-                elif "2916" in stem_upper:
-                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este truco de examen de mezclas!", 0.40))
-                    voice_cues.append((workdir / "voice_formula.mp3", "¡Aplica la fórmula del precio medio!", 75.80))
-                    voice_cues.append((workdir / "voice_cross.mp3", "¡Multiplicamos en cruz: 7 por 42!", 122.20))
-                    voice_cues.append((workdir / "voice_answer.mp3", "¡Excelente! 28 litros, respuesta correcta.", 156.20))
-                else:
-                    voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de examen!", 0.20))
-                results = []
-                for vpath, vtext, vtime in voice_cues:
-                    try:
-                        comm = edge_tts.Communicate(vtext, voice_name, rate="+5%")
-                        await comm.save(str(vpath))
-                        results.append((vpath, vtime))
-                    except Exception as err:
-                        log.warning("Fallo al generar TTS neural '%s': %s", vtext, err)
-                return results
+                async def _synthesize_neural_voices():
+                    voice_name = "es-PE-AlexNeural"
+                    voice_cues = []
+                    stem_upper = src.stem.upper()
+                    if "2935" in stem_upper:
+                        voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de dominio con radicales y valor absoluto!", 0.20))
+                        voice_cues.append((workdir / "voice_formula.mp3", "¡Recuerda que al multiplicar por un negativo la desigualdad se invierte!", 55.20))
+                        voice_cues.append((workdir / "voice_answer.mp3", "¡Siete, clave y respuesta correcta!", 135.20))
+                    elif "2933" in stem_upper:
+                        voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio sobre funciones y pares ordenados!", 0.20))
+                        voice_cues.append((workdir / "voice_formula.mp3", "¡Recuerda que cada elemento del dominio tiene una única imagen!", 24.20))
+                        voice_cues.append((workdir / "voice_answer.mp3", "¡Doce, clave y respuesta correcta!", 200.20))
+                    elif "2931" in stem_upper:
+                        voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de examen sobre ley y liga de oro y cobre!", 0.20))
+                        voice_cues.append((workdir / "voice_formula.mp3", "¡Recuerda que la ley más la liga siempre suman uno!", 20.20))
+                        voice_cues.append((workdir / "voice_answer.mp3", "¡Cien gramos de cobre, respuesta correcta!", 275.20))
+                    elif "2928" in stem_upper:
+                        voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de fundición y aleaciones de oro!", 0.20))
+                        voice_cues.append((workdir / "voice_formula.mp3", "¡Aplica la fórmula de la ley media ponderada!", 45.20))
+                        voice_cues.append((workdir / "voice_answer.mp3", "¡Cero coma setecientos ochenta de ley, clave correcta!", 155.20))
+                    elif "2927" in stem_upper:
+                        voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de mezclas de tres calidades de harina!", 0.20))
+                        voice_cues.append((workdir / "voice_formula.mp3", "¡Calculamos el precio medio de costo!", 20.20))
+                        voice_cues.append((workdir / "voice_answer.mp3", "¡Diez kilogramos, clave verificada!", 222.20))
+                    elif "2926" in stem_upper:
+                        voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de mezclas de tres tipos de avena!", 0.20))
+                        voice_cues.append((workdir / "voice_formula.mp3", "¡Aplica la fórmula del precio medio ponderado!", 50.20))
+                        voice_cues.append((workdir / "voice_answer.mp3", "¡Ocho, cuatro y seis kilogramos, respuesta correcta!", 236.20))
+                    elif "2925" in stem_upper:
+                        voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de mezclas de harinas!", 0.20))
+                        voice_cues.append((workdir / "voice_formula.mp3", "¡Aplica la fórmula del precio medio ponderado!", 72.20))
+                        voice_cues.append((workdir / "voice_answer.mp3", "¡Sesenta y seis y veintidós kilogramos!", 236.20))
+                    elif "2922" in stem_upper:
+                        voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de examen!", 0.20))
+                        voice_cues.append((workdir / "voice_formula.mp3", "¡Aplica la fórmula de mezclas!", 58.20))
+                        voice_cues.append((workdir / "voice_answer.mp3", "¡Setenta y dos soles el kilogramo!", 208.20))
+                    elif "2916" in stem_upper:
+                        voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este truco de examen de mezclas!", 0.40))
+                        voice_cues.append((workdir / "voice_formula.mp3", "¡Aplica la fórmula del precio medio!", 75.80))
+                        voice_cues.append((workdir / "voice_cross.mp3", "¡Multiplicamos en cruz: 7 por 42!", 122.20))
+                        voice_cues.append((workdir / "voice_answer.mp3", "¡Excelente! 28 litros, respuesta correcta.", 156.20))
+                    else:
+                        voice_cues.append((workdir / "voice_hook.mp3", "¡Atento a este ejercicio de examen!", 0.20))
+                    results = []
+                    for vpath, vtext, vtime in voice_cues:
+                        try:
+                            comm = edge_tts.Communicate(vtext, voice_name, rate="+5%")
+                            await comm.save(str(vpath))
+                            results.append((vpath, vtime))
+                        except Exception as err:
+                            log.warning("Fallo al generar TTS neural '%s': %s", vtext, err)
+                    return results
 
-            tts_clips = asyncio.run(_synthesize_neural_voices())
-            for vpath, vtime in tts_clips:
-                if vpath.exists():
-                    try:
-                        vsamples = ffmpeg.decode_audio(vpath, sr=audio_mix.SR)
-                        idx_start = max(0, int(vtime * audio_mix.SR))
-                        idx_end = min(total_samples, idx_start + len(vsamples))
-                        if idx_end > idx_start:
-                            # Inyectar voz neural clara y enérgica
-                            mixed_audio[idx_start:idx_end] += vsamples[: idx_end - idx_start] * 0.85
-                    except Exception as dec_err:
-                        log.warning("Error decodificando clip de voz %s: %s", vpath, dec_err)
-        except Exception as tts_err:
-            log.warning("No se pudo generar voces neurales: %s", tts_err)
+                tts_clips = asyncio.run(_synthesize_neural_voices())
+                for vpath, vtime in tts_clips:
+                    if vpath.exists():
+                        try:
+                            vsamples = ffmpeg.decode_audio(vpath, sr=audio_mix.SR)
+                            idx_start = max(0, int(vtime * audio_mix.SR))
+                            idx_end = min(total_samples, idx_start + len(vsamples))
+                            if idx_end > idx_start:
+                                # Inyectar voz neural clara y enérgica
+                                mixed_audio[idx_start:idx_end] += vsamples[: idx_end - idx_start] * 0.85
+                        except Exception as dec_err:
+                            log.warning("Error decodificando clip de voz %s: %s", vpath, dec_err)
+            except Exception as tts_err:
+                log.warning("No se pudo generar voces neurales: %s", tts_err)
 
         def _inject_sfx(sfx_name: str, at_time: float, gain: float = 0.75):
             if sfx_name in audio_mix.EARSHOT_RECIPES:
@@ -440,6 +444,7 @@ def polish_video(
             "layout_report": str(layout_report_path),
             "overlays_skipped": layout_report["skipped_count"],
             "source_subtitles_preserved": preserve_source_subtitles,
+            "cohost_voice_added": add_cohost_voice,
         }
 
     finally:
