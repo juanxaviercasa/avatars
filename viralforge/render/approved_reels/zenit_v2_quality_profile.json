@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "profile_id": "zenit_canvas_v2_pureza",
+  "reference": {
+    "description": "Reactivo limitante — versión V2 aprobada por el usuario, NO reemplazar",
+    "filename": "Quimica_Zenit_REACTIVO_LIMITANTE_MASTER_V2_1080p.mp4",
+    "sha256": "8c9b668e38135f906411ec093b80f61a479b10ce576717255ed926303a031f32",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "frame_count": 2222,
+    "duration_s": 74.066667,
+    "original_recipe": "reactivo_limitante_v2_reference_canvas.json"
+  },
+  "output": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "video_codec": "h264",
+    "audio_codec": "aac",
+    "duration_tolerance_s": 0.12,
+    "frame_tolerance": 1
+  },
+  "visual": {
+    "safe_outer_margin": 32,
+    "caption_zone": [
+      0,
+      1590,
+      1080,
+      210
+    ],
+    "progress_bar": {
+      "rect": [
+        90,
+        1803,
+        900,
+        24
+      ],
+      "color": "gold",
+      "min_visible_fraction": [
+        0.12,
+        0.35,
+        0.55
+      ],
+      "check_lesson_fraction": [
+        0.25,
+        0.5,
+        0.8
+      ],
+      "must_disappear_after_cta": true
+    },
+    "min_legible_font_px": 18,
+    "max_overlay_words": 16,
+    "require_image_text_separation": true
+  },
+  "requirements": {
+    "narration": "preserve an explicitly chosen audio reference; no added cohost by default",
+    "timeline": "per-video intro, lesson, CTA; never reuse the exact V2 cut times",
+    "original_explanation": "protect formulas, reaction arrows, molecules, and NotebookLM subtitles",
+    "admission": "automatic QC may mark REVIEW_REQUIRED but may never mark a video PUBLISHED or APPROVED"
+  },
+  "human_review_required": true
+}
