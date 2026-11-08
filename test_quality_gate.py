@@ -198,6 +198,27 @@ class QualityGateTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "mismo video"):
                 batch.run_batch(root / "batch.json", root / "reports")
 
+    def test_bad_manifest_isolated_from_healthy_jobs(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            m = good_manifest(root)
+            m.pop("_manifest_dir")
+            (root / "healthy.json").write_text(json.dumps(m), encoding="utf-8")
+            jobs = {"schema_version": 1, "jobs": [
+                {"job_id": "chemistry_0001", "manifest": "healthy.json"},
+                {"job_id": "missing_0002", "manifest": "missing.json"},
+            ]}
+            (root / "batch.json").write_text(json.dumps(jobs), encoding="utf-8")
+            with patch.object(batch, "evaluate", return_value={
+                "job_id": "chemistry_0001", "profile": self.profile["profile_id"],
+                "status": "REVIEW_REQUIRED", "publishable_automatically": False,
+                "requires_human_approval": True, "checks": {}, "issues": [],
+            }):
+                summary = batch.run_batch(root / "batch.json", root / "reports")
+            self.assertEqual(summary["ready_for_human_review"], 1)
+            self.assertEqual(summary["rejected"], 1)
+            self.assertEqual(summary["published"], 0)
+
     def test_report_is_created_without_publication(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
