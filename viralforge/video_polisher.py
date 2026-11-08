@@ -325,12 +325,36 @@ def polish_video(
             "[0:v]scale=1080:1920:force_original_aspect_ratio=decrease,"
             "pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=0x111827[vbase]"
         ]
+        pb_h = 16
+        pb_y = 0
         filter_chains.append(
-            f"[vbase]drawbox=x=0:y=0:w='iw*(t/{dur:.2f})':h=14:color=#FFE45E@1:t=fill[vpbar]"
+            f"[vbase]drawbox=x=0:y={pb_y}:w=iw:h={pb_h}:color=0x0F172A@0.85:t=fill[vtrack]"
+        )
+        filter_chains.append(
+            f"color=c=#FFE45E:s=1080x{pb_h}:d={dur:.2f}[pbar_col]"
+        )
+        filter_chains.append(
+            f"[vtrack][pbar_col]overlay=x='-w+(t/{dur:.2f})*w':y={pb_y}[vpbar]"
         )
 
         prev_label = "vpbar"
         input_args = ["-i", str(src), "-i", str(master_wav)]
+
+        # 6.2) Marca de agua institucional (Academia Zenit)
+        wm_path = settings.root / "assets" / "overlays" / "zenit_watermark_pill_1080p.png"
+        if not wm_path.exists():
+            wm_path = settings.root / "assets" / "overlays" / "zenit_watermark_pill.png"
+        if wm_path.exists():
+            wm_in_idx = len(input_args) // 2
+            input_args.extend(["-i", str(wm_path)])
+            wm_x = 1080 - 32 - 246
+            wm_y = 24
+            wm_out = "vwm"
+            filter_chains.append(
+                f"[{prev_label}][{wm_in_idx}:v]overlay=x={wm_x}:y={wm_y}:"
+                f"enable='between(t,0,{max(1.0, dur - 3.8):.2f})'[{wm_out}]"
+            )
+            prev_label = wm_out
 
         for idx, item in enumerate(overlay_inputs):
             if len(item) == 5:
@@ -348,7 +372,7 @@ def polish_video(
             placement = prepare_overlay(
                 png_path, workdir, y_pos, x_pos, is_cta=is_cta
             )
-            in_idx = 2 + idx
+            in_idx = len(input_args) // 2
             input_args.extend(["-i", str(placement.path)])
             out_label = f"vlay{idx}"
 
