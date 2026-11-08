@@ -1066,8 +1066,12 @@
         <div class="card-head">
           <span class="section-tag">PASO 4</span>
           <h2>⚡ Ejecutar Pulido y Exportar Video 9:16</h2>
-          <p class="muted">Ensambla el video original con los subtítulos cinéticos sincronizados, la barra de progreso de retención, los efectos Earshot y el CTA final.</p>
+          <p class="muted">Edita el video terminado sin tapar fórmulas, diagramas ni la pizarra. Analiza zonas seguras por escena antes de insertar los efectos.</p>
         </div>
+        <label style="display:flex;align-items:center;gap:10px;margin:8px 0 16px">
+          <input type="checkbox" id="polishKeepOriginalCaptions" checked />
+          Conservar los subtítulos originales de NotebookLM (sin duplicarlos)
+        </label>
         <div class="btn-row">
           <button type="button" class="btn btn-primary" id="btnRenderPolish">
             ⚡ Renderizar Video Pulido Completo (MP4 9:16)
@@ -1082,6 +1086,7 @@
             <video id="polishResultVideo" controls preload="metadata" style="width:100%;border-radius:12px;aspect-ratio:9/16;background:#000;margin:12px 0"></video>
             <div class="btn-row" style="justify-content:center">
               <a id="polishDownloadBtn" class="btn btn-primary" href="#" download="video_pulido.mp4">⬇️ Descargar MP4 para Redes</a>
+              <a id="polishLayoutReportBtn" class="btn btn-glass" href="#" download="control_visual.json">📋 Informe visual</a>
             </div>
           </div>
         </div>
