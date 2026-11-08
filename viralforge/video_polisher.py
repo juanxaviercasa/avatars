@@ -312,49 +312,15 @@ def polish_video(
         if on_progress:
             on_progress(0.60, "Configurando motor de composición gráfica y barra de retención...")
 
-        # 6) Armar filter_complex con todas las capas gráficas
-        # Juegos de cámara dinámicos estilo Netflix / Videoclip (Cortes rítmicos cada ~4 segundos hasta el final):
-        # CAM 1: Plano General 1.0x (Establecimiento y relación docente-pizarra)
-        # CAM 2: Plano Medio Orador 1.16x (Enfoque en orador y contacto visual)
-        # CAM 3: Plano Detalle Pizarra 1.26x (Acercamiento a la tiza y ecuaciones)
-        speaker_intervals = []
-        board_intervals = []
-        curr_t = 0.0
-        pat = ["speaker", "board", "wide", "board"]
-        pat_idx = 0
-        dur_target = max(0.0, dur - 3.8)
-        while curr_t < dur_target:
-            seg_len = 3.5 if pat[pat_idx % len(pat)] == "speaker" else 4.2
-            end_t = min(curr_t + seg_len, dur_target)
-            mode = pat[pat_idx % len(pat)]
-            if mode == "speaker":
-                speaker_intervals.append((round(curr_t, 2), round(end_t, 2)))
-            elif mode == "board":
-                board_intervals.append((round(curr_t, 2), round(end_t, 2)))
-            curr_t = end_t
-            pat_idx += 1
-
-        sp_enable = "+".join(f"between(t,{s:.1f},{e:.1f})" for s, e in speaker_intervals)
-        bd_enable = "+".join(f"between(t,{s:.1f},{e:.1f})" for s, e in board_intervals)
-
+        # 6) El material de NotebookLM está FINALIZADO: nunca hacer
+        # crop ni zoom ciego, porque puede cortar una fórmula o diagrama.
+        # Preservamos íntegramente el video dentro del lienzo 9:16 y usamos
+        # las bandas libres para capas virales y subtítulos cuando existan.
         ass_filter_path = str(ass_path).replace("\\", "/").replace(":", "\\:")
-
-        filter_chains = []
-        filter_chains.append(
-            "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,split=3[v_cam_wide][v_raw2][v_raw3]"
-        )
-        filter_chains.append(
-            "[v_raw2]crop=iw/1.14:ih/1.14:iw*0.04:0,scale=1080:1920[v_cam_speaker]"
-        )
-        filter_chains.append(
-            "[v_raw3]crop=iw/1.14:ih/1.14:iw*0.08:0,scale=1080:1920[v_cam_board]"
-        )
-        filter_chains.append(
-            f"[v_cam_wide][v_cam_speaker]overlay=0:0:enable='{sp_enable}'[v_step1]"
-        )
-        filter_chains.append(
-            f"[v_step1][v_cam_board]overlay=0:0:enable='{bd_enable}'[vbase]"
-        )
+        filter_chains = [
+            "[0:v]scale=1080:1920:force_original_aspect_ratio=decrease,"
+            "pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=0x111827[vbase]"
+        ]
         filter_chains.append(
             f"[vbase]drawbox=x=0:y=0:w='iw*(t/{dur:.2f})':h=14:color=#FFE45E@1:t=fill[vpbar]"
         )
