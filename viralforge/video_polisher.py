@@ -48,6 +48,7 @@ def polish_video(
     out_mp4: str | Path | None = None,
     on_progress: Callable[[float, str], None] | None = None,
     protected_regions: list[dict[str, Any]] | None = None,
+    preserve_source_subtitles: bool = False,
 ) -> dict[str, Any]:
     """
     Ejecuta el pulido viral de alta retención sobre `source_video` (.mov o .mp4).
@@ -131,6 +132,7 @@ def polish_video(
 
         # NotebookLM ya compuso la lección: analizar la ocupación del fondo
         # original ANTES de añadir gráficos o decidir posiciones.
+        original_overlay_inputs = overlay_inputs
         overlay_inputs, layout_report = plan_overlays(
             source_video=src,
             overlays=overlay_inputs,
@@ -138,6 +140,20 @@ def polish_video(
             duration=dur,
             protected=protected_regions,
         )
+        # Si se omite una tarjeta por solapamiento, también se omite su
+        # sonido de aparición: no debe sonar un impacto sin ningún gráfico.
+        skipped_starts = [
+            float(original_overlay_inputs[item["index"]][1])
+            for item in layout_report.get("skipped", [])
+        ]
+        retained_starts = [float(item[1]) for item in overlay_inputs]
+        sfx_timeline = [
+            item for item in sfx_timeline
+            if not (
+                any(abs(float(item[1]) - start) < 0.28 for start in skipped_starts)
+                and not any(abs(float(item[1]) - start) < 0.28 for start in retained_starts)
+            )
+        ]
         if on_progress:
             on_progress(0.24, "Verificando zonas libres, fórmulas y superposiciones...")
 
@@ -384,8 +400,11 @@ def polish_video(
             )
             prev_label = out_label
 
-        # Aplicar subtítulos ASS en la última capa
-        filter_chains.append(f"[{prev_label}]ass='{ass_filter_path}'[vfinal]")
+        # Si NotebookLM ya quemó los subtítulos en la imagen, no duplicarlos.
+        if preserve_source_subtitles:
+            filter_chains.append(f"[{prev_label}]null[vfinal]")
+        else:
+            filter_chains.append(f"[{prev_label}]ass='{ass_filter_path}'[vfinal]")
 
         filter_complex_str = ";".join(filter_chains)
 
@@ -454,6 +473,7 @@ def polish_video(
             "overlays_count": len(overlay_inputs),
             "layout_report": str(layout_report_path),
             "overlays_skipped": layout_report["skipped_count"],
+            "source_subtitles_preserved": preserve_source_subtitles,
         }
 
     finally:
