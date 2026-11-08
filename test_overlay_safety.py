@@ -49,6 +49,45 @@ class TestOverlaySafety(unittest.TestCase):
                 self.assertGreaterEqual(entry, top)
                 self.assertLessEqual(entry + place.height, bottom)
 
+    def test_long_chemistry_problem_keeps_all_lines(self):
+        from viralforge.render.cards import create_problem_statement_card
+        from PIL import Image
+        with tempfile.TemporaryDirectory() as folder:
+            dst = Path(folder) / "chemistry.png"
+            paragraphs = [
+                "En la reaccion de CO con hidrogeno se producen moleculas complejas.",
+                "Si hay 4 moles de CO y 6 moles de H2 determine el reactivo limitante.",
+                "Justifique con la relacion estequiometrica y calcule producto obtenido.",
+                "Incluya todos los datos del ejercicio sin ocultar ninguna linea.",
+            ]
+            create_problem_statement_card(
+                "QUIMICA", "REACTIVO LIMITANTE", paragraphs,
+                ["CO = 4 moles", "H2 = 6 moles", "Relacion 1 a 2", "Hallar cantidad de producto"],
+                dst, width=700, height=180,
+            )
+            with Image.open(dst) as img:
+                self.assertGreater(img.height, 180)
+                self.assertEqual(img.width, 700)
+                self.assertEqual(img.mode, "RGBA")
+
+    def test_long_badge_and_cta_stay_in_image(self):
+        from viralforge.render.cards import create_popart_callout_badge, create_skool_cta_card
+        with tempfile.TemporaryDirectory() as folder:
+            badge = Path(folder) / "badge.png"
+            cta = Path(folder) / "cta.png"
+            create_popart_callout_badge(
+                "LA REACCION ESTA LIMITADA POR EL REACTIVO CON MENOR PROPORCION",
+                out_path=badge, width=420, height=95,
+            )
+            create_skool_cta_card(
+                community_name="ACADEMIA DE QUIMICA ZENIT",
+                action_text="Visita nuestro portal para mas practicas y ejercicios",
+                out_path=cta, width=700,
+            )
+            with Image.open(badge) as b, Image.open(cta) as c:
+                self.assertEqual(b.size, (420, 95))
+                self.assertEqual(c.size, (700, 250))
+
     def test_preserves_alpha_and_source(self):
         with tempfile.TemporaryDirectory() as folder:
             original = Path(folder) / "source.png"
