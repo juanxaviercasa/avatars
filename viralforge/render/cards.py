@@ -471,52 +471,63 @@ def create_broll_card(
     width: int = 760,
     height: int = 440,
 ) -> Path:
+    """Tarjeta IMAGEN-PRIMERO: fotografía y pie son zonas excluyentes.
+
+    Los textos extensos se miden antes de pintar. Si no caben, se omite el
+    rótulo opcional en lugar de cortarlo o superponerlo sobre la ilustración.
+    Se preserva toda la imagen mediante 'contain' en vez de 'cover'.
     """
-    Crea una ventana flotante de B-roll cinematográfico hiperrealista con bordes redondeados y pie de contexto.
-    """
+    from PIL import ImageOps
+    from .canvas_layout import SafeCanvas, draw_caption
+
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
+    plan = SafeCanvas(width, height)
+    image_box, caption_box = plan.image_first()
 
-    img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
+    canvas = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    d = ImageDraw.Draw(canvas)
+    d.rounded_rectangle(
+        [3, 3, width - 4, height - 4], radius=24,
+        fill=(11, 17, 31, 252),
+        outline=(56, 189, 248, 240), width=3,
+    )
+    with Image.open(image_path) as source:
+        src = source.convert("RGB")
+        contained = ImageOps.contain(
+            src, (image_box.width, image_box.height), Image.Resampling.LANCZOS
+        ).convert("RGBA")
 
-    # Cargar y ajustar imagen B-roll
-    raw_img = Image.open(image_path).convert("RGBA")
-    pad = 8
-    target_img_w = width - (pad * 2)
-    target_img_h = height - (pad * 2)
+    # Fondo neutro dentro de la fotografía: no se estiran ni recortan moléculas.
+    bg = Image.new("RGBA", (image_box.width, image_box.height), (7, 12, 24, 255))
+    px = (image_box.width - contained.width) // 2
+    py = (image_box.height - contained.height) // 2
+    bg.alpha_composite(contained, (px, py))
+    mask = Image.new("L", (image_box.width, image_box.height), 0)
+    ImageDraw.Draw(mask).rounded_rectangle(
+        [0, 0, image_box.width - 1, image_box.height - 1],
+        radius=16, fill=255,
+    )
+    canvas.paste(bg, (image_box.x, image_box.y), mask)
 
-    # Crop/fit manteniendo aspecto
-    ratio = max(target_img_w / raw_img.width, target_img_h / raw_img.height)
-    resized_w = int(raw_img.width * ratio)
-    resized_h = int(raw_img.height * ratio)
-    resized_img = raw_img.resize((resized_w, resized_h), Image.Resampling.LANCZOS)
-    crop_x = (resized_w - target_img_w) // 2
-    crop_y = (resized_h - target_img_h) // 2
-    cropped = resized_img.crop((crop_x, crop_y, crop_x + target_img_w, crop_y + target_img_h))
+    # Franja del pie físicamente separada de los píxeles de la fotografía.
+    d.rounded_rectangle(
+        [caption_box.x, caption_box.y, caption_box.right, caption_box.bottom],
+        radius=12, fill=(16, 27, 44, 255),
+    )
+    caption_text = _clean_text(caption).upper().strip()
+    if caption_text and not draw_caption(
+        canvas, caption_text, caption_box, lambda size: _get_font(size, bold=True),
+        fill=(255, 228, 94, 255),
+    ):
+        log.warning(
+            "Omitido texto de contexto demasiado largo para B-roll %s: %s",
+            image_path, caption_text,
+        )
 
-    # Máscara con esquinas redondeadas
-    mask = Image.new("L", (target_img_w, target_img_h), 0)
-    mask_draw = ImageDraw.Draw(mask)
-    mask_draw.rounded_rectangle([0, 0, target_img_w, target_img_h], radius=22, fill=255)
-
-    img.paste(cropped, (pad, pad), mask)
-
-    # Borde brillante exterior
-    draw.rounded_rectangle([2, 2, width - 2, height - 2], radius=26, outline=(255, 228, 94, 250), width=4)
-
-    # Píldora inferior de contexto / pie de foto
-    cap_clean = _clean_text(caption).upper()
-    f_cap = _fit_font(cap_clean, width - 65, 22)
-    cb = draw.textbbox((0, 0), cap_clean, font=f_cap)
-    cw = cb[2] - cb[0] + 34
-    cx1 = (width - cw) // 2
-    cy1 = height - 56
-    draw.rounded_rectangle([cx1, cy1, cx1 + cw, cy1 + 42], radius=16, fill=(11, 15, 25, 245), outline=(255, 228, 94, 240), width=2)
-    draw.text((cx1 + 17, cy1 + 9), cap_clean, font=f_cap, fill=(255, 228, 94, 255))
-
-    img.save(out_path, format="PNG")
+    canvas.save(out_path, "PNG")
     return out_path
+
 
 
 def create_step_clarification_card(
