@@ -43,12 +43,13 @@ class SceneIndex:
         duration: float,
         protected: list[dict[str, Any]] | None = None,
     ) -> "SceneIndex":
-        """Muestrea el archivo original, con el mismo crop 9:16 del compositor."""
+        """Muestrea el video completo, sin recortes y con el mismo pad 9:16."""
         step = max(1.0, float(duration) / MAX_FRAMES)
         vf = (
             f"fps=1/{step:.5f},"
-            f"scale={ANALYSIS_W}:{ANALYSIS_H}:force_original_aspect_ratio=increase,"
-            f"crop={ANALYSIS_W}:{ANALYSIS_H},format=rgb24"
+            f"scale={ANALYSIS_W}:{ANALYSIS_H}:force_original_aspect_ratio=decrease,"
+            f"pad={ANALYSIS_W}:{ANALYSIS_H}:(ow-iw)/2:(oh-ih)/2:"
+            f"color=0x111827,format=rgb24"
         )
         cmd = [
             ffmpeg.ffmpeg_exe(), "-hide_banner", "-loglevel", "error", "-i",
