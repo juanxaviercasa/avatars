@@ -58,6 +58,19 @@ def _get_font(size: int, bold: bool = True) -> ImageFont.FreeTypeFont | ImageFon
         return ImageFont.load_default()
 
 
+
+def _fit_font(text: str, max_width: int, initial_size: int, *, min_size: int = 12):
+    """Ajusta la fuente midiendo el ancho real, sin eliminar palabras."""
+    size = initial_size
+    probe = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+    while True:
+        font = _get_font(size, bold=True)
+        bbox = probe.textbbox((0, 0), text, font=font)
+        if bbox[2] - bbox[0] <= max_width or size <= min_size:
+            return font
+        size -= 1
+
+
 def create_hook_card(
     category_tag: str,
     headline: str,
@@ -75,7 +88,7 @@ def create_hook_card(
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
-    f_tag = _get_font(24, bold=True)
+    f_tag = _fit_font(_clean_text(category_tag).upper(), width - 90, 24)
     f_title = _get_font(38, bold=True)
 
     # Calcular alto dinámico según el texto
@@ -116,10 +129,29 @@ def create_hook_card(
     if curr:
         lines.append(" ".join(curr))
 
-    # Centrar líneas verticalmente en el espacio restante
+    # Evitar pérdida de texto cuando un titular ocupa más de dos líneas.
+    if len(lines) > 2:
+        f_title = _fit_font(title_clean, width - 80, 30, min_size=14)
+        lines = []
+        curr = []
+        for word in words:
+            trial = " ".join(curr + [word])
+            if curr and draw.textbbox((0, 0), trial, font=f_title)[2] > width - 80:
+                lines.append(" ".join(curr))
+                curr = [word]
+            else:
+                curr.append(word)
+        if curr:
+            lines.append(" ".join(curr))
+    if len(lines) > 2:
+        new_height = max(height, 90 + len(lines) * 42)
+        canvas = Image.new("RGBA", (width, new_height), (0, 0, 0, 0))
+        canvas.paste(img, (0, 0))
+        img = canvas
+        draw = ImageDraw.Draw(img)
     start_y = 80 if len(lines) == 1 else 74
     line_spacing = 46
-    for i, line in enumerate(lines[:2]):
+    for i, line in enumerate(lines):
         l_bbox = draw.textbbox((0, 0), line, font=f_title)
         l_w = l_bbox[2] - l_bbox[0]
         l_x = (width - l_w) // 2
@@ -152,9 +184,9 @@ def create_skool_cta_card(
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    f_badge = _get_font(22, bold=True)
-    f_main = _get_font(44, bold=True)
-    f_btn = _get_font(25, bold=True)
+    f_badge = _fit_font(_clean_text(badge_label).upper(), width - 72, 22)
+    f_main = _fit_font(_clean_text(community_name).upper(), width - 70, 44)
+    f_btn = _fit_font(_clean_text(action_text), width - 88, 25)
 
     # 1. Fondo contenedor con gradiente simulado y borde brillante
     bg_color = (13, 17, 30, 245)
@@ -213,7 +245,7 @@ def create_math_formula_card(
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    f_sub = _get_font(23, bold=True)
+    f_sub = _fit_font(_clean_text(formula_title).upper().strip(), width - 90, 23)
     f_math = _get_font(56, bold=True)
 
     # Fondo azul/cian tecnológico profundo con esquinas redondeadas y resplandor
@@ -274,8 +306,8 @@ def create_solution_card(
     draw = ImageDraw.Draw(img)
 
     f_lbl = _get_font(21, bold=True)
-    f_res = _get_font(72, bold=True)
-    f_tag = _get_font(22, bold=True)
+    f_res = _fit_font(_clean_text(result_text).upper(), width - 80, 72)
+    f_tag = _fit_font(footer_badge_text or f"CLAVE CORRECTA VERIFICADA: {_clean_text(result_text).upper()}", width - 96, 22)
 
     # Fondo verde esmeralda oscuro con borde brillante de oro
     bg_color = (5, 34, 20, 252)
@@ -517,8 +549,8 @@ def create_broll_card(
     draw.rounded_rectangle([2, 2, width - 2, height - 2], radius=26, outline=(255, 228, 94, 250), width=4)
 
     # Píldora inferior de contexto / pie de foto
-    f_cap = _get_font(22, bold=True)
     cap_clean = _clean_text(caption).upper()
+    f_cap = _fit_font(cap_clean, width - 65, 22)
     cb = draw.textbbox((0, 0), cap_clean, font=f_cap)
     cw = cb[2] - cb[0] + 34
     cx1 = (width - cw) // 2
@@ -547,7 +579,7 @@ def create_step_clarification_card(
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    f_sub = _get_font(21, bold=True)
+    f_sub = _fit_font(_clean_text(step_title).upper().strip(), width - 80, 21)
 
     bg_color = (10, 16, 32, 252)
     border_color = (168, 85, 247, 240)  # Púrpura neón
@@ -774,7 +806,8 @@ def create_popart_callout_badge(
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    f_txt = _get_font(29, bold=True)
+    clean = _clean_text(text).upper().replace("₁", "1").replace("₂", "2").replace("¡", "").replace("¿", "").strip()
+    f_txt = _fit_font(clean, width - 35, 29)
 
     # Configuración de paletas pop-art
     themes = {
@@ -790,8 +823,7 @@ def create_popart_callout_badge(
     # Cuerpo principal con borde grueso cómic
     draw.rounded_rectangle([3, 3, width - 6, height - 6], radius=16, fill=th["bg"] + (255,), outline=th["border"] + (255,), width=4)
 
-    # Texto centrado de impacto (limpiando símbolos extraños como ¡ o ¿ que causan confusión visual)
-    clean = _clean_text(text).upper().replace("₁", "1").replace("₂", "2").replace("¡", "").replace("¿", "").strip()
+    # Texto centrado de impacto (con ancho seguro)
     font_size = 29
     f_txt = _get_font(font_size, bold=True)
     tb = draw.textbbox((0, 0), clean, font=f_txt)
