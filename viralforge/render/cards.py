@@ -388,123 +388,96 @@ def create_problem_statement_card(
     problem_lines: list[str],
     data_chips: list[str],
     out_path: str | Path,
-    width: int = 980,
+    width: int = 1020,
     height: int = 250,
 ) -> Path:
-    """
-    Crea una tarjeta de planteamiento del problema ultra-legible y responsiva.
-    Píldoras en oro y blanco sólido (cero conflicto amarillo/blanco), texto blanco nítido y chips destacados.
-    """
+    """Tarjeta con alto dinámico: nunca descarta líneas ni desborda chips."""
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
+    max_w = width - 64
+    measure = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+    f_text = _get_font(28, bold=True)
+    lines: list[str] = []
+    for paragraph in problem_lines:
+        current = ""
+        for word in _clean_text(paragraph).split():
+            trial = (current + " " + word).strip()
+            if current and measure.textbbox((0, 0), trial, font=f_text)[2] > max_w:
+                lines.append(current)
+                current = word
+            else:
+                current = trial
+        if current:
+            lines.append(current)
+
+    # Los chips se distribuyen en filas completas, no fuera de la tarjeta.
+    f_chip_base = _get_font(22, bold=True)
+    chip_rows: list[list[tuple[str, int, ImageFont.ImageFont]]] = []
+    current_row: list[tuple[str, int, ImageFont.ImageFont]] = []
+    row_width = 0
+    for raw in data_chips:
+        label = _clean_text(raw).replace("₁", "1").replace("₂", "2").replace("ₘ", "m")
+        font = _fit_font(label, max_w - 30, 22)
+        bbox = measure.textbbox((0, 0), label, font=font)
+        pill_width = min(max_w, bbox[2] - bbox[0] + 26)
+        if current_row and row_width + 12 + pill_width > max_w:
+            chip_rows.append(current_row)
+            current_row = []
+            row_width = 0
+        current_row.append((label, pill_width, font))
+        row_width += pill_width + (12 if len(current_row) > 1 else 0)
+    if current_row:
+        chip_rows.append(current_row)
+
+    text_height = max(1, len(lines)) * 40
+    chips_height = len(chip_rows) * 52
+    content_bottom = 60 + text_height + 16 + chips_height + 20
+    height = max(height, content_bottom)
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
+    draw.rounded_rectangle(
+        [3, 3, width - 3, height - 3], radius=24,
+        fill=(10, 16, 30, 252), outline=(255, 228, 94, 250), width=3,
+    )
 
-    f_tag = _get_font(21, bold=True)
-    f_title = _get_font(21, bold=True)
-    f_text = _get_font(28, bold=True)
-    f_chip = _get_font(22, bold=True)
+    subject = _clean_text(subject_tag).upper()
+    title = _clean_text(problem_title).upper()
+    # Los dos encabezados deben compartir el espacio horizontal disponible.
+    f_tag = _fit_font(subject, max_w // 2 - 25, 21)
+    f_title = _fit_font(title, max_w // 2 - 25, 21)
+    for text, font, left, fill, text_color in (
+        (subject, f_tag, 28, (255, 215, 0, 255), (0, 0, 0, 255)),
+        (title, f_title, width // 2 + 8, (255, 255, 255, 255), (2, 132, 199, 255)),
+    ):
+        bbox = draw.textbbox((0, 0), text, font=font)
+        available = (width // 2 - 32) if left == 28 else (width - left - 28)
+        pill_width = min(available, bbox[2] - bbox[0] + 28)
+        draw.rounded_rectangle(
+            [left, 14, left + pill_width, 48], radius=16, fill=fill,
+        )
+        draw.text((left + 14, 20), text, font=font, fill=text_color)
 
-    # Word wrapping inteligente para evitar cualquier corte horizontal
-    max_w = width - 64
-    wrapped_lines = []
-    for line in problem_lines:
-        words = _clean_text(line).split()
-        cur = []
-        for w in words:
-            test_line = " ".join(cur + [w])
-            b = draw.textbbox((0, 0), test_line, font=f_text)
-            if b[2] - b[0] <= max_w:
-                cur.append(w)
-            else:
-                if cur:
-                    wrapped_lines.append(" ".join(cur))
-                    cur = [w]
-                else:
-                    wrapped_lines.append(w)
-                    cur = []
-        if cur:
-            wrapped_lines.append(" ".join(cur))
-
-    # Altura dinámica según número de líneas para que nunca se desborde
-    n_lines = max(1, min(len(wrapped_lines), 3))
-    line_spacing = 38
-    req_h = 60 + (n_lines * line_spacing) + 58
-    if req_h > height:
-        height = req_h
-        img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-        draw = ImageDraw.Draw(img)
-
-    # Fondo glassmorphism oscuro con resplandor dorado intenso
-    bg_color = (10, 16, 30, 252)
-    border_color = (255, 228, 94, 250)  # Oro brillante #FFE45E
-    draw.rounded_rectangle([3, 3, width - 3, height - 3], radius=24, fill=bg_color, outline=border_color, width=3)
-
-    # 1. Píldora de materia superior: Fondo Oro Sólido + Texto Negro
-    tag_clean = _clean_text(subject_tag).upper()
-    tb = draw.textbbox((0, 0), tag_clean, font=f_tag)
-    tw = tb[2] - tb[0]
-    p_x1 = 28
-    p_y1 = 14
-    p_x2 = p_x1 + tw + 28
-    p_y2 = p_y1 + 34
-    draw.rounded_rectangle([p_x1, p_y1, p_x2, p_y2], radius=16, fill=(255, 215, 0, 255))
-    draw.text((p_x1 + 14, p_y1 + 6), tag_clean, font=f_tag, fill=(0, 0, 0, 255))
-
-    # Píldora de título a la derecha: Fondo Blanco Puro + Texto Cian Eléctrico Profundo (Contraste 20:1)
-    t_clean = _clean_text(problem_title).upper()
-    ttb = draw.textbbox((0, 0), t_clean, font=f_title)
-    ttw = ttb[2] - ttb[0]
-    tp_x1 = p_x2 + 16
-    tp_x2 = tp_x1 + ttw + 28
-    draw.rounded_rectangle([tp_x1, p_y1, tp_x2, p_y2], radius=16, fill=(255, 255, 255, 255), outline=(56, 189, 248, 255), width=2)
-    draw.text((tp_x1 + 14, p_y1 + 6), t_clean, font=f_title, fill=(2, 132, 199, 255))
-
-    # 2. Líneas del enunciado en blanco puro de alta legibilidad (Cero texto cortado)
-    y_text = 60
-    for line in wrapped_lines[:3]:
-        draw.text((32, y_text), line, font=f_text, fill=(255, 255, 255, 255))
-        y_text += line_spacing
-
-    # 3. Chips de datos clave en la base: Píldoras agrandadas con subíndices reales renderizados (P1, P2, Pm, V2)
-    f_chip = _get_font(24, bold=True)
-    f_chip_sub = _get_font(17, bold=True)
-    chip_x = 28
-    chip_y = height - 54
-    for chip in data_chips[:5]:
-        clean_c = _clean_text(chip).replace("₁", "1").replace("₂", "2").replace("ₘ", "m")
-        parts = []
-        if "P1" in clean_c:
-            p0, p1 = clean_c.split("P1", 1)
-            parts = [(p0 + "P", f_chip, 0), ("1", f_chip_sub, 6), (p1, f_chip, 0)]
-        elif "P2" in clean_c:
-            p0, p1 = clean_c.split("P2", 1)
-            parts = [(p0 + "P", f_chip, 0), ("2", f_chip_sub, 6), (p1, f_chip, 0)]
-        elif "Pm" in clean_c:
-            p0, p1 = clean_c.split("Pm", 1)
-            parts = [(p0 + "P", f_chip, 0), ("m", f_chip_sub, 6), (p1, f_chip, 0)]
-        elif "V2" in clean_c:
-            p0, p1 = clean_c.split("V2", 1)
-            parts = [(p0 + "V", f_chip, 0), ("2", f_chip_sub, 6), (p1, f_chip, 0)]
-        elif "V1" in clean_c:
-            p0, p1 = clean_c.split("V1", 1)
-            parts = [(p0 + "V", f_chip, 0), ("1", f_chip_sub, 6), (p1, f_chip, 0)]
-        else:
-            parts = [(clean_c, f_chip, 0)]
-
-        total_w = sum((draw.textbbox((0, 0), txt, font=fnt)[2] - draw.textbbox((0, 0), txt, font=fnt)[0]) for txt, fnt, _ in parts)
-        cw = total_w + 26
-        draw.rounded_rectangle([chip_x, chip_y, chip_x + cw, chip_y + 42], radius=14, fill=(255, 255, 255, 255), outline=(56, 189, 248, 255), width=2)
-        cur_x = chip_x + 13
-        for txt, fnt, dy in parts:
-            draw.text((cur_x, chip_y + 8 + dy), txt, font=fnt, fill=(2, 132, 199, 255))
-            tb_part = draw.textbbox((0, 0), txt, font=fnt)
-            cur_x += (tb_part[2] - tb_part[0])
-        chip_x += cw + 12
+    y = 60
+    for line in lines:
+        font = _fit_font(line, max_w, 28)
+        draw.text((32, y), line, font=font, fill=(255, 255, 255, 255))
+        y += 40
+    y += 16
+    for row in chip_rows:
+        x = 28
+        for label, pill_width, font in row:
+            draw.rounded_rectangle(
+                [x, y, x + pill_width, y + 42], radius=14,
+                fill=(255, 255, 255, 255), outline=(56, 189, 248, 255), width=2,
+            )
+            draw.text((x + 13, y + 9), label, font=font, fill=(2, 132, 199, 255))
+            x += pill_width + 12
+        y += 52
 
     img.save(out_path, format="PNG")
     return out_path
+
 
 
 def create_broll_card(
