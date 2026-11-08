@@ -148,9 +148,14 @@ def run_batch(
     # Evitar que dos procesos paralelos rendericen el MISMO MP4.
     targets: set[Path] = set()
     for job in jobs:
-        manifest_path = _resolve(root, job["manifest"])
-        manifest = load_manifest(manifest_path)
-        output = _resolve(manifest_path.parent, manifest["candidate_video"])
+        try:
+            manifest_path = _resolve(root, job["manifest"])
+            manifest = load_manifest(manifest_path)
+            output = _resolve(manifest_path.parent, manifest["candidate_video"])
+        except (OSError, ValueError, KeyError, json.JSONDecodeError):
+            # Un manifiesto roto se RECHAZARÁ individualmente en _job;
+            # no detener otros cientos de videos correctos del lote.
+            continue
         if output in targets:
             raise ValueError(f"Dos trabajos quieren escribir al mismo video: {output}")
         targets.add(output)
