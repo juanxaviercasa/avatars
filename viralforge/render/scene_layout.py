@@ -133,8 +133,8 @@ class SceneIndex:
         start: float, end: float,
     ) -> float:
         """Peor fracción de contenido visual tapado en fotogramas muestreados."""
-        # No permitir tapas sobre el logotipo institucional en esquina superior derecha.
-        if x < FRAME_WIDTH and x + width > 800 and y < 85 and y + height > 18:
+        # No permitir tapas sobre el logotipo preexistente de NotebookLM/Zenit.
+        if x < FRAME_WIDTH and x + width > 820 and y < 145 and y + height > 22:
             return 1.0
         for rx, ry, rw, rh, t0, t1 in self.protected:
             if end > t0 and start < t1 and intersects(
@@ -164,7 +164,7 @@ def _candidates(width: int, height: int, preferred_x: int, preferred_y: int):
     xmax = FRAME_WIDTH - MARGIN - width
     ymax = CONTENT_BOTTOM - height
     xs = [preferred_x, (FRAME_WIDTH - width) // 2, MARGIN, xmax]
-    ys = [preferred_y, MARGIN, 85, 110, 140, 175, 220, 370, 620, 880, 1160, ymax]
+    ys = [preferred_y, MARGIN, 175, 370, 620, 880, 1160, ymax]
     candidates: list[tuple[int, int]] = []
     for px, py in [(preferred_x, preferred_y)] + [
         (x, y) for y in ys for x in xs
@@ -238,11 +238,6 @@ def plan_overlays(
             "cta" in Path(png_path).stem.lower()
             or t_in >= duration - 4.5
         )
-        is_hook = (
-            t_in <= 0.5
-            and t_out <= 3.5
-            and "hook" in Path(png_path).stem.lower()
-        )
         base = prepare_overlay(png_path, safe_dir, y_pref, x_pref, is_cta=is_cta)
         if is_cta or index is None:
             accepted.append((base.path, t_in, t_out, base.y, base.x))
@@ -251,19 +246,6 @@ def plan_overlays(
                 "index": i, "position": [base.x, base.y],
                 "size": [base.width, base.height],
                 "mode": "cta" if is_cta else "geometry_fallback",
-            })
-            continue
-
-        if is_hook:
-            hook_y = max(85, base.y)
-            hook_x = base.x
-            accepted.append((base.path, t_in, t_out, hook_y, hook_x))
-            occupied.append((t_in, t_out, (hook_x, hook_y, base.width, base.height)))
-            report["accepted"].append({
-                "index": i, "position": [hook_x, hook_y],
-                "size": [base.width, base.height],
-                "source": Path(png_path).name,
-                "mode": "hook",
             })
             continue
 
@@ -284,7 +266,7 @@ def plan_overlays(
                 coverage = index.obscured_fraction(x, y, w, h, t_in, t_out)
                 # Localizaciones cercanas a las preferencias originales ganan.
                 distance = abs(x - pref_x) / FRAME_WIDTH + abs(y - base.y) / FRAME_HEIGHT
-                metric = coverage + distance * 0.04
+                metric = coverage + distance * 0.002
                 if best is None or metric < best[0]:
                     best = (metric, coverage, x, y, w, h, scale)
             if best is not None and best[1] <= MAX_OBSCURED:
