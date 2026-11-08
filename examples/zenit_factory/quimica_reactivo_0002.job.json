@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "job_id": "quimica_reactivo_0002",
+  "candidate_video": "/RUTA/resultado_clase_002.mp4",
+  "audio_reference": "/RUTA/pista_de_voz_aprobada_002.mp4",
+  "source_video": "/RUTA/clase_002_notebooklm.mp4",
+  "segments": [
+    {
+      "kind": "intro",
+      "start": 0,
+      "end": 4.5
+    },
+    {
+      "kind": "lesson",
+      "start": 4.5,
+      "end": 60.5
+    },
+    {
+      "kind": "cta",
+      "start": 60.5,
+      "end": 65
+    }
+  ],
+  "protected_regions": [
+    {
+      "label": "Ecuación en el centro de la pizarra",
+      "start": 5,
+      "end": 58,
+      "rect": [
+        90,
+        320,
+        900,
+        450
+      ],
+      "source_offset_s": 4.5,
+      "max_mae": 16
+    }
+  ],
+  "overlays": [
+    {
+      "id": "hook",
+      "kind": "hook",
+      "start": 0,
+      "end": 3.5,
+      "rect": [
+        55,
+        675,
+        970,
+        220
+      ]
+    },
+    {
+      "id": "recurso_visual",
+      "kind": "broll",
+      "start": 12,
+      "end": 17,
+      "rect": [
+        190,
+        930,
+        700,
+        390
+      ],
+      "slots": [
+        {
+          "role": "image",
+          "rect": [
+            18,
+            18,
+            664,
+            275
+          ]
+        },
+        {
+          "role": "text",
+          "rect": [
+            18,
+            307,
+            664,
+            64
+          ]
+        }
+      ]
+    },
+    {
+      "id": "progress",
+      "kind": "progress",
+      "start": 0,
+      "end": 60.5,
+      "rect": [
+        90,
+        1803,
+        900,
+        24
+      ]
+    },
+    {
+      "id": "cta",
+      "kind": "cta",
+      "start": 60.5,
+      "end": 65,
+      "rect": [
+        0,
+        0,
+        1080,
+        1920
+      ]
+    }
+  ]
+}
