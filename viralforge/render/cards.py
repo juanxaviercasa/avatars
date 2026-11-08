@@ -14,12 +14,15 @@ cajas de texto desalineadas y aspecto aficionado).
 """
 from __future__ import annotations
 
+import logging
 import os
 import re
 from pathlib import Path
 from typing import Any
 
 from PIL import Image, ImageDraw, ImageFont
+
+log = logging.getLogger("viralforge.cards")
 
 
 def _clean_text(s: str) -> str:
@@ -259,10 +262,10 @@ def create_math_formula_card(
         paste_y = 50 + (height - 50 - new_h) // 2
         img.paste(ltx_img, (paste_x, paste_y), ltx_img)
     except Exception as err:
-        expr = _clean_text(formula_latex)
-        e_bbox = draw.textbbox((0, 0), expr, font=f_math)
-        e_w = e_bbox[2] - e_bbox[0]
-        draw.text(((width - e_w) // 2, 90), expr, font=f_math, fill=(255, 255, 255, 255))
+        # Nunca mostrar LaTeX crudo o malformado sobre la clase original.
+        # El planificador omitirá este PNG transparente y lo registrará.
+        log.warning("Fórmula omitida por error en MathText: %s", err)
+        img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
 
     img.save(out_path, format="PNG")
     return out_path
@@ -561,8 +564,9 @@ def create_step_clarification_card(
         paste_x = (width - new_w) // 2
         paste_y = 48 + (height - 48 - new_h) // 2
         img.paste(ltx_img, (paste_x, paste_y), ltx_img)
-    except Exception:
-        pass
+    except Exception as err:
+        log.warning("Paso matemático omitido por error en MathText: %s", err)
+        img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
 
     img.save(out_path, format="PNG")
     return out_path
