@@ -10,7 +10,39 @@
     "fps": 30,
     "frame_count": 2222,
     "duration_s": 74.066667,
-    "original_recipe": "reactivo_limitante_v2_reference_canvas.json"
+    "original_recipe": "reactivo_limitante_v2_reference_canvas.json",
+    "observed_progress": [
+      {
+        "time_s": 17,
+        "gold_fraction": 0.378
+      },
+      {
+        "time_s": 33,
+        "gold_fraction": 0.667
+      },
+      {
+        "time_s": 53,
+        "gold_fraction": 0.922
+      },
+      {
+        "time_s": 70,
+        "gold_fraction": 0
+      }
+    ],
+    "observed_equation_region_mae": {
+      "description": "Promedio absoluto estimado contra NotebookLM original en región x=100..960, y=340..620, con t_original=t_v2-6.81",
+      "timestamps_s": [
+        17,
+        33,
+        53
+      ],
+      "mae": [
+        1.71,
+        1.94,
+        1.69
+      ],
+      "max_acceptable_mae": 16
+    }
   },
   "output": {
     "width": 1080,
