@@ -32,6 +32,8 @@ def assemble_zenit_video(
     outro_card_img: Path | None = None,
     cta_duration: float = 6.0,
     action_prompt: str = "ZENIT",
+    closing_title: str | None = None,
+    closing_body: str | None = None,
 ) -> Path:
     """Ensambla el video completo con todos los elementos en capas seguras."""
     base_video = Path(base_video).resolve()
@@ -47,7 +49,12 @@ def assemble_zenit_video(
     # 2. Preparar imagen de cierre / CTA (Pasos 8 y 9)
     if outro_card_img is None or not Path(outro_card_img).exists():
         outro_card_img = workdir / "closing_cta_card.png"
-        create_closing_cta_card(outro_card_img, action_prompt=action_prompt)
+        create_closing_cta_card(
+            outro_card_img,
+            action_prompt=action_prompt,
+            closing_title=closing_title,
+            closing_body=closing_body,
+        )
         
     # Obtener duración del video base
     import json

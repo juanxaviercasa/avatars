@@ -96,7 +96,11 @@ def ink_mask(frame: np.ndarray, previous: np.ndarray | None = None) -> np.ndarra
     return mask
 
 
-def _max_rectangle(free: np.ndarray) -> tuple[int, int, int, int, int]:
+def _max_rectangle(
+    free: np.ndarray,
+    min_w_cells: int = 1,
+    min_h_cells: int = 1,
+) -> tuple[int, int, int, int, int]:
     """Mayor rectángulo de celdas libres: (área, x, y, w, h) en celdas."""
     rows, cols = free.shape
     heights = np.zeros(cols, dtype=np.int32)
@@ -113,7 +117,7 @@ def _max_rectangle(free: np.ndarray) -> tuple[int, int, int, int, int]:
                 left = stack[-1] + 1 if stack else 0
                 width = c - left
                 area = height * width
-                if area > best[0]:
+                if width >= min_w_cells and height >= min_h_cells and area > best[0]:
                     best = (int(area), left, r - height + 1, width, int(height))
                 start = left
             stack.append(c)
@@ -167,17 +171,15 @@ class FreeSpaceIndex:
         cells = occ[: GRID_H * CELL, : GRID_W * CELL].reshape(
             GRID_H, CELL, GRID_W, CELL).any(axis=(1, 3))
         free = ~cells
+        min_cw = max(1, min_w // (CELL * K))
+        min_ch = max(1, min_h // (CELL * K))
         zones: list[FreeZone] = []
         for _ in range(max_zones):
-            area, cx, cy, cw, ch = _max_rectangle(free)
+            area, cx, cy, cw, ch = _max_rectangle(free, min_cw, min_ch)
             if area == 0:
                 break
-            x, y, w, h = (cx * CELL * K, cy * CELL * K, cw * CELL * K, ch * CELL * K)
-            if w < min_w or h < min_h:
-                # Bloquear y seguir: puede haber otra zona más alta que ancha.
-                free[cy: cy + ch, cx: cx + cw] = False
-                continue
-            zones.append(FreeZone(round(t0, 2), round(t1, 2), x, y, w, h))
+            x, y, w, h = (int(cx * CELL * K), int(cy * CELL * K), int(cw * CELL * K), int(ch * CELL * K))
+            zones.append(FreeZone(round(float(t0), 2), round(float(t1), 2), x, y, w, h))
             free[cy: cy + ch, cx: cx + cw] = False
         zones.sort(key=lambda z: z.area, reverse=True)
         return zones
@@ -215,8 +217,17 @@ class FreeSpaceIndex:
         report = {"step": 3, "canvas": [FRAME_W, FRAME_H],
                   "reserved": [asdict(r) for r in self.reserved],
                   "windows": self.timeline()}
+        def _json_default(obj):
+            if isinstance(obj, (np.integer, np.int32, np.int64)):
+                return int(obj)
+            if isinstance(obj, (np.floating, np.float32, np.float64)):
+                return float(obj)
+            if isinstance(obj, np.ndarray):
+                return obj.tolist()
+            return str(obj)
+
         (workdir / "03_free_zones.json").write_text(
-            json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+            json.dumps(report, indent=2, ensure_ascii=False, default=_json_default), encoding="utf-8")
         return report
 
 

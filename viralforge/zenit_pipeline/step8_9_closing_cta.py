@@ -36,12 +36,22 @@ from .brand import (
 def create_closing_cta_card(
     out_path: Path,
     action_prompt: str = "ZENIT",
+    closing_title: str | None = None,
+    closing_body: str | None = None,
+    bullets: list[str] | None = None,
     width: int = FRAME_W,
     height: int = FRAME_H,
 ) -> Path:
-    """Genera la imagen completa de cierre oficial para los pasos 8 y 9."""
+    """Genera la imagen completa de cierre oficial para los pasos 8 y 9.
+    
+    Permite variar el título y el cuerpo del cierre (Paso 8) con frases semejantes
+    que inviten a visitar el sitio web www.sistemazenit.com (Paso 9).
+    """
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    title_text = (closing_title or CLOSING_TITLE).strip()
+    body_text = (closing_body or CLOSING_BODY).strip()
     
     # 1. Fondo base degradado oscuro
     card = Image.new("RGBA", (width, height), (*NAVY, 255))
@@ -104,29 +114,50 @@ def create_closing_cta_card(
         width=3,
     )
     
-    # Paso 8 - Título: ¿Quieres seguir aprendiendo más?
-    d.text((width // 2, box_y + 60), CLOSING_TITLE, font=f_close_title, fill=(*GOLD, 255), anchor="mm")
+    # Paso 8 - Título: ¿Quieres seguir aprendiendo más? (o frase semejante)
+    # Ajuste dinámico de tamaño de fuente para no desbordar nunca el recuadro (margen mín. 40px por lado)
+    for t_sz in range(46, 22, -2):
+        f_close_title = ImageFont.truetype(str(FONT_BOLD), t_sz)
+        tb = d.textbbox((0, 0), title_text, font=f_close_title)
+        if (tb[2] - tb[0]) <= box_w - 80:
+            break
+    d.text((width // 2, box_y + 60), title_text, font=f_close_title, fill=(*GOLD, 255), anchor="mm")
     d.line([box_x + 60, box_y + 105, box_x + box_w - 60, box_y + 105], fill=(51, 65, 85, 255), width=2)
     
-    # Paso 8 - Cuerpo: Visita Sistema Zenit, donde aprenderás matemáticas y ciencias.
+    # Paso 8 - Cuerpo: Visita Sistema Zenit, donde aprenderás matemáticas y ciencias (o frase semejante)
     # Envoltura inteligente para centrado perfecto
-    lines_body = [
-        "Visita Sistema Zenit,",
-        "donde aprenderás matemáticas y ciencias."
-    ]
-    cur_by = box_y + 165
+    if "\n" in body_text:
+        lines_body = [line.strip() for line in body_text.splitlines() if line.strip()]
+    else:
+        # Wrap words to fit inner box width
+        words = body_text.split()
+        lines_body = []
+        cur_l = ""
+        for w in words:
+            cand = f"{cur_l} {w}".strip()
+            bbox = d.textbbox((0, 0), cand, font=f_close_body)
+            if bbox[2] - bbox[0] <= box_w - 120:
+                cur_l = cand
+            else:
+                if cur_l:
+                    lines_body.append(cur_l)
+                cur_l = w
+        if cur_l:
+            lines_body.append(cur_l)
+
+    cur_by = box_y + 155
     for l_txt in lines_body:
         d.text((width // 2, cur_by), l_txt, font=f_close_body, fill=(*SOFT_WHITE, 255), anchor="mm")
         cur_by += 44
         
     # Puntos clave de valor
-    bullets = [
+    active_bullets = bullets if bullets is not None else [
         "Metodología exprés paso a paso",
         "Resolución guiada de exámenes de admisión",
         "Comunidad activa de alto rendimiento",
     ]
-    cur_by += 20
-    for b_item in bullets:
+    cur_by += 15
+    for b_item in active_bullets:
         d.ellipse([box_x + 70, cur_by - 10, box_x + 92, cur_by + 12], fill=(*EMERALD, 255))
         d.text((box_x + 115, cur_by), b_item, font=f_sub_brand, fill=(*WHITE, 255), anchor="lm")
         cur_by += 50

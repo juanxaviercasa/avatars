@@ -105,6 +105,11 @@ def _render_formula(latex: str, max_w: int) -> Image.Image | None:
 def _layout(spec: VisualSpec, inner_w: int, t_size: int, b_size: int):
     """Bloques medidos (tipo, contenido, ancho, alto) o None si no cabe."""
     blocks = []
+    if spec.kind == "molecule_card" and spec.image:
+        comp = _build_molecule_composite(spec, inner_w, t_size, b_size)
+        if comp is None:
+            return None
+        return [("composite", comp, comp.width, comp.height, None)]
     if spec.title:
         f = _font(t_size)
         lines = wrap_words(spec.title, f, inner_w)
@@ -134,6 +139,120 @@ def _layout(spec: VisualSpec, inner_w: int, t_size: int, b_size: int):
         for ln in lines:
             blocks.append(("body", ln, _text_w(f, ln), _line_h(f), f))
     return blocks
+
+
+def _build_molecule_composite(spec: VisualSpec, inner_w: int, t_size: int, b_size: int) -> Image.Image | None:
+    try:
+        with Image.open(spec.image) as src:
+            mol_raw = src.convert("RGBA")
+    except Exception:
+        return None
+
+    mol_box = min(160, max(110, int(inner_w * 0.22)))
+    ratio = min(mol_box / mol_raw.width, mol_box / mol_raw.height)
+    tw = max(1, int(mol_raw.width * ratio))
+    th = max(1, int(mol_raw.height * ratio))
+    thumb = mol_raw.resize((tw, th), Image.Resampling.LANCZOS)
+
+    gap = 28
+    text_avail_w = inner_w - tw - gap
+    if text_avail_w < 260:
+        return None
+
+    f_t = _font(t_size)
+    f_b = _font(b_size)
+    f_s = _font(int(b_size * 1.15))
+
+    title_lines = wrap_words(spec.title, f_t, text_avail_w) if spec.title else []
+    body_lines = wrap_words(spec.body, f_b, text_avail_w) if spec.body else []
+    if title_lines is None or body_lines is None:
+        return None
+
+    # En molecule_card, preferir 1 sola línea para título y cuerpo cortos mientras queden tallas
+    if t_size > MIN_TITLE and ((spec.title and len(spec.title) <= 28 and len(title_lines) > 1) or (spec.body and len(spec.body) <= 36 and len(body_lines) > 1)):
+        return None
+
+    sub_lines = []
+    sub_img = None
+    if spec.latex and spec.subtitle:
+        # Combinar fórmula LaTeX con subtítulo Unicode (tildes perfectas + subíndices químicos)
+        f_sz_latex = max(22, int(b_size * 0.85))
+        raw_l = render_latex_formula(spec.latex, fontsize=f_sz_latex, color="#34d399", dpi=120)
+        lbbox = raw_l.getbbox()
+        if lbbox is None:
+            return None
+        l_crop = raw_l.crop(lbbox)
+        l_sub, t_sub, r_sub, b_sub = f_s.getbbox(spec.subtitle)
+        sw, sh = r_sub - l_sub, b_sub - t_sub
+        comb_w = l_crop.width + 14 + sw
+        if comb_w > text_avail_w:
+            return None
+        comb_h = max(l_crop.height, sh)
+        sub_img = Image.new("RGBA", (comb_w, comb_h), (0, 0, 0, 0))
+        sub_img.alpha_composite(l_crop, (0, (comb_h - l_crop.height) // 2))
+        sd = ImageDraw.Draw(sub_img)
+        sd.text((l_crop.width + 14 - l_sub, (comb_h - sh) // 2 - t_sub), spec.subtitle, font=f_s, fill=(*EMERALD, 255))
+    elif spec.latex:
+        if re.search(r"[^\x00-\x7f]", spec.latex):
+            sub_lines = wrap_words(spec.latex, f_s, text_avail_w)
+            if sub_lines is None:
+                return None
+        else:
+            sub_img = _render_formula(spec.latex, text_avail_w)
+            if sub_img is None:
+                return None
+    elif spec.subtitle:
+        sub_lines = wrap_words(spec.subtitle, f_s, text_avail_w)
+        if sub_lines is None:
+            return None
+
+    items = []
+    right_w = 0
+    accent = ACCENTS.get(spec.accent, SKY)
+
+    for tl in title_lines:
+        w = _text_w(f_t, tl)
+        h = _line_h(f_t)
+        items.append(("text", tl, f_t, accent, w, h))
+        right_w = max(right_w, w)
+
+    if sub_img is not None:
+        items.append(("image", sub_img, None, None, sub_img.width, sub_img.height))
+        right_w = max(right_w, sub_img.width)
+    elif sub_lines:
+        for sl in sub_lines:
+            w = _text_w(f_s, sl)
+            h = _line_h(f_s)
+            items.append(("text", sl, f_s, EMERALD, w, h))
+            right_w = max(right_w, w)
+
+    for bl in body_lines:
+        w = _text_w(f_b, bl)
+        h = _line_h(f_b)
+        items.append(("text", bl, f_b, SOFT_WHITE, w, h))
+        right_w = max(right_w, w)
+
+    item_gap = max(8, int(b_size * 0.35))
+    right_h = sum(it[5] for it in items) + item_gap * max(0, len(items) - 1)
+
+    comp_w = tw + gap + right_w
+    comp_h = max(th, right_h)
+    comp = Image.new("RGBA", (comp_w, comp_h), (0, 0, 0, 0))
+    comp.alpha_composite(thumb, (0, (comp_h - th) // 2))
+
+    cd = ImageDraw.Draw(comp)
+    cur_y = (comp_h - right_h) // 2
+    for it in items:
+        if it[0] == "text":
+            kind, text, font, color, w, h = it
+            left_off = font.getbbox(text)[0]
+            cd.text((tw + gap - left_off, cur_y), text, font=font, fill=(*color, 255), anchor="la")
+        else:
+            kind, img, _, _, w, h = it
+            comp.alpha_composite(img, (tw + gap, cur_y))
+        cur_y += h + item_gap
+
+    return comp
 
 
 def _gap(prev: str, cur: str, b_size: int) -> int:

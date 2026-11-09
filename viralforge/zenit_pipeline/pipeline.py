@@ -56,6 +56,8 @@ class ZenitPipeline:
         source_video: Path | str,
         plan_specs: list[VisualSpec],
         transcribe_audio: bool = True,
+        closing_title: str | None = None,
+        closing_body: str | None = None,
     ) -> dict[str, Any]:
         """Ejecuta los pasos de análisis y diseño (Pasos 1 al 5 y 7 al 9) sin ensamblar el video final.
         
@@ -119,10 +121,16 @@ class ZenitPipeline:
 
         log.info("Pasos 8 y 9: Generando pantalla de cierre oficial con www.sistemazenit.com...")
         closing_img_path = self.workdir / "08_09_closing_cta.png"
-        create_closing_cta_card(closing_img_path)
+        active_title = closing_title or CLOSING_TITLE
+        active_body = closing_body or CLOSING_BODY
+        create_closing_cta_card(
+            closing_img_path,
+            closing_title=active_title,
+            closing_body=active_body,
+        )
         s8 = {
-            "title": CLOSING_TITLE,
-            "body": CLOSING_BODY,
+            "title": active_title,
+            "body": active_body,
             "image": str(closing_img_path),
         }
         s9 = {
@@ -141,7 +149,9 @@ class ZenitPipeline:
             "step9_cta_url": s9,
         }
         report_file = self.workdir / "pipeline_plan_report.json"
-        report_file.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+        report_file.write_text(
+            json.dumps(report, indent=2, ensure_ascii=False, default=str), encoding="utf-8"
+        )
         return report
 
     def execute_full(
@@ -150,9 +160,17 @@ class ZenitPipeline:
         plan_specs: list[VisualSpec],
         output_video: Path | str,
         action_prompt: str = "ZENIT",
+        closing_title: str | None = None,
+        closing_body: str | None = None,
     ) -> PipelineReport:
         """Ejecuta los 9 pasos de principio a fin, incluyendo el ensamblado final (Paso 6)."""
-        plan_data = self.plan_and_fit(source_video, plan_specs, transcribe_audio=True)
+        plan_data = self.plan_and_fit(
+            source_video,
+            plan_specs,
+            transcribe_audio=True,
+            closing_title=closing_title,
+            closing_body=closing_body,
+        )
         clean_base_video = Path(plan_data["step2_branding"]["output"])
 
         # Reconstruir slots y fitted visuals
@@ -176,6 +194,8 @@ class ZenitPipeline:
             workdir=self.workdir,
             output_path=Path(output_video),
             action_prompt=action_prompt,
+            closing_title=closing_title,
+            closing_body=closing_body,
         )
 
         return PipelineReport(

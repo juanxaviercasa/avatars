@@ -113,6 +113,28 @@ class ZenitPipelineStructureTests(unittest.TestCase):
             with Image.open(out_cta) as im:
                 self.assertEqual(im.size, (1080, 1920))
 
+    def test_step5_molecule_card_composite(self):
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            out_card = Path(tmp_dir) / "test_molecule_card.png"
+            dummy_mol = Path(tmp_dir) / "mol_dummy.png"
+            Image.new("RGBA", (180, 180), (50, 120, 200, 255)).save(dummy_mol)
+
+            spec = VisualSpec(
+                id="test_mol",
+                trigger="metanol",
+                kind="molecule_card",
+                title="METANOL (PRODUCTO)",
+                latex="CH₃OH (Síntesis)",
+                body="Producto deseado en reactor",
+                image=str(dummy_mol),
+                accent="sky",
+            )
+            res = fit_visual(spec, zone_w=850, zone_h=350, out_path=out_card)
+            self.assertTrue(res.ok)
+            self.assertTrue(out_card.exists())
+            self.assertGreaterEqual(res.title_size, 34)
+            self.assertGreaterEqual(res.body_size, 30)
+
 
 if __name__ == "__main__":
     unittest.main()

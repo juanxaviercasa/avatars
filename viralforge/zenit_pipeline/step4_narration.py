@@ -30,8 +30,9 @@ class VisualSpec:
     """Ayuda visual a crear (paso 5). ``latex`` solo admite ASCII."""
     id: str
     trigger: str
-    kind: str = "card"                 # card | formula | image
+    kind: str = "card"                 # card | formula | image | molecule_card
     title: str = ""
+    subtitle: str = ""
     body: str = ""
     latex: str = ""
     image: str = ""
