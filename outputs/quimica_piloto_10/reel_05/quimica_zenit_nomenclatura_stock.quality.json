@@ -13,7 +13,7 @@
       "fps": 30.0,
       "video_codec": "h264",
       "audio_codec": "aac",
-      "candidate_sha256": "93c544bfdf7eb91921da732a809836ad29376cdeadb73eb2e56944ef315fa977"
+      "candidate_sha256": "c59454f76c1adf55a6173e5969eba30b91e2693459a9736a674457da4c8ffc18"
     },
     "original_soundtrack_preserved": true,
     "scene_kinds": [
@@ -60,7 +60,7 @@
       {
         "region": "Pizarra y Ecuaciones Centrales NotebookLM",
         "time_s": 21.28,
-        "mae": 9.44,
+        "mae": 9.43,
         "max_mae": 30.0
       },
       {

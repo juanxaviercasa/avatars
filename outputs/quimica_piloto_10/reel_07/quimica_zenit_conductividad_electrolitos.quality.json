@@ -13,7 +13,7 @@
       "fps": 30.0,
       "video_codec": "h264",
       "audio_codec": "aac",
-      "candidate_sha256": "794633e07c6a31a0ada99e204457f76b8b08d02c9f15f78710c5df57f9461806"
+      "candidate_sha256": "3da635525dff13c848d2b343cb537bfe3ab9f4d1fb0323d523abec30586e6e93"
     },
     "original_soundtrack_preserved": true,
     "scene_kinds": [
@@ -60,13 +60,13 @@
       {
         "region": "Pizarra y Ecuaciones Centrales NotebookLM",
         "time_s": 27.85,
-        "mae": 8.0,
+        "mae": 8.01,
         "max_mae": 30.0
       },
       {
         "region": "Pizarra y Ecuaciones Centrales NotebookLM",
         "time_s": 53.26,
-        "mae": 7.73,
+        "mae": 7.72,
         "max_mae": 30.0
       },
       {

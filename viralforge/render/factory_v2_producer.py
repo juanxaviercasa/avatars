@@ -30,6 +30,9 @@ log = logging.getLogger("zenit_v2_producer")
 REPO_ROOT = Path("C:/Users/cabel/Music/avatars-realistas").resolve()
 SOURCE_DIR = Path("C:/Users/cabel/Videos/reels-quimica").resolve()
 OUTPUTS_DIR = REPO_ROOT / "outputs" / "quimica_piloto_10"
+OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
+FLAT_OUTPUT_DIR = Path("C:/Users/cabel/Videos/reels-quimica/reels_finales").resolve()
+FLAT_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 REELS_CONFIGS = {
     "reel_02": {
@@ -380,8 +383,13 @@ def render_reel_v2(reel_key: str, force: bool = False) -> dict[str, Any]:
     log.info("3/5: Renderizando Escena 2 (Pizarra NotebookLM con overlays seguros)...")
     scene2_video = workdir / "scene2_lesson.mp4"
     inputs = ["-ss", str(s2_start), "-t", str(s2_dur), "-i", str(src_video)]
+    # Limpieza quirúrgica de marca de agua inferior de NotebookLM:
+    # La franja y=1775..1795 contiene la textura/color limpia de la pizarra del profesor.
+    # Clonamos suavemente esta franja sobre y=1795..1920 para eliminar el watermark por completo.
     filter_steps = [
-        "[0:v]scale=1080:1920:flags=lanczos,setsar=1[base]"
+        "[0:v]scale=1080:1920:flags=lanczos,setsar=1,split[raw_base][strip_src];"
+        "[strip_src]crop=1080:20:0:1775,scale=1080:125[clean_bottom];"
+        "[raw_base][clean_bottom]overlay=0:1795[base]"
     ]
     last_v = "base"
     for idx, ov in enumerate(cfg["overlays"], start=1):
@@ -557,11 +565,28 @@ def render_reel_v2(reel_key: str, force: bool = False) -> dict[str, Any]:
     for issue in qa_result.get("issues", []):
         log.warning("  QA Issue [%s]: %s", issue.get("code"), issue.get("detail"))
 
+    clean_titles = {
+        1: "Reactivo_Limitante",
+        2: "Geometria_Molecular_3D",
+        3: "Cambios_Fisicos_y_Quimicos",
+        4: "Mezclas_y_Compuestos",
+        5: "Nomenclatura_Stock",
+        6: "Formula_Empirica_vs_Molecular",
+        7: "Conductividad_Electrolitos",
+        8: "Isotopos_Notacion_Nuclear",
+        9: "Numero_Avogadro_y_Mol",
+    }
+    clean_tag = clean_titles.get(reel_num, reel_id)
+    flat_mp4 = FLAT_OUTPUT_DIR / f"Reel_{reel_num:02d}_{clean_tag}_Zenit_V2.mp4"
+    shutil.copy2(final_output_mp4, flat_mp4)
+    log.info("  Video copiado a la carpeta de entrega: %s", flat_mp4)
+
     return {
         "reel_num": reel_num,
         "reel_id": reel_id,
         "title": cfg["title"],
         "video_path": str(final_output_mp4),
+        "flat_video_path": str(flat_mp4),
         "quality_path": str(qa_path),
         "manifest_path": str(manifest_path),
         "duration_s": total_dur,
@@ -574,13 +599,13 @@ def render_reel_v2(reel_key: str, force: bool = False) -> dict[str, Any]:
     }
 
 
-def produce_all():
+def produce_all(force: bool = False):
     print("================================================================================")
     print("FÁBRICA DE REELS QUÍMICA ZENIT V2 — PRODUCCIÓN DE PILOTOS (REELS 2 AL 9)")
     print("================================================================================")
     results = []
     for k in sorted(REELS_CONFIGS.keys()):
-        res = render_reel_v2(k)
+        res = render_reel_v2(k, force=force)
         results.append(res)
     
     summary_path = OUTPUTS_DIR / "lote_piloto_8_reels_summary.json"
@@ -594,8 +619,9 @@ def produce_all():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--reel", type=str, default=None, help="Clave del reel a procesar (ej. reel_02)")
+    parser.add_argument("--force", action="store_true", help="Forzar re-renderizado aunque ya exista")
     args = parser.parse_args()
     if args.reel:
-        render_reel_v2(args.reel)
+        render_reel_v2(args.reel, force=args.force)
     else:
-        produce_all()
+        produce_all(force=args.force)
