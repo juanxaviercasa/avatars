@@ -13,7 +13,7 @@
       "fps": 30.0,
       "video_codec": "h264",
       "audio_codec": "aac",
-      "candidate_sha256": "d80af3f0e9b15ba3295df05930db1bd265f2826b72a46527b67fb742fe61f3f9"
+      "candidate_sha256": "73cb99b1520b65da8a33c3494041597a626828d32ddef93e297a3637c634caba"
     },
     "original_soundtrack_preserved": true,
     "scene_kinds": [

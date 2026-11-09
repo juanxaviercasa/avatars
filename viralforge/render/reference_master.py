@@ -75,13 +75,8 @@ def make_filter(recipe: dict, width: int) -> str:
         f"color=0x0B1323@0.88:t=fill:enable='lt(t,{e:.6f})',"
         f"drawbox=x={x-3}:y={y-4}:w={length+6}:h=2:"
         f"color=0xFFE45E@0.40:t=fill:enable='lt(t,{e:.6f})'[track];"
-        f"[track][2:v]overlay=x={x}:y={y}:enable='lt(t,{e:.6f})':"
-        f"eof_action=pass:repeatlast=0[gold];"
-        # La barra utiliza avance visual de retención (ease-out), no
-        # una indicación numérica exacta del tiempo restante.
-        f"[gold][3:v]overlay="
-        f"x='{x}+{length}*(1-pow(1-min(1,max(0,t/{e:.6f})),1.65))':"
-        f"y={y}:enable='lt(t,{e:.6f})':"
+        f"[2:v][3:v]overlay=x='{length}*(1-pow(1-min(1,max(0,t/{e:.6f})),1.65))':y=0[pbar];"
+        f"[track][pbar]overlay=x={x}:y={y}:enable='lt(t,{e:.6f})':"
         f"eof_action=pass:repeatlast=0,format=yuv420p[out]"
     )
 

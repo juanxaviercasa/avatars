@@ -224,6 +224,30 @@ REELS_CONFIGS = {
             {"path": "assets/chemistry/batch_reels/reel9_badge_regla.png", "x": 105, "y": 1260, "start": 10.0, "end": 26.0},
             {"path": "assets/chemistry/batch_reels/reel9_badge_clave.png", "x": 105, "y": 1260, "start": 42.0, "end": 58.0},
         ]
+    },
+    "reel_10": {
+        "reel_num": 10,
+        "title": "Estequiometría: Método de tres pasos",
+        "source_name": "El_método_de_tres_pasos_para_estequiometría.mp4",
+        "output_slug": "quimica_zenit_estequiometria_tres_pasos",
+        "s2_start": 9.5,
+        "s2_end": 73.0,
+        "hook_voice": "es-MX-JorgeNeural",
+        "hook_rate": "+26%",
+        "hook_text": "¡El noventa y cinco por ciento se marea convirtiendo gramos y moles en estequiometría! Olvídate de fórmulas gigantescas. Con este método de tres pasos resuelves cualquier examen en sesenta segundos.",
+        "hook_banner": "assets/chemistry/batch_reels/reel10_hook_banner.png",
+        "cta_voice": "es-PE-CamilaNeural",
+        "cta_rate": "+24%",
+        "cta_text": "¿Entendiste el puente de moles o todavía te confunden las masas molares? Comenta PASOS y asegura tu vacante en el enlace del perfil.",
+        "cta_image": "assets/overlays/scene3_cta_zenit_r10.png",
+        "overlays": [
+            {"path": "assets/chemistry/batch_reels/reel10_top_intro.png", "x": 75, "y": 68, "start": 1.0, "end": 14.0},
+            {"path": "assets/chemistry/batch_reels/reel10_top_paso1.png", "x": 75, "y": 68, "start": 15.0, "end": 31.0},
+            {"path": "assets/chemistry/batch_reels/reel10_top_paso2.png", "x": 75, "y": 68, "start": 32.0, "end": 43.0},
+            {"path": "assets/chemistry/batch_reels/reel10_top_paso3.png", "x": 75, "y": 68, "start": 44.0, "end": 62.0},
+            {"path": "assets/chemistry/batch_reels/reel10_badge_regla.png", "x": 105, "y": 1260, "start": 16.0, "end": 30.0},
+            {"path": "assets/chemistry/batch_reels/reel10_badge_clave.png", "x": 105, "y": 1260, "start": 48.0, "end": 62.0},
+        ]
     }
 }
 
@@ -464,10 +488,10 @@ def render_reel_v2(reel_key: str, force: bool = False) -> dict[str, Any]:
     staging_output_mp4 = reel_out_dir / f".{reel_id}.rendering.mp4"
 
     filter_progress = (
+        f"[1:v][2:v]overlay=x='900*(1-pow(1-min(1,max(0,t/{outro_start:.6f})),1.65))':y=0[pbar];"
         f"[0:v]drawbox=x=87:y=1799:w=906:h=32:color=0x0B1323@0.88:t=fill:enable='lt(t,{outro_start:.6f})',"
         f"drawbox=x=87:y=1799:w=906:h=2:color=0xFFE45E@0.40:t=fill:enable='lt(t,{outro_start:.6f})'[track];"
-        f"[track][1:v]overlay=x=90:y=1803:enable='lt(t,{outro_start:.6f})':eof_action=pass:repeatlast=0[gold];"
-        f"[gold][2:v]overlay=x='90+900*(1-pow(1-min(1,max(0,t/{outro_start:.6f})),1.65))':y=1803:enable='lt(t,{outro_start:.6f})':eof_action=pass:repeatlast=0,format=yuv420p[out]"
+        f"[track][pbar]overlay=x=90:y=1803:enable='lt(t,{outro_start:.6f})':eof_action=pass:repeatlast=0,format=yuv420p[out]"
     )
     cmd_final = [
         "ffmpeg", "-v", "error", "-y",
@@ -479,6 +503,10 @@ def render_reel_v2(reel_key: str, force: bool = False) -> dict[str, Any]:
         "-map", "[out]", "-map", "3:a:0",
         "-c:v", "libx264", "-preset", "veryfast", "-crf", "18",
         "-pix_fmt", "yuv420p", "-r", "30", "-c:a", "copy",
+        "-map_metadata", "-1",
+        "-fflags", "+bitexact",
+        "-flags:v", "+bitexact",
+        "-flags:a", "+bitexact",
         "-movflags", "+faststart", "-t", f"{total_dur:.6f}", str(staging_output_mp4)
     ]
     subprocess.run(cmd_final, check=True)
@@ -575,11 +603,17 @@ def render_reel_v2(reel_key: str, force: bool = False) -> dict[str, Any]:
         7: "Conductividad_Electrolitos",
         8: "Isotopos_Notacion_Nuclear",
         9: "Numero_Avogadro_y_Mol",
+        10: "Estequiometria_Metodo_3_Pasos",
     }
     clean_tag = clean_titles.get(reel_num, reel_id)
     flat_mp4 = FLAT_OUTPUT_DIR / f"Reel_{reel_num:02d}_{clean_tag}_Zenit_V2.mp4"
     shutil.copy2(final_output_mp4, flat_mp4)
     log.info("  Video copiado a la carpeta de entrega: %s", flat_mp4)
+
+    from viralforge.render.metadata_cleaner import strip_mp4_c2pa_and_metadata
+    strip_mp4_c2pa_and_metadata(flat_mp4, flat_mp4)
+    strip_mp4_c2pa_and_metadata(final_output_mp4, final_output_mp4)
+    log.info("  Metadatos e IA purgados con éxito en entrega y master.")
 
     return {
         "reel_num": reel_num,
