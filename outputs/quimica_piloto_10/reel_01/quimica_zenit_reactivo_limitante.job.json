@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "job_id": "quimica_zenit_reactivo_limitante",
+  "candidate_video": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_01\\quimica_zenit_reactivo_limitante_master_v2_1080p.mp4",
+  "source_video": "C:/Users/cabel/Videos/reels-quimica/Cómo_calcular_el_reactivo_limitante_en_dos_pasos.mp4",
+  "segments": [
+    {
+      "kind": "intro",
+      "start": 0.0,
+      "end": 13.666667
+    },
+    {
+      "kind": "lesson",
+      "start": 13.666667,
+      "end": 67.933333
+    },
+    {
+      "kind": "cta",
+      "start": 67.933333,
+      "end": 74.066667
+    }
+  ],
+  "protected_regions": [
+    {
+      "label": "Ecuación y Metanol NotebookLM",
+      "start": 14.0,
+      "end": 67.0,
+      "rect": [
+        90,
+        320,
+        900,
+        1150
+      ],
+      "source_offset_s": 6.81,
+      "max_mae": 16.0
+    }
+  ],
+  "overlays": [
+    {
+      "id": "hook_banner",
+      "kind": "hook",
+      "start": 0.2,
+      "end": 13.666667,
+      "rect": [
+        55,
+        1410,
+        970,
+        300
+      ]
+    },
+    {
+      "id": "progress_bar",
+      "kind": "progress",
+      "start": 0.0,
+      "end": 67.933333,
+      "rect": [
+        90,
+        1803,
+        900,
+        24
+      ]
+    },
+    {
+      "id": "cta_screen",
+      "kind": "cta",
+      "start": 67.933333,
+      "end": 74.066667,
+      "rect": [
+        0,
+        0,
+        1080,
+        1920
+      ]
+    }
+  ]
+}

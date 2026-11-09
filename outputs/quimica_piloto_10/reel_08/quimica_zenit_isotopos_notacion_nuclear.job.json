@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "job_id": "quimica_zenit_isotopos_notacion_nuclear",
+  "candidate_video": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_08\\quimica_zenit_isotopos_notacion_nuclear_1080p.mp4",
+  "audio_reference": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_08\\quimica_zenit_isotopos_notacion_nuclear_audio_ref.mp4",
+  "source_video": "C:\\Users\\cabel\\Videos\\reels-quimica\\Cómo_leer_un_isótopo_en_5_segundos.mp4",
+  "segments": [
+    {
+      "kind": "intro",
+      "start": 0.0,
+      "end": 10.814
+    },
+    {
+      "kind": "lesson",
+      "start": 10.814,
+      "end": 75.414
+    },
+    {
+      "kind": "cta",
+      "start": 75.414,
+      "end": 83.4
+    }
+  ],
+  "protected_regions": [
+    {
+      "label": "Pizarra y Ecuaciones Centrales NotebookLM",
+      "start": 11.314,
+      "end": 74.914,
+      "rect": [
+        90,
+        340,
+        900,
+        860
+      ],
+      "source_offset_s": 4.087,
+      "max_mae": 30.0
+    }
+  ],
+  "overlays": [
+    {
+      "id": "hook_banner",
+      "kind": "hook",
+      "start": 0.2,
+      "end": 10.814,
+      "rect": [
+        55,
+        1160,
+        970,
+        380
+      ],
+      "text": "Hook Retador",
+      "font_size_px": 24
+    },
+    {
+      "id": "progress_bar",
+      "kind": "progress",
+      "start": 0.0,
+      "end": 75.414,
+      "rect": [
+        90,
+        1803,
+        900,
+        24
+      ]
+    },
+    {
+      "id": "cta_screen",
+      "kind": "cta",
+      "start": 75.414,
+      "end": 83.4,
+      "rect": [
+        0,
+        0,
+        1080,
+        1920
+      ]
+    }
+  ]
+}

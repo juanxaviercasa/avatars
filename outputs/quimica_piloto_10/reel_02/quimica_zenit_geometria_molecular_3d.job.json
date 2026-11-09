@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "job_id": "quimica_zenit_geometria_molecular_3d",
+  "candidate_video": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_02\\quimica_zenit_geometria_molecular_3d_1080p.mp4",
+  "audio_reference": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_02\\quimica_zenit_geometria_molecular_3d_audio_ref.mp4",
+  "source_video": "C:\\Users\\cabel\\Videos\\reels-quimica\\Cómo_adivinar_la_forma_3D_de_las_moléculas.mp4",
+  "segments": [
+    {
+      "kind": "intro",
+      "start": 0.0,
+      "end": 10.046
+    },
+    {
+      "kind": "lesson",
+      "start": 10.046,
+      "end": 69.146
+    },
+    {
+      "kind": "cta",
+      "start": 69.146,
+      "end": 75.524
+    }
+  ],
+  "protected_regions": [
+    {
+      "label": "Pizarra y Ecuaciones Centrales NotebookLM",
+      "start": 10.546,
+      "end": 68.646,
+      "rect": [
+        90,
+        360,
+        900,
+        800
+      ],
+      "source_offset_s": 4.819,
+      "max_mae": 30.0
+    }
+  ],
+  "overlays": [
+    {
+      "id": "hook_banner",
+      "kind": "hook",
+      "start": 0.2,
+      "end": 10.046,
+      "rect": [
+        55,
+        1160,
+        970,
+        380
+      ],
+      "text": "Hook Retador",
+      "font_size_px": 24
+    },
+    {
+      "id": "progress_bar",
+      "kind": "progress",
+      "start": 0.0,
+      "end": 69.146,
+      "rect": [
+        90,
+        1803,
+        900,
+        24
+      ]
+    },
+    {
+      "id": "cta_screen",
+      "kind": "cta",
+      "start": 69.146,
+      "end": 75.524,
+      "rect": [
+        0,
+        0,
+        1080,
+        1920
+      ]
+    }
+  ]
+}

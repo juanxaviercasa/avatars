@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "job_id": "quimica_zenit_cambios_fisicos_y_quimicos",
+  "candidate_video": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_03\\quimica_zenit_cambios_fisicos_y_quimicos_1080p.mp4",
+  "audio_reference": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_03\\quimica_zenit_cambios_fisicos_y_quimicos_audio_ref.mp4",
+  "source_video": "C:\\Users\\cabel\\Videos\\reels-quimica\\Cómo_Distinguir_Cambios_Físicos_y_Químicos.mp4",
+  "segments": [
+    {
+      "kind": "intro",
+      "start": 0.0,
+      "end": 9.782
+    },
+    {
+      "kind": "lesson",
+      "start": 9.782,
+      "end": 70.982
+    },
+    {
+      "kind": "cta",
+      "start": 70.982,
+      "end": 77.6
+    }
+  ],
+  "protected_regions": [
+    {
+      "label": "Pizarra y Ecuaciones Centrales NotebookLM",
+      "start": 10.282,
+      "end": 70.482,
+      "rect": [
+        90,
+        340,
+        900,
+        860
+      ],
+      "source_offset_s": 2.655,
+      "max_mae": 30.0
+    }
+  ],
+  "overlays": [
+    {
+      "id": "hook_banner",
+      "kind": "hook",
+      "start": 0.2,
+      "end": 9.782,
+      "rect": [
+        55,
+        1160,
+        970,
+        380
+      ],
+      "text": "Hook Retador",
+      "font_size_px": 24
+    },
+    {
+      "id": "progress_bar",
+      "kind": "progress",
+      "start": 0.0,
+      "end": 70.982,
+      "rect": [
+        90,
+        1803,
+        900,
+        24
+      ]
+    },
+    {
+      "id": "cta_screen",
+      "kind": "cta",
+      "start": 70.982,
+      "end": 77.6,
+      "rect": [
+        0,
+        0,
+        1080,
+        1920
+      ]
+    }
+  ]
+}

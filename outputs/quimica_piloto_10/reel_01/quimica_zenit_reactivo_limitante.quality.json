@@ -1,0 +1,24 @@
+{
+  "status": "APPROVED_GOLDEN_MASTER",
+  "job_id": "quimica_zenit_reactivo_limitante",
+  "video": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_01\\quimica_zenit_reactivo_limitante_master_v2_1080p.mp4",
+  "sha256": "8c9b668e38135f906411ec093b80f61a479b10ce576717255ed926303a031f32",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30.0,
+  "duration_s": 74.066667,
+  "frame_count": 2222,
+  "retention_bar": {
+    "rect": [
+      90,
+      1803,
+      900,
+      24
+    ],
+    "color": "gold",
+    "progress_formula": "1 - pow(1 - min(1, max(0, t / 67.933333)), 1.65)",
+    "disappears_during_cta": true
+  },
+  "voice_policy": "Original NotebookLM voice preserved; zero added co-host over professor",
+  "human_review": "APPROVED_BY_USER"
+}

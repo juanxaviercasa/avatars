@@ -1,0 +1,160 @@
+[
+  {
+    "reel_num": 2,
+    "reel_id": "quimica_zenit_geometria_molecular_3d",
+    "title": "Geometría molecular 3D / VSEPR",
+    "video_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_02\\quimica_zenit_geometria_molecular_3d_1080p.mp4",
+    "quality_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_02\\quimica_zenit_geometria_molecular_3d.quality.json",
+    "manifest_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_02\\quimica_zenit_geometria_molecular_3d.job.json",
+    "qa_status": "REVIEW_REQUIRED",
+    "qa_issues": [],
+    "duration_s": 75.533333
+  },
+  {
+    "reel_num": 3,
+    "reel_id": "quimica_zenit_cambios_fisicos_y_quimicos",
+    "title": "Cambios físicos y químicos",
+    "video_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_03\\quimica_zenit_cambios_fisicos_y_quimicos_1080p.mp4",
+    "quality_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_03\\quimica_zenit_cambios_fisicos_y_quimicos.quality.json",
+    "manifest_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_03\\quimica_zenit_cambios_fisicos_y_quimicos.job.json",
+    "duration_s": 77.6,
+    "hook_dur": 9.782,
+    "lesson_dur": 61.2,
+    "cta_dur": 6.618,
+    "qa_status": "REVIEW_REQUIRED",
+    "qa_issues": [],
+    "keyframes": [
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_03\\01_hook_emocional_02.0s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_03\\02_leccion_inicio_12.8s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_03\\03_leccion_centro_40.4s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_03\\04_leccion_clave_61.8s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_03\\05_cta_zenit_72.5s.jpg"
+    ]
+  },
+  {
+    "reel_num": 4,
+    "reel_id": "quimica_zenit_mezclas_y_compuestos",
+    "title": "Mezclas y compuestos",
+    "video_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_04\\quimica_zenit_mezclas_y_compuestos_1080p.mp4",
+    "quality_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_04\\quimica_zenit_mezclas_y_compuestos.quality.json",
+    "manifest_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_04\\quimica_zenit_mezclas_y_compuestos.job.json",
+    "duration_s": 84.16,
+    "hook_dur": 9.422,
+    "lesson_dur": 68.6,
+    "cta_dur": 6.138,
+    "qa_status": "REVIEW_REQUIRED",
+    "qa_issues": [],
+    "keyframes": [
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_04\\01_hook_emocional_02.0s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_04\\02_leccion_inicio_12.4s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_04\\03_leccion_centro_43.7s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_04\\04_leccion_clave_67.7s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_04\\05_cta_zenit_79.5s.jpg"
+    ]
+  },
+  {
+    "reel_num": 5,
+    "reel_id": "quimica_zenit_nomenclatura_stock",
+    "title": "Nomenclatura Stock",
+    "video_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_05\\quimica_zenit_nomenclatura_stock_1080p.mp4",
+    "quality_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_05\\quimica_zenit_nomenclatura_stock.quality.json",
+    "manifest_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_05\\quimica_zenit_nomenclatura_stock.job.json",
+    "duration_s": 68.636,
+    "hook_dur": 9.446,
+    "lesson_dur": 52.5,
+    "cta_dur": 6.69,
+    "qa_status": "REVIEW_REQUIRED",
+    "qa_issues": [],
+    "keyframes": [
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_05\\01_hook_emocional_02.0s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_05\\02_leccion_inicio_12.4s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_05\\03_leccion_centro_35.7s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_05\\04_leccion_clave_54.1s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_05\\05_cta_zenit_63.4s.jpg"
+    ]
+  },
+  {
+    "reel_num": 6,
+    "reel_id": "quimica_zenit_formula_empirica_vs_molecular",
+    "title": "Fórmula empírica vs molecular",
+    "video_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_06\\quimica_zenit_formula_empirica_vs_molecular_1080p.mp4",
+    "quality_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_06\\quimica_zenit_formula_empirica_vs_molecular.quality.json",
+    "manifest_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_06\\quimica_zenit_formula_empirica_vs_molecular.job.json",
+    "duration_s": 73.524,
+    "hook_dur": 11.246,
+    "lesson_dur": 55.3,
+    "cta_dur": 6.978,
+    "qa_status": "REVIEW_REQUIRED",
+    "qa_issues": [],
+    "keyframes": [
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_06\\01_hook_emocional_02.0s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_06\\02_leccion_inicio_14.2s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_06\\03_leccion_centro_38.9s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_06\\04_leccion_clave_58.3s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_06\\05_cta_zenit_68.0s.jpg"
+    ]
+  },
+  {
+    "reel_num": 7,
+    "reel_id": "quimica_zenit_conductividad_electrolitos",
+    "title": "Conductividad eléctrica (electrolitos)",
+    "video_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_07\\quimica_zenit_conductividad_electrolitos_1080p.mp4",
+    "quality_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_07\\quimica_zenit_conductividad_electrolitos.quality.json",
+    "manifest_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_07\\quimica_zenit_conductividad_electrolitos.job.json",
+    "duration_s": 94.592,
+    "hook_dur": 10.406,
+    "lesson_dur": 78.0,
+    "cta_dur": 6.186,
+    "qa_status": "REVIEW_REQUIRED",
+    "qa_issues": [],
+    "keyframes": [
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_07\\01_hook_emocional_02.0s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_07\\02_leccion_inicio_13.4s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_07\\03_leccion_centro_49.4s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_07\\04_leccion_clave_76.7s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_07\\05_cta_zenit_89.9s.jpg"
+    ]
+  },
+  {
+    "reel_num": 8,
+    "reel_id": "quimica_zenit_isotopos_notacion_nuclear",
+    "title": "Isótopos y notación nuclear",
+    "video_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_08\\quimica_zenit_isotopos_notacion_nuclear_1080p.mp4",
+    "quality_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_08\\quimica_zenit_isotopos_notacion_nuclear.quality.json",
+    "manifest_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_08\\quimica_zenit_isotopos_notacion_nuclear.job.json",
+    "duration_s": 83.4,
+    "hook_dur": 10.814,
+    "lesson_dur": 64.6,
+    "cta_dur": 7.986,
+    "qa_status": "REVIEW_REQUIRED",
+    "qa_issues": [],
+    "keyframes": [
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_08\\01_hook_emocional_02.0s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_08\\02_leccion_inicio_13.8s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_08\\03_leccion_centro_43.1s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_08\\04_leccion_clave_65.7s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_08\\05_cta_zenit_76.9s.jpg"
+    ]
+  },
+  {
+    "reel_num": 9,
+    "reel_id": "quimica_zenit_numero_de_avogadro_y_mol",
+    "title": "Número de Avogadro y el mol",
+    "video_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_09\\quimica_zenit_numero_de_avogadro_y_mol_1080p.mp4",
+    "quality_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_09\\quimica_zenit_numero_de_avogadro_y_mol.quality.json",
+    "manifest_path": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_09\\quimica_zenit_numero_de_avogadro_y_mol.job.json",
+    "duration_s": 78.364,
+    "hook_dur": 10.526,
+    "lesson_dur": 60.5,
+    "cta_dur": 7.338,
+    "qa_status": "REVIEW_REQUIRED",
+    "qa_issues": [],
+    "keyframes": [
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_09\\01_hook_emocional_02.0s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_09\\02_leccion_inicio_13.5s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_09\\03_leccion_centro_40.8s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_09\\04_leccion_clave_62.0s.jpg",
+      "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_09\\05_cta_zenit_72.5s.jpg"
+    ]
+  }
+]

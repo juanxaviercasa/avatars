@@ -1,0 +1,81 @@
+{
+  "job_id": "quimica_zenit_nomenclatura_stock",
+  "profile": "zenit_canvas_v2_pureza",
+  "status": "REVIEW_REQUIRED",
+  "publishable_automatically": false,
+  "requires_human_approval": true,
+  "checks": {
+    "media": {
+      "duration_s": 68.633333,
+      "frames": 2059,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30.0,
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "candidate_sha256": "93c544bfdf7eb91921da732a809836ad29376cdeadb73eb2e56944ef315fa977"
+    },
+    "original_soundtrack_preserved": true,
+    "scene_kinds": [
+      "intro",
+      "lesson",
+      "cta"
+    ],
+    "retention_bar_fill_fractions": [
+      0.38,
+      0.682,
+      0.933
+    ],
+    "retention_bar_after_cta": 0.0,
+    "voice_alignment": {
+      "status": "ALIGNED",
+      "source_to_reel_offset_s": 6.619,
+      "confidence_min": 0.8147,
+      "max_temporal_disagreement_s": 0.0,
+      "anchors": [
+        {
+          "source_at_s": 8.0585,
+          "reel_at_s": 14.6775,
+          "offset_s": 6.619,
+          "correlation": 0.8147
+        },
+        {
+          "source_at_s": 21.298,
+          "reel_at_s": 27.917,
+          "offset_s": 6.619,
+          "correlation": 0.8467
+        },
+        {
+          "source_at_s": 35.6885,
+          "reel_at_s": 42.3075,
+          "offset_s": 6.619,
+          "correlation": 0.8532
+        }
+      ],
+      "original_voice_detected": true,
+      "voice_identity_verified": false,
+      "method": "normalized_fft_consensus_3anchors"
+    },
+    "protected_frame_comparisons": [
+      {
+        "region": "Pizarra y Ecuaciones Centrales NotebookLM",
+        "time_s": 21.28,
+        "mae": 9.44,
+        "max_mae": 30.0
+      },
+      {
+        "region": "Pizarra y Ecuaciones Centrales NotebookLM",
+        "time_s": 38.27,
+        "mae": 9.17,
+        "max_mae": 30.0
+      },
+      {
+        "region": "Pizarra y Ecuaciones Centrales NotebookLM",
+        "time_s": 52.18,
+        "mae": 9.52,
+        "max_mae": 30.0
+      }
+    ]
+  },
+  "issues": []
+}

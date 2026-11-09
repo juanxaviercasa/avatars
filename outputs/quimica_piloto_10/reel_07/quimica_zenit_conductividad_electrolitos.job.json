@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "job_id": "quimica_zenit_conductividad_electrolitos",
+  "candidate_video": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_07\\quimica_zenit_conductividad_electrolitos_1080p.mp4",
+  "audio_reference": "C:\\Users\\cabel\\Music\\avatars-realistas\\outputs\\quimica_piloto_10\\reel_07\\quimica_zenit_conductividad_electrolitos_audio_ref.mp4",
+  "source_video": "C:\\Users\\cabel\\Videos\\reels-quimica\\Por_qué_la_sal_conduce_la_electricidad_y_el_azúcar_no.mp4",
+  "segments": [
+    {
+      "kind": "intro",
+      "start": 0.0,
+      "end": 10.406
+    },
+    {
+      "kind": "lesson",
+      "start": 10.406,
+      "end": 88.406
+    },
+    {
+      "kind": "cta",
+      "start": 88.406,
+      "end": 94.592
+    }
+  ],
+  "protected_regions": [
+    {
+      "label": "Pizarra y Ecuaciones Centrales NotebookLM",
+      "start": 10.906,
+      "end": 87.906,
+      "rect": [
+        90,
+        340,
+        900,
+        860
+      ],
+      "source_offset_s": 7.079,
+      "max_mae": 30.0
+    }
+  ],
+  "overlays": [
+    {
+      "id": "hook_banner",
+      "kind": "hook",
+      "start": 0.2,
+      "end": 10.406,
+      "rect": [
+        55,
+        1160,
+        970,
+        380
+      ],
+      "text": "Hook Retador",
+      "font_size_px": 24
+    },
+    {
+      "id": "progress_bar",
+      "kind": "progress",
+      "start": 0.0,
+      "end": 88.406,
+      "rect": [
+        90,
+        1803,
+        900,
+        24
+      ]
+    },
+    {
+      "id": "cta_screen",
+      "kind": "cta",
+      "start": 88.406,
+      "end": 94.592,
+      "rect": [
+        0,
+        0,
+        1080,
+        1920
+      ]
+    }
+  ]
+}
