@@ -117,20 +117,26 @@ def _layout(spec: VisualSpec, inner_w: int, t_size: int, b_size: int):
             return None
         for ln in lines:
             blocks.append(("title", ln, _text_w(f, ln), _line_h(f), f))
-    if spec.kind == "formula" and spec.latex:
+    if spec.kind == "image" and spec.image:
+        with Image.open(spec.image) as src:
+            im = src.convert("RGBA")
+        max_im_w = min(inner_w, 580)
+        max_im_h = 250
+        ratio = min(max_im_w / im.width, max_im_h / im.height, 1.0)
+        im = im.resize((max(1, int(im.width * ratio)), max(1, int(im.height * ratio))),
+                       Image.Resampling.LANCZOS)
+        if min(im.size) < 120:
+            return None
+        # Redondear esquinas de la fotografía para acabado premium
+        mask = Image.new("L", im.size, 0)
+        ImageDraw.Draw(mask).rounded_rectangle([0, 0, im.width - 1, im.height - 1], radius=18, fill=255)
+        im.putalpha(mask)
+        blocks.append(("image", im, im.width, im.height, None))
+    if spec.kind in ("formula", "image") and spec.latex:
         img = _render_formula(spec.latex, inner_w)
         if img is None:
             return None
         blocks.append(("formula", img, img.width, img.height, None))
-    if spec.kind == "image" and spec.image:
-        with Image.open(spec.image) as src:
-            im = src.convert("RGBA")
-        ratio = min(inner_w / im.width, 1.0)
-        im = im.resize((max(1, int(im.width * ratio)), max(1, int(im.height * ratio))),
-                       Image.Resampling.LANCZOS)
-        if min(im.size) < 160:
-            return None
-        blocks.append(("image", im, im.width, im.height, None))
     if spec.body:
         f = _font(b_size)
         lines = wrap_words(spec.body, f, inner_w)
@@ -175,23 +181,24 @@ def _build_molecule_composite(spec: VisualSpec, inner_w: int, t_size: int, b_siz
     sub_lines = []
     sub_img = None
     if spec.latex and spec.subtitle:
-        # Combinar fórmula LaTeX con subtítulo Unicode (tildes perfectas + subíndices químicos)
-        f_sz_latex = max(22, int(b_size * 0.85))
-        raw_l = render_latex_formula(spec.latex, fontsize=f_sz_latex, color="#34d399", dpi=120)
+        # Combinar fórmula LaTeX en blanco brillante con subtítulo Unicode (tildes + subíndices químicos)
+        f_sz_latex = max(26, int(b_size * 0.95))
+        raw_l = render_latex_formula(spec.latex, fontsize=f_sz_latex, color="#ffffff", dpi=120)
         lbbox = raw_l.getbbox()
         if lbbox is None:
             return None
         l_crop = raw_l.crop(lbbox)
         l_sub, t_sub, r_sub, b_sub = f_s.getbbox(spec.subtitle)
         sw, sh = r_sub - l_sub, b_sub - t_sub
-        comb_w = l_crop.width + 14 + sw
+        comb_w = l_crop.width + 16 + sw
         if comb_w > text_avail_w:
             return None
         comb_h = max(l_crop.height, sh)
         sub_img = Image.new("RGBA", (comb_w, comb_h), (0, 0, 0, 0))
         sub_img.alpha_composite(l_crop, (0, (comb_h - l_crop.height) // 2))
         sd = ImageDraw.Draw(sub_img)
-        sd.text((l_crop.width + 14 - l_sub, (comb_h - sh) // 2 - t_sub), spec.subtitle, font=f_s, fill=(*EMERALD, 255))
+        sub_color = ACCENTS.get(spec.accent, EMERALD)
+        sd.text((l_crop.width + 16 - l_sub, (comb_h - sh) // 2 - t_sub), spec.subtitle, font=f_s, fill=(*sub_color, 255))
     elif spec.latex:
         if re.search(r"[^\x00-\x7f]", spec.latex):
             sub_lines = wrap_words(spec.latex, f_s, text_avail_w)

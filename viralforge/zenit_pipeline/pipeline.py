@@ -58,6 +58,9 @@ class ZenitPipeline:
         transcribe_audio: bool = True,
         closing_title: str | None = None,
         closing_body: str | None = None,
+        start_trim: float = 0.0,
+        end_trim: float | None = None,
+        action_prompt: str = "QUÍMICA",
     ) -> dict[str, Any]:
         """Ejecuta los pasos de análisis y diseño (Pasos 1 al 5 y 7 al 9) sin ensamblar el video final.
         
@@ -72,7 +75,7 @@ class ZenitPipeline:
         clean_meta_video = Path(s1["output"])
 
         log.info("Paso 2: Detección de cortinilla final y marca de agua NotebookLM...")
-        s2 = clean_branding(clean_meta_video, self.workdir)
+        s2 = clean_branding(clean_meta_video, self.workdir, start_trim=start_trim, end_trim=end_trim)
         clean_base_video = Path(s2["output"])
 
         log.info("Paso 7 (Pre-diseño): Generando píldora oficial logo + sistemazenit.com...")
@@ -125,6 +128,7 @@ class ZenitPipeline:
         active_body = closing_body or CLOSING_BODY
         create_closing_cta_card(
             closing_img_path,
+            action_prompt=action_prompt,
             closing_title=active_title,
             closing_body=active_body,
         )
@@ -159,9 +163,16 @@ class ZenitPipeline:
         source_video: Path | str,
         plan_specs: list[VisualSpec],
         output_video: Path | str,
-        action_prompt: str = "ZENIT",
+        action_prompt: str = "QUÍMICA",
         closing_title: str | None = None,
         closing_body: str | None = None,
+        start_trim: float = 0.0,
+        end_trim: float | None = None,
+        hook_text: str | None = None,
+        hook_tag: str = "RETO 94% FALLA",
+        hook_title: str = "REACTIVO LIMITANTE",
+        hook_subtitle: str = "¿DIVIDIR O MÉTODO A OJO?",
+        cta_text: str | None = None,
     ) -> PipelineReport:
         """Ejecuta los 9 pasos de principio a fin, incluyendo el ensamblado final (Paso 6)."""
         plan_data = self.plan_and_fit(
@@ -170,6 +181,9 @@ class ZenitPipeline:
             transcribe_audio=True,
             closing_title=closing_title,
             closing_body=closing_body,
+            start_trim=start_trim,
+            end_trim=end_trim,
+            action_prompt=action_prompt,
         )
         clean_base_video = Path(plan_data["step2_branding"]["output"])
 
@@ -196,6 +210,11 @@ class ZenitPipeline:
             action_prompt=action_prompt,
             closing_title=closing_title,
             closing_body=closing_body,
+            hook_text=hook_text,
+            hook_tag=hook_tag,
+            hook_title=hook_title,
+            hook_subtitle=hook_subtitle,
+            cta_text=cta_text,
         )
 
         return PipelineReport(

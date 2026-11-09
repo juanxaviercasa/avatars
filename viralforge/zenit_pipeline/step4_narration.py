@@ -111,18 +111,28 @@ def match_plan(plan: list[VisualSpec], words: list[Word],
                index: FreeSpaceIndex) -> list[VisualSlot]:
     slots: list[VisualSlot] = []
     cursor = 0.0
-    for spec in plan:
+    for idx, spec in enumerate(plan):
         i = find_phrase(words, spec.trigger, after=cursor)
         if i is None:
             slots.append(VisualSlot(spec, 0, 0, "", None, "skipped",
                                     f"frase '{spec.trigger}' no narrada"))
             continue
         t0 = words[i].start
-        t1 = min(t0 + spec.max_duration,
-                 max(t0 + spec.min_duration, _sentence_end(words, i) + 0.6))
         # Sin solapes temporales con la ayuda anterior.
         if slots and slots[-1].status == "ok":
-            t0 = max(t0, slots[-1].end + 0.2)
+            t0 = max(t0, slots[-1].end + 0.15)
+        t1 = min(t0 + spec.max_duration,
+                 max(t0 + spec.min_duration, _sentence_end(words, i) + 0.6))
+        # Si la siguiente ayuda visual se pronuncia dentro de la misma oración,
+        # cederle el paso justo antes de su frase disparadora.
+        if idx + 1 < len(plan):
+            next_i = find_phrase(words, plan[idx + 1].trigger, after=words[i].start + 0.2)
+            if next_i is not None:
+                next_start = words[next_i].start
+                if next_start - t0 >= spec.min_duration:
+                    t1 = min(t1, next_start - 0.15)
+                elif slots and slots[-1].status == "ok":
+                    t1 = max(t0 + spec.min_duration, min(t1, next_start + 1.0))
         chosen = None
         end = t1
         while end - t0 >= spec.min_duration - 1e-6:
@@ -137,7 +147,7 @@ def match_plan(plan: list[VisualSpec], words: list[Word],
                                     None, "skipped", "sin zona libre suficiente"))
         else:
             slots.append(VisualSlot(spec, round(t0, 2), round(end, 2), narration, chosen))
-            cursor = t0
+            cursor = words[i].start + 0.1
     return slots
 
 

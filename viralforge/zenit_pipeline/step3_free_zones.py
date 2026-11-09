@@ -31,7 +31,7 @@ GRID_W, GRID_H = AN_W // CELL, AN_H // CELL
 
 SAFE_MARGIN = 32               # distancia mínima a los bordes del lienzo
 INK_MARGIN = 28                # aire mínimo alrededor de contenido original
-MIN_ZONE_W, MIN_ZONE_H = 360, 150
+MIN_ZONE_W, MIN_ZONE_H = 680, 160
 CONTENT_BOTTOM = 1560          # subtítulos de NotebookLM + barra de progreso
 
 

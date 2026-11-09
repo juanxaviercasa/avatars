@@ -92,7 +92,7 @@ def detect_static_watermark(
     )
     band_h = int(AN_H * bands)
     candidates = []
-    for name, y0, y1 in (("top", 0, band_h), ("bottom", AN_H - band_h, AN_H)):
+    for name, y0, y1 in (("bottom", AN_H - band_h, AN_H),):
         band_std = temporal_std[y0:y1]
         # El fondo de la franja debe cambiar para que el contraste sea fiable.
         if float(np.percentile(band_std, 75)) < 6.0:
@@ -117,7 +117,7 @@ def detect_static_watermark(
 
 
 def _region_filter(regions: list[dict[str, Any]]) -> tuple[str, str]:
-    """Cubre cada región clonando la franja limpia inmediatamente adyacente."""
+    """Cubre cada región clonando textura limpia del margen lateral (fuera de subtítulos)."""
     parts = [f"[0:v]scale={FRAME_W}:{FRAME_H}:force_original_aspect_ratio=decrease,"
              f"pad={FRAME_W}:{FRAME_H}:(ow-iw)/2:(oh-ih)/2,setsar=1[c0]"]
     last = "c0"
@@ -125,32 +125,49 @@ def _region_filter(regions: list[dict[str, Any]]) -> tuple[str, str]:
         x, y, w, h = reg["rect"]
         x = max(0, x); w = min(FRAME_W - x, w)
         if reg["band"] == "bottom":
-            sy = max(0, y - DEFAULT_CLEAN_STRIP_H)
+            # Muestra textura pura del margen inferior izquierdo (fuera de la caja de subtítulos)
+            sx, sy, sw, sh = 20, max(0, y - 65), 150, 55
         else:
-            sy = min(FRAME_H - DEFAULT_CLEAN_STRIP_H, y + h)
+            sx, sy, sw, sh = x, min(FRAME_H - DEFAULT_CLEAN_STRIP_H, y + h), w, DEFAULT_CLEAN_STRIP_H
         parts.append(f"[{last}]split[b{i}][s{i}]")
         parts.append(
-            f"[s{i}]crop={w}:{DEFAULT_CLEAN_STRIP_H}:{x}:{sy},"
-            f"scale={w}:{h},gblur=sigma=1.2[p{i}]"
+            f"[s{i}]crop={sw}:{sh}:{sx}:{sy},"
+            f"scale={w}:{h},gblur=sigma=1.5[p{i}]"
         )
         parts.append(f"[b{i}][p{i}]overlay={x}:{y}[c{i}]")
         last = f"c{i}"
     return ";".join(parts), last
 
 
-def clean_branding(video: Path, workdir: Path) -> dict[str, Any]:
+def clean_branding(
+    video: Path,
+    workdir: Path,
+    start_trim: float = 0.0,
+    end_trim: float | None = None,
+) -> dict[str, Any]:
     video = Path(video)
     outro = detect_outro_start(video)
-    wm = detect_static_watermark(video, outro.cut_at)
+    cut_end = min(outro.cut_at, end_trim) if end_trim is not None else outro.cut_at
+    wm = detect_static_watermark(video, cut_end)
     graph, last = _region_filter(wm["regions"])
     out = Path(workdir) / "02_branding_clean.mp4"
+    dur = max(0.5, cut_end - start_trim)
+    ss_args = ["-ss", f"{start_trim:.3f}"] if start_trim > 0 else []
+    acodec = ["-c:a", "aac", "-b:a", "192k"] if start_trim > 0 else ["-c:a", "copy"]
     subprocess.run([
-        "ffmpeg", "-v", "error", "-y", "-i", str(video),
-        "-t", f"{outro.cut_at:.3f}",
+        "ffmpeg", "-v", "error", "-y", *ss_args, "-i", str(video),
+        "-t", f"{dur:.3f}",
         "-filter_complex", graph, "-map", f"[{last}]", "-map", "0:a?",
         "-c:v", "libx264", "-preset", "veryfast", "-crf", "16",
-        "-pix_fmt", "yuv420p", "-r", "30", "-c:a", "copy",
+        "-pix_fmt", "yuv420p", "-r", "30", *acodec,
         "-map_metadata", "-1", "-fflags", "+bitexact", str(out),
     ], check=True)
-    return {"step": 2, "output": str(out), "outro": asdict(outro),
-            "watermark": wm}
+    return {
+        "step": 2,
+        "output": str(out),
+        "start_trim": start_trim,
+        "cut_end": cut_end,
+        "duration": round(dur, 3),
+        "outro": asdict(outro),
+        "watermark": wm,
+    }
