@@ -38,6 +38,122 @@ FLAT_DIR = Path(r"C:\Users\cabel\Videos\reels-quimica\reels_finales").resolve()
 FLAT_DIR.mkdir(parents=True, exist_ok=True)
 
 REELS_SPECS: dict[int, dict[str, Any]] = {
+    1: {
+        "slug": "Reactivo_Limitante",
+        "title": "Reactivo Limitante en 2 Pasos",
+        "source_name": "El_método_exprés_para_el_reactivo_limitante.mp4",
+        "source_fallback": REPO_ROOT / "data" / "local_videos" / "reels" / "El_método_exprés_para_el_reactivo_limitante.mp4",
+        "start_trim": 5.8,
+        "end_trim": 60.5,
+        "hook_tag": "RETO 94% FALLA",
+        "hook_title": "REACTIVO LIMITANTE",
+        "hook_subtitle": "¿DIVIDIR O MÉTODO A OJO?",
+        "hook_text": (
+            "¡Calcular el reactivo limitante te hace perder mucho tiempo, pero en el examen de admisión cada segundo cuenta! "
+            "En sesenta segundos te enseño el método a ojo que asegura tus veinte puntos. Mira la pizarra."
+        ),
+        "action_prompt": "QUÍMICA",
+        "closing_title": "¿QUIERES SEGUIR APRENDIENDO MÁS?",
+        "closing_body": "Visita Sistema Zenit, donde aprenderás matemáticas y ciencias.",
+        "cta_text": (
+            "¿Habrías caído en la trampa del coeficiente? Visita sistemazenit punto com "
+            "o comenta QUÍMICA para enviarte el acceso directo."
+        ),
+        "plan_specs": [
+            VisualSpec(
+                id="monoxido_co",
+                trigger="4 moles",
+                kind="molecule_card",
+                title="MONÓXIDO DE CARBONO",
+                latex=r"\mathbf{CO}",
+                subtitle="(4 moles)",
+                body="1 mol en la proporción inicial",
+                image=str(REPO_ROOT / "assets" / "chemistry" / "mol_CO_isolated.png"),
+                accent="gold",
+                min_duration=1.8,
+                max_duration=3.5,
+            ),
+            VisualSpec(
+                id="hidrogeno_2h2",
+                trigger="6 de hidrogeno",
+                kind="molecule_card",
+                title="HIDRÓGENO MOLECULAR",
+                latex=r"\mathbf{2\,H_2}",
+                subtitle="(6 moles)",
+                body="2 moles necesarios por cada CO",
+                image=str(REPO_ROOT / "assets" / "chemistry" / "mol_2H2_isolated.png"),
+                accent="sky",
+                min_duration=1.8,
+                max_duration=3.5,
+            ),
+            VisualSpec(
+                id="sintesis_metanol",
+                trigger="sintetizar",
+                kind="molecule_card",
+                title="METANOL (PRODUCTO)",
+                latex=r"\mathbf{CH_3OH}",
+                subtitle="(Síntesis)",
+                body="Producto deseado en reactor",
+                image=str(REPO_ROOT / "assets" / "chemistry" / "mol_CH3OH_isolated.png"),
+                accent="emerald",
+                min_duration=2.5,
+                max_duration=4.2,
+            ),
+            VisualSpec(
+                id="trampa_examen",
+                trigger="fallo de novato",
+                kind="card",
+                title="¡ERROR COMÚN DE ADMISIÓN!",
+                body="No mires solo las cantidades iniciales (4 mol vs 6 mol)",
+                accent="gold",
+                min_duration=3.0,
+                max_duration=5.5,
+            ),
+            VisualSpec(
+                id="reactor_metanol",
+                trigger="receta te exige",
+                kind="image",
+                title="REACTOR: SÍNTESIS DE METANOL",
+                image=str(REPO_ROOT / "assets" / "images" / "sintesis_metanol_real.jpg"),
+                latex=r"\mathbf{1\,CO + 2\,H_2 \longrightarrow CH_3OH}",
+                body="La receta exige 2 moles de H2 por cada 1 mol de CO",
+                accent="emerald",
+                min_duration=3.0,
+                max_duration=5.5,
+            ),
+            VisualSpec(
+                id="metodo_dos_pasos",
+                trigger="truco",
+                kind="formula",
+                title="MÉTODO EXPRÉS EN 2 PASOS",
+                latex=r"\mathbf{\frac{\text{Moles Dados}}{\text{Coeficiente}} \;\Longrightarrow\; \text{El Menor es Limitante}}",
+                body="Paso 1: divide moles entre coeficiente. Paso 2: el menor se agota primero",
+                accent="gold",
+                min_duration=3.0,
+                max_duration=6.0,
+            ),
+            VisualSpec(
+                id="resultado_limitante",
+                trigger="hidrogeno se acaba",
+                kind="card",
+                title="REACTIVO LIMITANTE: H2",
+                body="6 / 2 = 3 (H2) frente a 4 / 1 = 4 (CO). ¡El H2 se agota primero!",
+                accent="emerald",
+                min_duration=3.0,
+                max_duration=6.0,
+            ),
+            VisualSpec(
+                id="clave_admision_r1",
+                trigger="metodo rapido",
+                kind="card",
+                title="PUNTO ASEGURADO EN ADMISIÓN",
+                body="Nunca decidas a ojo: calcula siempre el ratio moles / coeficiente",
+                accent="emerald",
+                min_duration=3.0,
+                max_duration=6.0,
+            ),
+        ],
+    },
     2: {
         "slug": "Geometria_Molecular_3D",
         "title": "Geometría Molecular 3D / VSEPR",
@@ -593,7 +709,7 @@ REELS_SPECS: dict[int, dict[str, Any]] = {
         "title": "Estequiometría: Método de Tres Pasos",
         "source_name": "El_método_de_tres_pasos_para_estequiometría.mp4",
         "start_trim": 9.5,
-        "end_trim": 73.0,
+        "end_trim": 73.65,
         "hook_tag": "MÉTODO EXPRÉS",
         "hook_title": "ESTEQUIOMETRÍA EN 3 PASOS",
         "hook_subtitle": "GRAMOS A MOLES SIN ENREDOS",
@@ -645,9 +761,10 @@ REELS_SPECS: dict[int, dict[str, Any]] = {
             VisualSpec(
                 id="clave_esteq",
                 trigger="flujo|paso a paso|exacta",
-                kind="card",
+                kind="formula",
                 title="MÉTODO DE 3 PASOS",
-                body="Gramos iniciales → Moles iniciales → Moles buscados → Gramos finales",
+                latex=r"\mathbf{\text{Gramos}_A \;\longrightarrow\; \text{Moles}_A \;\longrightarrow\; \text{Moles}_B \;\longrightarrow\; \text{Gramos}_B}",
+                body="Pasa por el puente de moles antes de volver a gramos",
                 accent="gold",
                 min_duration=2.5,
                 max_duration=6.0,
@@ -657,12 +774,43 @@ REELS_SPECS: dict[int, dict[str, Any]] = {
 }
 
 
+def get_thematic_images(reel_num: int) -> tuple[list[Path], list[Path]]:
+    """Selecciona una terna de Hook (Dolor, Pánico, Chispa) y un par de CTA (Paz, Victoria) únicos por reel."""
+    ej = REPO_ROOT / "assets" / "emotional_journey"
+    p1_hashes = ["a5a7ec38", "3b7c31b0", "13ee65c9", "d3cb4a63", "04499e2d", "dfc6d367", "98c535fc", "124cc597", "55dd38de", "20cb4b99"]
+    p2_hashes = ["7aa6fbb8", "57831704", "70ae544d", "4db9e194", "96eb1d70", "90d9aa17", "a050aefd", "43b5ae4e", "140e5fc3", "49f81fde"]
+    p3_hashes = ["6d350a42", "2c18e638", "ff19ba6f", "3e47f6e5", "bdb67db9", "5ca5b4c0", "853cd811", "3ed04b7c", "889965ca", "2b798e77"]
+    c1_hashes = ["1adb96d7", "e55c9999", "7ff3ce22", "b9859560", "43d8118b", "aeb1a758", "fb4ec138", "e221194e", "a88b4c9e", "e646ae46"]
+    c2_hashes = ["855d8d9b", "dfdbe742", "fc163a4a", "5ba15823", "1c11465d", "13b03de5", "8dc6cba2", "c4202f05", "a8119321", "9d5f3804"]
+
+    i = (reel_num - 1) % 10
+    h1 = list((ej / "01_dolor_bloqueo").glob(f"*{p1_hashes[i]}*"))[0]
+    h2 = list((ej / "02_panico_reloj").glob(f"*{p2_hashes[i]}*"))[0]
+    h3 = list((ej / "03_chispa_epifania").glob(f"*{p3_hashes[i]}*"))[0]
+    c1 = list((ej / "04_paz_maestria").glob(f"*{c1_hashes[i]}*"))[0]
+    c2 = list((ej / "05_victoria_admision").glob(f"*{c2_hashes[i]}*"))[0]
+
+    # Reemplazos temáticos específicos de alta resolución si existen
+    if reel_num == 2 and (REPO_ROOT / "assets/images/hook_geometria_molecular_3d.jpg").exists():
+        h3 = REPO_ROOT / "assets/images/hook_geometria_molecular_3d.jpg"
+    elif reel_num == 3 and (REPO_ROOT / "assets/images/hook_cambios_fisicos_quimicos.jpg").exists():
+        h3 = REPO_ROOT / "assets/images/hook_cambios_fisicos_quimicos.jpg"
+    elif reel_num == 4 and (REPO_ROOT / "assets/images/hook_mezclas_compuestos.jpg").exists():
+        h3 = REPO_ROOT / "assets/images/hook_mezclas_compuestos.jpg"
+
+    return [h1, h2, h3], [c1, c2]
+
+
 def produce_single_reel(reel_num: int) -> dict[str, Any]:
     cfg = REELS_SPECS[reel_num]
     slug = cfg["slug"]
     src_mp4 = SRC_DIR / cfg["source_name"]
     if not src_mp4.exists():
-        raise FileNotFoundError(f"Fuente no encontrada para Reel {reel_num}: {src_mp4}")
+        fallback = cfg.get("source_fallback")
+        if fallback and Path(fallback).exists():
+            src_mp4 = Path(fallback)
+        else:
+            raise FileNotFoundError(f"Fuente no encontrada para Reel {reel_num}: {src_mp4}")
 
     out_workdir = OUTPUTS_DIR / f"reel_{reel_num:02d}_zenit_pipeline"
     out_workdir.mkdir(parents=True, exist_ok=True)
@@ -677,6 +825,7 @@ def produce_single_reel(reel_num: int) -> dict[str, Any]:
     log.info("================================================================================")
 
     t0 = time.time()
+    h_imgs, c_imgs = get_thematic_images(reel_num)
     pipeline = ZenitPipeline(out_workdir)
     report = pipeline.execute_full(
         source_video=src_mp4,
@@ -691,7 +840,9 @@ def produce_single_reel(reel_num: int) -> dict[str, Any]:
         hook_tag=cfg["hook_tag"],
         hook_title=cfg["hook_title"],
         hook_subtitle=cfg["hook_subtitle"],
+        hook_images=h_imgs,
         cta_text=cfg["cta_text"],
+        cta_images=c_imgs,
     )
 
     try:
@@ -728,9 +879,9 @@ def produce_single_reel(reel_num: int) -> dict[str, Any]:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Producción de los 9 reels restantes de Química Zenit")
-    parser.add_argument("--reels", nargs="+", type=int, default=[2, 3, 4, 5, 6, 7, 8, 9, 10],
-                        help="Números de reels a producir (por defecto: 2 a 10)")
+    parser = argparse.ArgumentParser(description="Producción de los 10 reels de Química Zenit")
+    parser.add_argument("--reels", nargs="+", type=int, default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                        help="Números de reels a producir (por defecto: 1 a 10)")
     args = parser.parse_args()
 
     results = []

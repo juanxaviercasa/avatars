@@ -172,7 +172,9 @@ class ZenitPipeline:
         hook_tag: str = "RETO 94% FALLA",
         hook_title: str = "REACTIVO LIMITANTE",
         hook_subtitle: str = "¿DIVIDIR O MÉTODO A OJO?",
+        hook_images: list[Path] | None = None,
         cta_text: str | None = None,
+        cta_images: list[Path] | None = None,
     ) -> PipelineReport:
         """Ejecuta los 9 pasos de principio a fin, incluyendo el ensamblado final (Paso 6)."""
         plan_data = self.plan_and_fit(
@@ -214,7 +216,9 @@ class ZenitPipeline:
             hook_tag=hook_tag,
             hook_title=hook_title,
             hook_subtitle=hook_subtitle,
+            hook_images=hook_images,
             cta_text=cta_text,
+            cta_images=cta_images,
         )
 
         return PipelineReport(
