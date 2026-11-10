@@ -105,9 +105,10 @@ def create_hook_banner(
 
 def _synthesize_edge_tts(text: str, out_wav: Path, voice: str, rate: str = "+24%", sr: int = 44100) -> Path:
     import edge_tts
+    import time
     out_wav.parent.mkdir(parents=True, exist_ok=True)
 
-    async def _run():
+    async def _run_once():
         com = edge_tts.Communicate(text, voice, rate=rate)
         tmp_mp3 = out_wav.with_suffix(".mp3")
         await com.save(str(tmp_mp3))
@@ -117,7 +118,17 @@ def _synthesize_edge_tts(text: str, out_wav: Path, voice: str, rate: str = "+24%
         )
         tmp_mp3.unlink(missing_ok=True)
 
-    asyncio.run(_run())
+    last_err = None
+    for attempt in range(1, 5):
+        try:
+            asyncio.run(_run_once())
+            if out_wav.exists() and out_wav.stat().st_size > 1000:
+                return out_wav
+        except Exception as exc:
+            last_err = exc
+            if attempt == 4:
+                raise last_err
+            time.sleep(2.0 * attempt)
     return out_wav
 
 
