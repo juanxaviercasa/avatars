@@ -30,7 +30,7 @@ from .step4_narration import VisualSpec
 
 MIN_TITLE, MAX_TITLE = 34, 58
 MIN_BODY, MAX_BODY = 30, 46
-MIN_FORMULA_H = 54
+MIN_FORMULA_H = 34
 MAX_CARD_W = 980
 MAX_TITLE_LINES, MAX_BODY_LINES = 2, 4
 BORDER = 4
@@ -262,24 +262,24 @@ def _build_molecule_composite(spec: VisualSpec, inner_w: int, t_size: int, b_siz
     return comp
 
 
-def _gap(prev: str, cur: str, b_size: int) -> int:
+def _gap(prev: str, cur: str, b_size: int, compact: bool = False) -> int:
     if prev == cur and prev in ("title", "body"):
         return int(b_size * 0.12)
-    return int(b_size * 0.55)
+    return int(b_size * 0.28) if compact else int(b_size * 0.55)
 
 
-def _measure(blocks, b_size) -> tuple[int, int]:
+def _measure(blocks, b_size, compact: bool = False) -> tuple[int, int]:
     h = 0
     prev = None
     for kind, _, _, bh, _ in blocks:
         if prev is not None:
-            h += _gap(prev, kind, b_size)
+            h += _gap(prev, kind, b_size, compact=compact)
         h += bh
         prev = kind
     return max(b[2] for b in blocks), h
 
 
-def _draw(spec: VisualSpec, blocks, b_size, card_w, card_h, pad_x, pad_y) -> Image.Image:
+def _draw(spec: VisualSpec, blocks, b_size, card_w, card_h, pad_x, pad_y, compact: bool = False) -> Image.Image:
     accent = ACCENTS.get(spec.accent, SKY)
     card = Image.new("RGBA", (card_w, card_h), (0, 0, 0, 0))
     d = ImageDraw.Draw(card)
@@ -292,7 +292,7 @@ def _draw(spec: VisualSpec, blocks, b_size, card_w, card_h, pad_x, pad_y) -> Ima
     prev = None
     for kind, content, w, h, font in blocks:
         if prev is not None:
-            y += _gap(prev, kind, b_size)
+            y += _gap(prev, kind, b_size, compact=compact)
         x = (card_w - w) // 2
         if kind in ("title", "body"):
             color = accent if kind == "title" else SOFT_WHITE
@@ -311,21 +311,24 @@ def fit_visual(spec: VisualSpec, zone_w: int, zone_h: int, out_path: Path,
                max_iterations: int = 40) -> FitResult:
     res = FitResult(ok=False)
     card_w = min(zone_w, MAX_CARD_W)
+    compact = zone_h <= 210
     pad_boost = 0
+    min_t = 30 if compact else MIN_TITLE
+    min_b = 26 if compact else MIN_BODY
     sizes = []
     t, b = MAX_TITLE, MAX_BODY
     while True:
         sizes.append((t, b))
-        if t == MIN_TITLE and b == MIN_BODY:
+        if t == min_t and b == min_b:
             break
-        t, b = max(MIN_TITLE, t - 2), max(MIN_BODY, b - 2)
+        t, b = max(min_t, t - 2), max(min_b, b - 2)
 
     for t_size, b_size in sizes:
         if res.iterations >= max_iterations:
             break
         res.iterations += 1
-        pad_x = max(36, int(card_w * 0.07)) + pad_boost
-        pad_y = max(28, int(b_size * 0.9)) + pad_boost
+        pad_x = (max(24, int(card_w * 0.055)) if compact else max(36, int(card_w * 0.07))) + pad_boost
+        pad_y = (max(14, int(b_size * 0.55)) if compact else max(28, int(b_size * 0.9))) + pad_boost
         inner_w = card_w - 2 * pad_x
         try:
             blocks = _layout(spec, inner_w, t_size, b_size)
@@ -335,19 +338,20 @@ def fit_visual(spec: VisualSpec, zone_w: int, zone_h: int, out_path: Path,
         if not blocks:
             res.log.append(f"t{t_size}/b{b_size}: no cabe a lo ancho")
             continue
-        content_w, content_h = _measure(blocks, b_size)
+        content_w, content_h = _measure(blocks, b_size, compact=compact)
         final_w = min(card_w, content_w + 2 * pad_x)
         final_h = content_h + 2 * pad_y
         if final_h > zone_h:
             res.log.append(f"t{t_size}/b{b_size}: alto {final_h}>{zone_h}")
             continue
-        card = _draw(spec, blocks, b_size, final_w, final_h, pad_x, pad_y)
+        card = _draw(spec, blocks, b_size, final_w, final_h, pad_x, pad_y, compact=compact)
         bbox = card.info["content_bbox"]
         margins = (bbox[0], bbox[1], final_w - bbox[2], final_h - bbox[3])
-        need_x, need_y = int(pad_x * 0.85), int(pad_y * 0.7)
+        need_x = int(pad_x * 0.75) if compact else int(pad_x * 0.85)
+        need_y = int(pad_y * 0.6) if compact else int(pad_y * 0.7)
         if min(margins[0], margins[2]) < need_x or min(margins[1], margins[3]) < need_y:
             # La tinta real se acerca al contorno: más aire y repetir.
-            pad_boost += 8
+            pad_boost += 6 if compact else 8
             res.log.append(f"t{t_size}/b{b_size}: márgenes {margins} -> +relleno")
             sizes.append((t_size, b_size))
             continue

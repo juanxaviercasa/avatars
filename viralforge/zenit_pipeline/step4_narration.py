@@ -79,6 +79,14 @@ def text_between(words: list[Word], t0: float, t1: float) -> str:
 
 
 def find_phrase(words: list[Word], phrase: str, after: float = 0.0) -> int | None:
+    if "|" in phrase:
+        earliest_idx = None
+        for part in phrase.split("|"):
+            idx = find_phrase(words, part.strip(), after=after)
+            if idx is not None:
+                if earliest_idx is None or words[idx].start < words[earliest_idx].start:
+                    earliest_idx = idx
+        return earliest_idx
     target = _tokens(phrase)
     if not target:
         return None
