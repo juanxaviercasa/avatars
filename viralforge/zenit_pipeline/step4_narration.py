@@ -62,7 +62,12 @@ def transcribe_words(video: Path, workdir: Path, model_size: str = "small",
                      language: str = "es") -> list[Word]:
     cache = Path(workdir) / "04_words.json"
     if cache.exists():
-        return [Word(**w) for w in json.loads(cache.read_text(encoding="utf-8"))]
+        raw = json.loads(cache.read_text(encoding="utf-8"))
+        out = []
+        for w in raw:
+            txt = w.get("text") if "text" in w else w.get("word", "")
+            out.append(Word(start=float(w["start"]), end=float(w["end"]), text=str(txt)))
+        return out
     import faster_whisper
     model = faster_whisper.WhisperModel(model_size, device="cpu", compute_type="int8")
     segments, _ = model.transcribe(str(video), language=language,
